@@ -44,6 +44,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Data\Converters\CounterFieldConverter.cs" />
+    <Compile Include="Data\Converters\GeolocationFieldConverter.cs" />
+    <Compile Include="Data\Converters\GuidFieldConverter.cs" />
+    <Compile Include="Data\Converters\UrlFieldConverter.cs" />
     <Compile Include="Data\DataMapper.cs" />
     <Compile Include="Data\Converters\DateTimeFieldConverter.cs" />
     <Compile Include="Data\Converters\FieldConverterFactory.cs" />
@@ -62,7 +66,9 @@
     <Compile Include="Data\SPFieldAttribute.cs" />
     <Compile Include="Data\SPModelMapper.cs" />
     <Compile Include="Guard.cs" />
+    <Compile Include="Models\GeoInfo.cs" />
     <Compile Include="Models\ObjectReference.cs" />
+    <Compile Include="Models\UrlInfo.cs" />
     <Compile Include="Models\UserInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Reflection\InstanceCreationFactory.cs" />

@@ -8,7 +8,7 @@ namespace Untech.SharePoint.Core.Data.Converters
 {
 	internal class FieldConverterResolver
 	{
-		private readonly Dictionary<string, Type> _builtinConverters = new Dictionary<string, Type>();
+		private readonly Dictionary<string, Type> _builtinConverters = new Dictionary<string, Type>(StringComparer.InvariantCultureIgnoreCase);
 
 		public static FieldConverterResolver Instance
 		{
