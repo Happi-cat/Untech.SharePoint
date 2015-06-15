@@ -2,25 +2,41 @@
 
 namespace Untech.SharePoint.Core.Utility
 {
-	public class Singleton<T>
+	public class Singleton<T> where T: new()
 	{
-		private static readonly Lazy<T> LazyObject = new Lazy<T>();
+		private static readonly object Sync = new object();
+		private static T _object;
 
 		public static T GetInstance()
 		{
-			return LazyObject.Value;
+			if (_object == null)
+			{
+				lock (Sync)
+				{
+					if (_object == null)
+					{
+						_object = new T();
+					}
+				}
+			}
+			return _object;
 		}
 
 		public static T GetInstance(Action<T> initializer)
 		{
-			if (!LazyObject.IsValueCreated)
+			if (_object == null)
 			{
-				var obj = LazyObject.Value;
+				lock (Sync)
+				{
+					if (_object == null)
+					{
+						_object = new T();
 
-				initializer(obj);
+						initializer(_object);
+					}
+				}
 			}
-
-			return LazyObject.Value;
+			return _object;
 		}
 	}
 }
