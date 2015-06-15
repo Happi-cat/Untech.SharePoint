@@ -48,12 +48,28 @@ namespace Untech.SharePoint.Core.Data.Converters
 
 		public void Register(Type type)
 		{
-			FieldConverterFactory.Instance.Register(type);
+			try
+			{
+				FieldConverterFactory.Instance.Register(type);
+			}
+			catch (Exception e)
+			{
+				throw new InvalidFieldConverterException(
+					string.Format("Unable to register {0} field converter", type.FullName), e);
+			}
 		}
 
 		public IFieldConverter Get(Type type)
 		{
-			return FieldConverterFactory.Instance.Create(type);
+			try
+			{
+				return FieldConverterFactory.Instance.Create(type);
+			}
+			catch (Exception e)
+			{
+				throw new FieldConverterException(
+					string.Format("Field converter {0} wasn't registered or can't be created", type.FullName), e);
+			}
 		}
 
 		public IFieldConverter Get(string fieldType)

@@ -45,6 +45,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Data\Converters\CounterFieldConverter.cs" />
+    <Compile Include="Data\Converters\FieldConverterException.cs" />
     <Compile Include="Data\Converters\GeolocationFieldConverter.cs" />
     <Compile Include="Data\Converters\GuidFieldConverter.cs" />
     <Compile Include="Data\Converters\UrlFieldConverter.cs" />
@@ -60,6 +61,7 @@
     <Compile Include="Data\Converters\TextFieldConverter.cs" />
     <Compile Include="Data\Converters\UserFieldConverter.cs" />
     <Compile Include="Data\Converters\XmlFieldConverter.cs" />
+    <Compile Include="Data\DataMapperException.cs" />
     <Compile Include="Data\DataMapperPool.cs" />
     <Compile Include="Data\PropertyMappings.cs" />
     <Compile Include="Data\PropertyMappingInfo.cs" />

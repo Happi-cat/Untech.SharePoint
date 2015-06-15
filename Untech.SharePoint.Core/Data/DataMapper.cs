@@ -45,12 +45,19 @@ namespace Untech.SharePoint.Core.Data
 
 		private void MapProperty(SPListItem sourceItem, object destItem, PropertyMappingInfo mappingInfo, SPField field)
 		{
-			var converter = GetConverter(mappingInfo, field);
+			try
+			{
+				var converter = GetConverter(mappingInfo, field);
 
-			var spValue = sourceItem[field.Id];
-			var propValue = converter.FromSpValue(spValue, field, mappingInfo.PropertyOrFieldType);
+				var spValue = sourceItem[field.Id];
+				var propValue = converter.FromSpValue(spValue, field, mappingInfo.PropertyOrFieldType);
 
-			_propertyAccessor[destItem, mappingInfo.PropertyOrFieldName] = propValue;
+				_propertyAccessor[destItem, mappingInfo.PropertyOrFieldName] = propValue;
+			}
+			catch (Exception e)
+			{
+				throw new DataMapperException(mappingInfo.PropertyOrFieldName, mappingInfo.SPFieldInternalName, e);
+			}
 		}
 
 		private void MapProperty(object sourceItem, SPListItem destItem, PropertyMappingInfo mappingInfo, SPField field)
@@ -60,12 +67,19 @@ namespace Untech.SharePoint.Core.Data
 				return;
 			}
 
-			var converter = GetConverter(mappingInfo, field);
+			try
+			{
+				var converter = GetConverter(mappingInfo, field);
 
-			var propValue = _propertyAccessor[sourceItem, mappingInfo.PropertyOrFieldName];
-			var spValue = converter.ToSpValue(propValue, field, mappingInfo.PropertyOrFieldType);
+				var propValue = _propertyAccessor[sourceItem, mappingInfo.PropertyOrFieldName];
+				var spValue = converter.ToSpValue(propValue, field, mappingInfo.PropertyOrFieldType);
 
-			destItem[field.Id] = spValue;
+				destItem[field.Id] = spValue;
+			}
+			catch (Exception e)
+			{
+				throw new DataMapperException(mappingInfo.PropertyOrFieldName, mappingInfo.SPFieldInternalName, e);
+			}
 		}
 	}
 }

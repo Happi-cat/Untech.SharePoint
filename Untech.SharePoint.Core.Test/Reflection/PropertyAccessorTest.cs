@@ -120,9 +120,21 @@ namespace Untech.SharePoint.Core.Test.Reflection
 
 			try
 			{
-				TestClassAccessor[testObj, "PropertyThrowException"] = new object();
+				TestClassAccessor[testObj, "Property"] = new object();
 			}
 			catch (InvalidCastException)
+			{
+			}
+		}
+
+		[TestMethod]
+		public void NullException()
+		{
+			try
+			{
+				TestClassAccessor[null, "Property"] = "string";
+			}
+			catch (NullReferenceException)
 			{
 			}
 		}

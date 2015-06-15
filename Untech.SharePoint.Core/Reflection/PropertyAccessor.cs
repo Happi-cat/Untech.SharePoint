@@ -42,6 +42,7 @@ namespace Untech.SharePoint.Core.Reflection
 				if (_cachedSetters.ContainsKey(propertyName))
 				{
 					_cachedSetters[propertyName](obj, value);
+					return;
 				}
 				throw new ArgumentException(string.Format("This property or field '{0}' has no cached setter", propertyName));
 			}
