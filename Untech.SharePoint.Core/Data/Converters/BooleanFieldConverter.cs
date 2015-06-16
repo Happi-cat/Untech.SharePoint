@@ -9,8 +9,7 @@ namespace Untech.SharePoint.Core.Data.Converters
 	{
 		public object FromSpValue(object value, SPField field, Type propertyType)
 		{
-			if (propertyType == null) 
-				throw new ArgumentNullException("propertyType");
+			if (propertyType == null) throw new ArgumentNullException("propertyType");
 			if (!(field is SPFieldBoolean)) 
 				throw new ArgumentException("Converter doesn't support this SPField type", "field");
 

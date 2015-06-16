@@ -2,7 +2,6 @@
 using System.Reflection;
 using System.Runtime.Serialization;
 using Microsoft.SharePoint;
-using Untech.SharePoint.Core.Extensions;
 
 namespace Untech.SharePoint.Core.Data.Converters
 {
@@ -14,7 +13,7 @@ namespace Untech.SharePoint.Core.Data.Converters
 
 			if (value == null)
 			{
-				return propertyType.IsNullableType() ? null : (object)0;
+				return 0;
 			}
 
 			var enumString = value.ToString();
