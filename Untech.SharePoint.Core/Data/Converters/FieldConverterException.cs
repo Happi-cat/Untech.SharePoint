@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Untech.SharePoint.Core.Data.Converters
 {
@@ -22,23 +18,36 @@ namespace Untech.SharePoint.Core.Data.Converters
 		{
 
 		}
+
+		public FieldConverterException(Type converterType, Exception innerException)
+			: base(GetMessage(converterType), innerException)
+		{
+			
+		}
+
+		private static string GetMessage(Type converterType)
+		{
+			return string.Format("Occured error with {0} field converter", converterType.FullName);
+		}
 	}
 
 	public class InvalidFieldConverterException : FieldConverterException
 	{
-		public InvalidFieldConverterException()
+		public InvalidFieldConverterException(Type converterType)
+			: base(GetMessage(converterType))
 		{
 
 		}
-		public InvalidFieldConverterException(string message)
-			: base(message)
+
+		public InvalidFieldConverterException(Type converterType, Exception innerException)
+			: base(GetMessage(converterType), innerException)
 		{
 
 		}
-		public InvalidFieldConverterException(string message, Exception innerException)
-			: base(message, innerException)
-		{
 
+		private static string GetMessage(Type converterType)
+		{
+			return string.Format("Field converter {0} is invalid", converterType.FullName);
 		}
 	}
 }

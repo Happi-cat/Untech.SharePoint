@@ -9,15 +9,22 @@ namespace Untech.SharePoint.Core.Data
 	{
 		private readonly PropertyAccessor _propertyAccessor = new PropertyAccessor();
 		private readonly PropertyMappings _propertyMappings = new PropertyMappings();
+		private Type _initializedType;
 
 		public void Initialize(Type objectType)
 		{
+			_initializedType = objectType;
 			_propertyAccessor.Initialize(objectType);
 			_propertyMappings.Initialize(objectType);
 		}
 
 		public void Map(SPListItem sourceItem, object destItem)
 		{
+			if (!_initializedType.IsInstanceOfType(destItem))
+			{
+				throw new ArgumentException("destItem");
+			}
+
 			var fields = sourceItem.Fields;
 			foreach (var mappingInfo in _propertyMappings)
 			{
@@ -28,6 +35,11 @@ namespace Untech.SharePoint.Core.Data
 
 		public void Map(object sourceItem, SPListItem destItem)
 		{
+			if (!_initializedType.IsInstanceOfType(sourceItem))
+			{
+				throw new ArgumentException("sourceItem");
+			}
+
 			var fields = destItem.Fields;
 			foreach (var mappingInfo in _propertyMappings)
 			{
@@ -56,7 +68,7 @@ namespace Untech.SharePoint.Core.Data
 			}
 			catch (Exception e)
 			{
-				throw new DataMapperException(mappingInfo.PropertyOrFieldName, mappingInfo.SPFieldInternalName, e);
+				throw new DataMapperException(mappingInfo, e);
 			}
 		}
 
@@ -78,7 +90,7 @@ namespace Untech.SharePoint.Core.Data
 			}
 			catch (Exception e)
 			{
-				throw new DataMapperException(mappingInfo.PropertyOrFieldName, mappingInfo.SPFieldInternalName, e);
+				throw new DataMapperException(mappingInfo, e);
 			}
 		}
 	}

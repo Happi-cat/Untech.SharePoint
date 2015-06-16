@@ -54,8 +54,7 @@ namespace Untech.SharePoint.Core.Data.Converters
 			}
 			catch (Exception e)
 			{
-				throw new InvalidFieldConverterException(
-					string.Format("Unable to register {0} field converter", type.FullName), e);
+				throw new InvalidFieldConverterException(type, e);
 			}
 		}
 
@@ -67,8 +66,7 @@ namespace Untech.SharePoint.Core.Data.Converters
 			}
 			catch (Exception e)
 			{
-				throw new FieldConverterException(
-					string.Format("Field converter {0} wasn't registered or can't be created", type.FullName), e);
+				throw new FieldConverterException(type, e);
 			}
 		}
 
