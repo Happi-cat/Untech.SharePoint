@@ -44,6 +44,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Data\Converters\BooleanFieldConverter.cs" />
     <Compile Include="Data\Converters\CounterFieldConverter.cs" />
     <Compile Include="Data\Converters\EnumFieldConverter.cs" />
     <Compile Include="Data\Converters\FieldConverterException.cs" />
