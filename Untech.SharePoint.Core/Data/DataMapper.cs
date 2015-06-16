@@ -62,7 +62,7 @@ namespace Untech.SharePoint.Core.Data
 				var converter = GetConverter(mappingInfo, field);
 
 				var spValue = sourceItem[field.Id];
-				var propValue = converter.FromSpValue(spValue, field, mappingInfo.PropertyOrFieldType);
+				var propValue = converter.FromSpValue(spValue, field, mappingInfo.PropertyOrFieldType) ?? mappingInfo.DefaultValue;
 
 				_propertyAccessor[destItem, mappingInfo.PropertyOrFieldName] = propValue;
 			}

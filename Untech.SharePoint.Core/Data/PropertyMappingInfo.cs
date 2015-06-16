@@ -11,5 +11,7 @@ namespace Untech.SharePoint.Core.Data
 		public string SPFieldInternalName { get; set; }
 
 		public Type CustomConverterType { get; set; }
+
+		public object DefaultValue { get; set; }
 	}
 }

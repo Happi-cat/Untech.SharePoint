@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
 using Untech.SharePoint.Core.Data.Converters;
@@ -32,6 +33,7 @@ namespace Untech.SharePoint.Core.Data
 		private void AddMappingInfo(FieldInfo fieldInfo)
 		{
 			var fieldAttribute = fieldInfo.GetCustomAttribute<SPFieldAttribute>();
+			var defaultAttribute = fieldInfo.GetCustomAttribute<DefaultValueAttribute>();
 
 			var info = new PropertyMappingInfo
 			{
@@ -40,6 +42,11 @@ namespace Untech.SharePoint.Core.Data
 				SPFieldInternalName = fieldAttribute.InternalName,
 				CustomConverterType = fieldAttribute.CustomConverterType
 			};
+
+			if (defaultAttribute != null)
+			{
+				info.DefaultValue = defaultAttribute.Value;
+			}
 
 			if (info.CustomConverterType != null)
 			{
@@ -52,6 +59,7 @@ namespace Untech.SharePoint.Core.Data
 		private void AddMappingInfo(PropertyInfo propertyInfo)
 		{
 			var fieldAttribute = propertyInfo.GetCustomAttribute<SPFieldAttribute>();
+			var defaultAttribute = propertyInfo.GetCustomAttribute<DefaultValueAttribute>();
 
 			var info = new PropertyMappingInfo
 			{
@@ -60,6 +68,11 @@ namespace Untech.SharePoint.Core.Data
 				SPFieldInternalName = fieldAttribute.InternalName,
 				CustomConverterType = fieldAttribute.CustomConverterType
 			};
+
+			if (defaultAttribute != null)
+			{
+				info.DefaultValue = defaultAttribute.Value;
+			}
 
 			if (info.CustomConverterType != null)
 			{
