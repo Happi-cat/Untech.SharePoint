@@ -11,6 +11,8 @@ namespace Untech.SharePoint.Core.Data.Converters
 	{
 		public object FromSpValue(object value, SPField field, Type propertyType)
 		{
+			if (value == null) return null;
+
 			var serializer = new DataContractSerializer(propertyType);
 			
 			using (var stream = new MemoryStream(Encoding.UTF8.GetBytes((string) value ?? "")))
@@ -21,6 +23,8 @@ namespace Untech.SharePoint.Core.Data.Converters
 
 		public object ToSpValue(object value, SPField field, Type propertyType)
 		{
+			if (value == null) return null;
+
 			var serializer = new DataContractSerializer(propertyType);
 			var sb = new StringBuilder();
 

@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Reflection;
 using System.Runtime.Serialization;
+using Microsoft.SharePoint;
+using Untech.SharePoint.Core.Extensions;
 
 namespace Untech.SharePoint.Core.Data.Converters
 {
@@ -9,6 +11,11 @@ namespace Untech.SharePoint.Core.Data.Converters
 		public object FromSpValue(object value, SPField field, Type propertyType)
 		{
 			if (!propertyType.IsEnum) throw new ArgumentException("property should be Enum");
+
+			if (value == null)
+			{
+				return propertyType.IsNullableType() ? null : (object)0;
+			}
 
 			var enumString = value.ToString();
 
@@ -33,6 +40,9 @@ namespace Untech.SharePoint.Core.Data.Converters
 		public object ToSpValue(object value, SPField field, Type propertyType)
 		{
 			if (!propertyType.IsEnum) throw new ArgumentException("property should be Enum");
+
+			if (value == null)
+				return null;
 
 			var enumName = Enum.GetName(propertyType, value);
 

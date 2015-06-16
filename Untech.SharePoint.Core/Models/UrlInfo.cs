@@ -1,7 +1,11 @@
-﻿using Microsoft.SharePoint;
+﻿using System;
+using System.Runtime.Serialization;
+using Microsoft.SharePoint;
+using Newtonsoft.Json;
 
 namespace Untech.SharePoint.Core.Models
 {
+	[Serializable]
 	public class UrlInfo
 	{
 		public UrlInfo()
@@ -15,7 +19,10 @@ namespace Untech.SharePoint.Core.Models
 			Title = value.Description;
 		}
 
+		[JsonProperty]
 		public string Url { get; set; }
+
+		[JsonProperty]
 		public string Title { get; set; }
 	}
 }

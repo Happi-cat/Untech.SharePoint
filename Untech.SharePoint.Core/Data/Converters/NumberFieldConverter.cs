@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.SharePoint;
+using Untech.SharePoint.Core.Extensions;
 
 namespace Untech.SharePoint.Core.Data.Converters
 {
@@ -10,7 +11,7 @@ namespace Untech.SharePoint.Core.Data.Converters
 		{
 			Guard.ThrowIfNot<SPFieldNumber>(field, "This Field Converter doesn't support that SPField type");
 
-			if (propertyType.IsGenericType && propertyType.GetGenericTypeDefinition() == typeof(Nullable<>))
+			if (propertyType.IsNullableType())
 				return (double?)value;
 
 			return (double?) value ?? 0;

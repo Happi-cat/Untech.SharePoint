@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Runtime.Serialization;
 using Microsoft.SharePoint;
+using Newtonsoft.Json;
 
 namespace Untech.SharePoint.Core.Models
 {
@@ -19,13 +21,16 @@ namespace Untech.SharePoint.Core.Models
 			Measure = geoValue.Measure;
 		}
 
-
+		[JsonProperty]
 		public double Altitude { get; set; }
-		
+
+		[JsonProperty]
 		public double Latitude { get; set; }
-		
+
+		[JsonProperty]
 		public double Longitude { get; set; }
-	
+
+		[JsonProperty]
 		public double Measure { get; set; }
 	}
 }

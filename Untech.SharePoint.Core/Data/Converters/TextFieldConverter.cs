@@ -5,6 +5,7 @@ namespace Untech.SharePoint.Core.Data.Converters
 {
 	[SPFieldConverter("Text")]
 	[SPFieldConverter("Note")]
+	[SPFieldConverter("Choice")]
 	internal class TextFieldConverter:IFieldConverter
 	{
 	    public object FromSpValue(object value, SPField field, Type propertyType)
@@ -12,7 +13,7 @@ namespace Untech.SharePoint.Core.Data.Converters
 			if (value == null)
 				return null;
 
-			if(!(field is SPFieldText))
+			if(!(field is SPFieldText) && !(field is SPFieldChoice))
 			{
 				throw new ArgumentException();
 			}

@@ -51,6 +51,7 @@
     <Compile Include="Data\Converters\GeolocationFieldConverter.cs" />
     <Compile Include="Data\Converters\GuidFieldConverter.cs" />
     <Compile Include="Data\Converters\InvalidFieldConverterException.cs" />
+    <Compile Include="Data\Converters\MultiChoiceFieldConverter.cs" />
     <Compile Include="Data\Converters\UrlFieldConverter.cs" />
     <Compile Include="Data\DataMapper.cs" />
     <Compile Include="Data\Converters\DateTimeFieldConverter.cs" />
@@ -70,6 +71,7 @@
     <Compile Include="Data\PropertyMappingInfo.cs" />
     <Compile Include="Data\SPFieldAttribute.cs" />
     <Compile Include="Data\SPModelMapper.cs" />
+    <Compile Include="Extensions\TypeExtensions.cs" />
     <Compile Include="Guard.cs" />
     <Compile Include="Models\GeoInfo.cs" />
     <Compile Include="Models\ObjectReference.cs" />
