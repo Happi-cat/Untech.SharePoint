@@ -45,9 +45,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Data\Converters\CounterFieldConverter.cs" />
+    <Compile Include="Data\Converters\EnumFieldConverter.cs" />
     <Compile Include="Data\Converters\FieldConverterException.cs" />
     <Compile Include="Data\Converters\GeolocationFieldConverter.cs" />
     <Compile Include="Data\Converters\GuidFieldConverter.cs" />
+    <Compile Include="Data\Converters\InvalidFieldConverterException.cs" />
     <Compile Include="Data\Converters\UrlFieldConverter.cs" />
     <Compile Include="Data\DataMapper.cs" />
     <Compile Include="Data\Converters\DateTimeFieldConverter.cs" />
