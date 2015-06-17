@@ -7,19 +7,28 @@ namespace Untech.SharePoint.Core.Data.Converters
 	[SPFieldConverter("DateTime")]
 	internal class DateTimeFieldConverter: IFieldConverter
 	{
-	    public object FromSpValue(object value, SPField field, Type propertyType)
-		{
-            Guard.ThrowIfNot<SPFieldDateTime>(field, "This Field Converter doesn't support that SPField type");
+		public SPField Field { get; set; }
+		public Type PropertyType { get; set; }
 
-			if (propertyType.IsNullableType())
+		public void Initialize(SPField field, Type propertyType)
+		{
+			Field = field;
+			PropertyType = propertyType;
+		}
+
+	    public object FromSpValue(object value)
+		{
+            Guard.ThrowIfNot<SPFieldDateTime>(Field, "This Field Converter doesn't support that SPField type");
+
+			if (PropertyType.IsNullableType())
 				return (DateTime?)value;
 
 			return (DateTime?)value ?? new DateTime(1900, 1, 1);
 		}
 
-        public object ToSpValue(object value, SPField field, Type propertyType)
+        public object ToSpValue(object value)
 		{
-            Guard.ThrowIfNot<SPFieldDateTime>(field, "This Field Converter doesn't support that SPField type");
+            Guard.ThrowIfNot<SPFieldDateTime>(Field, "This Field Converter doesn't support that SPField type");
 
 	        if (value == null)
 	        {

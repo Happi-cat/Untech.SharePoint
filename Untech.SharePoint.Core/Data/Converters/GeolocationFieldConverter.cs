@@ -7,9 +7,18 @@ namespace Untech.SharePoint.Core.Data.Converters
 	[SPFieldConverter("Geolocation")]
 	internal class GeolocationFieldConverter : IFieldConverter
 	{
-		public object FromSpValue(object value, SPField field, Type propertyType)
+		public SPField Field { get; set; }
+		public Type PropertyType { get; set; }
+
+		public void Initialize(SPField field, Type propertyType)
 		{
-			Guard.ThrowIfNot<SPFieldGeolocation>(field, "This Field Converter doesn't support that SPField type");
+			Field = field;
+			PropertyType = propertyType;
+		}
+
+		public object FromSpValue(object value)
+		{
+			Guard.ThrowIfNot<SPFieldGeolocation>(Field, "This Field Converter doesn't support that SPField type");
 
 			if (value == null)
 				return null;
@@ -17,9 +26,9 @@ namespace Untech.SharePoint.Core.Data.Converters
 			return new GeoInfo(new SPFieldGeolocationValue(value.ToString()));
 		}
 
-		public object ToSpValue(object value, SPField field, Type propertyType)
+		public object ToSpValue(object value)
 		{
-			Guard.ThrowIfNot<SPFieldGeolocation>(field, "This Field Converter doesn't support that SPField type");
+			Guard.ThrowIfNot<SPFieldGeolocation>(Field, "This Field Converter doesn't support that SPField type");
 
 			if (value == null)
 				return null;

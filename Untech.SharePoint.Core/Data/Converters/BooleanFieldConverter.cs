@@ -7,23 +7,29 @@ namespace Untech.SharePoint.Core.Data.Converters
 	[SPFieldConverter("Boolean")]
 	public class BooleanFieldConverter : IFieldConverter
 	{
-		public object FromSpValue(object value, SPField field, Type propertyType)
-		{
-			if (propertyType == null) throw new ArgumentNullException("propertyType");
-			if (!(field is SPFieldBoolean)) 
-				throw new ArgumentException("Converter doesn't support this SPField type", "field");
+		public SPField Field { get; set; }
+		public Type PropertyType { get; set; }
 
-			if (propertyType.IsNullableType())
+		public void Initialize(SPField field, Type propertyType)
+		{
+			Field = field;
+			PropertyType = propertyType;
+
+			if (PropertyType == null) throw new ArgumentNullException("propertyType");
+			if (!(Field is SPFieldBoolean))
+				throw new ArgumentException("Converter doesn't support this SPField type", "field");
+		}
+
+		public object FromSpValue(object value)
+		{
+			if (PropertyType.IsNullableType())
 				return (bool?)value;
 
 			return (bool?)value ?? false;
 		}
 
-		public object ToSpValue(object value, SPField field, Type propertyType)
+		public object ToSpValue(object value)
 		{
-			if (!(field is SPFieldBoolean)) 
-				throw new ArgumentException("Converter doesn't support this SPField type", "field");
-
 			return (bool?)value;
 		}
 	}

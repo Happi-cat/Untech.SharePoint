@@ -7,19 +7,28 @@ namespace Untech.SharePoint.Core.Data.Converters
 	[SPFieldConverter("Number")]
 	internal class NumberFieldConverter : IFieldConverter
 	{
-		public object FromSpValue(object value, SPField field, Type propertyType)
-		{
-			Guard.ThrowIfNot<SPFieldNumber>(field, "This Field Converter doesn't support that SPField type");
+		public SPField Field { get; set; }
+		public Type PropertyType { get; set; }
 
-			if (propertyType.IsNullableType())
+		public void Initialize(SPField field, Type propertyType)
+		{
+			Field = field;
+			PropertyType = propertyType;
+		}
+
+		public object FromSpValue(object value)
+		{
+			Guard.ThrowIfNot<SPFieldNumber>(Field, "This Field Converter doesn't support that SPField type");
+
+			if (PropertyType.IsNullableType())
 				return (double?)value;
 
 			return (double?) value ?? 0;
 		}
 
-		public object ToSpValue(object value, SPField field, Type propertyType)
+		public object ToSpValue(object value)
 		{
-			Guard.ThrowIfNot<SPFieldNumber>(field, "This Field Converter doesn't support that SPField type");
+			Guard.ThrowIfNot<SPFieldNumber>(Field, "This Field Converter doesn't support that SPField type");
 
 			return (double?)value;
 		}

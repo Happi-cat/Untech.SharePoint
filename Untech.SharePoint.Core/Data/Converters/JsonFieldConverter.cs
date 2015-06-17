@@ -6,17 +6,26 @@ namespace Untech.SharePoint.Core.Data.Converters
 {
 	public class JsonFieldConverter : IFieldConverter
 	{
-		public object FromSpValue(object value, SPField field, Type propertyType)
+		public SPField Field { get; set; }
+		public Type PropertyType { get; set; }
+
+		public void Initialize(SPField field, Type propertyType)
+		{
+			Field = field;
+			PropertyType = propertyType;
+		}
+
+		public object FromSpValue(object value)
 		{
 			if (string.IsNullOrEmpty((string) value))
 			{
 				return null;
 			}
 
-			return JsonConvert.DeserializeObject((string)value, propertyType);
+			return JsonConvert.DeserializeObject((string)value, PropertyType);
 		}
 
-		public object ToSpValue(object value, SPField field, Type propertyType)
+		public object ToSpValue(object value)
 		{
 			if (value == null)
 			{

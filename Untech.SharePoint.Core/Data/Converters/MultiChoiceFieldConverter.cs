@@ -8,9 +8,18 @@ namespace Untech.SharePoint.Core.Data.Converters
 	[SPFieldConverter("MultiChoice")]
 	public class MultiChoiceFieldConverter : IFieldConverter
 	{
-		public object FromSpValue(object value, SPField field, Type propertyType)
+		public SPField Field { get; set; }
+		public Type PropertyType { get; set; }
+
+		public void Initialize(SPField field, Type propertyType)
 		{
-			var multiChoiceField = field as SPFieldMultiChoice;
+			Field = field;
+			PropertyType = propertyType;
+		}
+
+		public object FromSpValue(object value)
+		{
+			var multiChoiceField = Field as SPFieldMultiChoice;
 			if (multiChoiceField == null)
 			{
 				throw new ArgumentException();
@@ -22,7 +31,7 @@ namespace Untech.SharePoint.Core.Data.Converters
 			return GetValues(new SPFieldMultiChoiceValue(value.ToString()));
 		}
 
-		public object ToSpValue(object value, SPField field, Type propertyType)
+		public object ToSpValue(object value)
 		{
 			if (value == null)
 				return null;

@@ -7,14 +7,23 @@ namespace Untech.SharePoint.Core.Data.Converters
 	[SPFieldConverter("URL")]
 	internal class UrlFieldConverter : IFieldConverter
 	{
-		public object FromSpValue(object value, SPField field, Type propertyType)
+		public SPField Field { get; set; }
+		public Type PropertyType { get; set; }
+
+		public void Initialize(SPField field, Type propertyType)
 		{
-			Guard.ThrowIfNot<SPFieldUrl>(field, "This Field Converter doesn't support that SPField type");
+			Field = field;
+			PropertyType = propertyType;
+		}
+
+		public object FromSpValue(object value)
+		{
+			Guard.ThrowIfNot<SPFieldUrl>(Field, "This Field Converter doesn't support that SPField type");
 
 			if (value == null)
 				return null;
 
-			if (propertyType == typeof (string))
+			if (PropertyType == typeof (string))
 			{
 				return new UrlInfo(new SPFieldUrlValue(value.ToString())).Url;
 			}
@@ -22,14 +31,14 @@ namespace Untech.SharePoint.Core.Data.Converters
 			return new UrlInfo(new SPFieldUrlValue(value.ToString()));
 		}
 
-		public object ToSpValue(object value, SPField field, Type propertyType)
+		public object ToSpValue(object value)
 		{
-			Guard.ThrowIfNot<SPFieldUrl>(field, "This Field Converter doesn't support that SPField type");
+			Guard.ThrowIfNot<SPFieldUrl>(Field, "This Field Converter doesn't support that SPField type");
 
 			if (value == null)
 				return null;
 
-			if (propertyType == typeof(string))
+			if (PropertyType == typeof(string))
 			{
 				return new SPFieldUrlValue(value.ToString());
 			}

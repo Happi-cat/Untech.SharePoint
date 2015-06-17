@@ -10,9 +10,18 @@ namespace Untech.SharePoint.Core.Data.Converters
 	[SPFieldConverter("LookupMulti")]
 	internal class LookupFieldConverter : IFieldConverter
 	{
-	    public object FromSpValue(object value, SPField field, Type propertyType)
+		public SPField Field { get; set; }
+		public Type PropertyType { get; set; }
+
+		public void Initialize(SPField field, Type propertyType)
 		{
-			var lookupfield = field as SPFieldLookup;
+			Field = field;
+			PropertyType = propertyType;
+		}
+
+	    public object FromSpValue(object value)
+		{
+			var lookupfield = Field as SPFieldLookup;
 			if(lookupfield == null)
 			{
 				throw new ArgumentException();
@@ -33,12 +42,12 @@ namespace Untech.SharePoint.Core.Data.Converters
 			return fieldValues.Select(fieldValue => new ObjectReference(new Guid(lookupfield.LookupList), fieldValue.LookupId, fieldValue.LookupValue)).ToList();
 		}
 
-		public object ToSpValue(object value, SPField field, Type propertyType)
+		public object ToSpValue(object value)
 		{
 			if (value == null)
 				return null;
 			
-			var lookupfield = field as SPFieldLookup;
+			var lookupfield = Field as SPFieldLookup;
 			if (lookupfield == null || (!(value is ObjectReference) && !(value is IList<ObjectReference>)))
 			{
 				throw new ArgumentException();

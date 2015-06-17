@@ -50,9 +50,13 @@ namespace Untech.SharePoint.Core.Data
 
 		private IFieldConverter GetConverter(PropertyMappingInfo mappingInfo, SPField field)
 		{
-			return mappingInfo.CustomConverterType != null ?
-				FieldConverterResolver.Instance.Get(mappingInfo.CustomConverterType) :
-				FieldConverterResolver.Instance.Get(field.TypeAsString);
+			IFieldConverter converter = mappingInfo.CustomConverterType != null ?
+				FieldConverterResolver.Instance.Create(mappingInfo.CustomConverterType) :
+				FieldConverterResolver.Instance.Create(field.TypeAsString);
+
+			converter.Initialize(field, mappingInfo.PropertyOrFieldType);
+
+			return converter;
 		}
 
 		private void MapProperty(SPListItem sourceItem, object destItem, PropertyMappingInfo mappingInfo, SPField field)
@@ -62,7 +66,7 @@ namespace Untech.SharePoint.Core.Data
 				var converter = GetConverter(mappingInfo, field);
 
 				var spValue = sourceItem[field.Id];
-				var propValue = converter.FromSpValue(spValue, field, mappingInfo.PropertyOrFieldType) ?? mappingInfo.DefaultValue;
+				var propValue = converter.FromSpValue(spValue) ?? mappingInfo.DefaultValue;
 
 				_propertyAccessor[destItem, mappingInfo.PropertyOrFieldName] = propValue;
 			}
@@ -84,7 +88,7 @@ namespace Untech.SharePoint.Core.Data
 				var converter = GetConverter(mappingInfo, field);
 
 				var propValue = _propertyAccessor[sourceItem, mappingInfo.PropertyOrFieldName];
-				var spValue = converter.ToSpValue(propValue, field, mappingInfo.PropertyOrFieldType);
+				var spValue = converter.ToSpValue(propValue);
 
 				destItem[field.Id] = spValue;
 			}

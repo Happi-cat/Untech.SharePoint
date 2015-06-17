@@ -9,12 +9,21 @@ namespace Untech.SharePoint.Core.Data.Converters
 	[SPFieldConverter("User")]
 	internal class UserFieldConverter: IFieldConverter
 	{
-	    public object FromSpValue(object value, SPField field, Type propertyType)
+		public SPField Field { get; set; }
+		public Type PropertyType { get; set; }
+
+		public void Initialize(SPField field, Type propertyType)
+		{
+			Field = field;
+			PropertyType = propertyType;
+		}
+
+	    public object FromSpValue(object value)
 		{
 			if (value == null)
 				return null;
 
-			var userField = field as SPFieldUser;
+			var userField = Field as SPFieldUser;
 			if (userField == null)
 			{
 				throw new ArgumentException();
@@ -32,12 +41,12 @@ namespace Untech.SharePoint.Core.Data.Converters
 			return fieldValues.Select(fieldValue => fieldValue.User).Select(user => new UserInfo(user)).ToList();
 		}
 
-        public object ToSpValue(object value, SPField field, Type propertyType)
+        public object ToSpValue(object value)
 		{
 			if (value == null)
 				return null;
 
-			var userField = field as SPFieldUser;
+			var userField = Field as SPFieldUser;
 			if (userField == null || (!(value is UserInfo) && !(value is IList<UserInfo>)))
 			{
 				throw new ArgumentException();
@@ -47,13 +56,13 @@ namespace Untech.SharePoint.Core.Data.Converters
 			{
 				var userInfo = value as UserInfo;
 
-				return new SPFieldUserValue(field.ParentList.ParentWeb, userInfo.Id, userInfo.Login);
+				return new SPFieldUserValue(Field.ParentList.ParentWeb, userInfo.Id, userInfo.Login);
 			}
 
 			var userInfos = value as IList<UserInfo>;
 
 			var fieldValues = new SPFieldUserValueCollection();
-			fieldValues.AddRange(userInfos.Select(userInfo => new SPFieldUserValue(field.ParentList.ParentWeb, userInfo.Id, userInfo.Login)));
+			fieldValues.AddRange(userInfos.Select(userInfo => new SPFieldUserValue(Field.ParentList.ParentWeb, userInfo.Id, userInfo.Login)));
 
 			return fieldValues;
 		}

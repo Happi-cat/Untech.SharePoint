@@ -58,7 +58,7 @@ namespace Untech.SharePoint.Core.Data.Converters
 			}
 		}
 
-		public IFieldConverter Get(Type type)
+		public IFieldConverter Create(Type type)
 		{
 			try
 			{
@@ -70,9 +70,9 @@ namespace Untech.SharePoint.Core.Data.Converters
 			}
 		}
 
-		public IFieldConverter Get(string fieldType)
+		public IFieldConverter Create(string fieldType)
 		{
-			return Get(_builtinConverters[fieldType]);
+			return Create(_builtinConverters[fieldType]);
 		}
 	}
 }
