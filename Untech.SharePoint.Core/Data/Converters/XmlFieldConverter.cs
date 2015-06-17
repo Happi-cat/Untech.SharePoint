@@ -14,6 +14,12 @@ namespace Untech.SharePoint.Core.Data.Converters
 
 		public void Initialize(SPField field, Type propertyType)
 		{
+			if (field == null) throw new ArgumentNullException("field");
+			if (propertyType == null) throw new ArgumentNullException("propertyType");
+
+			if (field.FieldValueType != typeof(string))
+				throw new ArgumentException("SPField with string value type only supported");
+
 			Field = field;
 			PropertyType = propertyType;
 		}

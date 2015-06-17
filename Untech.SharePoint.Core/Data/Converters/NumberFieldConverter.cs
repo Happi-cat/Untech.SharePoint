@@ -12,14 +12,18 @@ namespace Untech.SharePoint.Core.Data.Converters
 
 		public void Initialize(SPField field, Type propertyType)
 		{
+			if (field == null) throw new ArgumentNullException("field");
+			if (propertyType == null) throw new ArgumentNullException("propertyType");
+
+			if (field.FieldValueType != typeof(double))
+				throw new ArgumentException("SPField with bool value type only supported");
+
 			Field = field;
 			PropertyType = propertyType;
 		}
 
 		public object FromSpValue(object value)
 		{
-			Guard.ThrowIfNot<SPFieldNumber>(Field, "This Field Converter doesn't support that SPField type");
-
 			if (PropertyType.IsNullableType())
 				return (double?)value;
 
@@ -28,8 +32,6 @@ namespace Untech.SharePoint.Core.Data.Converters
 
 		public object ToSpValue(object value)
 		{
-			Guard.ThrowIfNot<SPFieldNumber>(Field, "This Field Converter doesn't support that SPField type");
-
 			return (double?)value;
 		}
 	}

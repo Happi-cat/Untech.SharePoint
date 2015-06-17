@@ -14,6 +14,16 @@ namespace Untech.SharePoint.Core.Data.Converters
 
 		public void Initialize(SPField field, Type propertyType)
 		{
+			if (field == null) throw new ArgumentNullException("field");
+			if (propertyType == null) throw new ArgumentNullException("propertyType");
+
+			if (!(field is SPFieldUser))
+				throw new ArgumentException("SPFieldUser only supported");
+
+			if (!propertyType.IsAssignableFrom(typeof(List<UserInfo>)) && propertyType != typeof(UserInfo[]) && propertyType != typeof(UserInfo))
+				throw new ArgumentException("This converter can be used only with string[] or with types assignable from List<string>");
+
+
 			Field = field;
 			PropertyType = propertyType;
 		}
@@ -24,10 +34,6 @@ namespace Untech.SharePoint.Core.Data.Converters
 				return null;
 
 			var userField = Field as SPFieldUser;
-			if (userField == null)
-			{
-				throw new ArgumentException();
-			}
 
 			if (!userField.AllowMultipleValues)
 			{
@@ -38,6 +44,9 @@ namespace Untech.SharePoint.Core.Data.Converters
 
 			var fieldValues = new SPFieldUserValueCollection(userField.ParentList.ParentWeb, value.ToString());
 
+			if (PropertyType == typeof(UserInfo[]))
+				return fieldValues.Select(fieldValue => fieldValue.User).Select(user => new UserInfo(user)).ToArray();
+			
 			return fieldValues.Select(fieldValue => fieldValue.User).Select(user => new UserInfo(user)).ToList();
 		}
 
@@ -47,11 +56,7 @@ namespace Untech.SharePoint.Core.Data.Converters
 				return null;
 
 			var userField = Field as SPFieldUser;
-			if (userField == null || (!(value is UserInfo) && !(value is IList<UserInfo>)))
-			{
-				throw new ArgumentException();
-			}
-
+		
 			if (!userField.AllowMultipleValues)
 			{
 				var userInfo = value as UserInfo;
@@ -59,7 +64,7 @@ namespace Untech.SharePoint.Core.Data.Converters
 				return new SPFieldUserValue(Field.ParentList.ParentWeb, userInfo.Id, userInfo.Login);
 			}
 
-			var userInfos = value as IList<UserInfo>;
+			var userInfos = (IEnumerable<UserInfo>)value;
 
 			var fieldValues = new SPFieldUserValueCollection();
 			fieldValues.AddRange(userInfos.Select(userInfo => new SPFieldUserValue(Field.ParentList.ParentWeb, userInfo.Id, userInfo.Login)));

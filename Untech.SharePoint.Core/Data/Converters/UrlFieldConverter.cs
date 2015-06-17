@@ -12,14 +12,21 @@ namespace Untech.SharePoint.Core.Data.Converters
 
 		public void Initialize(SPField field, Type propertyType)
 		{
+			if (field == null) throw new ArgumentNullException("field");
+			if (propertyType == null) throw new ArgumentNullException("propertyType");
+
+			if (field.FieldValueType != typeof(SPFieldUrlValue))
+				throw new ArgumentException("SPField with bool value type only supported");
+
+			if (propertyType != typeof(UrlInfo) && propertyType != typeof(string))
+				throw new ArgumentException("This converter can be used only with UrlInfo or string property types");
+
 			Field = field;
 			PropertyType = propertyType;
 		}
 
 		public object FromSpValue(object value)
 		{
-			Guard.ThrowIfNot<SPFieldUrl>(Field, "This Field Converter doesn't support that SPField type");
-
 			if (value == null)
 				return null;
 
@@ -33,8 +40,6 @@ namespace Untech.SharePoint.Core.Data.Converters
 
 		public object ToSpValue(object value)
 		{
-			Guard.ThrowIfNot<SPFieldUrl>(Field, "This Field Converter doesn't support that SPField type");
-
 			if (value == null)
 				return null;
 

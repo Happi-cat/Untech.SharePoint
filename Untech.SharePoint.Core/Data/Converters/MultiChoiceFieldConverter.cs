@@ -13,6 +13,15 @@ namespace Untech.SharePoint.Core.Data.Converters
 
 		public void Initialize(SPField field, Type propertyType)
 		{
+			if (field == null) throw new ArgumentNullException("field");
+			if (propertyType == null) throw new ArgumentNullException("propertyType");
+
+			if (field.FieldValueType != typeof(SPFieldMultiChoiceValue))
+				throw new ArgumentException("SPField with SPFieldMultiChoiceValue value type only supported");
+
+			if (!propertyType.IsAssignableFrom(typeof(List<string>)) && propertyType != typeof(string[]))
+				throw new ArgumentException("This converter can be used only with string[] or with types assignable from List<string>");
+
 			Field = field;
 			PropertyType = propertyType;
 		}
@@ -39,10 +48,9 @@ namespace Untech.SharePoint.Core.Data.Converters
 			var strings = ((IEnumerable<string>) value).ToList();
 
 			var fieldValues = new SPFieldMultiChoiceValue();
-			foreach (var s in strings)
-			{
-				fieldValues.Add(s);
-			}
+			
+			strings.ForEach(s => fieldValues.Add(s));
+			
 			return fieldValues;
 		}
 

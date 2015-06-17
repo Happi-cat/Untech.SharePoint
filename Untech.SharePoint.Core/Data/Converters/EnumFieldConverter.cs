@@ -13,21 +13,27 @@ namespace Untech.SharePoint.Core.Data.Converters
 
 		public void Initialize(SPField field, Type propertyType)
 		{
+			if (field == null) throw new ArgumentNullException("field");
+			if (propertyType == null) throw new ArgumentNullException("propertyType");
+
+			if (field.FieldValueType != typeof(string))
+				throw new ArgumentException("SPField with string value type only supported");
+
+			if (!propertyType.IsEnum)
+				throw new ArgumentException("This converter can be used only with Enum property types");
+
+			if (!Enum.IsDefined(propertyType, 0))
+				throw new ArgumentException(string.Format("Enum {0} should have 0-value", propertyType));
+
 			Field = field;
 			PropertyType = propertyType;
 		}
 
 		public object FromSpValue(object value)
 		{
-			if (!PropertyType.IsEnum) throw new ArgumentException("property should be Enum");
-
 			if (value == null)
 			{
-				if (Enum.IsDefined(PropertyType, 0))
-				{
-					return 0;
-				}
-				throw new InvalidEnumArgumentException("value", 0, PropertyType);
+				return 0;
 			}
 
 			var enumString = value.ToString();
@@ -52,8 +58,6 @@ namespace Untech.SharePoint.Core.Data.Converters
 
 		public object ToSpValue(object value)
 		{
-			if (!PropertyType.IsEnum) throw new ArgumentException("property should be Enum");
-
 			if (value == null)
 				return null;
 

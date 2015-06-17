@@ -1,6 +1,5 @@
 ﻿using System;
 using Microsoft.SharePoint;
-using Untech.SharePoint.Core.Extensions;
 
 namespace Untech.SharePoint.Core.Data.Converters
 {
@@ -12,20 +11,22 @@ namespace Untech.SharePoint.Core.Data.Converters
 
 		public void Initialize(SPField field, Type propertyType)
 		{
+			if (field == null) throw new ArgumentNullException("field");
+			if (propertyType == null) throw new ArgumentNullException("propertyType");
+
+			if (field.FieldValueType != typeof(bool))
+				throw new ArgumentException("SPField with bool value type only supported");
+
+			if (propertyType != typeof(bool) && propertyType != typeof(bool?))
+				throw new ArgumentException("This converter can be used only with bool or Nullable<bool> property types");
+
 			Field = field;
 			PropertyType = propertyType;
-
-			if (PropertyType == null) throw new ArgumentNullException("propertyType");
-			if (!(Field is SPFieldBoolean))
-				throw new ArgumentException("Converter doesn't support this SPField type", "field");
 		}
 
 		public object FromSpValue(object value)
 		{
-			if (PropertyType.IsNullableType())
-				return (bool?)value;
-
-			return (bool?)value ?? false;
+			return PropertyType == typeof (bool?) ? (bool?) value : ((bool?) value ?? false);
 		}
 
 		public object ToSpValue(object value)
