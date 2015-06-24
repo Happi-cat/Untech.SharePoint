@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.SharePoint;
 
-namespace Untech.SharePoint.Core.Data.Converters
+namespace Untech.SharePoint.Core.Data.Converters.BuiltIn
 {
 	[SPFieldConverter("MultiChoice")]
 	public class MultiChoiceFieldConverter : IFieldConverter
@@ -37,7 +37,8 @@ namespace Untech.SharePoint.Core.Data.Converters
 			if (value == null)
 				return null;
 
-			return GetValues(new SPFieldMultiChoiceValue(value.ToString()));
+			var values = GetValues(new SPFieldMultiChoiceValue(value.ToString()));
+			return PropertyType == typeof (string[]) ? values : values.ToList();
 		}
 
 		public object ToSpValue(object value)

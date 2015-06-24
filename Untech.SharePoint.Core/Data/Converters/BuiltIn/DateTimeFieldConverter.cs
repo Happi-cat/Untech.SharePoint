@@ -1,10 +1,11 @@
 ﻿using System;
 using Microsoft.SharePoint;
+using Untech.SharePoint.Core.Extensions;
 
-namespace Untech.SharePoint.Core.Data.Converters
+namespace Untech.SharePoint.Core.Data.Converters.BuiltIn
 {
 	[SPFieldConverter("DateTime")]
-	internal class DateTimeFieldConverter : IFieldConverter
+	public class DateTimeFieldConverter : IFieldConverter
 	{
 		public SPField Field { get; set; }
 		public Type PropertyType { get; set; }
@@ -17,7 +18,7 @@ namespace Untech.SharePoint.Core.Data.Converters
 			if (field.FieldValueType != typeof(DateTime))
 				throw new ArgumentException("SPField with DateTime value type only supported");
 
-			if (propertyType != typeof(DateTime) && propertyType != typeof(DateTime?))
+			if (!propertyType.In(new[] { typeof(DateTime), typeof(DateTime?) }))
 				throw new ArgumentException("This converter can be used only with DateTime or Nullable<DateTime> property types");
 
 			Field = field;

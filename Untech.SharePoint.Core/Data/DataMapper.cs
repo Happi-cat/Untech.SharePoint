@@ -50,7 +50,7 @@ namespace Untech.SharePoint.Core.Data
 
 		private IFieldConverter GetConverter(PropertyMappingInfo mappingInfo, SPField field)
 		{
-			IFieldConverter converter = mappingInfo.CustomConverterType != null ?
+			var converter = mappingInfo.CustomConverterType != null ?
 				FieldConverterResolver.Instance.Create(mappingInfo.CustomConverterType) :
 				FieldConverterResolver.Instance.Create(field.TypeAsString);
 
@@ -66,9 +66,16 @@ namespace Untech.SharePoint.Core.Data
 				var converter = GetConverter(mappingInfo, field);
 
 				var spValue = sourceItem[field.Id];
-				var propValue = converter.FromSpValue(spValue) ?? mappingInfo.DefaultValue;
+				if (spValue == null && mappingInfo.DefaultValue != null)
+				{
+					_propertyAccessor[destItem, mappingInfo.PropertyOrFieldName] = mappingInfo.DefaultValue;
+				}
+				else
+				{
+					var propValue = converter.FromSpValue(spValue);
 
-				_propertyAccessor[destItem, mappingInfo.PropertyOrFieldName] = propValue;
+					_propertyAccessor[destItem, mappingInfo.PropertyOrFieldName] = propValue;
+				}
 			}
 			catch (Exception e)
 			{

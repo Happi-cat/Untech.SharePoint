@@ -2,7 +2,7 @@ using System;
 using Microsoft.SharePoint;
 using Untech.SharePoint.Core.Models;
 
-namespace Untech.SharePoint.Core.Data.Converters
+namespace Untech.SharePoint.Core.Data.Converters.BuiltIn
 {
 	[SPFieldConverter("Geolocation")]
 	internal class GeolocationFieldConverter : IFieldConverter
@@ -20,7 +20,7 @@ namespace Untech.SharePoint.Core.Data.Converters
 				throw new ArgumentException("SPField with SPFieldGeolocationValue value type only supported");
 
 			if (propertyType != typeof(GeoInfo))
-				throw new ArgumentException("This converter can be used only GeoInfo property types");
+				throw new ArgumentException("This converter can be used only with GeoInfo property types");
 
 			Field = field;
 			PropertyType = propertyType;

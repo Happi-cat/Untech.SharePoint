@@ -32,54 +32,58 @@ namespace Untech.SharePoint.Core.Data
 
 		private void AddMappingInfo(FieldInfo fieldInfo)
 		{
-			var fieldAttribute = fieldInfo.GetCustomAttribute<SPFieldAttribute>();
-			var defaultAttribute = fieldInfo.GetCustomAttribute<DefaultValueAttribute>();
-
 			var info = new PropertyMappingInfo
 			{
 				PropertyOrFieldName = fieldInfo.Name,
 				PropertyOrFieldType = fieldInfo.FieldType,
-				SPFieldInternalName = fieldAttribute.InternalName,
-				CustomConverterType = fieldAttribute.CustomConverterType
 			};
 
-			if (defaultAttribute != null)
-			{
-				info.DefaultValue = defaultAttribute.Value;
-			}
-
-			if (info.CustomConverterType != null)
-			{
-				FieldConverterResolver.Instance.Register(info.CustomConverterType);
-			}
+			UpdateSPFieldInfo(fieldInfo, info);
+			UpdateDefaultValue(fieldInfo, info);
+			RegisterCustomConverter(info);
 
 			_mappings.Add(info);
 		}
 
 		private void AddMappingInfo(PropertyInfo propertyInfo)
 		{
-			var fieldAttribute = propertyInfo.GetCustomAttribute<SPFieldAttribute>();
-			var defaultAttribute = propertyInfo.GetCustomAttribute<DefaultValueAttribute>();
-
 			var info = new PropertyMappingInfo
 			{
 				PropertyOrFieldName = propertyInfo.Name,
 				PropertyOrFieldType = propertyInfo.PropertyType,
-				SPFieldInternalName = fieldAttribute.InternalName,
-				CustomConverterType = fieldAttribute.CustomConverterType
 			};
 
-			if (defaultAttribute != null)
-			{
-				info.DefaultValue = defaultAttribute.Value;
-			}
-
-			if (info.CustomConverterType != null)
-			{
-				FieldConverterResolver.Instance.Register(info.CustomConverterType);
-			}
-
+			UpdateSPFieldInfo(propertyInfo, info);
+			UpdateDefaultValue(propertyInfo, info);
+			RegisterCustomConverter(info);
+			
 			_mappings.Add(info);
+		}
+
+		private void UpdateSPFieldInfo(MemberInfo memberInfo, PropertyMappingInfo mappingInfo)
+		{
+			var fieldAttribute = memberInfo.GetCustomAttribute<SPFieldAttribute>();
+			if (fieldAttribute == null) return;
+
+			mappingInfo.SPFieldInternalName = fieldAttribute.InternalName;
+			mappingInfo.CustomConverterType = fieldAttribute.CustomConverterType;
+		}
+
+		private void UpdateDefaultValue(MemberInfo memberInfo, PropertyMappingInfo mappingInfo)
+		{
+			var defaultAttribute = memberInfo.GetCustomAttribute<DefaultValueAttribute>();
+			if (defaultAttribute == null) return;
+
+			mappingInfo.DefaultValue = defaultAttribute.Value;
+		}
+
+		private void RegisterCustomConverter(PropertyMappingInfo mappingInfo)
+		{
+			if (mappingInfo.CustomConverterType != null)
+			{
+				FieldConverterResolver.Instance.Register(mappingInfo.CustomConverterType);
+			}
+
 		}
 
 		public IEnumerator<PropertyMappingInfo> GetEnumerator()

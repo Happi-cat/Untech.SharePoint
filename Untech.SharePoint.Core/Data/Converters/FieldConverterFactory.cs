@@ -2,7 +2,7 @@
 
 namespace Untech.SharePoint.Core.Data.Converters
 {
-	public class FieldConverterFactory : InstanceCreationFactory<IFieldConverter>
+	internal class FieldConverterFactory : InstanceCreationFactory<IFieldConverter>
 	{
 		 
 	}

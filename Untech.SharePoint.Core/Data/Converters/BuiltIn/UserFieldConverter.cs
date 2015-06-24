@@ -1,15 +1,15 @@
-﻿using Microsoft.SharePoint;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.SharePoint;
 using Untech.SharePoint.Core.Models;
 
-namespace Untech.SharePoint.Core.Data.Converters
+namespace Untech.SharePoint.Core.Data.Converters.BuiltIn
 {
 	[SPFieldConverter("User")]
 	internal class UserFieldConverter: IFieldConverter
 	{
-		public SPField Field { get; set; }
+		public SPFieldUser Field { get; set; }
 		public Type PropertyType { get; set; }
 
 		public void Initialize(SPField field, Type propertyType)
@@ -17,14 +17,22 @@ namespace Untech.SharePoint.Core.Data.Converters
 			if (field == null) throw new ArgumentNullException("field");
 			if (propertyType == null) throw new ArgumentNullException("propertyType");
 
-			if (!(field is SPFieldUser))
+			Field = field as SPFieldUser;
+			if (Field == null)
 				throw new ArgumentException("SPFieldUser only supported");
 
-			if (!propertyType.IsAssignableFrom(typeof(List<UserInfo>)) && propertyType != typeof(UserInfo[]) && propertyType != typeof(UserInfo))
-				throw new ArgumentException("This converter can be used only with string[] or with types assignable from List<string>");
+			if (Field.AllowMultipleValues)
+			{
+				if (!propertyType.IsAssignableFrom(typeof (List<UserInfo>)) && propertyType != typeof (UserInfo[]))
+					throw new ArgumentException(
+						"This converter can be used only with UserInfo[] or with types assignable from List<UserInfo>");
+			}
+			else
+			{
+				if (propertyType != typeof (UserInfo))
+					throw new ArgumentException("This converter can be used only with UserInfo");
+			}
 
-
-			Field = field;
 			PropertyType = propertyType;
 		}
 
@@ -33,21 +41,17 @@ namespace Untech.SharePoint.Core.Data.Converters
 			if (value == null)
 				return null;
 
-			var userField = Field as SPFieldUser;
-
-			if (!userField.AllowMultipleValues)
+			if (!Field.AllowMultipleValues)
 			{
-				var fieldValue = new SPFieldUserValue(userField.ParentList.ParentWeb, value.ToString());
+				var fieldValue = new SPFieldUserValue(Field.ParentList.ParentWeb, value.ToString());
 
 				return new UserInfo(fieldValue.User);
 			}
 
-			var fieldValues = new SPFieldUserValueCollection(userField.ParentList.ParentWeb, value.ToString());
+			var fieldValues = new SPFieldUserValueCollection(Field.ParentList.ParentWeb, value.ToString());
+		    var users = fieldValues.Select(fieldValue => fieldValue.User).Select(user => new UserInfo(user));
 
-			if (PropertyType == typeof(UserInfo[]))
-				return fieldValues.Select(fieldValue => fieldValue.User).Select(user => new UserInfo(user)).ToArray();
-			
-			return fieldValues.Select(fieldValue => fieldValue.User).Select(user => new UserInfo(user)).ToList();
+		    return PropertyType == typeof (UserInfo[]) ? (object) users.ToArray() : users.ToList();
 		}
 
         public object ToSpValue(object value)
@@ -55,9 +59,7 @@ namespace Untech.SharePoint.Core.Data.Converters
 			if (value == null)
 				return null;
 
-			var userField = Field as SPFieldUser;
-		
-			if (!userField.AllowMultipleValues)
+			if (!Field.AllowMultipleValues)
 			{
 				var userInfo = value as UserInfo;
 

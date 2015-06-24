@@ -4,7 +4,7 @@ using System.Reflection;
 using System.Runtime.Serialization;
 using Microsoft.SharePoint;
 
-namespace Untech.SharePoint.Core.Data.Converters
+namespace Untech.SharePoint.Core.Data.Converters.Custom
 {
 	public class EnumFieldConverter : IFieldConverter
 	{
@@ -23,7 +23,7 @@ namespace Untech.SharePoint.Core.Data.Converters
 				throw new ArgumentException("This converter can be used only with Enum property types");
 
 			if (!Enum.IsDefined(propertyType, 0))
-				throw new ArgumentException(string.Format("Enum {0} should have 0-value", propertyType));
+				throw new ArgumentException(string.Format("Enum {0} should have default value (i.e. 0)", propertyType));
 
 			Field = field;
 			PropertyType = propertyType;

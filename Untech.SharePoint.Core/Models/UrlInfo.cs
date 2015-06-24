@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Runtime.Serialization;
 using Microsoft.SharePoint;
 using Newtonsoft.Json;
 
@@ -16,13 +15,13 @@ namespace Untech.SharePoint.Core.Models
 		internal UrlInfo(SPFieldUrlValue value)
 		{
 			Url = value.Url;
-			Title = value.Description;
+			Description = value.Description;
 		}
 
 		[JsonProperty]
 		public string Url { get; set; }
 
 		[JsonProperty]
-		public string Title { get; set; }
+		public string Description { get; set; }
 	}
 }

@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using Untech.SharePoint.Core.Data;
 using Untech.SharePoint.Core.Data.Converters;
+using Untech.SharePoint.Core.Data.Converters.Custom;
 
 namespace Untech.SharePoint.Core.Test.Data
 {

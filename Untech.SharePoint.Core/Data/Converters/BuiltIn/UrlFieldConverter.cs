@@ -1,8 +1,9 @@
 using System;
 using Microsoft.SharePoint;
+using Untech.SharePoint.Core.Extensions;
 using Untech.SharePoint.Core.Models;
 
-namespace Untech.SharePoint.Core.Data.Converters
+namespace Untech.SharePoint.Core.Data.Converters.BuiltIn
 {
 	[SPFieldConverter("URL")]
 	internal class UrlFieldConverter : IFieldConverter
@@ -18,7 +19,7 @@ namespace Untech.SharePoint.Core.Data.Converters
 			if (field.FieldValueType != typeof(SPFieldUrlValue))
 				throw new ArgumentException("SPField with bool value type only supported");
 
-			if (propertyType != typeof(UrlInfo) && propertyType != typeof(string))
+			if (!propertyType.In(new [] {typeof(UrlInfo), typeof(string)}))
 				throw new ArgumentException("This converter can be used only with UrlInfo or string property types");
 
 			Field = field;
@@ -50,7 +51,7 @@ namespace Untech.SharePoint.Core.Data.Converters
 
 			var urlInfo = (UrlInfo) value;
 
-			return new SPFieldUrlValue(string.Format("{0};#{1}", urlInfo.Url, urlInfo.Title));
+			return new SPFieldUrlValue(string.Format("{0};#{1}", urlInfo.Url, urlInfo.Description));
 		}
 	}
 }

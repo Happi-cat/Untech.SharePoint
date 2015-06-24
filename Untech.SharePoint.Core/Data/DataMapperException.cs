@@ -32,6 +32,11 @@ namespace Untech.SharePoint.Core.Data
 				message = message + string.Format("Custom converter type: {0}.", mappingInfo.CustomConverterType.FullName);
 			}
 
+			if (mappingInfo.DefaultValue != null)
+			{
+				message = message + string.Format("Default value type: {0}.", mappingInfo.DefaultValue.GetType().FullName);
+			}
+
 			return message;
 		}
 

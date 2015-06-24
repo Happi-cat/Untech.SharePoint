@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Runtime.Serialization;
 using Microsoft.SharePoint;
 using Newtonsoft.Json;
 

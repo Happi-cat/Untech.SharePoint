@@ -1,12 +1,10 @@
 ﻿using System;
 using Microsoft.SharePoint;
+using Newtonsoft.Json;
 
-namespace Untech.SharePoint.Core.Data.Converters
+namespace Untech.SharePoint.Core.Data.Converters.Custom
 {
-	[SPFieldConverter("Text")]
-	[SPFieldConverter("Note")]
-	[SPFieldConverter("Choice")]
-	internal class TextFieldConverter:IFieldConverter
+	public class JsonFieldConverter : IFieldConverter
 	{
 		public SPField Field { get; set; }
 		public Type PropertyType { get; set; }
@@ -19,22 +17,18 @@ namespace Untech.SharePoint.Core.Data.Converters
 			if (field.FieldValueType != typeof(string))
 				throw new ArgumentException("SPField with string value type only supported");
 
-			if (propertyType != typeof(string))
-				throw new ArgumentException("This converter can be used only with string property types");
-
-
 			Field = field;
 			PropertyType = propertyType;
 		}
 
-	    public object FromSpValue(object value)
-	    {
-		    return value == null ? null : value.ToString();
-	    }
+		public object FromSpValue(object value)
+		{
+			return string.IsNullOrEmpty((string) value) ? null : JsonConvert.DeserializeObject((string)value, PropertyType);
+		}
 
 		public object ToSpValue(object value)
 		{
-			return value == null ? null : value.ToString();
+			return value == null ? null : JsonConvert.SerializeObject(value);
 		}
 	}
 }

@@ -5,7 +5,7 @@ using System.Text;
 using System.Xml;
 using Microsoft.SharePoint;
 
-namespace Untech.SharePoint.Core.Data.Converters
+namespace Untech.SharePoint.Core.Data.Converters.Custom
 {
 	public class XmlFieldConverter : IFieldConverter
 	{
@@ -30,7 +30,7 @@ namespace Untech.SharePoint.Core.Data.Converters
 
 			var serializer = new DataContractSerializer(PropertyType);
 			
-			using (var stream = new MemoryStream(Encoding.UTF8.GetBytes((string) value ?? "")))
+			using (var stream = new MemoryStream(Encoding.UTF8.GetBytes((string) value)))
 			{
 				return serializer.ReadObject(stream);
 			}

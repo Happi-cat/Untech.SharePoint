@@ -1,7 +1,7 @@
 using System;
 using Microsoft.SharePoint;
 
-namespace Untech.SharePoint.Core.Data.Converters
+namespace Untech.SharePoint.Core.Data.Converters.BuiltIn
 {
 	[SPFieldConverter("Guid")]
 	internal class GuidFieldConverter : IFieldConverter
