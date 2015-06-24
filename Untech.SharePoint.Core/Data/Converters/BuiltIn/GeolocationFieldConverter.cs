@@ -12,7 +12,6 @@ namespace Untech.SharePoint.Core.Data.Converters.BuiltIn
 
 		public void Initialize(SPField field, Type propertyType)
 		{
-
 			if (field == null) throw new ArgumentNullException("field");
 			if (propertyType == null) throw new ArgumentNullException("propertyType");
 
