@@ -1,60 +1,42 @@
-﻿using Microsoft.SharePoint;
-using System;
+﻿using System;
+using System.Linq;
 using Untech.SharePoint.Core.Extensions;
 
 namespace Untech.SharePoint.Core
 {
 	internal static class Guard
 	{
-		public static void NotNull(object obj, string paramName)
+		private const string ArrayOrAssignableFromListMessage = "This type should be {0}[] or should be assignable from List<{0}>";
+		private const string IsTypeMessage = "This type should be {0}";
+		private const string AllowedTypesMessage = "This type should be one from ({0})";
+
+		internal static void NotNull(object obj, string paramName)
 		{
-			if (obj == null)
-			{
-				throw new ArgumentNullException(paramName);
-			}
+			if (obj != null) return;
+
+			throw new ArgumentNullException(paramName);
 		}
 
-		public static void ThrowIfNot<T>(object obj, string message)
+		internal static void ArrayOrAssignableFromList<T>(Type type, string paramName)
 		{
-			if (!(obj is T))
-			{
-				throw new ArgumentException(message);
-			}
+			if (type.IsArrayOrAssignableFromList<T>()) return;
+
+			throw new ArgumentException(string.Format(ArrayOrAssignableFromListMessage, typeof(T)), paramName);
 		}
 
-		public static void FieldValueType(SPField field, Type fieldValueType, string paramName)
+		internal static void TypeIs<T>(Type type, string paramName)
 		{
-			if (field.FieldValueType != fieldValueType)
-			{
-				throw new ArgumentException(string.Format("SPField should have {0} FieldValueType", fieldValueType), paramName);
-			}
+			if (type.Is<T>()) return;
+
+			throw new ArgumentException(string.Format(IsTypeMessage, typeof(T)), paramName);
 		}
 
-		public static void FieldValueType(SPField fieldToCheck, Type fieldValueType, SPFieldType calculatedFieldType, string paramName)
+		internal static void TypeIs(Type type, Type[] allowedTypes, string paramName)
 		{
-			var calculatedField = fieldToCheck as SPFieldCalculated;
-			if (calculatedField == null)
-			{
-				if (fieldToCheck.FieldValueType != fieldValueType)
-				{
-					throw new ArgumentException(string.Format("SPField should have {0} FieldValueType", fieldValueType), paramName);
-				}
-			}
-			else
-			{
-				if (calculatedField.OutputType != calculatedFieldType)
-				{
-					throw new ArgumentException(string.Format("SPFieldCalculated should have {0} OutputType", calculatedFieldType), paramName);
-				}
-			}
-		}
+			if (type.In(allowedTypes)) return;
 
-		public static void PropertyType(Type typeToCheck, Type[] allowedTypes, string paramName)
-		{
-			if (!typeToCheck.In(allowedTypes))
-			{
-				throw new ArgumentException();
-			}
+			var allowedTypesString = allowedTypes.Aggregate("", (s, t) => s + t + "; ");
+			throw new ArgumentException(string.Format(AllowedTypesMessage, allowedTypesString), paramName);
 		}
 	}
 }

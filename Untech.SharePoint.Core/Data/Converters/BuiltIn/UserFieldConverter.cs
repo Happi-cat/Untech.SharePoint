@@ -14,8 +14,8 @@ namespace Untech.SharePoint.Core.Data.Converters.BuiltIn
 
 		public void Initialize(SPField field, Type propertyType)
 		{
-			if (field == null) throw new ArgumentNullException("field");
-			if (propertyType == null) throw new ArgumentNullException("propertyType");
+			Guard.NotNull(field, "field");
+			Guard.NotNull(propertyType, "propertyType");
 
 			Field = field as SPFieldUser;
 			if (Field == null)
@@ -23,14 +23,11 @@ namespace Untech.SharePoint.Core.Data.Converters.BuiltIn
 
 			if (Field.AllowMultipleValues)
 			{
-				if (!propertyType.IsAssignableFrom(typeof (List<UserInfo>)) && propertyType != typeof (UserInfo[]))
-					throw new ArgumentException(
-						"This converter can be used only with UserInfo[] or with types assignable from List<UserInfo>");
+				Guard.ArrayOrAssignableFromList<UserInfo>(propertyType, "propertType");
 			}
 			else
 			{
-				if (propertyType != typeof (UserInfo))
-					throw new ArgumentException("This converter can be used only with UserInfo");
+				Guard.TypeIs<UserInfo>(propertyType, "propertyType");
 			}
 
 			PropertyType = propertyType;

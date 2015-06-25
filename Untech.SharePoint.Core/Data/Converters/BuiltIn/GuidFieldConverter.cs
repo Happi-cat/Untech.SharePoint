@@ -11,14 +11,12 @@ namespace Untech.SharePoint.Core.Data.Converters.BuiltIn
 
 		public void Initialize(SPField field, Type propertyType)
 		{
-			if (field == null) throw new ArgumentNullException("field");
-			if (propertyType == null) throw new ArgumentNullException("propertyType");
+			Guard.NotNull(field, "field");
+			Guard.NotNull(propertyType, "propertyType");
 
-			if (field.FieldValueType != typeof(Guid))
-				throw new ArgumentException("SPField with Guid value type only supported");
+			Guard.TypeIs<Guid>(field.FieldValueType, "field.FieldValueType");
 
-			if (propertyType != typeof(Guid))
-				throw new ArgumentException("This converter can be used only with Guid property types");
+			Guard.TypeIs<Guid>(propertyType, "propertType");
 
 
 			Field = field;

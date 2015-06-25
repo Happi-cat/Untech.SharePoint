@@ -12,11 +12,10 @@ namespace Untech.SharePoint.Core.Data.Converters.BuiltIn
 
 		public void Initialize(SPField field, Type propertyType)
 		{
-			if (field == null) throw new ArgumentNullException("field");
-			if (propertyType == null) throw new ArgumentNullException("propertyType");
+			Guard.NotNull(field, "field");
+			Guard.NotNull(propertyType, "propertyType");
 
-			if (field.FieldValueType != typeof(double))
-				throw new ArgumentException("SPField with bool value type only supported");
+			Guard.TypeIs<double>(field.FieldValueType, "field.FieldValueType");
 
 			Field = field;
 			PropertyType = propertyType;

@@ -1,6 +1,5 @@
 using System;
 using Microsoft.SharePoint;
-using Untech.SharePoint.Core.Extensions;
 using Untech.SharePoint.Core.Models;
 
 namespace Untech.SharePoint.Core.Data.Converters.BuiltIn
@@ -13,14 +12,12 @@ namespace Untech.SharePoint.Core.Data.Converters.BuiltIn
 
 		public void Initialize(SPField field, Type propertyType)
 		{
-			if (field == null) throw new ArgumentNullException("field");
-			if (propertyType == null) throw new ArgumentNullException("propertyType");
-
-			if (field.FieldValueType != typeof(SPFieldUrlValue))
-				throw new ArgumentException("SPField with bool value type only supported");
-
-			if (!propertyType.In(new [] {typeof(UrlInfo), typeof(string)}))
-				throw new ArgumentException("This converter can be used only with UrlInfo or string property types");
+			Guard.NotNull(field, "field");
+			Guard.NotNull(propertyType, "propertyType");
+			
+			Guard.TypeIs<SPFieldUrlValue>(field.FieldValueType, "field.FieldValueType");
+			
+			Guard.TypeIs(propertyType, new [] {typeof(UrlInfo), typeof(string)}, "propertType");
 
 			Field = field;
 			PropertyType = propertyType;

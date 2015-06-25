@@ -6,30 +6,30 @@ namespace Untech.SharePoint.Core.Data
 	{
 		public static void Map<T>(T sourceItem, SPListItem destItem)
 		{
-			var mapper = DataMapperPool.Instance.Get<T>();
-
-			mapper.Map(sourceItem, destItem);
+			var model = DataModelPool.Instance.Get<T>();
+			
+			model.Mapper.Map(sourceItem, destItem);
 		}
 
 		public static void Map(object sourceItem, SPListItem destItem)
 		{
-			var mapper = DataMapperPool.Instance.Get(sourceItem.GetType());
+			var model = DataModelPool.Instance.Get(sourceItem.GetType());
 
-			mapper.Map(sourceItem, destItem);
+			model.Mapper.Map(sourceItem, destItem);
 		}
 
 		public static void Map<T>(SPListItem sourceItem, T destItem)
 		{
-			var mapper = DataMapperPool.Instance.Get<T>();
+			var model = DataModelPool.Instance.Get<T>();
 
-			mapper.Map(sourceItem, destItem);
+			model.Mapper.Map(sourceItem, destItem);
 		}
 
 		public static void Map(SPListItem sourceItem, object destItem)
 		{
-			var mapper = DataMapperPool.Instance.Get(sourceItem.GetType());
+			var model = DataModelPool.Instance.Get(sourceItem.GetType());
 
-			mapper.Map(sourceItem, destItem);
+			model.Mapper.Map(sourceItem, destItem);
 		}
 	}
 }

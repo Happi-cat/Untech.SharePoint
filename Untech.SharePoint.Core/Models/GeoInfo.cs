@@ -20,16 +20,16 @@ namespace Untech.SharePoint.Core.Models
 			Measure = geoValue.Measure;
 		}
 
-		[JsonProperty]
+		[JsonProperty(PropertyName = "altitude", DefaultValueHandling = DefaultValueHandling.Populate)]
 		public double Altitude { get; set; }
 
-		[JsonProperty]
+		[JsonProperty(PropertyName = "latitude", DefaultValueHandling = DefaultValueHandling.Populate)]
 		public double Latitude { get; set; }
 
-		[JsonProperty]
+		[JsonProperty(PropertyName = "longitude", DefaultValueHandling = DefaultValueHandling.Populate)]
 		public double Longitude { get; set; }
 
-		[JsonProperty]
+		[JsonProperty(PropertyName = "measure", DefaultValueHandling = DefaultValueHandling.Populate)]
 		public double Measure { get; set; }
 	}
 }

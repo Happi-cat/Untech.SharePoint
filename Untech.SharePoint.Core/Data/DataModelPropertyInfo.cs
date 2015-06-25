@@ -2,7 +2,7 @@
 
 namespace Untech.SharePoint.Core.Data
 {
-	internal class PropertyMappingInfo
+	internal class DataModelPropertyInfo
 	{
 		public string PropertyOrFieldName { get; set; }
 

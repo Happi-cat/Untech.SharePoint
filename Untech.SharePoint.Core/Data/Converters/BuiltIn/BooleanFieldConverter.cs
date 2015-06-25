@@ -1,25 +1,22 @@
 ﻿using System;
 using Microsoft.SharePoint;
-using Untech.SharePoint.Core.Extensions;
 
 namespace Untech.SharePoint.Core.Data.Converters.BuiltIn
 {
 	[SPFieldConverter("Boolean")]
-	public class BooleanFieldConverter : IFieldConverter
+	internal class BooleanFieldConverter : IFieldConverter
 	{
 		public SPField Field { get; set; }
 		public Type PropertyType { get; set; }
 
 		public void Initialize(SPField field, Type propertyType)
 		{
-			if (field == null) throw new ArgumentNullException("field");
-			if (propertyType == null) throw new ArgumentNullException("propertyType");
+			Guard.NotNull(field, "field");
+			Guard.NotNull(propertyType, "propertyType");
 
-			if (field.FieldValueType != typeof(bool))
-				throw new ArgumentException("SPField with bool value type only supported", "field");
+			Guard.TypeIs<bool>(field.FieldValueType, "field.FieldValueType");
 
-			if (!propertyType.In(new[] { typeof(bool), typeof(bool?) }))
-				throw new ArgumentException("This converter can be used only with bool or Nullable<bool> property types");
+			Guard.TypeIs(propertyType, new[] { typeof(bool), typeof(bool?) }, "propertType");
 
 			Field = field;
 			PropertyType = propertyType;

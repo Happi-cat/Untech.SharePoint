@@ -8,9 +8,9 @@ using Untech.SharePoint.Core.Data.Converters;
 
 namespace Untech.SharePoint.Core.Data
 {
-	internal class PropertyMappings : IEnumerable<PropertyMappingInfo>
+	internal class DataModelPropertyInfos : IEnumerable<DataModelPropertyInfo>
 	{
-		private readonly List<PropertyMappingInfo> _mappings = new List<PropertyMappingInfo>();
+		private readonly List<DataModelPropertyInfo> _mappings = new List<DataModelPropertyInfo>();
 
 		public void Initialize(Type objectType)
 		{
@@ -30,9 +30,21 @@ namespace Untech.SharePoint.Core.Data
 			fields.ForEach(AddMappingInfo);
 		}
 
+		public IEnumerator<DataModelPropertyInfo> GetEnumerator()
+		{
+			return _mappings.GetEnumerator();
+		}
+
+		IEnumerator IEnumerable.GetEnumerator()
+		{
+			return GetEnumerator();
+		}
+
+		#region [Private Methods]
+
 		private void AddMappingInfo(FieldInfo fieldInfo)
 		{
-			var info = new PropertyMappingInfo
+			var info = new DataModelPropertyInfo
 			{
 				PropertyOrFieldName = fieldInfo.Name,
 				PropertyOrFieldType = fieldInfo.FieldType,
@@ -47,7 +59,7 @@ namespace Untech.SharePoint.Core.Data
 
 		private void AddMappingInfo(PropertyInfo propertyInfo)
 		{
-			var info = new PropertyMappingInfo
+			var info = new DataModelPropertyInfo
 			{
 				PropertyOrFieldName = propertyInfo.Name,
 				PropertyOrFieldType = propertyInfo.PropertyType,
@@ -56,44 +68,36 @@ namespace Untech.SharePoint.Core.Data
 			UpdateSPFieldInfo(propertyInfo, info);
 			UpdateDefaultValue(propertyInfo, info);
 			RegisterCustomConverter(info);
-			
+
 			_mappings.Add(info);
 		}
 
-		private void UpdateSPFieldInfo(MemberInfo memberInfo, PropertyMappingInfo mappingInfo)
+		private static void UpdateSPFieldInfo(MemberInfo memberInfo, DataModelPropertyInfo info)
 		{
 			var fieldAttribute = memberInfo.GetCustomAttribute<SPFieldAttribute>();
 			if (fieldAttribute == null) return;
 
-			mappingInfo.SPFieldInternalName = fieldAttribute.InternalName;
-			mappingInfo.CustomConverterType = fieldAttribute.CustomConverterType;
+			info.SPFieldInternalName = fieldAttribute.InternalName;
+			info.CustomConverterType = fieldAttribute.CustomConverterType;
 		}
 
-		private void UpdateDefaultValue(MemberInfo memberInfo, PropertyMappingInfo mappingInfo)
+		private static void UpdateDefaultValue(MemberInfo memberInfo, DataModelPropertyInfo info)
 		{
 			var defaultAttribute = memberInfo.GetCustomAttribute<DefaultValueAttribute>();
 			if (defaultAttribute == null) return;
 
-			mappingInfo.DefaultValue = defaultAttribute.Value;
+			info.DefaultValue = defaultAttribute.Value;
 		}
 
-		private void RegisterCustomConverter(PropertyMappingInfo mappingInfo)
+		private static void RegisterCustomConverter(DataModelPropertyInfo info)
 		{
-			if (mappingInfo.CustomConverterType != null)
+			if (info.CustomConverterType != null)
 			{
-				FieldConverterResolver.Instance.Register(mappingInfo.CustomConverterType);
+				FieldConverterResolver.Instance.Register(info.CustomConverterType);
 			}
-
 		}
 
-		public IEnumerator<PropertyMappingInfo> GetEnumerator()
-		{
-			return  _mappings.GetEnumerator();
-		}
+		#endregion
 
-		IEnumerator IEnumerable.GetEnumerator()
-		{
-			return GetEnumerator();
-		}
 	}
 }

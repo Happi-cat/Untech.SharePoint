@@ -15,23 +15,19 @@ namespace Untech.SharePoint.Core.Data.Converters.BuiltIn
 
 		public void Initialize(SPField field, Type propertyType)
 		{
-			if (field == null) throw new ArgumentNullException("field");
-			if (propertyType == null) throw new ArgumentNullException("propertyType");
+			Guard.NotNull(field, "field");
+			Guard.NotNull(propertyType, "propertyType");
 
 			Field = field as SPFieldLookup;
-			if (Field == null)
-				throw new ArgumentException("SPFieldLookup only supported");
+			if (Field == null) throw new ArgumentException("SPFieldLookup is only supported", "field");
 
 			if (Field.AllowMultipleValues)
 			{
-				if (!propertyType.IsAssignableFrom(typeof(List<ObjectReference>)) && propertyType != typeof(ObjectReference[]))
-					throw new ArgumentException(
-						"This converter can be used only with ObjectReference[] or with types assignable from List<ObjectReference>");
+				Guard.ArrayOrAssignableFromList<ObjectReference>(propertyType, "propertType");
 			}
 			else
 			{
-				if (propertyType != typeof(ObjectReference))
-					throw new ArgumentException("This converter can be used only with ObjectReference");
+				Guard.TypeIs<ObjectReference>(propertyType, "propertType");
 			}
 
 			PropertyType = propertyType;

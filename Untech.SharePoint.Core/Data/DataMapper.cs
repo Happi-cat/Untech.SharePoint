@@ -1,32 +1,27 @@
 ﻿using System;
 using Microsoft.SharePoint;
 using Untech.SharePoint.Core.Data.Converters;
-using Untech.SharePoint.Core.Reflection;
 
 namespace Untech.SharePoint.Core.Data
 {
 	internal class DataMapper
 	{
-		private readonly PropertyAccessor _propertyAccessor = new PropertyAccessor();
-		private readonly PropertyMappings _propertyMappings = new PropertyMappings();
-		private Type _initializedType;
-
-		public void Initialize(Type objectType)
+		public DataMapper(DataModel model)
 		{
-			_initializedType = objectType;
-			_propertyAccessor.Initialize(objectType);
-			_propertyMappings.Initialize(objectType);
+			DataModel = model;
 		}
+
+		public DataModel DataModel { get; set; }
 
 		public void Map(SPListItem sourceItem, object destItem)
 		{
-			if (!_initializedType.IsInstanceOfType(destItem))
+			if (!DataModel.ModelType.IsInstanceOfType(destItem))
 			{
 				throw new ArgumentException("destItem");
 			}
 
 			var fields = sourceItem.Fields;
-			foreach (var mappingInfo in _propertyMappings)
+			foreach (var mappingInfo in DataModel.PropertyInfos)
 			{
 				var field = fields.GetField(mappingInfo.SPFieldInternalName);
 				MapProperty(sourceItem, destItem, mappingInfo, field);
@@ -35,55 +30,55 @@ namespace Untech.SharePoint.Core.Data
 
 		public void Map(object sourceItem, SPListItem destItem)
 		{
-			if (!_initializedType.IsInstanceOfType(sourceItem))
+			if (!DataModel.ModelType.IsInstanceOfType(sourceItem))
 			{
 				throw new ArgumentException("sourceItem");
 			}
 
 			var fields = destItem.Fields;
-			foreach (var mappingInfo in _propertyMappings)
+			foreach (var mappingInfo in DataModel.PropertyInfos)
 			{
 				var field = fields.GetField(mappingInfo.SPFieldInternalName);
 				MapProperty(sourceItem, destItem, mappingInfo, field);
 			}
 		}
 
-		private IFieldConverter GetConverter(PropertyMappingInfo mappingInfo, SPField field)
+		private static IFieldConverter GetConverter(DataModelPropertyInfo info, SPField field)
 		{
-			var converter = mappingInfo.CustomConverterType != null ?
-				FieldConverterResolver.Instance.Create(mappingInfo.CustomConverterType) :
+			var converter = info.CustomConverterType != null ?
+				FieldConverterResolver.Instance.Create(info.CustomConverterType) :
 				FieldConverterResolver.Instance.Create(field.TypeAsString);
 
-			converter.Initialize(field, mappingInfo.PropertyOrFieldType);
+			converter.Initialize(field, info.PropertyOrFieldType);
 
 			return converter;
 		}
 
-		private void MapProperty(SPListItem sourceItem, object destItem, PropertyMappingInfo mappingInfo, SPField field)
+		private void MapProperty(SPListItem sourceItem, object destItem, DataModelPropertyInfo info, SPField field)
 		{
 			try
 			{
-				var converter = GetConverter(mappingInfo, field);
+				var converter = GetConverter(info, field);
 
 				var spValue = sourceItem[field.Id];
-				if (spValue == null && mappingInfo.DefaultValue != null)
+				if (spValue == null && info.DefaultValue != null)
 				{
-					_propertyAccessor[destItem, mappingInfo.PropertyOrFieldName] = mappingInfo.DefaultValue;
+					DataModel.PropertyAccessor[destItem, info.PropertyOrFieldName] = info.DefaultValue;
 				}
 				else
 				{
 					var propValue = converter.FromSpValue(spValue);
 
-					_propertyAccessor[destItem, mappingInfo.PropertyOrFieldName] = propValue;
+					DataModel.PropertyAccessor[destItem, info.PropertyOrFieldName] = propValue;
 				}
 			}
 			catch (Exception e)
 			{
-				throw new DataMapperException(mappingInfo, e);
+				throw new PropertyMappingException(info, e);
 			}
 		}
 
-		private void MapProperty(object sourceItem, SPListItem destItem, PropertyMappingInfo mappingInfo, SPField field)
+		private void MapProperty(object sourceItem, SPListItem destItem, DataModelPropertyInfo info, SPField field)
 		{
 			if (field.ReadOnlyField)
 			{
@@ -92,16 +87,16 @@ namespace Untech.SharePoint.Core.Data
 
 			try
 			{
-				var converter = GetConverter(mappingInfo, field);
+				var converter = GetConverter(info, field);
 
-				var propValue = _propertyAccessor[sourceItem, mappingInfo.PropertyOrFieldName];
+				var propValue = DataModel.PropertyAccessor[sourceItem, info.PropertyOrFieldName];
 				var spValue = converter.ToSpValue(propValue);
 
 				destItem[field.Id] = spValue;
 			}
 			catch (Exception e)
 			{
-				throw new DataMapperException(mappingInfo, e);
+				throw new PropertyMappingException(info, e);
 			}
 		}
 	}

@@ -51,6 +51,7 @@
     <Compile Include="Data\Converters\FieldConverterException.cs" />
     <Compile Include="Data\Converters\BuiltIn\GeolocationFieldConverter.cs" />
     <Compile Include="Data\Converters\BuiltIn\GuidFieldConverter.cs" />
+    <Compile Include="Data\Converters\FieldConverterWrapper.cs" />
     <Compile Include="Data\Converters\InvalidFieldConverterException.cs" />
     <Compile Include="Data\Converters\BuiltIn\MultiChoiceFieldConverter.cs" />
     <Compile Include="Data\Converters\BuiltIn\UrlFieldConverter.cs" />
@@ -66,10 +67,12 @@
     <Compile Include="Data\Converters\BuiltIn\TextFieldConverter.cs" />
     <Compile Include="Data\Converters\BuiltIn\UserFieldConverter.cs" />
     <Compile Include="Data\Converters\Custom\XmlFieldConverter.cs" />
-    <Compile Include="Data\DataMapperException.cs" />
-    <Compile Include="Data\DataMapperPool.cs" />
-    <Compile Include="Data\PropertyMappings.cs" />
-    <Compile Include="Data\PropertyMappingInfo.cs" />
+    <Compile Include="Data\DataModel.cs" />
+    <Compile Include="Data\PropertyMappingException.cs" />
+    <Compile Include="Data\DataModelPool.cs" />
+    <Compile Include="Data\DataModelPropertyInfos.cs" />
+    <Compile Include="Data\DataModelPropertyInfo.cs" />
+    <Compile Include="Data\Queryable\Class1.cs" />
     <Compile Include="Data\SPFieldAttribute.cs" />
     <Compile Include="Data\SPModelMapper.cs" />
     <Compile Include="Extensions\ObjectExtensions.cs" />

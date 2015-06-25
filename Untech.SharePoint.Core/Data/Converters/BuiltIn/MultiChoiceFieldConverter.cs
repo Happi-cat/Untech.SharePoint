@@ -6,34 +6,26 @@ using Microsoft.SharePoint;
 namespace Untech.SharePoint.Core.Data.Converters.BuiltIn
 {
 	[SPFieldConverter("MultiChoice")]
-	public class MultiChoiceFieldConverter : IFieldConverter
+	internal class MultiChoiceFieldConverter : IFieldConverter
 	{
 		public SPField Field { get; set; }
 		public Type PropertyType { get; set; }
 
 		public void Initialize(SPField field, Type propertyType)
 		{
-			if (field == null) throw new ArgumentNullException("field");
-			if (propertyType == null) throw new ArgumentNullException("propertyType");
+			Guard.NotNull(field, "field");
+			Guard.NotNull(propertyType, "propertyType");
 
-			if (field.FieldValueType != typeof(SPFieldMultiChoiceValue))
-				throw new ArgumentException("SPField with SPFieldMultiChoiceValue value type only supported");
+			Guard.TypeIs<SPFieldMultiChoiceValue>(field.FieldValueType, "field.FieldValueType");
 
-			if (!propertyType.IsAssignableFrom(typeof(List<string>)) && propertyType != typeof(string[]))
-				throw new ArgumentException("This converter can be used only with string[] or with types assignable from List<string>");
+			Guard.ArrayOrAssignableFromList<string>(propertyType, "propertType");
 
-			Field = field;
+			
 			PropertyType = propertyType;
 		}
 
 		public object FromSpValue(object value)
 		{
-			var multiChoiceField = Field as SPFieldMultiChoice;
-			if (multiChoiceField == null)
-			{
-				throw new ArgumentException();
-			}
-
 			if (value == null)
 				return null;
 

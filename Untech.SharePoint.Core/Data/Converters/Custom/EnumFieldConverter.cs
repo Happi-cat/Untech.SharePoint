@@ -13,11 +13,10 @@ namespace Untech.SharePoint.Core.Data.Converters.Custom
 
 		public void Initialize(SPField field, Type propertyType)
 		{
-			if (field == null) throw new ArgumentNullException("field");
-			if (propertyType == null) throw new ArgumentNullException("propertyType");
+			Guard.NotNull(field, "field");
+			Guard.NotNull(propertyType, "propertyType");
 
-			if (field.FieldValueType != typeof(string))
-				throw new ArgumentException("SPField with string value type only supported");
+			Guard.TypeIs<string>(field.FieldValueType, "field.FieldValueType");
 
 			if (!propertyType.IsEnum)
 				throw new ArgumentException("This converter can be used only with Enum property types");

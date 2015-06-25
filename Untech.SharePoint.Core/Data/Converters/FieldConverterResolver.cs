@@ -62,7 +62,7 @@ namespace Untech.SharePoint.Core.Data.Converters
 		{
 			try
 			{
-				return FieldConverterFactory.Instance.Create(type);
+				return new FieldConverterWrapper(type, FieldConverterFactory.Instance.Create(type));
 			}
 			catch (Exception e)
 			{
