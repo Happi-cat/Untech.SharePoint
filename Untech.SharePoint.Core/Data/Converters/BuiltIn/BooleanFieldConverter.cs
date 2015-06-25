@@ -11,12 +11,12 @@ namespace Untech.SharePoint.Core.Data.Converters.BuiltIn
 
 		public void Initialize(SPField field, Type propertyType)
 		{
-			Guard.NotNull(field, "field");
-			Guard.NotNull(propertyType, "propertyType");
+			Guard.ThrowIfArgumentNull(field, "field");
+			Guard.ThrowIfArgumentNull(propertyType, "propertyType");
 
-			Guard.TypeIs<bool>(field.FieldValueType, "field.FieldValueType");
+			Guard.ThrowIfArgumentNotIs<bool>(field.FieldValueType, "field.FieldValueType");
 
-			Guard.TypeIs(propertyType, new[] { typeof(bool), typeof(bool?) }, "propertType");
+			Guard.ThrowIfArgumentNotIs(propertyType, new[] { typeof(bool), typeof(bool?) }, "propertType");
 
 			Field = field;
 			PropertyType = propertyType;

@@ -45,6 +45,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Caml\CamlTranslator.cs" />
     <Compile Include="Data\Converters\BuiltIn\BooleanFieldConverter.cs" />
     <Compile Include="Data\Converters\BuiltIn\CounterFieldConverter.cs" />
     <Compile Include="Data\Converters\Custom\EnumFieldConverter.cs" />

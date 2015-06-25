@@ -14,8 +14,8 @@ namespace Untech.SharePoint.Core.Data.Converters.BuiltIn
 
 		public void Initialize(SPField field, Type propertyType)
 		{
-			Guard.NotNull(field, "field");
-			Guard.NotNull(propertyType, "propertyType");
+			Guard.ThrowIfArgumentNull(field, "field");
+			Guard.ThrowIfArgumentNull(propertyType, "propertyType");
 
 			Field = field as SPFieldUser;
 			if (Field == null)
@@ -23,11 +23,11 @@ namespace Untech.SharePoint.Core.Data.Converters.BuiltIn
 
 			if (Field.AllowMultipleValues)
 			{
-				Guard.ArrayOrAssignableFromList<UserInfo>(propertyType, "propertType");
+				Guard.ThrowIfArgumentNotArrayOrAssignableFromList<UserInfo>(propertyType, "propertType");
 			}
 			else
 			{
-				Guard.TypeIs<UserInfo>(propertyType, "propertyType");
+				Guard.ThrowIfArgumentNotIs<UserInfo>(propertyType, "propertyType");
 			}
 
 			PropertyType = propertyType;

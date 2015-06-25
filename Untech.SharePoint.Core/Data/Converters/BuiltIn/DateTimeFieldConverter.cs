@@ -11,12 +11,12 @@ namespace Untech.SharePoint.Core.Data.Converters.BuiltIn
 
 		public void Initialize(SPField field, Type propertyType)
 		{
-			Guard.NotNull(field, "field");
-			Guard.NotNull(propertyType, "propertyType");
+			Guard.ThrowIfArgumentNull(field, "field");
+			Guard.ThrowIfArgumentNull(propertyType, "propertyType");
 
-			Guard.TypeIs<DateTime>(field.FieldValueType, "field.FieldValueType");
+			Guard.ThrowIfArgumentNotIs<DateTime>(field.FieldValueType, "field.FieldValueType");
 
-			Guard.TypeIs(propertyType, new[] { typeof(DateTime), typeof(DateTime?) }, "propertType");
+			Guard.ThrowIfArgumentNotIs(propertyType, new[] { typeof(DateTime), typeof(DateTime?) }, "propertType");
 
 			Field = field;
 			PropertyType = propertyType;

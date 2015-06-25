@@ -10,28 +10,28 @@ namespace Untech.SharePoint.Core
 		private const string IsTypeMessage = "This type should be {0}";
 		private const string AllowedTypesMessage = "This type should be one from ({0})";
 
-		internal static void NotNull(object obj, string paramName)
+		internal static void ThrowIfArgumentNull(object obj, string paramName)
 		{
 			if (obj != null) return;
 
 			throw new ArgumentNullException(paramName);
 		}
 
-		internal static void ArrayOrAssignableFromList<T>(Type type, string paramName)
+		internal static void ThrowIfArgumentNotArrayOrAssignableFromList<T>(Type type, string paramName)
 		{
 			if (type.IsArrayOrAssignableFromList<T>()) return;
 
 			throw new ArgumentException(string.Format(ArrayOrAssignableFromListMessage, typeof(T)), paramName);
 		}
 
-		internal static void TypeIs<T>(Type type, string paramName)
+		internal static void ThrowIfArgumentNotIs<T>(Type type, string paramName)
 		{
 			if (type.Is<T>()) return;
 
 			throw new ArgumentException(string.Format(IsTypeMessage, typeof(T)), paramName);
 		}
 
-		internal static void TypeIs(Type type, Type[] allowedTypes, string paramName)
+		internal static void ThrowIfArgumentNotIs(Type type, Type[] allowedTypes, string paramName)
 		{
 			if (type.In(allowedTypes)) return;
 

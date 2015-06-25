@@ -13,12 +13,12 @@ namespace Untech.SharePoint.Core.Data.Converters.BuiltIn
 
 		public void Initialize(SPField field, Type propertyType)
 		{
-			Guard.NotNull(field, "field");
-			Guard.NotNull(propertyType, "propertyType");
+			Guard.ThrowIfArgumentNull(field, "field");
+			Guard.ThrowIfArgumentNull(propertyType, "propertyType");
 
-			Guard.TypeIs<SPFieldMultiChoiceValue>(field.FieldValueType, "field.FieldValueType");
+			Guard.ThrowIfArgumentNotIs<SPFieldMultiChoiceValue>(field.FieldValueType, "field.FieldValueType");
 
-			Guard.ArrayOrAssignableFromList<string>(propertyType, "propertType");
+			Guard.ThrowIfArgumentNotArrayOrAssignableFromList<string>(propertyType, "propertType");
 
 			
 			PropertyType = propertyType;

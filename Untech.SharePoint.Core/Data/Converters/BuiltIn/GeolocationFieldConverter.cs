@@ -12,12 +12,12 @@ namespace Untech.SharePoint.Core.Data.Converters.BuiltIn
 
 		public void Initialize(SPField field, Type propertyType)
 		{
-			Guard.NotNull(field, "field");
-			Guard.NotNull(propertyType, "propertyType");
+			Guard.ThrowIfArgumentNull(field, "field");
+			Guard.ThrowIfArgumentNull(propertyType, "propertyType");
 
-			Guard.TypeIs<SPFieldGeolocationValue>(field.FieldValueType, "field.FieldValueType");
+			Guard.ThrowIfArgumentNotIs<SPFieldGeolocationValue>(field.FieldValueType, "field.FieldValueType");
 
-			Guard.TypeIs<GeoInfo>(propertyType, "propertType");
+			Guard.ThrowIfArgumentNotIs<GeoInfo>(propertyType, "propertType");
 
 			Field = field;
 			PropertyType = propertyType;

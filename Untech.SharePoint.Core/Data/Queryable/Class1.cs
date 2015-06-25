@@ -7,19 +7,19 @@ using System.Reflection;
 
 namespace Untech.SharePoint.Core.Data.Queryable
 {
-	internal class Queryable<T> : IOrderedQueryable<T>
+	internal class SPQueryable<T> : IOrderedQueryable<T>
 	{
-		public Queryable(IQueryContext queryContext)
+		public SPQueryable(IQueryContext queryContext)
 		{
-			Initialize(new QueryProvider(queryContext), null);
+			Initialize(new SPQueryProvider(queryContext), null);
 		}
 
-		public Queryable(IQueryProvider provider)
+		public SPQueryable(IQueryProvider provider)
 		{
 			Initialize(provider, null);
 		}
 
-		internal Queryable(IQueryProvider provider, Expression expression)
+		internal SPQueryable(IQueryProvider provider, Expression expression)
 		{
 			Initialize(provider, expression);
 		}
@@ -56,11 +56,11 @@ namespace Untech.SharePoint.Core.Data.Queryable
 		public IQueryProvider Provider { get; private set; }
 	}
 
-	public class QueryProvider : IQueryProvider
+	public class SPQueryProvider : IQueryProvider
 	{
 		private readonly IQueryContext queryContext;
 
-		public QueryProvider(IQueryContext queryContext)
+		public SPQueryProvider(IQueryContext queryContext)
 		{
 			this.queryContext = queryContext;
 		}
@@ -71,7 +71,7 @@ namespace Untech.SharePoint.Core.Data.Queryable
 			try
 			{
 				return
-				   (IQueryable)Activator.CreateInstance(typeof(Queryable<>).
+				   (IQueryable)Activator.CreateInstance(typeof(SPQueryable<>).
 						  MakeGenericType(elementType), this, expression);
 			}
 			catch (TargetInvocationException e)
@@ -82,7 +82,7 @@ namespace Untech.SharePoint.Core.Data.Queryable
 
 		public virtual IQueryable<T> CreateQuery<T>(Expression expression)
 		{
-			return new Queryable<T>(this, expression);
+			return new SPQueryable<T>(this, expression);
 		}
 
 		object IQueryProvider.Execute(Expression expression)

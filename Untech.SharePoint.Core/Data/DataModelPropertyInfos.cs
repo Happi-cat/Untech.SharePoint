@@ -77,7 +77,7 @@ namespace Untech.SharePoint.Core.Data
 			var fieldAttribute = memberInfo.GetCustomAttribute<SPFieldAttribute>();
 			if (fieldAttribute == null) return;
 
-			info.SPFieldInternalName = fieldAttribute.InternalName;
+			info.SPFieldInternalName = fieldAttribute.InternalName ?? info.PropertyOrFieldName;
 			info.CustomConverterType = fieldAttribute.CustomConverterType;
 		}
 
