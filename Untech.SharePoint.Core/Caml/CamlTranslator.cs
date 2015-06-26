@@ -5,11 +5,11 @@ using Untech.SharePoint.Core.Data.Queryable;
 
 namespace Untech.SharePoint.Core.Caml
 {
-	public class CamlTranslator : ExpressionVisitor
+	internal class CamlTranslator : ExpressionVisitor
 	{
 		private WhereTranslator _whereTranslator;
 
-		protected new virtual Expression Visit(Expression exp)
+		public override Expression Visit(Expression exp)
 		{
 			if (exp == null)
 			{
