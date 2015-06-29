@@ -47,6 +47,7 @@
   <ItemGroup>
     <Compile Include="Caml\CamlTranslator.cs" />
     <Compile Include="Caml\Modifiers\ConditionalModifier.cs" />
+    <Compile Include="Caml\Modifiers\Evaluator.cs" />
     <Compile Include="Caml\Modifiers\WhereModifier.cs" />
     <Compile Include="Caml\Tags.cs" />
     <Compile Include="Caml\Translators\WhereTranslator.cs" />
@@ -80,6 +81,7 @@
     <Compile Include="Data\Queryable\Class1.cs" />
     <Compile Include="Data\SPFieldAttribute.cs" />
     <Compile Include="Data\SPModelMapper.cs" />
+    <Compile Include="Extensions\ExpressionExtensions.cs" />
     <Compile Include="Extensions\ObjectExtensions.cs" />
     <Compile Include="Extensions\TypeExtensions.cs" />
     <Compile Include="Guard.cs" />

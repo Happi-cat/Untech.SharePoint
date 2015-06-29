@@ -37,9 +37,11 @@ namespace Untech.SharePoint.Core.Caml.Translators
 			return node;
 		}
 
-		protected override Expression VisitMember(MemberExpression node)
+		protected override Expression VisitMethodCall(MethodCallExpression node)
 		{
-			return base.VisitMember(node);
+			_current = VisitMemberMethodCall(node);
+
+			return base.VisitMethodCall(node);
 		}
 
 		private XElement VisitAndOr(BinaryExpression node)
@@ -63,20 +65,111 @@ namespace Untech.SharePoint.Core.Caml.Translators
 
 		private XElement VisitEqual(BinaryExpression node)
 		{
+			if (node.Left.NodeType == ExpressionType.Constant &&
+				node.Right.NodeType == ExpressionType.MemberAccess)
+			{
+				return VisitEqual((MemberExpression)node.Right, (ConstantExpression)node.Left, node.NodeType);
+			}
+			if (node.Left.NodeType == ExpressionType.MemberAccess &&
+				node.Right.NodeType == ExpressionType.Constant)
+			{
+				return VisitEqual((MemberExpression)node.Left, (ConstantExpression)node.Right, node.NodeType);
+			}
+			throw new ArgumentException("");
+		}
+
+		private XElement VisitMemberMethodCall(MethodCallExpression node)
+		{
+			switch (node.Method.Name)
+			{
+				case "Contains":
+
+					if (node.Method.DeclaringType != null && node.Method.DeclaringType.FullName == typeof(string).FullName)
+						return WriteMethodFieldValue(node, Tags.Contains);
+					if (node.Method.DeclaringType != null && node.Method.DeclaringType.FullName == typeof(Enumerable).FullName)
+						return WriteContainsList(node);
+					throw new NotSupportedException();
+
+				case "StartsWith":
+					return WriteMethodFieldValue(node, Tags.BeginsWith);
+			}
+			//throw new ArgumentException();
+			return null;
+		}
+
+		private XElement WriteMethodFieldValue(MethodCallExpression mce, string operatorTag)
+		{
+			var me = (MemberExpression)mce.Object;
+
+			if (me != null)
+			{
+				var fieldRef = VisitField(me);
+				var value = VisitValue(mce.Arguments[0]);
+
+				return new XElement(operatorTag, fieldRef, value);
+			}
+
+			throw new NotSupportedException();
+		}
+
+		private XElement WriteContainsList(MethodCallExpression mce)
+		{
+			var me = (MemberExpression)mce.Arguments[1];
+
+			if (me != null)
+			{
+				var listMe = (ConstantExpression)mce.Arguments[0];
+
+				if (listMe == null)
+					throw new NotSupportedException();
+
+				//var fieldType = GetFieldType(me);
+				//var type = list.Value.GetType();
+				//var fieldInfo = type.GetField(listName);
+				var values = (IEnumerable)listMe.Value;
+
+				var fieldRef = VisitField(me);
+
+				var valuesElement = new XElement(Tags.Values);
+
+				foreach (var value in values)
+				{
+					valuesElement.Add(new XElement(Tags.Value, value));
+				}
+
+				return new XElement(Tags.In, fieldRef, valuesElement);
+			}
+
+			throw new NotSupportedException();
+		}
+		private XElement VisitEqual(MemberExpression left, ConstantExpression right, ExpressionType type)
+		{
 			var tag = "";
+			if (type == ExpressionType.Equal) tag = Tags.Eq;
+			if (type == ExpressionType.NotEqual) tag = Tags.Neq;
+			if (type == ExpressionType.GreaterThan) tag = Tags.Gt;
+			if (type == ExpressionType.GreaterThanOrEqual) tag = Tags.Geq;
+			if (type == ExpressionType.LessThan) tag = Tags.Lt;
+			if (type == ExpressionType.LessThanOrEqual) tag = Tags.Leq;
 
-			if (node.NodeType == ExpressionType.Equal) tag = Tags.Eq;
-			if (node.NodeType == ExpressionType.NotEqual) tag = Tags.Neq;
-			if (node.NodeType == ExpressionType.GreaterThan) tag = Tags.Gt;
-			if (node.NodeType == ExpressionType.GreaterThanOrEqual) tag = Tags.Geq;
-			if (node.NodeType == ExpressionType.LessThan) tag = Tags.Lt;
-			if (node.NodeType == ExpressionType.LessThanOrEqual) tag = Tags.Leq;
+			if (right.Value == null)
+			{
+				return VisitEqualNull(left, type);
+			}
 
-			_current = null;
-			var leftElement = VisitField(node.Left);
-			var rightElement = VisitValue(node.Right);
+			var leftElement = VisitField(left);
+			var rightElement = VisitValue(right);
 
 			return new XElement(tag, leftElement, rightElement);
+		}
+
+		private XElement VisitEqualNull(MemberExpression left, ExpressionType type)
+		{
+			var tag = "";
+			if (type == ExpressionType.Equal) tag = Tags.IsNull;
+			if (type == ExpressionType.NotEqual) tag = Tags.IsNotNull;
+
+			return new XElement(tag, VisitField(left));
 		}
 
 		private XElement VisitField(Expression node)
@@ -92,15 +185,6 @@ namespace Untech.SharePoint.Core.Caml.Translators
 			if (node.NodeType == ExpressionType.Constant)
 			{
 				var constExp = (ConstantExpression)node;
-				var value = (constExp.Value ?? "").ToString();
-
-				return new XElement(Tags.Value, value);
-			}
-			if (node.NodeType == ExpressionType.MemberAccess)
-			{
-				LambdaExpression lambda = Expression.Lambda(node);
-				Delegate fn = lambda.Compile();
-				var constExp = Expression.Constant(fn.DynamicInvoke(null), node.Type);
 				var value = (constExp.Value ?? "").ToString();
 
 				return new XElement(Tags.Value, value);
