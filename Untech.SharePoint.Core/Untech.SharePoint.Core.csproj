@@ -46,6 +46,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Caml\CamlTranslator.cs" />
+    <Compile Include="Caml\Modifiers\ConditionalModifier.cs" />
+    <Compile Include="Caml\Modifiers\WhereModifier.cs" />
+    <Compile Include="Caml\Tags.cs" />
+    <Compile Include="Caml\Translators\WhereTranslator.cs" />
     <Compile Include="Data\Converters\BuiltIn\BooleanFieldConverter.cs" />
     <Compile Include="Data\Converters\BuiltIn\CounterFieldConverter.cs" />
     <Compile Include="Data\Converters\Custom\EnumFieldConverter.cs" />
