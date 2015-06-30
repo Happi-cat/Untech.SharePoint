@@ -15,6 +15,15 @@ namespace Untech.SharePoint.Core.Caml.Translators
 			return _root;
 		}
 
+		public override Expression Visit(Expression node)
+		{
+			if (node == null || node.NodeType != ExpressionType.Call)
+			{
+				return node;
+			}
+			return base.Visit(node);
+		}
+
 		protected override Expression VisitMethodCall(MethodCallExpression node)
 		{
 			base.VisitMethodCall(node);

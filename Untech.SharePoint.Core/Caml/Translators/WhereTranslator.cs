@@ -8,95 +8,124 @@ namespace Untech.SharePoint.Core.Caml.Translators
 {
 	internal class WhereTranslator : ExpressionVisitor, ICamlTranslator
 	{
-		private XElement _current;
+		public WhereTranslator()
+		{
+			SupportedBinaryExpressions = new Dictionary<ExpressionType, string>
+			{
+				{ExpressionType.AndAlso, Tags.And},
+				{ExpressionType.OrElse, Tags.Or},
+				{ExpressionType.Equal, Tags.Eq},
+				{ExpressionType.NotEqual, Tags.Neq},
+				{ExpressionType.GreaterThan, Tags.Gt},
+				{ExpressionType.GreaterThanOrEqual, Tags.Geq},
+				{ExpressionType.LessThan, Tags.Lt},
+				{ExpressionType.LessThanOrEqual, Tags.Leq},
+			};
+		}
+
+		protected XElement Root { get; set; }
+		protected XElement Current { get; set; }
+
+		protected IReadOnlyDictionary<ExpressionType, string> SupportedBinaryExpressions { get; private set; }
+
 
 		public XElement Translate(ISpModelContext modelContext, Expression predicate)
 		{
 			Visit(predicate);
 
-			return _current != null
-				? new XElement(Tags.Where, _current)
-				: null;
+			return Root;
 		}
 
-		protected override Expression VisitBinary(BinaryExpression node)
-		{
-			if (node.NodeType == ExpressionType.AndAlso || node.NodeType == ExpressionType.OrElse)
-			{
-				_current = VisitAndOr(node);
-			}
-			else if (node.NodeType == ExpressionType.Equal || node.NodeType == ExpressionType.NotEqual)
-			{
-				_current = VisitEqual(node);
-			}
-			else
-			{
-				return base.VisitBinary(node);
-			}
-			return node;
-		}
 
 		protected override Expression VisitMethodCall(MethodCallExpression node)
-		{
-			_current = VisitMemberMethodCall(node);
-
-			return base.VisitMethodCall(node);
-		}
-
-		private XElement VisitAndOr(BinaryExpression node)
-		{
-			var tag = "";
-
-			if (node.NodeType == ExpressionType.AndAlso) tag = Tags.And;
-			if (node.NodeType == ExpressionType.OrElse) tag = Tags.Or;
-
-
-			_current = null;
-
-			Visit(node.Left);
-			var leftElement = _current;
-
-			Visit(node.Right);
-			var rightElement = _current;
-
-			return new XElement(tag, leftElement, rightElement);
-		}
-
-		private XElement VisitEqual(BinaryExpression node)
-		{
-			if (node.Left.NodeType == ExpressionType.Constant &&
-				node.Right.NodeType == ExpressionType.MemberAccess)
-			{
-				return VisitEqual((MemberExpression)node.Right, (ConstantExpression)node.Left, node.NodeType);
-			}
-			if (node.Left.NodeType == ExpressionType.MemberAccess &&
-				node.Right.NodeType == ExpressionType.Constant)
-			{
-				return VisitEqual((MemberExpression)node.Left, (ConstantExpression)node.Right, node.NodeType);
-			}
-			throw new ArgumentException("");
-		}
-
-		private XElement VisitMemberMethodCall(MethodCallExpression node)
 		{
 			switch (node.Method.Name)
 			{
 				case "Contains":
-
-					if (node.Method.DeclaringType != null && node.Method.DeclaringType.FullName == typeof(string).FullName)
-						return WriteMethodFieldValue(node, Tags.Contains);
-					if (node.Method.DeclaringType != null && node.Method.DeclaringType.FullName == typeof(Enumerable).FullName)
-						return WriteContainsList(node);
-					throw new NotSupportedException();
-
+					Current = VisitStringContains(node);
+					break;
 				case "StartsWith":
-					return WriteMethodFieldValue(node, Tags.BeginsWith);
+					Current = VisitStrintStartsWith(node, Tags.BeginsWith);
+					break;
+				case "Where":
+					Current = null;
+					base.VisitMethodCall(node);
+					Root = new XElement(Tags.Where, Current);
+					break;
+				default:
+					if (node.Method.DeclaringType != typeof(System.Linq.Queryable))
+					{
+						throw new NotSupportedException();
+					}
+					base.VisitMethodCall(node);
+					break;
 			}
-			//throw new ArgumentException();
-			return null;
+			return node;
 		}
 
-		private XElement WriteMethodFieldValue(MethodCallExpression mce, string operatorTag)
+		protected override Expression VisitBinary(BinaryExpression node)
+		{
+			if (!SupportedBinaryExpressions.ContainsKey(node.NodeType))
+			{
+				throw new NotSupportedException(string.Format("{0} operation not supported", node.NodeType));
+			}
+
+			if (node.NodeType == ExpressionType.AndAlso ||
+				node.NodeType == ExpressionType.OrElse)
+			{
+				Current = VisitAndAlsoOrElse(node);
+			}
+			else
+			{
+				Current = VisitComparison(node);
+			}
+			return node;
+		}
+
+		private XElement VisitAndAlsoOrElse(BinaryExpression node)
+		{
+			var tag = SupportedBinaryExpressions[node.NodeType];
+
+			Current = null;
+			Visit(node.Left);
+			var left = Current;
+
+			Current = null;
+			Visit(node.Right);
+			var right = Current;
+
+			return new XElement(tag, left, right);
+		}
+
+		private XElement VisitComparison(BinaryExpression node)
+		{
+			var left = node.Left.StripQuotes();
+			var right = node.Right.StripQuotes();
+
+			if (left.NodeType == ExpressionType.Constant &&
+				right.NodeType == ExpressionType.MemberAccess)
+			{
+				return VisitComparison((MemberExpression)right, (ConstantExpression)left, node.NodeType);
+			}
+			if (left.NodeType == ExpressionType.MemberAccess &&
+				right.NodeType == ExpressionType.Constant)
+			{
+				return VisitComparison((MemberExpression)left, (ConstantExpression)right, node.NodeType);
+			}
+
+			throw new NotSupportedException(string.Format("{0} not supported", node));
+		}
+
+		private XElement VisitStringContains(MethodCallExpression node)
+		{
+			if (node.Method.DeclaringType != null && node.Method.DeclaringType.FullName == typeof(string).FullName)
+				return VisitStrintStartsWith(node, Tags.Contains);
+			if (node.Method.DeclaringType != null && node.Method.DeclaringType.FullName == typeof(Enumerable).FullName)
+				return VisitArrayContains(node);
+			throw new NotSupportedException();
+		}
+
+		private XElement VisitStrintStartsWith(MethodCallExpression mce, string operatorTag)
 		{
 			var me = (MemberExpression)mce.Object;
 
@@ -111,7 +140,7 @@ namespace Untech.SharePoint.Core.Caml.Translators
 			throw new NotSupportedException();
 		}
 
-		private XElement WriteContainsList(MethodCallExpression mce)
+		private XElement VisitArrayContains(MethodCallExpression mce)
 		{
 			var me = (MemberExpression)mce.Arguments[1];
 
@@ -141,19 +170,13 @@ namespace Untech.SharePoint.Core.Caml.Translators
 
 			throw new NotSupportedException();
 		}
-		private XElement VisitEqual(MemberExpression left, ConstantExpression right, ExpressionType type)
+		private XElement VisitComparison(MemberExpression left, ConstantExpression right, ExpressionType type)
 		{
-			var tag = "";
-			if (type == ExpressionType.Equal) tag = Tags.Eq;
-			if (type == ExpressionType.NotEqual) tag = Tags.Neq;
-			if (type == ExpressionType.GreaterThan) tag = Tags.Gt;
-			if (type == ExpressionType.GreaterThanOrEqual) tag = Tags.Geq;
-			if (type == ExpressionType.LessThan) tag = Tags.Lt;
-			if (type == ExpressionType.LessThanOrEqual) tag = Tags.Leq;
+			var tag = SupportedBinaryExpressions[type];
 
 			if (right.Value == null)
 			{
-				return VisitEqualNull(left, type);
+				return VisitComparisonWithNull(left, type);
 			}
 
 			var leftElement = VisitField(left);
@@ -162,13 +185,16 @@ namespace Untech.SharePoint.Core.Caml.Translators
 			return new XElement(tag, leftElement, rightElement);
 		}
 
-		private XElement VisitEqualNull(MemberExpression left, ExpressionType type)
+		private XElement VisitComparisonWithNull(MemberExpression left, ExpressionType type)
 		{
-			var tag = "";
-			if (type == ExpressionType.Equal) tag = Tags.IsNull;
-			if (type == ExpressionType.NotEqual) tag = Tags.IsNotNull;
-
-			return new XElement(tag, VisitField(left));
+			switch (type)
+			{
+				case ExpressionType.Equal:
+					return new XElement(Tags.IsNull, VisitField(left));
+				case ExpressionType.NotEqual:
+					return new XElement(Tags.IsNotNull, VisitField(left));
+			}
+			throw new InvalidOperationException();
 		}
 
 		private XElement VisitField(Expression node)
