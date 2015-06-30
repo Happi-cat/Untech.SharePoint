@@ -1,22 +1,30 @@
-﻿using System.Linq.Expressions;
+﻿using System;
+using System.Linq.Expressions;
 
 namespace Untech.SharePoint.Core.Caml.Modifiers
 {
 	internal class Evaluator : ExpressionVisitor
 	{
-		protected override Expression VisitMember(MemberExpression node)
+		protected Nominator Nominator { get; private set; }
+
+		public Evaluator()
 		{
-			var innerExpression = node;
-			while (innerExpression.Expression.NodeType == ExpressionType.MemberAccess)
-			{
-				innerExpression = (MemberExpression)innerExpression.Expression;
-			}
-			if (innerExpression.Expression.NodeType != ExpressionType.Constant)
-			{
-				return base.VisitMember(node);
-			}
-			var func = Expression.Lambda(node).Compile();
-			return Visit(Expression.Constant(func.DynamicInvoke(null), node.Type));
+			Nominator = new Nominator();
+		}
+
+		public Evaluator(Nominator nominator)
+		{
+			if (nominator == null) 
+				throw new ArgumentNullException("nominator");
+
+			Nominator = nominator;
+		}
+
+		public override Expression Visit(Expression node)
+		{
+			Nominator.Reset();
+			Nominator.Visit(node);
+			return new SubtreeEvaluator(Nominator.Candidates).Visit(node);
 		}
 	}
 }

@@ -3,7 +3,7 @@
 namespace Untech.SharePoint.Core.Data
 {
 	[AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
-	public class SPFieldAttribute : Attribute
+	public class SpFieldAttribute : Attribute
 	{
 		public string InternalName { get; set; }
 

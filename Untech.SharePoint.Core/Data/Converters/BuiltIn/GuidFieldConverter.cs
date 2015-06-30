@@ -3,7 +3,7 @@ using Microsoft.SharePoint;
 
 namespace Untech.SharePoint.Core.Data.Converters.BuiltIn
 {
-	[SPFieldConverter("Guid")]
+	[SpFieldConverter("Guid")]
 	internal class GuidFieldConverter : IFieldConverter
 	{
 		public SPField Field { get; set; }

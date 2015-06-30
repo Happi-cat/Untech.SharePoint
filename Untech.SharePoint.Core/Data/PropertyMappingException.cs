@@ -23,7 +23,7 @@ namespace Untech.SharePoint.Core.Data
 
 		private static string GetMessage(DataModelPropertyInfo info)
 		{
-			var message = GetMessage(info.PropertyOrFieldName, info.SPFieldInternalName);
+			var message = GetMessage(info.PropertyOrFieldName, info.SpFieldInternalName);
 
 			message = message + string.Format("Property or field type: {0}.", info.PropertyOrFieldType.FullName);
 

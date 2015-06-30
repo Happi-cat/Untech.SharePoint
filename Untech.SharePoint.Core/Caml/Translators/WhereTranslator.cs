@@ -1,23 +1,22 @@
 ﻿using System;
+using System.Collections;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Xml.Linq;
 
 namespace Untech.SharePoint.Core.Caml.Translators
 {
-	public class WhereTranslator : ExpressionVisitor
+	internal class WhereTranslator : ExpressionVisitor, ICamlTranslator
 	{
-		private XElement _root;
 		private XElement _current;
 
-		public XElement Translate(Expression predicate)
+		public XElement Translate(ISpModelContext modelContext, Expression predicate)
 		{
-			_root = new XElement(Tags.Where);
-
 			Visit(predicate);
 
-			_root.Add(_current);
-
-			return _root;
+			return _current != null
+				? new XElement(Tags.Where, _current)
+				: null;
 		}
 
 		protected override Expression VisitBinary(BinaryExpression node)

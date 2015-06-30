@@ -23,7 +23,7 @@ namespace Untech.SharePoint.Core.Data
 			var fields = sourceItem.Fields;
 			foreach (var mappingInfo in DataModel.PropertyInfos)
 			{
-				var field = fields.GetField(mappingInfo.SPFieldInternalName);
+				var field = fields.GetField(mappingInfo.SpFieldInternalName);
 				MapProperty(sourceItem, destItem, mappingInfo, field);
 			}
 		}
@@ -38,7 +38,7 @@ namespace Untech.SharePoint.Core.Data
 			var fields = destItem.Fields;
 			foreach (var mappingInfo in DataModel.PropertyInfos)
 			{
-				var field = fields.GetField(mappingInfo.SPFieldInternalName);
+				var field = fields.GetField(mappingInfo.SpFieldInternalName);
 				MapProperty(sourceItem, destItem, mappingInfo, field);
 			}
 		}

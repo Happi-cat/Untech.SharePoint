@@ -6,7 +6,7 @@ using Untech.SharePoint.Core.Models;
 
 namespace Untech.SharePoint.Core.Data.Converters.BuiltIn
 {
-	[SPFieldConverter("User")]
+	[SpFieldConverter("User")]
 	internal class UserFieldConverter: IFieldConverter
 	{
 		public SPFieldUser Field { get; set; }

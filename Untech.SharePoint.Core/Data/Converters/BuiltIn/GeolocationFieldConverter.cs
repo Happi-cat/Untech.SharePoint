@@ -4,7 +4,7 @@ using Untech.SharePoint.Core.Models;
 
 namespace Untech.SharePoint.Core.Data.Converters.BuiltIn
 {
-	[SPFieldConverter("Geolocation")]
+	[SpFieldConverter("Geolocation")]
 	internal class GeolocationFieldConverter : IFieldConverter
 	{
 		public SPField Field { get; set; }

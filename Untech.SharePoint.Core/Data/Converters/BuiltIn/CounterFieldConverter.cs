@@ -3,7 +3,7 @@ using Microsoft.SharePoint;
 
 namespace Untech.SharePoint.Core.Data.Converters.BuiltIn
 {
-	[SPFieldConverter("Counter")]
+	[SpFieldConverter("Counter")]
 	internal class CounterFieldConverter : IFieldConverter
 	{
 		public SPField Field { get; set; }

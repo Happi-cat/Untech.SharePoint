@@ -15,7 +15,7 @@ namespace Untech.SharePoint.Core.Data
 		public void Initialize(Type objectType)
 		{
 			const BindingFlags bindingflags = BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public;
-			var attributeType = typeof (SPFieldAttribute);
+			var attributeType = typeof (SpFieldAttribute);
 
 			var properties = objectType.GetProperties(bindingflags)
 				.Where(n => n.IsDefined(attributeType))
@@ -74,10 +74,10 @@ namespace Untech.SharePoint.Core.Data
 
 		private static void UpdateSPFieldInfo(MemberInfo memberInfo, DataModelPropertyInfo info)
 		{
-			var fieldAttribute = memberInfo.GetCustomAttribute<SPFieldAttribute>();
+			var fieldAttribute = memberInfo.GetCustomAttribute<SpFieldAttribute>();
 			if (fieldAttribute == null) return;
 
-			info.SPFieldInternalName = fieldAttribute.InternalName ?? info.PropertyOrFieldName;
+			info.SpFieldInternalName = fieldAttribute.InternalName ?? info.PropertyOrFieldName;
 			info.CustomConverterType = fieldAttribute.CustomConverterType;
 		}
 

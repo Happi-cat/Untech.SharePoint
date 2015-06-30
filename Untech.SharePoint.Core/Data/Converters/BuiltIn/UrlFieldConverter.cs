@@ -4,7 +4,7 @@ using Untech.SharePoint.Core.Models;
 
 namespace Untech.SharePoint.Core.Data.Converters.BuiltIn
 {
-	[SPFieldConverter("URL")]
+	[SpFieldConverter("URL")]
 	internal class UrlFieldConverter : IFieldConverter
 	{
 		public SPField Field { get; set; }

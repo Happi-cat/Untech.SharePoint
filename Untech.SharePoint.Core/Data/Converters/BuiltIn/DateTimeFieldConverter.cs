@@ -3,7 +3,7 @@ using Microsoft.SharePoint;
 
 namespace Untech.SharePoint.Core.Data.Converters.BuiltIn
 {
-	[SPFieldConverter("DateTime")]
+	[SpFieldConverter("DateTime")]
 	internal class DateTimeFieldConverter : IFieldConverter
 	{
 		public SPField Field { get; set; }

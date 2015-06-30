@@ -8,7 +8,7 @@ namespace Untech.SharePoint.Core.Data
 
 		public Type PropertyOrFieldType { get; set; }
 
-		public string SPFieldInternalName { get; set; }
+		public string SpFieldInternalName { get; set; }
 
 		public Type CustomConverterType { get; set; }
 

@@ -20,7 +20,7 @@ namespace Untech.SharePoint.Core.Data.Converters
 
 		public void Initialize()
 		{
-			var attributeType = typeof(SPFieldConverterAttribute);
+			var attributeType = typeof(SpFieldConverterAttribute);
 			var objectType = typeof(IFieldConverter);
 
 			var assembly = GetType().Assembly;
@@ -33,7 +33,7 @@ namespace Untech.SharePoint.Core.Data.Converters
 			foreach (var type in types)
 			{
 				var keys = type.GetCustomAttributes(attributeType)
-					.Cast<SPFieldConverterAttribute>()
+					.Cast<SpFieldConverterAttribute>()
 					.Select(attribute => attribute.FieldType)
 					.ToList();
 

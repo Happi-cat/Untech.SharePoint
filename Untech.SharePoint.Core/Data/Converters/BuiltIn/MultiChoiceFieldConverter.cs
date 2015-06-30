@@ -5,7 +5,7 @@ using Microsoft.SharePoint;
 
 namespace Untech.SharePoint.Core.Data.Converters.BuiltIn
 {
-	[SPFieldConverter("MultiChoice")]
+	[SpFieldConverter("MultiChoice")]
 	internal class MultiChoiceFieldConverter : IFieldConverter
 	{
 		public SPField Field { get; set; }

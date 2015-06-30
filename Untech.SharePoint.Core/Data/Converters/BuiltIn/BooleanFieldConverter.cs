@@ -3,7 +3,7 @@ using Microsoft.SharePoint;
 
 namespace Untech.SharePoint.Core.Data.Converters.BuiltIn
 {
-	[SPFieldConverter("Boolean")]
+	[SpFieldConverter("Boolean")]
 	internal class BooleanFieldConverter : IFieldConverter
 	{
 		public SPField Field { get; set; }

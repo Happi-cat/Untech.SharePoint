@@ -1,11 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
+using Untech.SharePoint.Core.Extensions;
 
 namespace Untech.SharePoint.Core.Caml.Modifiers
 {
-	public class WhereModifier : ExpressionVisitor
+	internal class WhereModifier : ExpressionVisitor
 	{
 		protected override Expression VisitMethodCall(MethodCallExpression node)
 		{
@@ -14,13 +13,12 @@ namespace Untech.SharePoint.Core.Caml.Modifiers
 				var innerMethodCall = node.Arguments[0] as MethodCallExpression;
 				if (innerMethodCall != null && innerMethodCall.Method.Name == "Where")
 				{
-					var currentLambda = (LambdaExpression)StripQuotes(node.Arguments[1]);
-					var innerLambda = (LambdaExpression)StripQuotes(innerMethodCall.Arguments[1]);
+					var currentLambda = (LambdaExpression)node.Arguments[1].StripQuotes();
+					var innerLambda = (LambdaExpression)innerMethodCall.Arguments[1].StripQuotes();
 
-					if (currentLambda.ReturnType != innerLambda.ReturnType ||
-						!ParametersEqual(currentLambda.Parameters, innerLambda.Parameters))
+					if (currentLambda.Type != innerLambda.Type)
 					{
-						throw new Exception("Unsupported lambda predicate in Where method call");
+						throw new NotSupportedException("Where methods have predicates with mismatch return type or arguments list");
 					}
 
 					var newCondition = Expression.AndAlso(currentLambda.Body, innerLambda.Body);
@@ -30,22 +28,6 @@ namespace Untech.SharePoint.Core.Caml.Modifiers
 				}
 			}
 			return base.VisitMethodCall(node);
-		}
-
-		private static Expression StripQuotes(Expression node)
-		{
-			while (node.NodeType == ExpressionType.Quote)
-			{
-				node = ((UnaryExpression)node).Operand;
-			}
-			return node;
-		}
-
-		private static bool ParametersEqual(IEnumerable<ParameterExpression> left, IEnumerable<ParameterExpression> right)
-		{
-			var leftParams = left.Select(n => new Tuple<string, Type>(n.Name, n.Type));
-			var rightParams = right.Select(n => new Tuple<string, Type>(n.Name, n.Type));
-			return leftParams.SequenceEqual(rightParams);
 		}
 	}
 }

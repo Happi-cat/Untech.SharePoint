@@ -3,9 +3,9 @@
 namespace Untech.SharePoint.Core.Data.Converters
 {
 	[AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
-	public class SPFieldConverterAttribute : Attribute
+	public class SpFieldConverterAttribute : Attribute
 	{
-		public SPFieldConverterAttribute(string fieldType)
+		public SpFieldConverterAttribute(string fieldType)
 		{
 			FieldType = fieldType;
 		}

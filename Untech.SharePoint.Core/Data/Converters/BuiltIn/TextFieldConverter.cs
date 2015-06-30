@@ -3,9 +3,9 @@ using Microsoft.SharePoint;
 
 namespace Untech.SharePoint.Core.Data.Converters.BuiltIn
 {
-	[SPFieldConverter("Text")]
-	[SPFieldConverter("Note")]
-	[SPFieldConverter("Choice")]
+	[SpFieldConverter("Text")]
+	[SpFieldConverter("Note")]
+	[SpFieldConverter("Choice")]
 	internal class TextFieldConverter : IFieldConverter
 	{
 		public SPField Field { get; set; }

@@ -16,13 +16,13 @@ namespace Untech.SharePoint.Core.Test.Data
 
 		public class TestClass
 		{
-			[SPField("Property")]
+			[SpField("Property")]
 			public string Property { get; set; }
 
-			[SPField("Created")]
+			[SpField("Created")]
 			public DateTime Created { get; set; }
 
-			[SPField("JsonObject", CustomConverterType = typeof (JsonFieldConverter))]
+			[SpField("JsonObject", CustomConverterType = typeof (JsonFieldConverter))]
 			public JsonSerializableObject JsonObject { get; set; }
 		}
 	}

@@ -4,7 +4,7 @@ using Untech.SharePoint.Core.Extensions;
 
 namespace Untech.SharePoint.Core.Data.Converters.BuiltIn
 {
-	[SPFieldConverter("Number")]
+	[SpFieldConverter("Number")]
 	internal class NumberFieldConverter : IFieldConverter
 	{
 		public SPField Field { get; set; }

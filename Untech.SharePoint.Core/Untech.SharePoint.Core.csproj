@@ -46,10 +46,19 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Caml\CamlTranslator.cs" />
-    <Compile Include="Caml\Modifiers\ConditionalModifier.cs" />
+    <Compile Include="Caml\ISpModelContext.cs" />
+    <Compile Include="Caml\Modifiers\PredicateModifier.cs" />
     <Compile Include="Caml\Modifiers\Evaluator.cs" />
+    <Compile Include="Caml\Modifiers\Nominator.cs" />
+    <Compile Include="Caml\Modifiers\SubtreeEvaluator.cs" />
     <Compile Include="Caml\Modifiers\WhereModifier.cs" />
     <Compile Include="Caml\Tags.cs" />
+    <Compile Include="Caml\Translators\GroupByTranslator.cs" />
+    <Compile Include="Caml\Translators\ICamlTranslator.cs" />
+    <Compile Include="Caml\Translators\OrderByTranslator.cs" />
+    <Compile Include="Caml\Translators\LimitTranslator.cs" />
+    <Compile Include="Caml\Translators\TranslatorHelpers.cs" />
+    <Compile Include="Caml\Translators\ViewFieldsTranslator.cs" />
     <Compile Include="Caml\Translators\WhereTranslator.cs" />
     <Compile Include="Data\Converters\BuiltIn\BooleanFieldConverter.cs" />
     <Compile Include="Data\Converters\BuiltIn\CounterFieldConverter.cs" />

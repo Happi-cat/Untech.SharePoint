@@ -6,8 +6,8 @@ using Untech.SharePoint.Core.Models;
 
 namespace Untech.SharePoint.Core.Data.Converters.BuiltIn
 {
-	[SPFieldConverter("Lookup")]
-	[SPFieldConverter("LookupMulti")]
+	[SpFieldConverter("Lookup")]
+	[SpFieldConverter("LookupMulti")]
 	internal class LookupFieldConverter : IFieldConverter
 	{
 		public SPFieldLookup Field { get; set; }

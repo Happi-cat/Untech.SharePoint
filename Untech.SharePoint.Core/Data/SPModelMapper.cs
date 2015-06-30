@@ -2,7 +2,7 @@
 
 namespace Untech.SharePoint.Core.Data
 {
-	public static class SPModelMapper
+	public static class SpModelMapper
 	{
 		public static void Map<T>(T sourceItem, SPListItem destItem)
 		{
