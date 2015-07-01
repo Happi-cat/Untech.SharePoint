@@ -6,13 +6,13 @@ namespace Untech.SharePoint.Core.Caml.Translators
 {
 	internal class GroupByTranslator : ExpressionVisitor, ICamlTranslator
 	{
-		private XElement _root;
+		protected XElement Root { get; private set; }
 
 		public XElement Translate(ISpModelContext modelContext, Expression predicate)
 		{
 			Visit(predicate);
 
-			return _root;
+			return Root;
 		}
 
 		public override Expression Visit(Expression node)
@@ -28,14 +28,10 @@ namespace Untech.SharePoint.Core.Caml.Translators
 		{
 			base.VisitMethodCall(node);
 
-			XElement currentElement = null;
-			switch (node.Method.Name)
+			if (node.Method.Name == "GroupBy")
 			{
-				case "GroupBy":
-					currentElement = VisitGroupBy(node);
-					break;
+				AddFieldRef(VisitGroupBy(node));
 			}
-			AddFieldRef(currentElement);
 			return node;
 		}
 
@@ -46,21 +42,19 @@ namespace Untech.SharePoint.Core.Caml.Translators
 				return;
 			}
 
-			if (_root == null)
+			if (Root == null)
 			{
-				_root = new XElement(Tags.GroupBy);
+				Root = new XElement(Tags.GroupBy);
 			}
 
-			_root.Add(element);
+			Root.Add(element);
 		}
 
 		private XElement VisitGroupBy(MethodCallExpression node)
 		{
 			var lambdaExpression = (LambdaExpression)node.Arguments[1].StripQuotes();
-			var memberExpression = (MemberExpression)lambdaExpression.Body.StripQuotes();
 
-			return new XElement(Tags.FieldRef,
-				new XAttribute(Tags.Name, memberExpression.Member.Name));
+			return TranslatorHelpers.GetFieldRef(lambdaExpression.Body);
 		}
 	}
 }

@@ -6,13 +6,13 @@ namespace Untech.SharePoint.Core.Caml.Translators
 {
 	internal class OrderByTranslator : ExpressionVisitor, ICamlTranslator
 	{
-		private XElement _root;
+		protected XElement Root { get; private set; }
 
 		public XElement Translate(ISpModelContext modelContext, Expression predicate)
 		{
 			Visit(predicate);
 
-			return _root;
+			return Root;
 		}
 
 		public override Expression Visit(Expression node)
@@ -28,19 +28,17 @@ namespace Untech.SharePoint.Core.Caml.Translators
 		{
 			base.VisitMethodCall(node);
 
-			XElement currentElement = null;
 			switch (node.Method.Name)
 			{
 				case "OrderBy":
 				case "ThenBy":
-					currentElement = VisitOrderBy(node, true);
+					AddFieldRef(VisitOrderBy(node, true));
 					break;
 				case "OrderByDescending":
 				case "ThenByDescending":
-					currentElement = VisitOrderBy(node, false);
+					AddFieldRef(VisitOrderBy(node, false));
 					break;
 			}
-			AddFieldRef(currentElement);
 			return node;
 		}
 
@@ -51,22 +49,23 @@ namespace Untech.SharePoint.Core.Caml.Translators
 				return;
 			}
 
-			if (_root == null)
+			if (Root == null)
 			{
-				_root = new XElement(Tags.OrderBy);
+				Root = new XElement(Tags.OrderBy);
 			}
 
-			_root.Add(element);
+			Root.Add(element);
 		}
 
 		private XElement VisitOrderBy(MethodCallExpression node, bool ascending)
 		{
 			var lambdaExpression = (LambdaExpression) node.Arguments[1].StripQuotes();
-			var memberExpression = (MemberExpression) lambdaExpression.Body.StripQuotes();
 
-			return new XElement(Tags.FieldRef,
-				new XAttribute(Tags.Name, memberExpression.Member.Name),
-				new XAttribute(Tags.Ascending, ascending));
+			var ascendingAttribute = new XAttribute(Tags.Ascending, ascending.ToString().ToUpperInvariant());
+
+			var fieldRefElement = TranslatorHelpers.GetFieldRef(lambdaExpression.Body);
+			fieldRefElement.Add(ascendingAttribute);
+			return fieldRefElement;
 		}
 	}
 }

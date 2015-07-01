@@ -21,7 +21,7 @@ namespace Untech.SharePoint.Core.Caml.Modifiers
 						throw new NotSupportedException("Where methods have predicates with mismatch return type or arguments list");
 					}
 
-					var newCondition = Expression.AndAlso(currentLambda.Body, innerLambda.Body);
+					var newCondition = Expression.AndAlso(innerLambda.Body, currentLambda.Body);
 					var newLambda = Expression.Lambda(newCondition, currentLambda.Parameters);
 
 					return Visit(node.Update(null, new[] { innerMethodCall.Arguments[0], newLambda }));

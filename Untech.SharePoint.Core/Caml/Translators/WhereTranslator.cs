@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Xml.Linq;
+using Untech.SharePoint.Core.Extensions;
 
 namespace Untech.SharePoint.Core.Caml.Translators
 {
@@ -28,7 +30,6 @@ namespace Untech.SharePoint.Core.Caml.Translators
 
 		protected IReadOnlyDictionary<ExpressionType, string> SupportedBinaryExpressions { get; private set; }
 
-
 		public XElement Translate(ISpModelContext modelContext, Expression predicate)
 		{
 			Visit(predicate);
@@ -36,16 +37,15 @@ namespace Untech.SharePoint.Core.Caml.Translators
 			return Root;
 		}
 
-
 		protected override Expression VisitMethodCall(MethodCallExpression node)
 		{
 			switch (node.Method.Name)
 			{
 				case "Contains":
-					Current = VisitStringContains(node);
+					Current = VisitStringOrArrayContains(node);
 					break;
 				case "StartsWith":
-					Current = VisitStrintStartsWith(node, Tags.BeginsWith);
+					Current = VisitStringContainsOrStartsWith(node, Tags.BeginsWith);
 					break;
 				case "Where":
 					Current = null;
@@ -53,9 +53,9 @@ namespace Untech.SharePoint.Core.Caml.Translators
 					Root = new XElement(Tags.Where, Current);
 					break;
 				default:
-					if (node.Method.DeclaringType != typeof(System.Linq.Queryable))
+					if (node.Method.DeclaringType != typeof(Queryable))
 					{
-						throw new NotSupportedException();
+						throw new NotSupportedException(string.Format("Method call {0} not supported", node));
 					}
 					base.VisitMethodCall(node);
 					break;
@@ -102,74 +102,72 @@ namespace Untech.SharePoint.Core.Caml.Translators
 			var left = node.Left.StripQuotes();
 			var right = node.Right.StripQuotes();
 
-			if (left.NodeType == ExpressionType.Constant &&
-				right.NodeType == ExpressionType.MemberAccess)
+			if (left.NodeType == ExpressionType.Constant && right.NodeType == ExpressionType.MemberAccess)
 			{
 				return VisitComparison((MemberExpression)right, (ConstantExpression)left, node.NodeType);
 			}
-			if (left.NodeType == ExpressionType.MemberAccess &&
-				right.NodeType == ExpressionType.Constant)
+			if (left.NodeType == ExpressionType.MemberAccess && right.NodeType == ExpressionType.Constant)
 			{
 				return VisitComparison((MemberExpression)left, (ConstantExpression)right, node.NodeType);
 			}
 
-			throw new NotSupportedException(string.Format("{0} not supported", node));
+			throw new NotSupportedException(string.Format("Comparison {0} not supported", node));
 		}
 
-		private XElement VisitStringContains(MethodCallExpression node)
+		private XElement VisitStringOrArrayContains(MethodCallExpression node)
 		{
-			if (node.Method.DeclaringType != null && node.Method.DeclaringType.FullName == typeof(string).FullName)
-				return VisitStrintStartsWith(node, Tags.Contains);
-			if (node.Method.DeclaringType != null && node.Method.DeclaringType.FullName == typeof(Enumerable).FullName)
+			if (node.Method.DeclaringType != null &&
+				node.Method.DeclaringType == typeof(string))
+			{
+				return VisitStringContainsOrStartsWith(node, Tags.Contains);
+			}
+			if (node.Method.DeclaringType != null &&
+				node.Method.DeclaringType == typeof(Enumerable))
+			{
 				return VisitArrayContains(node);
-			throw new NotSupportedException();
+			}
+			throw new NotSupportedException(string.Format("Method call {0} not supported", node));
 		}
 
-		private XElement VisitStrintStartsWith(MethodCallExpression mce, string operatorTag)
+		private XElement VisitStringContainsOrStartsWith(MethodCallExpression node, string operatorTag)
 		{
-			var me = (MemberExpression)mce.Object;
-
-			if (me != null)
+			if (node.Object == null || node.Object.NodeType != ExpressionType.MemberAccess)
 			{
-				var fieldRef = VisitField(me);
-				var value = VisitValue(mce.Arguments[0]);
-
-				return new XElement(operatorTag, fieldRef, value);
+				throw new NotSupportedException(string.Format("Method call {0} not supported", node));
 			}
 
-			throw new NotSupportedException();
+			var memberExpression = (MemberExpression)node.Object;
+
+			return new XElement(operatorTag,
+				TranslatorHelpers.GetFieldRef(memberExpression),
+				TranslatorHelpers.GetValue(node.Arguments[0]));
 		}
 
-		private XElement VisitArrayContains(MethodCallExpression mce)
+		private XElement VisitArrayContains(MethodCallExpression node)
 		{
-			var me = (MemberExpression)mce.Arguments[1];
-
-			if (me != null)
+			if (node.Arguments[0].NodeType != ExpressionType.Constant ||
+				node.Arguments[1].NodeType != ExpressionType.MemberAccess)
 			{
-				var listMe = (ConstantExpression)mce.Arguments[0];
-
-				if (listMe == null)
-					throw new NotSupportedException();
-
-				//var fieldType = GetFieldType(me);
-				//var type = list.Value.GetType();
-				//var fieldInfo = type.GetField(listName);
-				var values = (IEnumerable)listMe.Value;
-
-				var fieldRef = VisitField(me);
-
-				var valuesElement = new XElement(Tags.Values);
-
-				foreach (var value in values)
-				{
-					valuesElement.Add(new XElement(Tags.Value, value));
-				}
-
-				return new XElement(Tags.In, fieldRef, valuesElement);
+				throw new NotSupportedException(string.Format("Method call {0} not supported", node));
 			}
 
-			throw new NotSupportedException();
+			var listExpression = (ConstantExpression)node.Arguments[0];
+			var memberExpression = (MemberExpression)node.Arguments[1];
+
+			var values = (IEnumerable)listExpression.Value;
+
+			var valuesElement = new XElement(Tags.Values);
+
+			foreach (var value in values)
+			{
+				valuesElement.Add(new XElement(Tags.Value, value));
+			}
+
+			return new XElement(Tags.In,
+				TranslatorHelpers.GetFieldRef(memberExpression),
+				valuesElement);
 		}
+
 		private XElement VisitComparison(MemberExpression left, ConstantExpression right, ExpressionType type)
 		{
 			var tag = SupportedBinaryExpressions[type];
@@ -179,10 +177,9 @@ namespace Untech.SharePoint.Core.Caml.Translators
 				return VisitComparisonWithNull(left, type);
 			}
 
-			var leftElement = VisitField(left);
-			var rightElement = VisitValue(right);
-
-			return new XElement(tag, leftElement, rightElement);
+			return new XElement(tag,
+				TranslatorHelpers.GetFieldRef(left),
+				TranslatorHelpers.GetValue(right));
 		}
 
 		private XElement VisitComparisonWithNull(MemberExpression left, ExpressionType type)
@@ -190,31 +187,11 @@ namespace Untech.SharePoint.Core.Caml.Translators
 			switch (type)
 			{
 				case ExpressionType.Equal:
-					return new XElement(Tags.IsNull, VisitField(left));
+					return new XElement(Tags.IsNull, TranslatorHelpers.GetFieldRef(left));
 				case ExpressionType.NotEqual:
-					return new XElement(Tags.IsNotNull, VisitField(left));
+					return new XElement(Tags.IsNotNull, TranslatorHelpers.GetFieldRef(left));
 			}
-			throw new InvalidOperationException();
-		}
-
-		private XElement VisitField(Expression node)
-		{
-			var member = (MemberExpression)node;
-			var name = member.Member.Name;
-
-			return new XElement(Tags.FieldRef, new XAttribute(Tags.Name, name));
-		}
-
-		private XElement VisitValue(Expression node)
-		{
-			if (node.NodeType == ExpressionType.Constant)
-			{
-				var constExp = (ConstantExpression)node;
-				var value = (constExp.Value ?? "").ToString();
-
-				return new XElement(Tags.Value, value);
-			}
-			throw new NotSupportedException();
+			throw new NotSupportedException(string.Format("{0} operation can't be used in comparison with null", type));
 		}
 	}
 }

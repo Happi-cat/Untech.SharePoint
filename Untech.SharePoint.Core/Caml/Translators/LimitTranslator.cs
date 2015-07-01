@@ -7,13 +7,13 @@ namespace Untech.SharePoint.Core.Caml.Translators
 {
 	internal class LimitTranslator : ExpressionVisitor, ICamlTranslator
 	{
-		private XElement _root;
+		protected XElement Root { get; private set; }
 
 		public XElement Translate(ISpModelContext modelContext, Expression predicate)
 		{
 			Visit(predicate);
 
-			return _root;
+			return Root;
 		}
 
 		public override Expression Visit(Expression node)
@@ -30,13 +30,13 @@ namespace Untech.SharePoint.Core.Caml.Translators
 			switch (node.Method.Name)
 			{
 				case "Take":
-					_root = VisitLimit((ConstantExpression)node.Arguments[1].StripQuotes());
+					Root = VisitLimit(node.Arguments[1]);
 					break;
 				case "First":
 				case "FirstOrDefault":
 				case "Single":
 				case "SingleOrDefault":
-					_root = VisitLimit(Expression.Constant(1));
+					Root = VisitLimit(Expression.Constant(1));
 					break;
 				case "Skip":
 					throw new NotSupportedException("Method 'Skip' not supported");
@@ -45,9 +45,18 @@ namespace Untech.SharePoint.Core.Caml.Translators
 			return base.VisitMethodCall(node);
 		}
 
-		private XElement VisitLimit(ConstantExpression node)
+		private XElement VisitLimit(Expression node)
 		{
-			return new XElement(Tags.RowLimit, node.Value);
+			node = node.StripQuotes();
+
+			if (node.NodeType != ExpressionType.Constant)
+			{
+				throw new NotSupportedException(string.Format("Limit {0} not supported", node));
+			}
+
+			var constExpression = (ConstantExpression) node;
+
+			return new XElement(Tags.RowLimit, constExpression.Value);
 		}
 	}
 }
