@@ -1,7 +1,6 @@
 ﻿using System;
 using Newtonsoft.Json;
 using Untech.SharePoint.Core.Data;
-using Untech.SharePoint.Core.Data.Converters;
 using Untech.SharePoint.Core.Data.Converters.Custom;
 
 namespace Untech.SharePoint.Core.Test.Data
@@ -16,13 +15,13 @@ namespace Untech.SharePoint.Core.Test.Data
 
 		public class TestClass
 		{
-			[SpField("Property")]
+			[SpField(InternalName = "Property")]
 			public string Property { get; set; }
 
-			[SpField("Created")]
+			[SpField(InternalName = "Created")]
 			public DateTime Created { get; set; }
 
-			[SpField("JsonObject", CustomConverterType = typeof (JsonFieldConverter))]
+			[SpField(InternalName = "JsonObject", CustomConverterType = typeof(JsonFieldConverter))]
 			public JsonSerializableObject JsonObject { get; set; }
 		}
 	}

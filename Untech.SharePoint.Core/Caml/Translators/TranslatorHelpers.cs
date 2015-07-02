@@ -7,7 +7,7 @@ namespace Untech.SharePoint.Core.Caml.Translators
 {
 	internal static class TranslatorHelpers
 	{
-		public static XElement GetFieldRef(Expression node)
+		public static XElement GetFieldRef(ISpModelContext modelContext, Expression node)
 		{
 			if (node == null)
 			{
@@ -30,11 +30,11 @@ namespace Untech.SharePoint.Core.Caml.Translators
 			}
 
 			return new XElement(Tags.FieldRef,
-				new XAttribute(Tags.Name, memberName));
+				new XAttribute(Tags.Name, modelContext.GetSpFieldInternalName(memberExpression.Member.DeclaringType, memberName)));
 		}
 
 
-		public static XElement GetValue(Expression node)
+		public static XElement GetValue(ISpModelContext modelContext, MemberExpression memberExpression, Expression node)
 		{
 			if (node == null)
 			{
@@ -51,7 +51,8 @@ namespace Untech.SharePoint.Core.Caml.Translators
 			var constantExpression = (ConstantExpression)node;
 
 			return new XElement(Tags.Value, 
-				Convert.ToString(constantExpression.Value));
+				new XAttribute(Tags.Type, modelContext.GetSpFieldTypeAsString(memberExpression.Member.DeclaringType, memberExpression.Member.Name)),
+				Convert.ToString(modelContext.ConvertToSpValue(memberExpression.Member.DeclaringType, memberExpression.Member.Name, constantExpression.Value)));
 		}
 	}
 }

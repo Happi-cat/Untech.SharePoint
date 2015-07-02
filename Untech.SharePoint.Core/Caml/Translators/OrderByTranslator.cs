@@ -7,26 +7,20 @@ namespace Untech.SharePoint.Core.Caml.Translators
 	internal class OrderByTranslator : ExpressionVisitor, ICamlTranslator
 	{
 		protected XElement Root { get; private set; }
+		protected ISpModelContext ModelContext { get; private set; }
 
 		public XElement Translate(ISpModelContext modelContext, Expression predicate)
 		{
+			ModelContext = modelContext;
+
 			Visit(predicate);
 
 			return Root;
 		}
 
-		public override Expression Visit(Expression node)
-		{
-			if (node == null || node.NodeType != ExpressionType.Call)
-			{
-				return node;
-			}
-			return base.Visit(node);
-		}
-
 		protected override Expression VisitMethodCall(MethodCallExpression node)
 		{
-			base.VisitMethodCall(node);
+			Visit(node.Arguments[0]);
 
 			switch (node.Method.Name)
 			{
@@ -63,7 +57,7 @@ namespace Untech.SharePoint.Core.Caml.Translators
 
 			var ascendingAttribute = new XAttribute(Tags.Ascending, ascending.ToString().ToUpperInvariant());
 
-			var fieldRefElement = TranslatorHelpers.GetFieldRef(lambdaExpression.Body);
+			var fieldRefElement = TranslatorHelpers.GetFieldRef(ModelContext, lambdaExpression.Body);
 			fieldRefElement.Add(ascendingAttribute);
 			return fieldRefElement;
 		}

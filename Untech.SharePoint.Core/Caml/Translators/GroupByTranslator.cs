@@ -7,26 +7,20 @@ namespace Untech.SharePoint.Core.Caml.Translators
 	internal class GroupByTranslator : ExpressionVisitor, ICamlTranslator
 	{
 		protected XElement Root { get; private set; }
+		protected ISpModelContext ModelContext { get; private set; }
 
 		public XElement Translate(ISpModelContext modelContext, Expression predicate)
 		{
+			ModelContext = modelContext;
+
 			Visit(predicate);
 
 			return Root;
 		}
 
-		public override Expression Visit(Expression node)
-		{
-			if (node == null || node.NodeType != ExpressionType.Call)
-			{
-				return node;
-			}
-			return base.Visit(node);
-		}
-
 		protected override Expression VisitMethodCall(MethodCallExpression node)
 		{
-			base.VisitMethodCall(node);
+			Visit(node.Arguments[0]);
 
 			if (node.Method.Name == "GroupBy")
 			{
@@ -54,7 +48,7 @@ namespace Untech.SharePoint.Core.Caml.Translators
 		{
 			var lambdaExpression = (LambdaExpression)node.Arguments[1].StripQuotes();
 
-			return TranslatorHelpers.GetFieldRef(lambdaExpression.Body);
+			return TranslatorHelpers.GetFieldRef(ModelContext, lambdaExpression.Body);
 		}
 	}
 }

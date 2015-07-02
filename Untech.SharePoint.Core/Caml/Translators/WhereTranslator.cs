@@ -27,11 +27,14 @@ namespace Untech.SharePoint.Core.Caml.Translators
 
 		protected XElement Root { get; set; }
 		protected XElement Current { get; set; }
+		protected ISpModelContext ModelContext { get; private set; }
 
 		protected IReadOnlyDictionary<ExpressionType, string> SupportedBinaryExpressions { get; private set; }
 
 		public XElement Translate(ISpModelContext modelContext, Expression predicate)
 		{
+			ModelContext = modelContext;
+
 			Visit(predicate);
 
 			return Root;
@@ -49,7 +52,7 @@ namespace Untech.SharePoint.Core.Caml.Translators
 					break;
 				case "Where":
 					Current = null;
-					base.VisitMethodCall(node);
+					Visit(node.Arguments[1]);
 					Root = new XElement(Tags.Where, Current);
 					break;
 				default:
@@ -57,7 +60,7 @@ namespace Untech.SharePoint.Core.Caml.Translators
 					{
 						throw new NotSupportedException(string.Format("Method call {0} not supported", node));
 					}
-					base.VisitMethodCall(node);
+					Visit(node.Arguments[0]);
 					break;
 			}
 			return node;
@@ -139,8 +142,8 @@ namespace Untech.SharePoint.Core.Caml.Translators
 			var memberExpression = (MemberExpression)node.Object;
 
 			return new XElement(operatorTag,
-				TranslatorHelpers.GetFieldRef(memberExpression),
-				TranslatorHelpers.GetValue(node.Arguments[0]));
+				TranslatorHelpers.GetFieldRef(ModelContext, memberExpression),
+				TranslatorHelpers.GetValue(ModelContext, memberExpression, node.Arguments[0]));
 		}
 
 		private XElement VisitArrayContains(MethodCallExpression node)
@@ -164,7 +167,7 @@ namespace Untech.SharePoint.Core.Caml.Translators
 			}
 
 			return new XElement(Tags.In,
-				TranslatorHelpers.GetFieldRef(memberExpression),
+				TranslatorHelpers.GetFieldRef(ModelContext, memberExpression),
 				valuesElement);
 		}
 
@@ -178,8 +181,8 @@ namespace Untech.SharePoint.Core.Caml.Translators
 			}
 
 			return new XElement(tag,
-				TranslatorHelpers.GetFieldRef(left),
-				TranslatorHelpers.GetValue(right));
+				TranslatorHelpers.GetFieldRef(ModelContext, left),
+				TranslatorHelpers.GetValue(ModelContext, left, right));
 		}
 
 		private XElement VisitComparisonWithNull(MemberExpression left, ExpressionType type)
@@ -187,9 +190,9 @@ namespace Untech.SharePoint.Core.Caml.Translators
 			switch (type)
 			{
 				case ExpressionType.Equal:
-					return new XElement(Tags.IsNull, TranslatorHelpers.GetFieldRef(left));
+					return new XElement(Tags.IsNull, TranslatorHelpers.GetFieldRef(ModelContext, left));
 				case ExpressionType.NotEqual:
-					return new XElement(Tags.IsNotNull, TranslatorHelpers.GetFieldRef(left));
+					return new XElement(Tags.IsNotNull, TranslatorHelpers.GetFieldRef(ModelContext, left));
 			}
 			throw new NotSupportedException(string.Format("{0} operation can't be used in comparison with null", type));
 		}

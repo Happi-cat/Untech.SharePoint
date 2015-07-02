@@ -46,6 +46,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Caml\CamlTranslator.cs" />
+    <Compile Include="Caml\Finders\SpModelContextFinder.cs" />
     <Compile Include="Caml\ISpModelContext.cs" />
     <Compile Include="Caml\Modifiers\PredicateModifier.cs" />
     <Compile Include="Caml\Modifiers\Evaluator.cs" />
@@ -88,10 +89,14 @@
     <Compile Include="Data\DataModelPropertyInfos.cs" />
     <Compile Include="Data\DataModelPropertyInfo.cs" />
     <Compile Include="Data\Queryable\Class1.cs" />
+    <Compile Include="Data\Queryable\SpQueryableData.cs" />
+    <Compile Include="Data\Queryable\SpQueryProdiver.cs" />
+    <Compile Include="Data\Queryable\TypeSystem.cs" />
     <Compile Include="Data\SPFieldAttribute.cs" />
     <Compile Include="Data\SPModelMapper.cs" />
     <Compile Include="Extensions\ExpressionExtensions.cs" />
     <Compile Include="Extensions\ObjectExtensions.cs" />
+    <Compile Include="Extensions\SPListExtensions.cs" />
     <Compile Include="Extensions\TypeExtensions.cs" />
     <Compile Include="Guard.cs" />
     <Compile Include="Models\GeoInfo.cs" />

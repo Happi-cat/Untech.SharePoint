@@ -16,17 +16,10 @@ namespace Untech.SharePoint.Core.Caml.Translators
 			return Root;
 		}
 
-		public override Expression Visit(Expression node)
-		{
-			if (node == null || node.NodeType != ExpressionType.Call)
-			{
-				return node;
-			}
-			return base.Visit(node);
-		}
-
 		protected override Expression VisitMethodCall(MethodCallExpression node)
 		{
+			Visit(node.Arguments[0]);
+
 			switch (node.Method.Name)
 			{
 				case "Take":
@@ -38,11 +31,13 @@ namespace Untech.SharePoint.Core.Caml.Translators
 				case "SingleOrDefault":
 					Root = VisitLimit(Expression.Constant(1));
 					break;
+				case "TakeWhile":
 				case "Skip":
-					throw new NotSupportedException("Method 'Skip' not supported");
+				case "SkipWhile":
+					throw new NotSupportedException(string.Format("Method '{0}' not supported", node.Method.Name));
 			}
 
-			return base.VisitMethodCall(node);
+			return node;
 		}
 
 		private XElement VisitLimit(Expression node)

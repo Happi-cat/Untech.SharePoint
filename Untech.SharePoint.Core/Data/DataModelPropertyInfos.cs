@@ -8,9 +8,9 @@ using Untech.SharePoint.Core.Data.Converters;
 
 namespace Untech.SharePoint.Core.Data
 {
-	internal class DataModelPropertyInfos : IEnumerable<DataModelPropertyInfo>
+	internal class DataModelPropertyInfos : IReadOnlyDictionary<string, DataModelPropertyInfo>
 	{
-		private readonly List<DataModelPropertyInfo> _mappings = new List<DataModelPropertyInfo>();
+		private readonly Dictionary<string, DataModelPropertyInfo> _mappings = new Dictionary<string, DataModelPropertyInfo>();
 
 		public void Initialize(Type objectType)
 		{
@@ -30,14 +30,45 @@ namespace Untech.SharePoint.Core.Data
 			fields.ForEach(AddMappingInfo);
 		}
 
-		public IEnumerator<DataModelPropertyInfo> GetEnumerator()
+		public DataModelPropertyInfo this[string propertyOrFieldName]
+		{
+			get { return _mappings[propertyOrFieldName]; }
+		}
+
+		public bool ContainsKey(string propertyOrFieldName)
+		{
+			return _mappings.ContainsKey(propertyOrFieldName);
+		}
+
+		public IEnumerable<string> Keys
+		{
+			get { return _mappings.Keys; }
+		}
+
+		public bool TryGetValue(string propertyOrFieldName, out DataModelPropertyInfo value)
+		{
+			return _mappings.TryGetValue(propertyOrFieldName, out value);
+		}
+
+		public IEnumerable<DataModelPropertyInfo> Values
+		{
+			get { return _mappings.Values; }
+		}
+
+		public int Count
+		{
+			get { return _mappings.Count; }
+		}
+
+
+		public IEnumerator GetEnumerator()
 		{
 			return _mappings.GetEnumerator();
 		}
 
-		IEnumerator IEnumerable.GetEnumerator()
+		IEnumerator<KeyValuePair<string, DataModelPropertyInfo>> IEnumerable<KeyValuePair<string, DataModelPropertyInfo>>.GetEnumerator()
 		{
-			return GetEnumerator();
+			return _mappings.GetEnumerator();
 		}
 
 		#region [Private Methods]
@@ -54,7 +85,7 @@ namespace Untech.SharePoint.Core.Data
 			UpdateDefaultValue(fieldInfo, info);
 			RegisterCustomConverter(info);
 
-			_mappings.Add(info);
+			AddMappingInfo(info);
 		}
 
 		private void AddMappingInfo(PropertyInfo propertyInfo)
@@ -69,7 +100,12 @@ namespace Untech.SharePoint.Core.Data
 			UpdateDefaultValue(propertyInfo, info);
 			RegisterCustomConverter(info);
 
-			_mappings.Add(info);
+			AddMappingInfo(info);
+		}
+
+		private void AddMappingInfo(DataModelPropertyInfo info)
+		{
+			_mappings.Add(info.PropertyOrFieldName, info);
 		}
 
 		private static void UpdateSPFieldInfo(MemberInfo memberInfo, DataModelPropertyInfo info)
@@ -98,6 +134,5 @@ namespace Untech.SharePoint.Core.Data
 		}
 
 		#endregion
-
 	}
 }
