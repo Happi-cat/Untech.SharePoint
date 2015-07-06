@@ -4,7 +4,7 @@ namespace Untech.SharePoint.Core.Caml.Finders
 {
 	internal class SpModelContextFinder : ExpressionVisitor
 	{
-		protected internal ISpModelContext ModelContext { get; set; }
+		public ISpModelContext ModelContext { get; set; }
 
 		protected override Expression VisitMethodCall(MethodCallExpression node)
 		{

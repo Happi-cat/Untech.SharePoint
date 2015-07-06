@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Untech.SharePoint.Core.Caml
 {
@@ -6,9 +7,12 @@ namespace Untech.SharePoint.Core.Caml
 	{
 		string GetSpFieldInternalName(Type modelType, string propertyOrFieldName);
 
+		IEnumerable<string> GetSpFieldsInternalNames(Type modelType);
+
 		string GetSpFieldTypeAsString(Type modelType, string propertyOrFieldName);
 
 		object ConvertToSpValue(Type modelType, string propertyOrFieldName, object value);
 
+		Type ElementType { get; }
 	}
 }
