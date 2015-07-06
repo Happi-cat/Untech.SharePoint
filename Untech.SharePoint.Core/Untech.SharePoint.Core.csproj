@@ -88,7 +88,6 @@
     <Compile Include="Data\DataModelPool.cs" />
     <Compile Include="Data\DataModelPropertyInfos.cs" />
     <Compile Include="Data\DataModelPropertyInfo.cs" />
-    <Compile Include="Data\Queryable\Class1.cs" />
     <Compile Include="Data\Queryable\SpQueryableList.cs" />
     <Compile Include="Data\Queryable\SpQueryContext.cs" />
     <Compile Include="Data\Queryable\TypeSystem.cs" />

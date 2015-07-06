@@ -22,12 +22,8 @@ namespace Untech.SharePoint.Core.Data.Queryable
 		{
 			Guard.ThrowIfArgumentNull(list, "list");
 			Guard.ThrowIfArgumentNull(expression, "expression");
-
-			if (!typeof(IQueryable<TElement>).IsAssignableFrom(expression.Type))
-			{
-				throw new ArgumentOutOfRangeException("expression");
-			}
-
+			Guard.ThrowIfArgumentCannotBeAssignedTo<IQueryable<TElement>>(expression.Type, "expression");
+		
 			List = list;
 			Expression = expression;
 		}
