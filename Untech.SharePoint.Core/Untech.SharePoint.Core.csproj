@@ -89,6 +89,7 @@
     <Compile Include="Data\DataModelPropertyInfos.cs" />
     <Compile Include="Data\DataModelPropertyInfo.cs" />
     <Compile Include="Data\Queryable\SpQueryableList.cs" />
+    <Compile Include="Data\Queryable\SpQueryableListEnumerator.cs" />
     <Compile Include="Data\Queryable\SpQueryContext.cs" />
     <Compile Include="Data\Queryable\TypeSystem.cs" />
     <Compile Include="Data\SPFieldAttribute.cs" />
