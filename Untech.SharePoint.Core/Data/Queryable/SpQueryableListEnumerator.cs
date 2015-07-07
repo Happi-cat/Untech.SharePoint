@@ -7,35 +7,18 @@ using Untech.SharePoint.Core.Reflection;
 
 namespace Untech.SharePoint.Core.Data.Queryable
 {
-	internal class SpQueryableListEnumerator<TElement> : IEnumerator<TElement> where TElement: new()
+	internal class SpQueryableListEnumerator<TElement> : IEnumerator<TElement> where TElement : new()
 	{
 		internal SpQueryableListEnumerator(IEnumerator<SPListItem> spListItemIterator)
 		{
 			Guard.ThrowIfArgumentNull(spListItemIterator, "spListItemIterator");
 
 			SPListItemIterator = spListItemIterator;
-			CurrentReady = false;
 		}
 
 		public IEnumerator<SPListItem> SPListItemIterator { get; set; }
-		private bool CurrentReady { get; set; }
-		private TElement CurrenElement { get; set; }
 
-		public TElement Current
-		{
-			get
-			{
-				if (!CurrentReady)
-				{
-					CurrenElement = new TElement();
-
-					SpModelMapper.Map<TElement>(SPListItemIterator.Current, CurrenElement);
-
-					CurrentReady = true;
-				}
-				return CurrenElement;
-			}
-		}
+		public TElement Current { get; private set; }
 
 		public void Dispose()
 		{
@@ -49,14 +32,21 @@ namespace Untech.SharePoint.Core.Data.Queryable
 
 		public bool MoveNext()
 		{
-			CurrentReady = false;
+			if (SPListItemIterator.MoveNext())
+			{
+				Current = new TElement();
 
-			return SPListItemIterator.MoveNext();
+				SpModelMapper.Map<TElement>(SPListItemIterator.Current, Current);
+
+				return true;
+			};
+
+			return false;
 		}
 
 		public void Reset()
 		{
-			CurrentReady = false;
+			Current = null;
 
 			SPListItemIterator.Reset();
 		}
