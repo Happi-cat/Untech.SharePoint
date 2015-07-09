@@ -16,6 +16,7 @@ namespace Untech.SharePoint.Core.Data.Queryable
 
 			var caml = (new CamlTranslator()).Translate(null, expression);
 
+
 			throw new NotImplementedException();
 		}
 
@@ -28,7 +29,7 @@ namespace Untech.SharePoint.Core.Data.Queryable
 
 		private static SPListItemCollection Execute(SPList list, string caml)
 		{
-			
+			throw new NotImplementedException();
 		}
 	}
 }

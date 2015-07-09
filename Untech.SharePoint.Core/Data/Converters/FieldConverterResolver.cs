@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Untech.SharePoint.Core.Reflection;
 using Untech.SharePoint.Core.Utility;
 
 namespace Untech.SharePoint.Core.Data.Converters
@@ -12,10 +13,12 @@ namespace Untech.SharePoint.Core.Data.Converters
 
 		public static FieldConverterResolver Instance
 		{
-			get
-			{
-				return Singleton<FieldConverterResolver>.GetInstance(n => n.Initialize());
-			}
+			get { return Singleton<FieldConverterResolver>.GetInstance(n => n.Initialize()); }
+		}
+
+		protected internal InstanceCreationFactory<IFieldConverter> FieldConverterFactory
+		{
+			get { return InstanceCreationFactory<IFieldConverter>.Instance; }
 		}
 
 		public void Initialize()
@@ -50,7 +53,7 @@ namespace Untech.SharePoint.Core.Data.Converters
 		{
 			try
 			{
-				FieldConverterFactory.Instance.Register(type);
+				FieldConverterFactory.Register(type);
 			}
 			catch (Exception e)
 			{
@@ -62,7 +65,7 @@ namespace Untech.SharePoint.Core.Data.Converters
 		{
 			try
 			{
-				return new FieldConverterWrapper(type, FieldConverterFactory.Instance.Create(type));
+				return new FieldConverterWrapper(type, FieldConverterFactory.Create(type));
 			}
 			catch (Exception e)
 			{

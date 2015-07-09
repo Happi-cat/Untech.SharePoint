@@ -11,7 +11,7 @@ namespace Untech.SharePoint.Core.Data
 			InternalName = internalName;
 		}
 
-		internal PropertyMappingException(DataModelPropertyInfo info, Exception innerException)
+		internal PropertyMappingException(MetaProperty info, Exception innerException)
 			: base(GetMessage(info), innerException)
 		{
 			
@@ -21,11 +21,11 @@ namespace Untech.SharePoint.Core.Data
 
 		public string InternalName { get; private set; }
 
-		private static string GetMessage(DataModelPropertyInfo info)
+		private static string GetMessage(MetaProperty info)
 		{
-			var message = GetMessage(info.PropertyOrFieldName, info.SpFieldInternalName);
+			var message = GetMessage(info.MemberName, info.SpFieldInternalName);
 
-			message = message + string.Format("Property or field type: {0}.", info.PropertyOrFieldType.FullName);
+			message = message + string.Format("Property or field type: {0}.", info.MemberType.FullName);
 
 			if (info.CustomConverterType != null)
 			{

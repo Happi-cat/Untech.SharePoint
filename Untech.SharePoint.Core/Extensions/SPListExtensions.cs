@@ -10,7 +10,7 @@ namespace Untech.SharePoint.Core.Extensions
 		{
 			Guard.ThrowIfArgumentNull(list, "list");
 
-			return new SpQueryableData<TElement>(list);
+			return new SpQueryableList<TElement>(list);
 		}
 	}
 }

@@ -27,24 +27,24 @@ namespace Untech.SharePoint.Core.Reflection
 			}
 		}
 
-		public object this[object obj, string propertyName]
+		public object this[object obj, string propertyOrFieldName]
 		{
 			get
 			{
-				if (_cachedGetters.ContainsKey(propertyName))
+				if (_cachedGetters.ContainsKey(propertyOrFieldName))
 				{
-					return _cachedGetters[propertyName](obj);
+					return _cachedGetters[propertyOrFieldName](obj);
 				}
-				throw new ArgumentException(string.Format("This property or field '{0}' has no cached getter", propertyName));
+				throw new ArgumentException(string.Format("This property or field '{0}' has no cached getter", propertyOrFieldName));
 			}
 			set
 			{
-				if (_cachedSetters.ContainsKey(propertyName))
+				if (_cachedSetters.ContainsKey(propertyOrFieldName))
 				{
-					_cachedSetters[propertyName](obj, value);
+					_cachedSetters[propertyOrFieldName](obj, value);
 					return;
 				}
-				throw new ArgumentException(string.Format("This property or field '{0}' has no cached setter", propertyName));
+				throw new ArgumentException(string.Format("This property or field '{0}' has no cached setter", propertyOrFieldName));
 			}
 		}
 

@@ -46,8 +46,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Caml\CamlTranslator.cs" />
+    <Compile Include="Caml\Finders\ProjectorFinder.cs" />
     <Compile Include="Caml\Finders\SpModelContextFinder.cs" />
+    <Compile Include="Caml\InvalidCamlQueryException.cs" />
     <Compile Include="Caml\ISpModelContext.cs" />
+    <Compile Include="Caml\Modifiers\AnyAllModifer.cs" />
     <Compile Include="Caml\Modifiers\PredicateModifier.cs" />
     <Compile Include="Caml\Modifiers\Evaluator.cs" />
     <Compile Include="Caml\Modifiers\Nominator.cs" />
@@ -73,7 +76,6 @@
     <Compile Include="Data\Converters\BuiltIn\UrlFieldConverter.cs" />
     <Compile Include="Data\DataMapper.cs" />
     <Compile Include="Data\Converters\BuiltIn\DateTimeFieldConverter.cs" />
-    <Compile Include="Data\Converters\FieldConverterFactory.cs" />
     <Compile Include="Data\Converters\FieldConverterResolver.cs" />
     <Compile Include="Data\Converters\IFieldConverter.cs" />
     <Compile Include="Data\Converters\Custom\JsonFieldConverter.cs" />
@@ -83,17 +85,19 @@
     <Compile Include="Data\Converters\BuiltIn\TextFieldConverter.cs" />
     <Compile Include="Data\Converters\BuiltIn\UserFieldConverter.cs" />
     <Compile Include="Data\Converters\Custom\XmlFieldConverter.cs" />
-    <Compile Include="Data\DataModel.cs" />
+    <Compile Include="Data\Converters\ModelConverters.cs" />
+    <Compile Include="Data\MetaModel.cs" />
     <Compile Include="Data\PropertyMappingException.cs" />
-    <Compile Include="Data\DataModelPool.cs" />
-    <Compile Include="Data\DataModelPropertyInfos.cs" />
-    <Compile Include="Data\DataModelPropertyInfo.cs" />
+    <Compile Include="Data\MetaModelPool.cs" />
+    <Compile Include="Data\MetaProperties.cs" />
+    <Compile Include="Data\MetaProperty.cs" />
     <Compile Include="Data\Queryable\SpQueryableList.cs" />
     <Compile Include="Data\Queryable\SpQueryableListEnumerator.cs" />
     <Compile Include="Data\Queryable\SpQueryContext.cs" />
     <Compile Include="Data\Queryable\TypeSystem.cs" />
     <Compile Include="Data\SPFieldAttribute.cs" />
     <Compile Include="Data\SPModelMapper.cs" />
+    <Compile Include="Extensions\EnumerableExtensions.cs" />
     <Compile Include="Extensions\ExpressionExtensions.cs" />
     <Compile Include="Extensions\ObjectExtensions.cs" />
     <Compile Include="Extensions\SPListExtensions.cs" />

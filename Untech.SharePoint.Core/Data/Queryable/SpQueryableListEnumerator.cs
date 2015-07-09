@@ -1,22 +1,36 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.SharePoint;
+using Untech.SharePoint.Core.Data.Converters;
 using Untech.SharePoint.Core.Reflection;
 
 namespace Untech.SharePoint.Core.Data.Queryable
 {
-	internal class SpQueryableListEnumerator<TElement> : IEnumerator<TElement> where TElement : new()
+	internal class SpQueryableListEnumerator<TElement> : IEnumerator<TElement>
 	{
-		internal SpQueryableListEnumerator(IEnumerator<SPListItem> spListItemIterator)
+		internal SpQueryableListEnumerator(SPFieldCollection fields, IEnumerator<SPListItem> spListItemIterator)
 		{
 			Guard.ThrowIfArgumentNull(spListItemIterator, "spListItemIterator");
 
 			SPListItemIterator = spListItemIterator;
+
+			MetaModel = MetaModelPool.Instance.Get<TElement>();
+			ModelConverters = new ModelConverters(MetaModel, fields);
+			Mapper = new DataMapper(MetaModel, ModelConverters);
+
+			Creator = InstanceCreationUtility.GetCreator<TElement>(typeof(TElement));
 		}
 
-		public IEnumerator<SPListItem> SPListItemIterator { get; set; }
+		protected IEnumerator<SPListItem> SPListItemIterator { get; set; }
+
+		protected MetaModel MetaModel { get; private set; }
+
+		protected ModelConverters ModelConverters { get; private set; }
+
+		protected DataMapper Mapper { get; private set; }
+
+		protected Func<TElement> Creator {get; private set; }
 
 		public TElement Current { get; private set; }
 
@@ -25,28 +39,25 @@ namespace Untech.SharePoint.Core.Data.Queryable
 			SPListItemIterator.Dispose();
 		}
 
-		object System.Collections.IEnumerator.Current
+		object IEnumerator.Current
 		{
 			get { return Current; }
 		}
 
 		public bool MoveNext()
 		{
-			if (SPListItemIterator.MoveNext())
-			{
-				Current = new TElement();
+			if (!SPListItemIterator.MoveNext()) return false;
 
-				SpModelMapper.Map<TElement>(SPListItemIterator.Current, Current);
+			Current = Creator();
 
-				return true;
-			};
+			Mapper.Map(SPListItemIterator.Current, Current);
 
-			return false;
+			return true;
 		}
 
 		public void Reset()
 		{
-			Current = null;
+			Current = default(TElement);
 
 			SPListItemIterator.Reset();
 		}

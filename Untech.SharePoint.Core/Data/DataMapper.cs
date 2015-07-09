@@ -6,70 +6,81 @@ namespace Untech.SharePoint.Core.Data
 {
 	internal class DataMapper
 	{
-		public DataMapper(DataModel model)
+		public DataMapper(MetaModel model)
 		{
-			DataModel = model;
+			MetaModel = model;
 		}
 
-		public DataModel DataModel { get; set; }
+		internal DataMapper(MetaModel model, ModelConverters modelConverters)
+		{
+			Guard.ThrowIfArgumentNull(model, "model");
+			Guard.ThrowIfArgumentNull(modelConverters, "modelConverters");
+
+			if (modelConverters.Model != model)
+			{
+				throw new ArgumentException("Invalid model converters");
+			}
+
+			MetaModel = model;
+			ModelConverters = modelConverters;
+		}
+
+		public MetaModel MetaModel { get; private set; }
+		private ModelConverters ModelConverters { get; set; }
 
 		public void Map(SPListItem sourceItem, object destItem)
 		{
-			if (!DataModel.ModelType.IsInstanceOfType(destItem))
+			if (!MetaModel.ModelType.IsInstanceOfType(destItem))
 			{
 				throw new ArgumentException("destItem");
 			}
 
 			var fields = sourceItem.Fields;
-			foreach (var mappingInfo in DataModel.PropertyInfos)
+			var converters = GetConverters(fields);
+			foreach (var mappingInfo in MetaModel.MetaProperties)
 			{
 				var field = fields.GetField(mappingInfo.SpFieldInternalName);
-				MapProperty(sourceItem, destItem, mappingInfo, field);
+				MapProperty(sourceItem, destItem, mappingInfo, field, converters);
 			}
 		}
 
 		public void Map(object sourceItem, SPListItem destItem)
 		{
-			if (!DataModel.ModelType.IsInstanceOfType(sourceItem))
+			if (!MetaModel.ModelType.IsInstanceOfType(sourceItem))
 			{
 				throw new ArgumentException("sourceItem");
 			}
 
 			var fields = destItem.Fields;
-			foreach (var mappingInfo in DataModel.PropertyInfos)
+			var converters = GetConverters(fields);
+			foreach (var mappingInfo in MetaModel.MetaProperties)
 			{
 				var field = fields.GetField(mappingInfo.SpFieldInternalName);
-				MapProperty(sourceItem, destItem, mappingInfo, field);
+				MapProperty(sourceItem, destItem, mappingInfo, field, converters);
 			}
 		}
 
-		private static IFieldConverter GetConverter(DataModelPropertyInfo info, SPField field)
+		private ModelConverters GetConverters(SPFieldCollection fields)
 		{
-			var converter = info.CustomConverterType != null ?
-				FieldConverterResolver.Instance.Create(info.CustomConverterType) :
-				FieldConverterResolver.Instance.Create(field.TypeAsString);
-
-			converter.Initialize(field, info.PropertyOrFieldType);
-
-			return converter;
+			return ModelConverters ?? new ModelConverters(MetaModel, fields);
 		}
 
-		private void MapProperty(SPListItem sourceItem, object destItem, DataModelPropertyInfo info, SPField field)
+		private void MapProperty(SPListItem sourceItem, object destItem, MetaProperty info, SPField field, ModelConverters converters)
 		{
 			try
 			{
-				var converter = GetConverter(info, field);
+				var converter = converters[info.MemberName];
 
 				var spValue = sourceItem[field.Id];
 				if (spValue == null && info.DefaultValue != null)
 				{
-					DataModel.PropertyAccessor[destItem, info.PropertyOrFieldName] = info.DefaultValue;
+					MetaModel.PropertyAccessor[destItem, info.MemberName] = info.DefaultValue;
 				}
 				else
 				{
 					var propValue = converter.FromSpValue(spValue);
 
-					DataModel.PropertyAccessor[destItem, info.PropertyOrFieldName] = propValue;
+					MetaModel.PropertyAccessor[destItem, info.MemberName] = propValue;
 				}
 			}
 			catch (Exception e)
@@ -78,7 +89,7 @@ namespace Untech.SharePoint.Core.Data
 			}
 		}
 
-		private void MapProperty(object sourceItem, SPListItem destItem, DataModelPropertyInfo info, SPField field)
+		private void MapProperty(object sourceItem, SPListItem destItem, MetaProperty info, SPField field, ModelConverters converters)
 		{
 			if (field.ReadOnlyField)
 			{
@@ -87,9 +98,9 @@ namespace Untech.SharePoint.Core.Data
 
 			try
 			{
-				var converter = GetConverter(info, field);
+				var converter = converters[info.MemberName];
 
-				var propValue = DataModel.PropertyAccessor[sourceItem, info.PropertyOrFieldName];
+				var propValue = MetaModel.PropertyAccessor[sourceItem, info.MemberName];
 				var spValue = converter.ToSpValue(propValue);
 
 				destItem[field.Id] = spValue;

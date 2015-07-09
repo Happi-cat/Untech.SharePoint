@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using Untech.SharePoint.Core.Extensions;
 
 namespace Untech.SharePoint.Core
@@ -43,8 +42,7 @@ namespace Untech.SharePoint.Core
 		{
 			if (type.In(allowedTypes)) return;
 
-			var allowedTypesString = allowedTypes.Aggregate("", (s, t) => s + t + "; ");
-			throw new ArgumentException(string.Format(AllowedTypesMessage, allowedTypesString), paramName);
+			throw new ArgumentException(string.Format(AllowedTypesMessage, allowedTypes.JoinToString()), paramName);
 		}
 	}
 }

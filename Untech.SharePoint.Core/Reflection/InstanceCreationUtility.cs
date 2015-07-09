@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using Untech.SharePoint.Core.Extensions;
 
 namespace Untech.SharePoint.Core.Reflection
 {
@@ -50,7 +51,7 @@ namespace Untech.SharePoint.Core.Reflection
 			var constructor = type.GetConstructor(BindingFlags.Instance | BindingFlags.Public, null,
 				CallingConventions.HasThis, argumentTypes, new ParameterModifier[0]);
 
-			ShouldHaveConstructor(constructor);
+			ShouldHaveConstructor(type, argumentTypes, constructor);
 
 			var parameterExpressions = argumentTypes.Select(Expression.Parameter).ToList();
 
@@ -59,12 +60,11 @@ namespace Untech.SharePoint.Core.Reflection
 			return Expression.Lambda<TDelegate>(newExpression, parameterExpressions).Compile();
 		}
 
-		private static void ShouldHaveConstructor(ConstructorInfo ctor)
+		private static void ShouldHaveConstructor(Type type, Type[] argumentTypes, ConstructorInfo ctor)
 		{
-			if (ctor == null)
-			{
-				throw new ArgumentException("Constructor with matching parameters wasn't found");
-			}
+			if (ctor != null) return;
+
+			throw new ArgumentException(string.Format("Type {0} has no constructor that matches parameters list ({1})", type, argumentTypes.JoinToString()));
 		}
 	}
 }

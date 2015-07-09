@@ -8,7 +8,7 @@ using Untech.SharePoint.Core.Caml.Translators;
 
 namespace Untech.SharePoint.Core.Caml
 {
-	internal class CamlTranslator
+	internal class CamlTranslator : ICamlTranslator
 	{
 		protected IReadOnlyCollection<ExpressionVisitor> TreeVisitors { get; private set; }
 
@@ -16,9 +16,13 @@ namespace Untech.SharePoint.Core.Caml
 
 		protected SpModelContextFinder ModelContextFinder { get; private set; }
 
+		protected ProjectorFinder ProjectorFinder { get; private set; }
+
 		public CamlTranslator()
 		{
-			ModelContextFinder = new SpModelContextFinder(); 
+			ModelContextFinder = new SpModelContextFinder();
+
+			ProjectorFinder = new ProjectorFinder();
 
 			TreeVisitors = new List<ExpressionVisitor>
 			{
@@ -37,21 +41,22 @@ namespace Untech.SharePoint.Core.Caml
 			};
 		}
 
-		protected internal string Translate(Expression node)
+		protected internal XElement Translate(Expression node)
 		{
 			ModelContextFinder.Visit(node);
+			
 
 			return Translate(ModelContextFinder.ModelContext, node);
 		}
 
-		public string Translate(ISpModelContext modelContext, Expression node)
+		public XElement Translate(ISpModelContext modelContext, Expression node)
 		{
 			node = TreeVisitors.Aggregate(node, (current, treeVisitor) => treeVisitor.Visit(current));
 
 			var queryElement = new XElement(Tags.Query, 
 				Translators.Select(translator => translator.Translate(modelContext, node)));
 
-			return queryElement.ToString();
+			return queryElement;
 		}
 	}
 }
