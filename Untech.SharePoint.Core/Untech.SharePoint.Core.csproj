@@ -51,7 +51,7 @@
     <Compile Include="Caml\InvalidCamlQueryException.cs" />
     <Compile Include="Caml\ISpModelContext.cs" />
     <Compile Include="Caml\Modifiers\AnyAllModifer.cs" />
-    <Compile Include="Caml\Modifiers\PredicateModifier.cs" />
+    <Compile Include="Caml\Modifiers\PredicateOptimizer.cs" />
     <Compile Include="Caml\Modifiers\Evaluator.cs" />
     <Compile Include="Caml\Modifiers\Nominator.cs" />
     <Compile Include="Caml\Modifiers\SubtreeEvaluator.cs" />

@@ -27,7 +27,7 @@ namespace Untech.SharePoint.Core.Caml
 			TreeVisitors = new List<ExpressionVisitor>
 			{
 				new WhereModifier(),
-				new PredicateModifier(),
+				new PredicateOptimizer(),
 				new Evaluator()
 			};
 

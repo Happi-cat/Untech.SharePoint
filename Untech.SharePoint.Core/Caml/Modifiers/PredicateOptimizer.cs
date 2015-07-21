@@ -81,15 +81,15 @@ namespace Untech.SharePoint.Core.Caml.Modifiers
 		#endregion
 	}
 
-	internal class PredicateModifier : ExpressionVisitor
+	internal class PredicateOptimizer : ExpressionVisitor
 	{
-		private static readonly IReadOnlyDictionary<ExpressionType, ExpressionType> _binaryInverseMap = new Dictionary<ExpressionType, ExpressionType>
+		private static readonly IReadOnlyDictionary<ExpressionType, ExpressionType> BinaryInverseMap = new Dictionary<ExpressionType, ExpressionType>
 		{
 			{ExpressionType.AndAlso, ExpressionType.OrElse},
 			{ExpressionType.OrElse, ExpressionType.AndAlso}
 		};
 
-		private static readonly IReadOnlyDictionary<ExpressionType, ExpressionType> _compareInverseMap = new Dictionary<ExpressionType, ExpressionType>
+		private static readonly IReadOnlyDictionary<ExpressionType, ExpressionType> CompareInverseMap = new Dictionary<ExpressionType, ExpressionType>
 		{
 			{ExpressionType.Equal, ExpressionType.NotEqual},
 			{ExpressionType.LessThan, ExpressionType.GreaterThanOrEqual},
@@ -107,30 +107,36 @@ namespace Untech.SharePoint.Core.Caml.Modifiers
 
 			var notOperand = node.Operand.StripQuotes();
 
-			if (_binaryInverseMap.ContainsKey(notOperand.NodeType))
+			if (BinaryInverseMap.ContainsKey(notOperand.NodeType))
 			{
-				var binaryNode = (BinaryExpression)notOperand;
-
-				var newBinaryNode = Expression.MakeBinary(_binaryInverseMap[notOperand.NodeType],
-					Expression.Not(binaryNode.Left), Expression.Not(binaryNode.Right),
-					binaryNode.IsLiftedToNull, binaryNode.Method, binaryNode.Conversion);
-
-				return Visit(newBinaryNode);
+				return Visit(InvertBinaryAndOr(notOperand));
 			}
-			if (_compareInverseMap.ContainsKey(notOperand.NodeType))
+			if (CompareInverseMap.ContainsKey(notOperand.NodeType))
 			{
-				var binaryNode = (BinaryExpression)notOperand;
-
-				var newBinaryNode = Expression.MakeBinary(_compareInverseMap[notOperand.NodeType], binaryNode.Left, binaryNode.Right,
-					binaryNode.IsLiftedToNull, binaryNode.Method, binaryNode.Conversion);
-
-				return Visit(newBinaryNode);
+				return Visit(InvertBinaryCompare(notOperand));
 			}
 			if (notOperand.NodeType == ExpressionType.Not)
 			{
 				return Visit(((UnaryExpression)notOperand).Operand);
 			}
 			return base.VisitUnary(node);
+		}
+
+		private static BinaryExpression InvertBinaryCompare(Expression node)
+		{
+			var binaryNode = (BinaryExpression) node;
+
+			return Expression.MakeBinary(CompareInverseMap[node.NodeType], binaryNode.Left, binaryNode.Right,
+				binaryNode.IsLiftedToNull, binaryNode.Method, binaryNode.Conversion);
+		}
+
+		private static BinaryExpression InvertBinaryAndOr(Expression node)
+		{
+			var binaryNode = (BinaryExpression) node;
+
+			return Expression.MakeBinary(BinaryInverseMap[node.NodeType],
+				Expression.Not(binaryNode.Left), Expression.Not(binaryNode.Right),
+				binaryNode.IsLiftedToNull, binaryNode.Method, binaryNode.Conversion);
 		}
 	}
 }
