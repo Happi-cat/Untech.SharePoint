@@ -28,6 +28,7 @@ namespace Untech.SharePoint.Core.Caml
 			{
 				new WhereModifier(),
 				new PredicateOptimizer(),
+				new BoolEqualityModifier(),
 				new Evaluator()
 			};
 
