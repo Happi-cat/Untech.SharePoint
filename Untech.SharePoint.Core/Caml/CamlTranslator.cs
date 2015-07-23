@@ -26,6 +26,7 @@ namespace Untech.SharePoint.Core.Caml
 
 			TreeVisitors = new List<ExpressionVisitor>
 			{
+				new AnyAllModifer(),
 				new WhereModifier(),
 				new PredicateOptimizer(),
 				new BoolEqualityModifier(),

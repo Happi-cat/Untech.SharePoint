@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using Untech.SharePoint.Core.Extensions;
 
@@ -12,14 +14,24 @@ namespace Untech.SharePoint.Core.Caml.Modifiers
 			{
 				case "All":
 				case "Any":
+				case "First":
+				case "FirstOrDefault":
+				case "Single":
+				case "SingleOrDefault":
 					if (node.Arguments.Count == 2)
 					{
-						var predicate = (LambdaExpression)node.Arguments[1].StripQuotes();
-						node = node.Update(null, new[]
-						{
-							Expression.Call(typeof (Queryable), "Where", node.Method.GetGenericArguments(), node.Arguments[0], predicate),
-						});
+						var predicate = ConvertToWherePredicate((LambdaExpression)node.Arguments[1].StripQuotes(), node.Method.Name == "All");
 
+						var whereExpression = Expression.Call(typeof (Queryable), "Where", node.Method.GetGenericArguments(),
+							node.Arguments[0], predicate);
+
+						var methodName = node.Method.Name;
+						if (methodName == "All")
+						{
+							methodName = "Any";
+						}
+
+						node = Expression.Call(node.Type, methodName, node.Method.GetGenericArguments(), whereExpression);
 					}
 					break;
 			}
@@ -28,5 +40,9 @@ namespace Untech.SharePoint.Core.Caml.Modifiers
 			return node;
 		}
 
+		private static LambdaExpression ConvertToWherePredicate(LambdaExpression predicate, bool isAll = false)
+		{
+			return isAll ? Expression.Lambda(Expression.Not(predicate.Body), predicate.Parameters) : predicate;
+		}
 	}
 }

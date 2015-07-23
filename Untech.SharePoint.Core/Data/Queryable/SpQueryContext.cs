@@ -16,6 +16,7 @@ namespace Untech.SharePoint.Core.Data.Queryable
 
 			var caml = (new CamlTranslator()).Translate(null, expression);
 
+			var query = new SPQuery();
 
 			throw new NotImplementedException();
 		}
