@@ -24,6 +24,8 @@ namespace Untech.SharePoint.Core.Utility
 
 		public static T GetInstance(Action<T> initializer)
 		{
+			Guard.ThrowIfArgumentNull(initializer, "initializer");
+
 			if (_object == null)
 			{
 				lock (Sync)

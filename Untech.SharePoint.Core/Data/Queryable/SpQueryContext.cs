@@ -1,5 +1,7 @@
 using System;
+using System.Linq;
 using System.Linq.Expressions;
+using System.Xml.Linq;
 using Microsoft.SharePoint;
 using Untech.SharePoint.Core.Caml;
 
@@ -18,7 +20,24 @@ namespace Untech.SharePoint.Core.Data.Queryable
 
 			var query = new SPQuery();
 
-			throw new NotImplementedException();
+			var viewFieldsXml = caml.Element(Tags.ViewFields);
+			var rowLimitXml = caml.Element(Tags.RowLimit);
+			var queryXml = caml.Elements()
+				.Where(n => n.Name != Tags.ViewFields && n.Name != Tags.RowLimit)
+				.ToList();
+
+			query.Query = (new XElement(Tags.Query, queryXml)).Value;
+			if (viewFieldsXml != null)
+			{
+				query.ViewFields = viewFieldsXml.Value;
+				query.ViewFieldsOnly = true;
+			}
+			if (rowLimitXml != null)
+			{
+				query.RowLimit = (int)rowLimitXml.Value;
+			}
+
+			return list.GetItems(query);
 		}
 
 		private static bool IsQueryOverDataSource(Expression expression)

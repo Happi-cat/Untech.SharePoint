@@ -31,19 +31,9 @@ namespace Untech.SharePoint.Core.Reflection
 
 		public static Func<TArg1, TArg2, TArg3, TResult> GetCreator<TArg1, TArg2, TArg3, TResult>(Type type)
 		{
-			ShouldImplementOrInherit<TResult>(type);
+			ShouldImplementOrInherit<TResult>(type);	
 
 			return GetCreator<Func<TArg1, TArg2, TArg3, TResult>>(type, new[] { typeof(TArg1), typeof(TArg2), typeof(TArg3) });
-		}
-
-		private static void ShouldImplementOrInherit<TBase>(Type type)
-		{
-			var baseType = typeof(TBase);
-
-			if (!baseType.IsAssignableFrom(type))
-			{
-				throw new ArgumentException(string.Format("Type '{0}' should implement or inherit '{1}", type.FullName, baseType.FullName));
-			}
 		}
 
 		private static TDelegate GetCreator<TDelegate>(Type type, Type[] argumentTypes)
@@ -58,6 +48,16 @@ namespace Untech.SharePoint.Core.Reflection
 			var newExpression = Expression.New(constructor, parameterExpressions);
 
 			return Expression.Lambda<TDelegate>(newExpression, parameterExpressions).Compile();
+		}
+
+		private static void ShouldImplementOrInherit<TBase>(Type type)
+		{
+			var baseType = typeof(TBase);
+
+			if (!baseType.IsAssignableFrom(type))
+			{
+				throw new ArgumentException(string.Format("Type '{0}' should implement or inherit '{1}", type.FullName, baseType.FullName));
+			}
 		}
 
 		private static void ShouldHaveConstructor(Type type, Type[] argumentTypes, ConstructorInfo ctor)
