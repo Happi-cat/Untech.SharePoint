@@ -13,8 +13,10 @@ namespace Untech.SharePoint.Core.Reflection
 
 		public void Initialize(Type objectType)
 		{
-			var properties = objectType.GetProperties(BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public);
-			var fields = objectType.GetFields(BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public);
+			const BindingFlags bindingFlags = BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public;
+
+			var properties = objectType.GetProperties(bindingFlags);
+			var fields = objectType.GetFields(bindingFlags);
 
 			foreach (var property in properties)
 			{

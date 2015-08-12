@@ -30,7 +30,45 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.SharePoint, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.Office.Client.Policy">
+      <HintPath>..\packages\Microsoft.SharePointOnline.CSOM.16.1.3912.1204\lib\net45\Microsoft.Office.Client.Policy.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Office.Client.TranslationServices">
+      <HintPath>..\packages\Microsoft.SharePointOnline.CSOM.16.1.3912.1204\lib\net45\Microsoft.Office.Client.TranslationServices.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Office.SharePoint.Tools">
+      <HintPath>..\packages\Microsoft.SharePointOnline.CSOM.16.1.3912.1204\lib\net45\Microsoft.Office.SharePoint.Tools.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Online.SharePoint.Client.Tenant">
+      <HintPath>..\packages\Microsoft.SharePointOnline.CSOM.16.1.3912.1204\lib\net45\Microsoft.Online.SharePoint.Client.Tenant.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SharePoint.Client">
+      <HintPath>..\packages\Microsoft.SharePointOnline.CSOM.16.1.3912.1204\lib\net45\Microsoft.SharePoint.Client.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SharePoint.Client.DocumentManagement">
+      <HintPath>..\packages\Microsoft.SharePointOnline.CSOM.16.1.3912.1204\lib\net45\Microsoft.SharePoint.Client.DocumentManagement.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SharePoint.Client.Publishing">
+      <HintPath>..\packages\Microsoft.SharePointOnline.CSOM.16.1.3912.1204\lib\net45\Microsoft.SharePoint.Client.Publishing.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SharePoint.Client.Runtime">
+      <HintPath>..\packages\Microsoft.SharePointOnline.CSOM.16.1.3912.1204\lib\net45\Microsoft.SharePoint.Client.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SharePoint.Client.Search">
+      <HintPath>..\packages\Microsoft.SharePointOnline.CSOM.16.1.3912.1204\lib\net45\Microsoft.SharePoint.Client.Search.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SharePoint.Client.Search.Applications">
+      <HintPath>..\packages\Microsoft.SharePointOnline.CSOM.16.1.3912.1204\lib\net45\Microsoft.SharePoint.Client.Search.Applications.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SharePoint.Client.Taxonomy">
+      <HintPath>..\packages\Microsoft.SharePointOnline.CSOM.16.1.3912.1204\lib\net45\Microsoft.SharePoint.Client.Taxonomy.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SharePoint.Client.UserProfiles">
+      <HintPath>..\packages\Microsoft.SharePointOnline.CSOM.16.1.3912.1204\lib\net45\Microsoft.SharePoint.Client.UserProfiles.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SharePoint.Client.WorkflowServices">
+      <HintPath>..\packages\Microsoft.SharePointOnline.CSOM.16.1.3912.1204\lib\net45\Microsoft.SharePoint.Client.WorkflowServices.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\packages\Newtonsoft.Json.6.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
@@ -46,6 +84,16 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Caml\CamlTranslator.cs" />
+    <Compile Include="Caml\Expressions\CamlExpression.cs" />
+    <Compile Include="Caml\Expressions\CamlExpressionExtensions.cs" />
+    <Compile Include="Caml\Expressions\CamlExpressionType.cs" />
+    <Compile Include="Caml\Expressions\CamlExpressionVisitor.cs" />
+    <Compile Include="Caml\Expressions\FieldRefExpression.cs" />
+    <Compile Include="Caml\Expressions\NowExpression.cs" />
+    <Compile Include="Caml\Expressions\OrderingExpression.cs" />
+    <Compile Include="Caml\Expressions\QueryExpression.cs" />
+    <Compile Include="Caml\Expressions\TodayExpression.cs" />
+    <Compile Include="Caml\Expressions\ViewExpression.cs" />
     <Compile Include="Caml\Finders\ProjectorFinder.cs" />
     <Compile Include="Caml\Finders\SpModelContextFinder.cs" />
     <Compile Include="Caml\InvalidCamlQueryException.cs" />
@@ -57,6 +105,7 @@
     <Compile Include="Caml\Modifiers\Nominator.cs" />
     <Compile Include="Caml\Modifiers\SubtreeEvaluator.cs" />
     <Compile Include="Caml\Modifiers\WhereModifier.cs" />
+    <Compile Include="Caml\SpecialExpressionBinder.cs" />
     <Compile Include="Caml\Tags.cs" />
     <Compile Include="Caml\Translators\GroupByTranslator.cs" />
     <Compile Include="Caml\Translators\ICamlTranslator.cs" />
@@ -65,6 +114,7 @@
     <Compile Include="Caml\Translators\TranslatorHelpers.cs" />
     <Compile Include="Caml\Translators\ViewFieldsTranslator.cs" />
     <Compile Include="Caml\Translators\WhereTranslator.cs" />
+    <Compile Include="Caml\Visitors\CamlBinder.cs" />
     <Compile Include="Data\Converters\BuiltIn\BooleanFieldConverter.cs" />
     <Compile Include="Data\Converters\BuiltIn\CounterFieldConverter.cs" />
     <Compile Include="Data\Converters\Custom\EnumFieldConverter.cs" />

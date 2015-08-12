@@ -1,11 +1,11 @@
 ﻿using System;
-using Microsoft.SharePoint;
+using Microsoft.SharePoint.Client;
 
 namespace Untech.SharePoint.Core.Data.Converters
 {
 	public interface IFieldConverter
 	{
-		void Initialize(SPField field, Type propertyType);
+		void Initialize(Field field, Type propertyType);
 
 		object FromSpValue(object value);
 

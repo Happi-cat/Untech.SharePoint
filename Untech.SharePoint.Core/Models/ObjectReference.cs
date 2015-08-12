@@ -6,16 +6,6 @@ namespace Untech.SharePoint.Core.Models
 	[Serializable]
 	public class ObjectReference
 	{
-		public ObjectReference()
-		{ }
-
-		public ObjectReference(Guid listId, int id, string value)
-		{
-			ListId = listId;
-			Id = id;
-			Value = value;
-		}
-
 		[JsonProperty]
 		public int Id { get; set; }
 
