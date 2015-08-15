@@ -7,7 +7,7 @@ namespace Untech.SharePoint.Core.Caml.Expressions
 	{
 		public TodayExpression()
 		{
-
+			Offset = Empty();
 		}
 
 		public TodayExpression(Expression offset)
