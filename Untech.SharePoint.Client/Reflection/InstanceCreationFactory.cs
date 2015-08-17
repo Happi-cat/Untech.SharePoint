@@ -15,15 +15,19 @@ namespace Untech.SharePoint.Client.Reflection
 
 		public void Register(Type type)
 		{
+			Guard.CheckNotNull("type", type);
+
 			if (!_cachedCreators.ContainsKey(type))
 			{
 				_cachedCreators.Add(type, InstanceCreationUtility.GetCreator<TObject>(type));
 			}
 		}
 
-		public TObject Create(Type key)
+		public TObject Create(Type type)
 		{
-			return _cachedCreators[key]();
+			Guard.CheckNotNull("type", type);
+
+			return _cachedCreators[type]();
 		}
 	}
 
@@ -38,15 +42,19 @@ namespace Untech.SharePoint.Client.Reflection
 
 		public void Register(Type type)
 		{
+			Guard.CheckNotNull("type", type);
+
 			if (!_cachedCreators.ContainsKey(type))
 			{
 				_cachedCreators.Add(type, InstanceCreationUtility.GetCreator<TArg1, TObject>(type));
 			}
 		}
 
-		public TObject Create(Type key, TArg1 arg)
+		public TObject Create(Type type, TArg1 arg)
 		{
-			return _cachedCreators[key](arg);
+			Guard.CheckNotNull("type", type);
+
+			return _cachedCreators[type](arg);
 		}
 	}
 
@@ -61,15 +69,19 @@ namespace Untech.SharePoint.Client.Reflection
 
 		public void Register(Type type)
 		{
+			Guard.CheckNotNull("type", type);
+
 			if (!_cachedCreators.ContainsKey(type))
 			{
 				_cachedCreators.Add(type, InstanceCreationUtility.GetCreator<TArg1, TArg2, TObject>(type));
 			}
 		}
 
-		public TObject Create(Type key, TArg1 arg1,TArg2 arg2)
+		public TObject Create(Type type, TArg1 arg1,TArg2 arg2)
 		{
-			return _cachedCreators[key](arg1, arg2);
+			Guard.CheckNotNull("type", type);
+
+			return _cachedCreators[type](arg1, arg2);
 		}
 	}
 
@@ -84,15 +96,19 @@ namespace Untech.SharePoint.Client.Reflection
 
 		public void Register(Type type)
 		{
+			Guard.CheckNotNull("type", type);
+
 			if (!_cachedCreators.ContainsKey(type))
 			{
 				_cachedCreators.Add(type, InstanceCreationUtility.GetCreator<TArg1, TArg2, TArg3, TObject>(type));
 			}
 		}
 
-		public TObject Create(Type key, TArg1 arg1, TArg2 arg2,TArg3 arg3)
+		public TObject Create(Type type, TArg1 arg1, TArg2 arg2,TArg3 arg3)
 		{
-			return _cachedCreators[key](arg1, arg2, arg3);
+			Guard.CheckNotNull("type", type);
+
+			return _cachedCreators[type](arg1, arg2, arg3);
 		}
 	}
 }

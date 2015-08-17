@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Untech.SharePoint.Client")]
+[assembly: AssemblyTitle("Untech.SharePoint.Client.Test")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("Untech.SharePoint.Client")]
+[assembly: AssemblyProduct("Untech.SharePoint.Client.Test")]
 [assembly: AssemblyCopyright("Copyright ©  2015")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("fde7de6f-fe77-4c58-9f47-a74ee677a1ba")]
+[assembly: Guid("d9350ee1-6b58-48c7-93b5-2ece96dda4e1")]
 
 // Version information for an assembly consists of the following four values:
 //
@@ -34,10 +34,3 @@ using System.Runtime.InteropServices;
 // [assembly: AssemblyVersion("1.0.*")]
 [assembly: AssemblyVersion("1.0.0.0")]
 [assembly: AssemblyFileVersion("1.0.0.0")]
-
-[assembly: InternalsVisibleTo("Untech.SharePoint.Client.Test, PublicKey="+
-"0024000004800000940000000602000000240000525341310004000001000100c74a375f89b379"+
-"334585791dc8ec33e07ae373ab4378e1dda812d2e1d0da57fef69525d21eb0787e8bf1a33f3cf0"+
-"79f9c4feaf36c01dfcbb23a779cbe9beba5fb6c7ddb491538e5ddfe09b934504c1b6bbd854e6b2"+
-"7a32f9bd9bcf2295287083f2ec48e71f967eb978c98293e376bf66abd147762cad6ed43881d086"+
-"74b9a4c8")]

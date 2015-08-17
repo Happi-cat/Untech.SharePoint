@@ -7,8 +7,10 @@ namespace Untech.SharePoint.Client.Data.FieldConverters
 	{
 		void Initialize(Field field, Type propertyType);
 
-		object FromSpValue(object value);
+		object FromClientValue(object value);
 
-		object ToSpValue(object value);
+		object ToClientValue(object value);
+
+		string ToCamlValue(object value);
 	}
 }

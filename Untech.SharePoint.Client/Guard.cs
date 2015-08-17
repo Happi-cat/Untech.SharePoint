@@ -22,15 +22,34 @@ namespace Untech.SharePoint.Client
 			}
 
 			var message = string.Format("Parameter '{0}' is a '{2}', which cannot be assigned to type '{1}'.",
-				paramName,
-				expectedType,
-				actualType);
+				paramName, expectedType, actualType);
 			throw new ArgumentException(message, paramName);
 		}
 
 		public static void CheckTypeIsAssignableFrom<TExpected>(string paramName, Type actualType)
 		{
 			CheckTypeIsAssignableFrom(paramName, actualType, typeof(TExpected));
+		}
+
+
+		public static void CheckTypeIs(string paramName, Type actualType, Type expectedType)
+		{
+			CheckNotNull("actualType", actualType);
+			CheckNotNull("expectedType", expectedType);
+
+			if (expectedType == actualType)
+			{
+				return;
+			}
+
+			var message = string.Format("Parameter '{0}' is a '{2}', '{1}' is expected.",
+				paramName, expectedType, actualType);
+			throw new ArgumentException(message, paramName);
+		}
+
+		public static void CheckTypeIs<TExpected>(string paramName, Type actualType)
+		{
+			CheckTypeIs(paramName, actualType, typeof(TExpected));
 		}
 
 	}

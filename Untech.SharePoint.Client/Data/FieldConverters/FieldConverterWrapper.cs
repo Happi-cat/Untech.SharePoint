@@ -22,15 +22,15 @@ namespace Untech.SharePoint.Client.Data.FieldConverters
 			}
 			catch (Exception e)
 			{
-				throw new InvalidFieldConverterException(ConverterType, e);
+				throw new FieldConverterInitializationException(ConverterType, e);
 			}
 		}
 
-		public object FromSpValue(object value)
+		public object FromClientValue(object value)
 		{
 			try
 			{
-				return ConverterInstance.FromSpValue(value);
+				return ConverterInstance.FromClientValue(value);
 			}
 			catch (Exception e)
 			{
@@ -38,11 +38,23 @@ namespace Untech.SharePoint.Client.Data.FieldConverters
 			}
 		}
 
-		public object ToSpValue(object value)
+		public object ToClientValue(object value)
 		{
 			try
 			{
-				return ConverterInstance.ToSpValue(value);
+				return ConverterInstance.ToClientValue(value);
+			}
+			catch (Exception e)
+			{
+				throw new FieldConverterException(ConverterType, e);
+			}
+		}
+
+		public string ToCamlValue(object value)
+		{
+			try
+			{
+				return ConverterInstance.ToCamlValue(value);
 			}
 			catch (Exception e)
 			{

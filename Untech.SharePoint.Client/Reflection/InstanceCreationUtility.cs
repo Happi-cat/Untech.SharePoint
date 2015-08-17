@@ -10,6 +10,7 @@ namespace Untech.SharePoint.Client.Reflection
 	{
 		public static Func<TResult> GetCreator<TResult>(Type type)
 		{
+			Guard.CheckNotNull("type", type);
 			Guard.CheckTypeIsAssignableFrom<TResult>("type", type);
 
 			return GetCreator<Func<TResult>>(type, new Type[0]);
@@ -17,6 +18,7 @@ namespace Untech.SharePoint.Client.Reflection
 
 		public static Func<TArg, TResult> GetCreator<TArg, TResult>(Type type)
 		{
+			Guard.CheckNotNull("type", type);
 			Guard.CheckTypeIsAssignableFrom<TResult>("type", type);
 
 			return GetCreator<Func<TArg, TResult>>(type, new[] { typeof(TArg) });
@@ -24,6 +26,7 @@ namespace Untech.SharePoint.Client.Reflection
 
 		public static Func<TArg1, TArg2, TResult> GetCreator<TArg1, TArg2, TResult>(Type type)
 		{
+			Guard.CheckNotNull("type", type);
 			Guard.CheckTypeIsAssignableFrom<TResult>("type", type);
 
 			return GetCreator<Func<TArg1, TArg2, TResult>>(type, new[] { typeof(TArg1), typeof(TArg2) });
@@ -31,6 +34,7 @@ namespace Untech.SharePoint.Client.Reflection
 
 		public static Func<TArg1, TArg2, TArg3, TResult> GetCreator<TArg1, TArg2, TArg3, TResult>(Type type)
 		{
+			Guard.CheckNotNull("type", type);
 			Guard.CheckTypeIsAssignableFrom<TResult>("type", type);	
 
 			return GetCreator<Func<TArg1, TArg2, TArg3, TResult>>(type, new[] { typeof(TArg1), typeof(TArg2), typeof(TArg3) });

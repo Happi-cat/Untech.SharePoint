@@ -84,10 +84,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Data\FieldConverters\Basic\CounterFieldConverter.cs" />
     <Compile Include="Data\FieldConverters\FieldConverterException.cs" />
+    <Compile Include="Data\FieldConverters\FieldConverterResolver.cs" />
     <Compile Include="Data\FieldConverters\FieldConverterWrapper.cs" />
     <Compile Include="Data\FieldConverters\IFieldConverter.cs" />
-    <Compile Include="Data\FieldConverters\InvalidFieldConverterException.cs" />
+    <Compile Include="Data\FieldConverters\FieldConverterInitializationException.cs" />
     <Compile Include="Data\FieldConverters\SpFieldConverterAttribute.cs" />
     <Compile Include="Data\SpFieldAttribute.cs" />
     <Compile Include="Guard.cs" />
@@ -106,7 +108,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Data\FieldConverters\Basic\" />
     <Folder Include="Data\FieldConverters\Custom\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -8,11 +8,13 @@ namespace Untech.SharePoint.Client.Data.FieldConverters
 		{
 
 		}
+
 		public FieldConverterException(string message)
 			: base(message)
 		{
 
 		}
+
 		public FieldConverterException(string message, Exception innerException)
 			: base(message, innerException)
 		{
@@ -22,7 +24,7 @@ namespace Untech.SharePoint.Client.Data.FieldConverters
 		public FieldConverterException(Type converterType, Exception innerException)
 			: base(GetMessage(converterType), innerException)
 		{
-			
+
 		}
 
 		private static string GetMessage(Type converterType)

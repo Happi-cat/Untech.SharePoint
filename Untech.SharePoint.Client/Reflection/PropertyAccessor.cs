@@ -13,6 +13,8 @@ namespace Untech.SharePoint.Client.Reflection
 
 		public void Initialize(Type objectType)
 		{
+			Guard.CheckNotNull("objectType", objectType);
+
 			const BindingFlags bindingFlags = BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public;
 
 			var properties = objectType.GetProperties(bindingFlags);
@@ -33,6 +35,8 @@ namespace Untech.SharePoint.Client.Reflection
 		{
 			get
 			{
+				Guard.CheckNotNull("propertyOrFieldName", propertyOrFieldName);
+
 				if (_cachedGetters.ContainsKey(propertyOrFieldName))
 				{
 					return _cachedGetters[propertyOrFieldName](obj);
@@ -41,6 +45,8 @@ namespace Untech.SharePoint.Client.Reflection
 			}
 			set
 			{
+				Guard.CheckNotNull("propertyOrFieldName", propertyOrFieldName);
+
 				if (_cachedSetters.ContainsKey(propertyOrFieldName))
 				{
 					_cachedSetters[propertyOrFieldName](obj, value);
