@@ -9,7 +9,11 @@ namespace Untech.SharePoint.Client.Data.FieldConverters
 {
 	internal class FieldConverterResolver
 	{
-		private readonly Dictionary<string, Type> _builtInConverters = new Dictionary<string, Type>(StringComparer.InvariantCultureIgnoreCase);
+		public FieldConverterResolver()
+		{
+			BuiltInConverters = new Dictionary<string, Type>(StringComparer.InvariantCultureIgnoreCase);
+		}
+
 
 		public static FieldConverterResolver Instance
 		{
@@ -21,6 +25,8 @@ namespace Untech.SharePoint.Client.Data.FieldConverters
 			get { return InstanceCreationFactory<IFieldConverter>.Instance; }
 		}
 
+		protected Dictionary<string, Type> BuiltInConverters { get; private set; }
+
 		public void Register(Type type)
 		{
 			try
@@ -29,7 +35,7 @@ namespace Untech.SharePoint.Client.Data.FieldConverters
 			}
 			catch (Exception e)
 			{
-				throw new FieldConverterException(type, e);
+				throw new InvalidFieldConverterException(type, e);
 			}
 		}
 
@@ -47,7 +53,7 @@ namespace Untech.SharePoint.Client.Data.FieldConverters
 
 		public IFieldConverter Create(string fieldType)
 		{
-			return Create(_builtInConverters[fieldType]);
+			return Create(BuiltInConverters[fieldType]);
 		}
 
 		protected internal static void RegisterBuiltInConverters(FieldConverterResolver instance)
@@ -66,15 +72,11 @@ namespace Untech.SharePoint.Client.Data.FieldConverters
 
 			foreach (var type in types)
 			{
-				var keys = type.GetCustomAttributes(attributeType)
+				type.GetCustomAttributes(attributeType)
 					.Cast<SpFieldConverterAttribute>()
 					.Select(attribute => attribute.FieldType)
-					.ToList();
-
-				foreach (var key in keys)
-				{
-					instance._builtInConverters.Add(key, type);
-				}
+					.ToList()
+					.ForEach(n => instance.BuiltInConverters.Add(n, type));
 
 				instance.Register(type);
 			}

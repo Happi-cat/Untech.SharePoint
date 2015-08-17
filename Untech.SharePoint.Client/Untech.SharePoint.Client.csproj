@@ -90,6 +90,7 @@
     <Compile Include="Data\FieldConverters\FieldConverterWrapper.cs" />
     <Compile Include="Data\FieldConverters\IFieldConverter.cs" />
     <Compile Include="Data\FieldConverters\FieldConverterInitializationException.cs" />
+    <Compile Include="Data\FieldConverters\InvalidFieldConverterException.cs" />
     <Compile Include="Data\FieldConverters\SpFieldConverterAttribute.cs" />
     <Compile Include="Data\SpFieldAttribute.cs" />
     <Compile Include="Guard.cs" />
