@@ -32,9 +32,11 @@ namespace Untech.SharePoint.Client.Utility
 				{
 					if (_object == null)
 					{
-						_object = new T();
+						var obj = new T();
 
-						initializer(_object);
+						initializer(obj);
+
+						_object = obj;
 					}
 				}
 			}
