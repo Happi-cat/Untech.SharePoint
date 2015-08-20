@@ -1,33 +1,42 @@
-﻿using System;
-using Untech.SharePoint.Client.Reflection;
+﻿using System.Collections.Generic;
+using System.Linq;
+using Microsoft.SharePoint.Client;
+using Untech.SharePoint.Client.Data.FieldConverters;
 
 namespace Untech.SharePoint.Client.Data
 {
 	internal sealed class MetaModel
 	{
-		public MetaModel()
+		public MetaModel(MetaType metaType, IReadOnlyCollection<Field> fields)
 		{
-			PropertyAccessor = new PropertyAccessor();
-			MetaProperties = new MetaProperties();
+			Type = metaType;
+			SpFields = fields;
+
+			InitConverters();
 		}
 
-		internal PropertyAccessor PropertyAccessor { get; private set; }
+		public MetaType Type { get; private set; }
 
-		internal Type ModelType { get; private set; }
+		public IReadOnlyCollection<Field> SpFields { get; private set; }
 
-		internal MetaProperties MetaProperties { get; private set; }
+		public IReadOnlyDictionary<string, IFieldConverter> Converters { get; private set; }
 
-		internal DataMapper Mapper
+		private void InitConverters()
 		{
-			get { return new DataMapper(this); }
+			Converters = Type.DataMembers.ToDictionary(n => n.Name, CreateConverter);
 		}
 
-		internal void Initialize(Type modelType)
+		private IFieldConverter CreateConverter(MetaDataMember member)
 		{
-			ModelType = modelType;
+			var spField = SpFields.Single(n => n.InternalName == member.SpFieldInternalName);
 
-			PropertyAccessor.Initialize(modelType);
-			MetaProperties.Initialize(modelType);
+			var converter = member.CustomConverterType == null
+				? FieldConverterResolver.Instance.Create(spField.TypeAsString)
+				: FieldConverterResolver.Instance.Create(member.CustomConverterType);
+
+			converter.Initialize(spField, member.Type);
+
+			return converter;
 		}
 	}
 }

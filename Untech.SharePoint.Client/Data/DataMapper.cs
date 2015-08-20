@@ -73,13 +73,13 @@ namespace Untech.SharePoint.Client.Data
 				var spValue = sourceItem[field.InternalName];
 				if (spValue == null && info.DefaultValue != null)
 				{
-					MetaModel.PropertyAccessor[destItem, info.MemberName] = info.DefaultValue;
+					MetaModel.MemberAccessor[destItem, info.MemberName] = info.DefaultValue;
 				}
 				else
 				{
 					var propValue = converter.FromClientValue(spValue);
 
-					MetaModel.PropertyAccessor[destItem, info.MemberName] = propValue;
+					MetaModel.MemberAccessor[destItem, info.MemberName] = propValue;
 				}
 			}
 			catch (Exception e)
@@ -99,7 +99,7 @@ namespace Untech.SharePoint.Client.Data
 			{
 				var converter = converters[info.MemberName];
 
-				var propValue = MetaModel.PropertyAccessor[sourceItem, info.MemberName];
+				var propValue = MetaModel.MemberAccessor[sourceItem, info.MemberName];
 				var spValue = converter.ToClientValue(propValue);
 
 				destItem[field.InternalName] = spValue;

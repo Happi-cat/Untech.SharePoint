@@ -94,6 +94,7 @@
     <Compile Include="Data\FieldConverters\IFieldConverterResolver.cs" />
     <Compile Include="Data\FieldConverters\InvalidFieldConverterException.cs" />
     <Compile Include="Data\FieldConverters\SpFieldConverterAttribute.cs" />
+    <Compile Include="Data\MetaFactory.cs" />
     <Compile Include="Data\MetaModel.cs" />
     <Compile Include="Data\MetaModelFactory.cs" />
     <Compile Include="Data\MetaModelPool.cs" />
@@ -113,6 +114,7 @@
     <Compile Include="Reflection\InstanceCreationUtility.cs" />
     <Compile Include="Reflection\PropertyAccessor.cs" />
     <Compile Include="Utility\Singleton.cs" />
+    <Compile Include="Utility\TypeSystem.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="key.snk" />

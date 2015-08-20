@@ -1,11 +1,12 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Untech.SharePoint.Client.Reflection;
+using Getter = System.Func<object, object>;
 
 namespace Untech.SharePoint.Client.Test.Reflection
 {
 	[TestClass]
-	public class PropertyAccessorTest
+	public class MemberAccessorTest
 	{
 		public class Model
 		{
@@ -33,30 +34,27 @@ namespace Untech.SharePoint.Client.Test.Reflection
 			}
 		}
 
+		public class DerivedModel : Model
+		{
+			public DerivedModel(string field) : base(field)
+			{
+			}
+		}
+
 		[TestMethod]
 		public void CanGetPublicProperty()
 		{
-			var accessor = new PropertyAccessor();
-			accessor.Initialize(typeof(Model));
+			var accessor = new MemberAccessor();
+			accessor.Initialize(typeof (Model));
 
 			Assert.AreEqual(accessor[new Model("field"), "Property"], "field");
-		}
-
-
-		[TestMethod]
-		public void CanGetPrivateField()
-		{
-			var accessor = new PropertyAccessor();
-			accessor.Initialize(typeof(Model));
-
-			Assert.AreEqual(accessor[new Model("field"), "_field"], "field");
 		}
 
 		[TestMethod]
 		public void CanSetPublicProperty()
 		{
-			var accessor = new PropertyAccessor();
-			accessor.Initialize(typeof(Model));
+			var accessor = new MemberAccessor();
+			accessor.Initialize(typeof (Model));
 
 			var obj = new Model("test");
 			accessor[obj, "Property"] = "updated";
@@ -64,24 +62,43 @@ namespace Untech.SharePoint.Client.Test.Reflection
 			Assert.AreEqual(obj.Property, "updated");
 		}
 
+		[TestMethod]
+		public void CanGetPrivateField()
+		{
+			var accessor = new MemberAccessor();
+			accessor.Initialize(typeof(Model));
+
+			Assert.AreEqual(accessor[new Model("field"), "_field"], "field");
+		}
 
 		[TestMethod]
 		public void CanSetPrivateField()
 		{
-			var accessor = new PropertyAccessor();
-			accessor.Initialize(typeof(Model));
+			var accessor = new MemberAccessor();
+			accessor.Initialize(typeof (Model));
 
 			var obj = new Model("test");
 			accessor[obj, "_field"] = "updated";
 
 			Assert.AreEqual(obj.Property, "updated");
 		}
+
+
+		[TestMethod]
+		public void CanUseBaseClassProperty()
+		{
+			var accessor = new MemberAccessor();
+			accessor.Initialize(typeof (DerivedModel));
+
+			Assert.AreEqual(accessor[new DerivedModel("field"), "Property"], "field");
+		}
+
 		[TestMethod]
 		public void ThrowIfNoGetter()
 		{
 			try
 			{
-				var accessor = new PropertyAccessor();
+				var accessor = new MemberAccessor();
 				accessor.Initialize(typeof (Model));
 
 				var obj = new Model("test");
@@ -90,7 +107,7 @@ namespace Untech.SharePoint.Client.Test.Reflection
 			}
 			catch (ArgumentException)
 			{
-				
+
 			}
 		}
 
@@ -100,8 +117,8 @@ namespace Untech.SharePoint.Client.Test.Reflection
 		{
 			try
 			{
-				var accessor = new PropertyAccessor();
-				accessor.Initialize(typeof(Model));
+				var accessor = new MemberAccessor();
+				accessor.Initialize(typeof (Model));
 
 				var obj = new Model("test");
 				accessor[obj, "GetOnly"] = "new";
@@ -118,8 +135,8 @@ namespace Untech.SharePoint.Client.Test.Reflection
 		{
 			try
 			{
-				var accessor = new PropertyAccessor();
-				accessor.Initialize(typeof(Model));
+				var accessor = new MemberAccessor();
+				accessor.Initialize(typeof (Model));
 
 				var test = accessor["Wrong Object", "Property"];
 				Assert.Fail();
@@ -135,8 +152,8 @@ namespace Untech.SharePoint.Client.Test.Reflection
 		{
 			try
 			{
-				var accessor = new PropertyAccessor();
-				accessor.Initialize(typeof(Model));
+				var accessor = new MemberAccessor();
+				accessor.Initialize(typeof (Model));
 
 				accessor[new Model("test"), "Property"] = 10;
 				Assert.Fail();
@@ -146,5 +163,7 @@ namespace Untech.SharePoint.Client.Test.Reflection
 
 			}
 		}
+
 	}
 }
+

@@ -4,7 +4,7 @@ using Untech.SharePoint.Client.Utility;
 
 namespace Untech.SharePoint.Client.Reflection
 {
-	public class InstanceCreationFactory<TObject>
+	public sealed class InstanceCreationFactory<TObject>
 	{
 		private readonly Dictionary<Type, Func<TObject>> _cachedCreators = new Dictionary<Type, Func<TObject>>();
 
@@ -31,7 +31,7 @@ namespace Untech.SharePoint.Client.Reflection
 		}
 	}
 
-	public class InstanceCreationFactory<TArg1, TObject>
+	public sealed class InstanceCreationFactory<TArg1, TObject>
 	{
 		private readonly Dictionary<Type, Func<TArg1, TObject>> _cachedCreators = new Dictionary<Type, Func<TArg1, TObject>>();
 
@@ -58,7 +58,7 @@ namespace Untech.SharePoint.Client.Reflection
 		}
 	}
 
-	public class InstanceCreationFactory<TArg1, TArg2, TObject>
+	public sealed class InstanceCreationFactory<TArg1, TArg2, TObject>
 	{
 		private readonly Dictionary<Type, Func<TArg1, TArg2, TObject>> _cachedCreators = new Dictionary<Type, Func<TArg1, TArg2, TObject>>();
 
@@ -85,7 +85,7 @@ namespace Untech.SharePoint.Client.Reflection
 		}
 	}
 
-	public class InstanceCreationFactory<TArg1, TArg2, TArg3, TObject>
+	public sealed class InstanceCreationFactory<TArg1, TArg2, TArg3, TObject>
 	{
 		private readonly Dictionary<Type, Func<TArg1, TArg2, TArg3, TObject>> _cachedCreators = new Dictionary<Type, Func<TArg1, TArg2, TArg3, TObject>>();
 
