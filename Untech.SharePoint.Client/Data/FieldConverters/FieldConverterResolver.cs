@@ -7,15 +7,14 @@ using Untech.SharePoint.Client.Utility;
 
 namespace Untech.SharePoint.Client.Data.FieldConverters
 {
-	internal class FieldConverterResolver
+	internal class FieldConverterResolver : IFieldConverterResolver
 	{
 		public FieldConverterResolver()
 		{
 			BuiltInConverters = new Dictionary<string, Type>(StringComparer.InvariantCultureIgnoreCase);
 		}
 
-
-		public static FieldConverterResolver Instance
+		public static IFieldConverterResolver Instance
 		{
 			get { return Singleton<FieldConverterResolver>.GetInstance(RegisterBuiltInConverters); }
 		}

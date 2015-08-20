@@ -7,12 +7,12 @@ namespace Untech.SharePoint.Client.Extensions
 	{
 		public static bool IsNullableType(this Type type)
 		{
-			return type.IsGenericType && type.GetGenericTypeDefinition() == typeof (Nullable<>);
-		}
+			if (!type.IsValueType)
+			{
+				return true;
+			}
 
-		public static bool IsArrayOrAssignableFromList<T>(this Type type)
-		{
-			return type == typeof(T[]) || type.IsAssignableFrom(typeof(List<T>));
+			return type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>);
 		}
 
 		public static bool Is<T>(this Type type)

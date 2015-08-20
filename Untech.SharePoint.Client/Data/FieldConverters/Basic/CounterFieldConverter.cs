@@ -13,7 +13,7 @@ namespace Untech.SharePoint.Client.Data.FieldConverters.Basic
 		{
 			Guard.CheckNotNull("field", field);
 			Guard.CheckNotNull("propertyType", propertyType);
-			Guard.CheckTypeIs<int>("propertyType", propertyType);
+			Guard.CheckType<int>("propertyType", propertyType);
 
 			Field = field;
 			PropertyType = propertyType;

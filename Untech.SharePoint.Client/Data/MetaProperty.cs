@@ -5,8 +5,28 @@ using Untech.SharePoint.Client.Data.FieldConverters;
 
 namespace Untech.SharePoint.Client.Data
 {
-	public class MetaProperty
+	internal class MetaProperty
 	{
+		public MetaProperty(PropertyInfo propertyInfo)
+		{
+			MemberName = propertyInfo.Name;
+			MemberType = propertyInfo.PropertyType;
+
+			UpdateSpFieldInfo(propertyInfo);
+			UpdateDefaultValue(propertyInfo);
+			RegisterCustomConverter();
+		}
+
+		public MetaProperty(FieldInfo fieldInfo)
+		{
+			MemberName = fieldInfo.Name;
+			MemberType = fieldInfo.FieldType;
+
+			UpdateSpFieldInfo(fieldInfo);
+			UpdateDefaultValue(fieldInfo);
+			RegisterCustomConverter();
+		}
+
 		public string MemberName { get; set; }
 
 		public Type MemberType { get; set; }
@@ -18,61 +38,34 @@ namespace Untech.SharePoint.Client.Data
 		public object DefaultValue { get; set; }
 
 
-		public static MetaProperty Create(PropertyInfo propertyInfo)
+		private void UpdateSpFieldInfo(MemberInfo memberInfo)
 		{
-			var info = new MetaProperty
-			{
-				MemberName = propertyInfo.Name,
-				MemberType = propertyInfo.PropertyType,
-			};
-
-			UpdateSPFieldInfo(propertyInfo, info);
-			UpdateDefaultValue(propertyInfo, info);
-			RegisterCustomConverter(info);
-
-			return info;
-		}
-
-		public static MetaProperty Create(FieldInfo fieldInfo)
-		{
-			var info = new MetaProperty
-			{
-				MemberName = fieldInfo.Name,
-				MemberType = fieldInfo.FieldType,
-			};
-
-			UpdateSPFieldInfo(fieldInfo, info);
-			UpdateDefaultValue(fieldInfo, info);
-			RegisterCustomConverter(info);
-
-			return info;
-		}
-
-		private static void UpdateSPFieldInfo(MemberInfo memberInfo, MetaProperty info)
-		{
-			var fieldAttribute = memberInfo.GetCustomAttribute<SpFieldAttribute>();
-			if (fieldAttribute == null)
+			var attribute = memberInfo.GetCustomAttribute<SpFieldAttribute>();
+			if (attribute == null)
 			{
 				throw new ArgumentException(string.Format("Member {0} has no attribute SpFieldAttribute", memberInfo.Name), "memberInfo");
 			}
 
-			info.SpFieldInternalName = fieldAttribute.InternalName ?? info.MemberName;
-			info.CustomConverterType = fieldAttribute.CustomConverterType;
+			SpFieldInternalName = attribute.InternalName ?? MemberName;
+			CustomConverterType = attribute.CustomConverterType;
 		}
 
-		private static void UpdateDefaultValue(MemberInfo memberInfo, MetaProperty info)
+		private void UpdateDefaultValue(MemberInfo memberInfo)
 		{
-			var defaultAttribute = memberInfo.GetCustomAttribute<DefaultValueAttribute>();
-			if (defaultAttribute == null) return;
-
-			info.DefaultValue = defaultAttribute.Value;
-		}
-
-		private static void RegisterCustomConverter(MetaProperty info)
-		{
-			if (info.CustomConverterType != null)
+			var attribute = memberInfo.GetCustomAttribute<DefaultValueAttribute>();
+			if (attribute == null)
 			{
-				FieldConverterResolver.Instance.Register(info.CustomConverterType);
+				return;
+			}
+
+			DefaultValue = attribute.Value;
+		}
+
+		private void RegisterCustomConverter()
+		{
+			if (CustomConverterType != null)
+			{
+				FieldConverterResolver.Instance.Register(CustomConverterType);
 			}
 		}
 	}

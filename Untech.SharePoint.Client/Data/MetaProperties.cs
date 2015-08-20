@@ -47,12 +47,12 @@ namespace Untech.SharePoint.Client.Data
 
 		private void AddMappingInfo(FieldInfo fieldInfo)
 		{
-			_mappings.Add(fieldInfo.Name, MetaProperty.Create(fieldInfo));
+			_mappings.Add(fieldInfo.Name, new MetaProperty(fieldInfo));
 		}
 
 		private void AddMappingInfo(PropertyInfo propertyInfo)
 		{
-			_mappings.Add(propertyInfo.Name, MetaProperty.Create(propertyInfo));
+			_mappings.Add(propertyInfo.Name, new MetaProperty(propertyInfo));
 		}
 
 		#endregion

@@ -25,16 +25,16 @@ namespace Untech.SharePoint.Client.Data
 		{
 			var message = GetMessage(info.MemberName, info.SpFieldInternalName);
 
-			message = message + string.Format("Property or field type: {0}.", info.MemberType.FullName);
+			message = message + string.Format("Property or field type: {0}.", info.MemberType);
 
 			if (info.CustomConverterType != null)
 			{
-				message = message + string.Format("Custom converter type: {0}.", info.CustomConverterType.FullName);
+				message = message + string.Format("Custom converter type: {0}.", info.CustomConverterType);
 			}
 
 			if (info.DefaultValue != null)
 			{
-				message = message + string.Format("Default value type: {0}.", info.DefaultValue.GetType().FullName);
+				message = message + string.Format("Default value type: {0}.", info.DefaultValue.GetType());
 			}
 
 			return message;

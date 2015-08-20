@@ -2,20 +2,25 @@
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Reflection;
+using Getter = System.Func<object, object>;
+using Setter = System.Action<object, object>;
 
 namespace Untech.SharePoint.Client.Reflection
 {
-	internal class PropertyAccessor
+	internal sealed class PropertyAccessor
 	{
-		private readonly Dictionary<string, Action<object, object>> _cachedSetters = new Dictionary<string, Action<object, object>>();
+		private readonly Dictionary<string, Setter> _cachedSetters = new Dictionary<string, Setter>();
 
-		private readonly Dictionary<string, Func<object, object>> _cachedGetters = new Dictionary<string, Func<object, object>>();
+		private readonly Dictionary<string, Getter> _cachedGetters = new Dictionary<string, Getter>();
 
 		public void Initialize(Type objectType)
 		{
 			Guard.CheckNotNull("objectType", objectType);
 
 			const BindingFlags bindingFlags = BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public;
+
+			_cachedGetters.Clear();
+			_cachedSetters.Clear();
 
 			var properties = objectType.GetProperties(bindingFlags);
 			var fields = objectType.GetFields(bindingFlags);
@@ -81,7 +86,7 @@ namespace Untech.SharePoint.Client.Reflection
 		}
 
 
-		private static Action<object, object> CreateSetter(Type objectType, string propertyName, Type propertyType)
+		private static Setter CreateSetter(Type objectType, string propertyName, Type propertyType)
 		{
 			var objectParameter = Expression.Parameter(typeof(object));
 			var valueParameter = Expression.Parameter(typeof(object));
@@ -90,17 +95,17 @@ namespace Untech.SharePoint.Client.Reflection
 
 			var assignExpression = Expression.Assign(propertyExpression, Expression.Convert(valueParameter, propertyType));
 
-			return Expression.Lambda<Action<object, object>>(assignExpression, objectParameter, valueParameter)
+			return Expression.Lambda<Setter>(assignExpression, objectParameter, valueParameter)
 				.Compile();
 		}
 
-		private static Func<object, object> CreateGetter(Type objectType, string propertyName)
+		private static Getter CreateGetter(Type objectType, string propertyName)
 		{
 			var objectParameter = Expression.Parameter(typeof(object));
 
 			var propertyExpression = Expression.PropertyOrField(Expression.Convert(objectParameter, objectType), propertyName);
 
-			return Expression.Lambda<Func<object, object>>(propertyExpression, objectParameter)
+			return Expression.Lambda<Getter>(propertyExpression, objectParameter)
 				.Compile();
 		}
 	}

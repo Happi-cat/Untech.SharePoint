@@ -15,7 +15,7 @@ namespace Untech.SharePoint.Client.Data
 
 		public MetaModel Get(Type type)
 		{
-			return _cachedMappers.GetOrAdd(type, InstantiateModel);
+			return _cachedMappers.GetOrAdd(type, CreateModel);
 		}
 
 		public MetaModel Get<T>()
@@ -23,13 +23,11 @@ namespace Untech.SharePoint.Client.Data
 			return Get(typeof (T));
 		}
 
-		private static MetaModel InstantiateModel(Type type)
+		private static MetaModel CreateModel(Type type)
 		{
-			var mapper = new MetaModel();
+			var factory = new MetaModelFactory(type);
 
-			mapper.Initialize(type);
-
-			return mapper;
+			return factory.Get();
 		}
 	}
 }

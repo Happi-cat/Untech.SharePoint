@@ -1,4 +1,5 @@
 ﻿using System;
+using Untech.SharePoint.Client.Extensions;
 
 namespace Untech.SharePoint.Client
 {
@@ -32,24 +33,33 @@ namespace Untech.SharePoint.Client
 		}
 
 
-		public static void CheckTypeIs(string paramName, Type actualType, Type expectedType)
+		public static void CheckType(string paramName, object actualValue, Type expectedType)
 		{
-			CheckNotNull("actualType", actualType);
+			CheckNotNull("actualType", actualValue);
 			CheckNotNull("expectedType", expectedType);
 
-			if (expectedType == actualType)
+			if (actualValue == null)
+			{
+				if (expectedType.IsNullableType()) 
+				{
+					return;
+				}
+				throw new ArgumentException(string.Format("Parameter '{0}' is null, but '{2}' is not a nullable type.",
+					paramName, expectedType), paramName);
+			}
+
+			if (expectedType.IsInstanceOfType(actualValue))
 			{
 				return;
 			}
 
-			var message = string.Format("Parameter '{0}' is a '{2}', '{1}' is expected.",
-				paramName, expectedType, actualType);
-			throw new ArgumentException(message, paramName);
+			throw new ArgumentException(string.Format("Parameter '{0}' is a '{2}', '{1}' is expected.",
+				paramName, expectedType, actualValue), paramName);
 		}
 
-		public static void CheckTypeIs<TExpected>(string paramName, Type actualType)
+		public static void CheckType<TExpected>(string paramName, object actualValue)
 		{
-			CheckTypeIs(paramName, actualType, typeof(TExpected));
+			CheckType(paramName, actualValue, typeof(TExpected));
 		}
 
 	}

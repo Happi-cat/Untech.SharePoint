@@ -91,12 +91,15 @@
     <Compile Include="Data\FieldConverters\FieldConverterWrapper.cs" />
     <Compile Include="Data\FieldConverters\IFieldConverter.cs" />
     <Compile Include="Data\FieldConverters\FieldConverterInitializationException.cs" />
+    <Compile Include="Data\FieldConverters\IFieldConverterResolver.cs" />
     <Compile Include="Data\FieldConverters\InvalidFieldConverterException.cs" />
     <Compile Include="Data\FieldConverters\SpFieldConverterAttribute.cs" />
     <Compile Include="Data\MetaModel.cs" />
+    <Compile Include="Data\MetaModelFactory.cs" />
     <Compile Include="Data\MetaModelPool.cs" />
     <Compile Include="Data\MetaProperties.cs" />
     <Compile Include="Data\MetaProperty.cs" />
+    <Compile Include="Data\MetaType.cs" />
     <Compile Include="Data\ModelConverters.cs" />
     <Compile Include="Data\PropertyMappingException.cs" />
     <Compile Include="Data\SpFieldAttribute.cs" />
