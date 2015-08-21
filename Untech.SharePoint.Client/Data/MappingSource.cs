@@ -27,6 +27,30 @@ namespace Untech.SharePoint.Client.Data
 		IMetaType ItemType { get; }
 	}
 
+	internal sealed class MetaList : IMetaList
+	{
+
+		public MetaModel Model
+		{
+			get { throw new NotImplementedException(); }
+		}
+
+		public string ListTitle
+		{
+			get { throw new NotImplementedException(); }
+		}
+
+		public IReadOnlyCollection<Field> ListFields
+		{
+			get { throw new NotImplementedException(); }
+		}
+
+		public IMetaType ItemType
+		{
+			get { throw new NotImplementedException(); }
+		}
+	}
+
 	internal interface IMetaType
 	{
 		MetaModel Model { get; }
@@ -36,6 +60,30 @@ namespace Untech.SharePoint.Client.Data
 		Type Type { get; }
 
 		IReadOnlyCollection<IMetaDataMember> DataMembers { get; }
+	}
+
+	internal sealed class MetaType : IMetaType
+	{
+
+		public MetaModel Model
+		{
+			get { throw new NotImplementedException(); }
+		}
+
+		public IMetaList List
+		{
+			get { throw new NotImplementedException(); }
+		}
+
+		public Type Type
+		{
+			get { throw new NotImplementedException(); }
+		}
+
+		public IReadOnlyCollection<IMetaDataMember> DataMembers
+		{
+			get { throw new NotImplementedException(); }
+		}
 	}
 
 	internal interface IMetaDataMember
@@ -57,6 +105,55 @@ namespace Untech.SharePoint.Client.Data
 		MetaAccessor<object> MemberAccessor { get; }
 
 		MetaAccessor<ListItem> SpClientAccessor { get; }
+	}
+
+	internal sealed class MetaDataMember : IMetaDataMember
+	{
+
+		public IMetaType DeclaringType
+		{
+			get { throw new NotImplementedException(); }
+		}
+
+		public MemberInfo Member
+		{
+			get { throw new NotImplementedException(); }
+		}
+
+		public string Name
+		{
+			get { throw new NotImplementedException(); }
+		}
+
+		public Type Type
+		{
+			get { throw new NotImplementedException(); }
+		}
+
+		public string SpFieldInternalName
+		{
+			get { throw new NotImplementedException(); }
+		}
+
+		public string SpFieldTypeAsString
+		{
+			get { throw new NotImplementedException(); }
+		}
+
+		public IFieldConverter Converter
+		{
+			get { throw new NotImplementedException(); }
+		}
+
+		public MetaAccessor<object> MemberAccessor
+		{
+			get { throw new NotImplementedException(); }
+		}
+
+		public MetaAccessor<ListItem> SpClientAccessor
+		{
+			get { throw new NotImplementedException(); }
+		}
 	}
 
 	internal sealed class TypeMapper
@@ -170,7 +267,7 @@ namespace Untech.SharePoint.Client.Data
 	internal class MemberMetaAccessor : MetaAccessor<object>
 	{
 		public MemberMetaAccessor(IMetaDataMember member, MemberAccessor accessor)
-			:base(member)
+			: base(member)
 		{
 			Accessor = accessor;
 		}
