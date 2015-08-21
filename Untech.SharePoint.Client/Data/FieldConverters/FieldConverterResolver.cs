@@ -62,7 +62,7 @@ namespace Untech.SharePoint.Client.Data.FieldConverters
 			var attributeType = typeof(SpFieldConverterAttribute);
 			var interfaceType = typeof(IFieldConverter);
 
-			var assembly = instance.GetType().Assembly;
+			var assembly = interfaceType.Assembly;
 
 			var types = assembly.GetTypes()
 				.Where(type => type.IsDefined(attributeType))
@@ -73,7 +73,7 @@ namespace Untech.SharePoint.Client.Data.FieldConverters
 			{
 				type.GetCustomAttributes(attributeType)
 					.Cast<SpFieldConverterAttribute>()
-					.Select(attribute => attribute.FieldType)
+					.Select(attribute => attribute.FieldTypeAsString)
 					.ToList()
 					.ForEach(n => instance.BuiltInConverters.Add(n, type));
 

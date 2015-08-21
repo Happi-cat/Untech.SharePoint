@@ -2,40 +2,30 @@
 
 namespace Untech.SharePoint.Client.Data
 {
-	public class PropertyMappingException : Exception
+	public class MemberMappingException : Exception
 	{
-		public PropertyMappingException(string propertyName, string internalName, Exception innerException) 
+		public MemberMappingException(string propertyName, string internalName, Exception innerException)
 			: base(GetMessage(propertyName, internalName), innerException)
 		{
-			PropertyName = propertyName;
-			InternalName = internalName;
+			MemberName = propertyName;
+			SpFieldInternalName = internalName;
 		}
 
-		internal PropertyMappingException(MetaProperty info, Exception innerException)
-			: base(GetMessage(info), innerException)
+		internal MemberMappingException(IMetaDataMember member, Exception innerException)
+			: base(GetMessage(member), innerException)
 		{
-			
+
 		}
 
-		public string PropertyName { get; private set; }
+		public string MemberName { get; private set; }
 
-		public string InternalName { get; private set; }
+		public string SpFieldInternalName { get; private set; }
 
-		private static string GetMessage(MetaProperty info)
+		private static string GetMessage(IMetaDataMember member)
 		{
-			var message = GetMessage(info.MemberName, info.SpFieldInternalName);
+			var message = GetMessage(member.Name, member.SpFieldInternalName);
 
-			message = message + string.Format("Property or field type: {0}.", info.MemberType);
-
-			if (info.CustomConverterType != null)
-			{
-				message = message + string.Format("Custom converter type: {0}.", info.CustomConverterType);
-			}
-
-			if (info.DefaultValue != null)
-			{
-				message = message + string.Format("Default value type: {0}.", info.DefaultValue.GetType());
-			}
+			message = message + string.Format("Property or field type: {0}.", member.Type);
 
 			return message;
 		}

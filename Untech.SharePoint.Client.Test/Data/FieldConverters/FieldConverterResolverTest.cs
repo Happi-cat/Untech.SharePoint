@@ -16,12 +16,12 @@ namespace Untech.SharePoint.Client.Test.Data.FieldConverters
 				throw new NotImplementedException();
 			}
 
-			public object FromClientValue(object value)
+			public object FromSpClientValue(object value)
 			{
 				throw new NotImplementedException();
 			}
 
-			public object ToClientValue(object value)
+			public object ToSpClientValue(object value)
 			{
 				throw new NotImplementedException();
 			}

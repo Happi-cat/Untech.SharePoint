@@ -7,9 +7,9 @@ namespace Untech.SharePoint.Client.Data.FieldConverters
 	{
 		public SpFieldConverterAttribute(string fieldType)
 		{
-			FieldType = fieldType;
+			FieldTypeAsString = fieldType;
 		}
 
-		public string FieldType { get; private set; }
+		public string FieldTypeAsString { get; private set; }
 	}
 }

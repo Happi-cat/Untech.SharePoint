@@ -19,12 +19,12 @@ namespace Untech.SharePoint.Client.Data.FieldConverters.Basic
 			PropertyType = propertyType;
 		}
 
-		public object FromClientValue(object value)
+		public object FromSpClientValue(object value)
 		{
 			return (int)value;
 		}
 
-		public object ToClientValue(object value)
+		public object ToSpClientValue(object value)
 		{
 			return (int)value;
 		}

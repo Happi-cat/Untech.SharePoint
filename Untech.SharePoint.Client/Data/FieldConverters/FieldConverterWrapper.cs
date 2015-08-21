@@ -26,11 +26,11 @@ namespace Untech.SharePoint.Client.Data.FieldConverters
 			}
 		}
 
-		public object FromClientValue(object value)
+		public object FromSpClientValue(object value)
 		{
 			try
 			{
-				return ConverterInstance.FromClientValue(value);
+				return ConverterInstance.FromSpClientValue(value);
 			}
 			catch (Exception e)
 			{
@@ -38,11 +38,11 @@ namespace Untech.SharePoint.Client.Data.FieldConverters
 			}
 		}
 
-		public object ToClientValue(object value)
+		public object ToSpClientValue(object value)
 		{
 			try
 			{
-				return ConverterInstance.ToClientValue(value);
+				return ConverterInstance.ToSpClientValue(value);
 			}
 			catch (Exception e)
 			{

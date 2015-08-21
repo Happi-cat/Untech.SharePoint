@@ -42,7 +42,7 @@ namespace Untech.SharePoint.Client.Reflection
 				Guard.CheckNotNull("instance", instance);
 				Guard.CheckNotNull("memberName", memberName);
 
-				if (_getters.ContainsKey(memberName))
+				if (CanRead(memberName))
 				{
 					return _getters[memberName](instance);
 				}
@@ -53,13 +53,26 @@ namespace Untech.SharePoint.Client.Reflection
 				Guard.CheckNotNull("instance", instance);
 				Guard.CheckNotNull("memberName", memberName);
 
-				if (_setters.ContainsKey(memberName))
+				if (!CanWrite(memberName))
 				{
-					_setters[memberName](instance, value);
-					return;
+					throw new ArgumentException(string.Format("This member '{0}' has no setter", memberName));
 				}
-				throw new ArgumentException(string.Format("This member '{0}' has no setter", memberName));
+				_setters[memberName](instance, value);
 			}
+		}
+
+		public bool CanRead(string memberName)
+		{
+			Guard.CheckNotNull("memberName", memberName);
+
+			return _getters.ContainsKey(memberName);
+		}
+
+		public bool CanWrite(string memberName)
+		{
+			Guard.CheckNotNull("memberName", memberName);
+
+			return _setters.ContainsKey(memberName);
 		}
 
 		private void CreateGetterAndSetter(PropertyInfo propertyInfo)
