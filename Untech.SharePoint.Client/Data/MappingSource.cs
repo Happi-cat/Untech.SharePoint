@@ -63,6 +63,8 @@ namespace Untech.SharePoint.Client.Data
 	{
 		public TypeMapper(IMetaType type)
 		{
+			Guard.CheckNotNull("type", type);
+
 			Type = type;
 		}
 
@@ -70,6 +72,9 @@ namespace Untech.SharePoint.Client.Data
 
 		public void Map(object source, ListItem dest)
 		{
+			Guard.CheckNotNull("source", source);
+			Guard.CheckNotNull("dest", dest);
+
 			Type.DataMembers
 				.Select(n => new DataMemberMapper(n))
 				.ToList()
@@ -78,6 +83,9 @@ namespace Untech.SharePoint.Client.Data
 
 		public void Map(ListItem source, object dest)
 		{
+			Guard.CheckNotNull("source", source);
+			Guard.CheckNotNull("dest", dest);
+
 			Type.DataMembers
 				.Select(n => new DataMemberMapper(n))
 				.ToList()
@@ -89,6 +97,8 @@ namespace Untech.SharePoint.Client.Data
 	{
 		public DataMemberMapper(IMetaDataMember member)
 		{
+			Guard.CheckNotNull("member", member);
+
 			DataMember = member;
 		}
 
@@ -96,6 +106,9 @@ namespace Untech.SharePoint.Client.Data
 
 		public void Map(object source, ListItem dest)
 		{
+			Guard.CheckNotNull("source", source);
+			Guard.CheckNotNull("dest", dest);
+
 			try
 			{
 				if (DataMember.MemberAccessor.CanRead &&
@@ -114,6 +127,9 @@ namespace Untech.SharePoint.Client.Data
 
 		public void Map(ListItem source, object dest)
 		{
+			Guard.CheckNotNull("source", source);
+			Guard.CheckNotNull("dest", dest);
+
 			try
 			{
 				if (DataMember.SpClientAccessor.CanRead &&
