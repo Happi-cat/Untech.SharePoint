@@ -99,6 +99,7 @@
     <Compile Include="Data\MetaType.cs" />
     <Compile Include="Data\PropertyMappingException.cs" />
     <Compile Include="Data\SpFieldAttribute.cs" />
+    <Compile Include="Data\SpListSchema.cs" />
     <Compile Include="Guard.cs" />
     <Compile Include="Extensions\EnumerableExtensions.cs" />
     <Compile Include="Extensions\ExpressionExtensions.cs" />

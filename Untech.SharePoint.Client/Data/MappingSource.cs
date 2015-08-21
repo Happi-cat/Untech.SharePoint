@@ -22,7 +22,7 @@ namespace Untech.SharePoint.Client.Data
 
 		string ListTitle { get; }
 
-		IReadOnlyCollection<Field> ListFields { get; }
+		SpListSchema Schema { get; }
 
 		IMetaType ItemType { get; }
 	}
