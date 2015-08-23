@@ -1,91 +1,33 @@
 using System;
-using System.ComponentModel;
 using System.Reflection;
+using Microsoft.SharePoint.Client;
 using Untech.SharePoint.Client.Data.FieldConverters;
-using Untech.SharePoint.Client.Reflection;
 
 namespace Untech.SharePoint.Client.Data
 {
-	//internal class MetaDataMember
-	//{
-	//	public MetaDataMember(MetaType metaType, PropertyInfo propertyInfo)
-	//	{
-	//		Name = propertyInfo.Name;
-	//		Type = propertyInfo.PropertyType;
+	internal abstract class MetaDataMember
+	{
+		public abstract MetaType DeclaringType { get; }
 
-	//		DeclaringType = metaType;
+		public abstract MemberInfo Member { get; }
 
-	//		RetrieveSpFieldInfo(propertyInfo);
-	//		RetrieveDefaultValue(propertyInfo);
-	//		RegisterCustomConverter();
-	//	}
+		public abstract string Name { get; }
 
-	//	public MetaDataMember(MetaType metaType, FieldInfo fieldInfo)
-	//	{
-	//		Name = fieldInfo.Name;
-	//		Type = fieldInfo.FieldType;
+		public abstract Type Type { get; }
 
-	//		DeclaringType = metaType;
+		public abstract string SpFieldInternalName { get; }
 
-	//		RetrieveSpFieldInfo(fieldInfo);
-	//		RetrieveDefaultValue(fieldInfo);
-	//		RegisterCustomConverter();
-	//	}
+		public abstract string SpFieldTypeAsString { get; }
 
-	//	public MetaType DeclaringType { get; private set; }
+		public abstract IFieldConverter Converter { get; }
 
-	//	public string Name { get; private set; }
+		public abstract MetaAccessor<object> MemberAccessor { get; }
 
-	//	public Type Type { get; private set; }
+		public abstract MetaAccessor<ListItem> SpClientAccessor { get; }
 
-	//	public string SpFieldInternalName { get; private set; }
-
-	//	public Type CustomConverterType { get; private set; }
-
-	//	public object DefaultValue { get; private set; }
-
-	//	protected MemberAccessor MemberAccessor { get { return DeclaringType.MemberAccessor; } }
-
-
-	//	public object GetValue(object instance)
-	//	{
-	//		return MemberAccessor[instance, Name];
-	//	}
-
-	//	public void SetValue(object instance, object value)
-	//	{
-	//		MemberAccessor[instance, Name] = value;
-	//	}
-
-	//	private void RetrieveSpFieldInfo(MemberInfo memberInfo)
-	//	{
-	//		var attribute = memberInfo.GetCustomAttribute<SpFieldAttribute>();
-	//		if (attribute == null)
-	//		{
-	//			throw new ArgumentException(string.Format("Member {0} has no attribute SpFieldAttribute", memberInfo.Name), "memberInfo");
-	//		}
-
-	//		SpFieldInternalName = attribute.InternalName ?? Name;
-	//		CustomConverterType = attribute.CustomConverterType;
-	//	}
-
-	//	private void RetrieveDefaultValue(MemberInfo memberInfo)
-	//	{
-	//		var attribute = memberInfo.GetCustomAttribute<DefaultValueAttribute>();
-	//		if (attribute == null)
-	//		{
-	//			return;
-	//		}
-
-	//		DefaultValue = attribute.Value;
-	//	}
-
-	//	private void RegisterCustomConverter()
-	//	{
-	//		if (CustomConverterType != null)
-	//		{
-	//			FieldConverterResolver.Instance.Register(CustomConverterType);
-	//		}
-	//	}
-	//}
+		public override string ToString()
+		{
+			return string.Format("(Name={0}; SpFieldInternalName={1})", Name, SpFieldInternalName);
+		}
+	}
 }

@@ -1,19 +1,17 @@
-﻿using Microsoft.SharePoint.Client;
-using System;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.SharePoint.Client;
 
 namespace Untech.SharePoint.Client.Data
 {
-	internal sealed class SpListSchema : IReadOnlyCollection<Field>
+	internal sealed class SpFieldCollection : IReadOnlyCollection<Field>
 	{
-		private Dictionary<string, Field> _fields;
+		private readonly Dictionary<string, Field> _fields;
 
-		public SpListSchema(IEnumerable<Field> fields)
+		public SpFieldCollection(IEnumerable<Field> fields)
 		{
-			_fields = fields.ToDictionary<string, Field>(n => n.InternalName);
+			_fields = fields.ToDictionary(n => n.InternalName);
 		}
 
 		public Field GetFieldByInternalName(string internalName)
@@ -36,7 +34,7 @@ namespace Untech.SharePoint.Client.Data
 			return _fields.Values.GetEnumerator();
 		}
 
-		System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+		IEnumerator IEnumerable.GetEnumerator()
 		{
 			return GetEnumerator();
 		}

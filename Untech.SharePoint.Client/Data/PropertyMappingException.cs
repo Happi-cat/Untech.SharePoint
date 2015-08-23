@@ -11,7 +11,7 @@ namespace Untech.SharePoint.Client.Data
 			SpFieldInternalName = internalName;
 		}
 
-		internal MemberMappingException(IMetaDataMember member, Exception innerException)
+		internal MemberMappingException(MetaDataMember member, Exception innerException)
 			: base(GetMessage(member), innerException)
 		{
 
@@ -21,7 +21,7 @@ namespace Untech.SharePoint.Client.Data
 
 		public string SpFieldInternalName { get; private set; }
 
-		private static string GetMessage(IMetaDataMember member)
+		private static string GetMessage(MetaDataMember member)
 		{
 			var message = GetMessage(member.Name, member.SpFieldInternalName);
 
