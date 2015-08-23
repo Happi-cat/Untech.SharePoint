@@ -84,6 +84,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Data\AttributedMetaDataMember.cs" />
+    <Compile Include="Data\AttributedMetaList.cs" />
+    <Compile Include="Data\AttributedMetaType.cs" />
+    <Compile Include="Data\DataMemberMapper.cs" />
+    <Compile Include="Data\DataMemberCollection.cs" />
     <Compile Include="Data\FieldConverters\Basic\CounterFieldConverter.cs" />
     <Compile Include="Data\FieldConverters\FieldConverterException.cs" />
     <Compile Include="Data\FieldConverters\FieldConverterResolver.cs" />
@@ -94,12 +99,17 @@
     <Compile Include="Data\FieldConverters\InvalidFieldConverterException.cs" />
     <Compile Include="Data\FieldConverters\SpFieldConverterAttribute.cs" />
     <Compile Include="Data\MappingSource.cs" />
+    <Compile Include="Data\MemberMetaAccessor.cs" />
+    <Compile Include="Data\MetaAccessor.cs" />
     <Compile Include="Data\MetaDataMember.cs" />
+    <Compile Include="Data\MetaList.cs" />
     <Compile Include="Data\MetaModel.cs" />
     <Compile Include="Data\MetaType.cs" />
     <Compile Include="Data\PropertyMappingException.cs" />
+    <Compile Include="Data\SpClientMetaAccessor.cs" />
     <Compile Include="Data\SpFieldAttribute.cs" />
-    <Compile Include="Data\SpListSchema.cs" />
+    <Compile Include="Data\SpFieldCollection.cs" />
+    <Compile Include="Data\TypeMapper.cs" />
     <Compile Include="Guard.cs" />
     <Compile Include="Extensions\EnumerableExtensions.cs" />
     <Compile Include="Extensions\ExpressionExtensions.cs" />
