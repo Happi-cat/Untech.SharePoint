@@ -34,7 +34,7 @@ namespace Untech.SharePoint.Client.Data
 
 		public override string ToString()
 		{
-			return string.Format("( Type={0}; Members=[{1}]; )", Type, DataMembers.JoinToString());
+			return string.Format("( Type='{0}'; Members=[ {1} ]; )", Type, DataMembers.JoinToString());
 		}
 	}
 }

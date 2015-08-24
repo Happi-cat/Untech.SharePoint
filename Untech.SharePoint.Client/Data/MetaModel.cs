@@ -5,8 +5,11 @@ using Untech.SharePoint.Client.Data.FieldConverters;
 
 namespace Untech.SharePoint.Client.Data
 {
-	internal sealed class MetaModel
+	internal abstract class MetaModel
 	{
-		
+		public abstract MetaList GetList(string listTitle);
+
+		public abstract IEnumerable<MetaList> GetLists();
+
 	}
 }

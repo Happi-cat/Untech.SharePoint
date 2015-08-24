@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Untech.SharePoint.Client.Data
 {
-	[AttributeUsage(AttributeTargets.Field | AttributeTargets.Property, AllowMultiple=false, Inherited=true)]
+	[AttributeUsage(AttributeTargets.Property, AllowMultiple=false, Inherited=true)]
 	public sealed class SpListAttribute : Attribute
 	{
 		public SpListAttribute(string listTile)

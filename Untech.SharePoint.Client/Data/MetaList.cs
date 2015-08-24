@@ -21,7 +21,7 @@ namespace Untech.SharePoint.Client.Data
 
 		public override string ToString()
 		{
-			return string.Format("( ListTitle={0}; ItemType={1}; )", ListTitle, ItemType);
+			return string.Format("( ListTitle='{0}'; ItemType={1}; )", ListTitle, ItemType);
 		}
 	}
 }

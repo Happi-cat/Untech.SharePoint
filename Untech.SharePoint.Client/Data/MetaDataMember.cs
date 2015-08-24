@@ -44,7 +44,7 @@ namespace Untech.SharePoint.Client.Data
 
 		public override string ToString()
 		{
-			return string.Format("( Name={0}; SpFieldInternalName={1}; )", Name, SpFieldInternalName);
+			return string.Format("( Name='{0}'; SpFieldInternalName='{1}'; )", Name, SpFieldInternalName);
 		}
 	}
 }
