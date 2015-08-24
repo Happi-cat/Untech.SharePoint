@@ -39,18 +39,20 @@ namespace Untech.SharePoint.Client.Data
 
 		private void InitMetaList()
 		{
+			var listGenericType = typeof(SpList<>);
+
 			var metaLists = DataContextType.GetProperties(BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public)
 				.Where(n => n.PropertyType.IsGenericType && n.PropertyType.GetGenericTypeDefinition() == listGenericType)
 				.Select(GetMetaList)
 				.ToList();
 
-			_lists = metaLists;
+			_lists = metaLists.AsReadOnly();
 		}
 
 		private MetaList GetMetaList(PropertyInfo property)
 		{
 			var listAttribute = property.GetCustomAttribute<SpListAttribute>() ?? new SpListAttribute(property.Name);
-			listAttribute.ListTitle = listAttribute.ListTitle ?? property.Name;
+			listAttribute= new SpListAttribute(listAttribute.ListTitle ?? property.Name);
 
 			var itemType = property.PropertyType.GetGenericArguments()[0];
 

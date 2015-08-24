@@ -1,16 +1,17 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 
 namespace Untech.SharePoint.Client.Data
 {
 	internal class DataMemberCollection : IReadOnlyCollection<MetaDataMember>
 	{
-		private readonly IReadOnlyDictionary<string, MetaDataMember> _members;
+		private readonly ReadOnlyDictionary<string, MetaDataMember> _members;
 
 		public DataMemberCollection(IEnumerable<MetaDataMember> members)
 		{
-			_members = members.ToDictionary(n => n.Name);
+			_members = new ReadOnlyDictionary<string,MetaDataMember>(members.ToDictionary(n => n.Name));
 		}
 		public MetaDataMember GetMemberByName(string name)
 		{

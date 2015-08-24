@@ -2,16 +2,17 @@
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.SharePoint.Client;
+using System.Collections.ObjectModel;
 
 namespace Untech.SharePoint.Client.Data
 {
 	internal sealed class SpFieldCollection : IReadOnlyCollection<Field>
 	{
-		private readonly IReadOnlyDictionary<string, Field> _fields;
+		private readonly ReadOnlyDictionary<string, Field> _fields;
 
 		public SpFieldCollection(IEnumerable<Field> fields)
 		{
-			_fields = fields.ToDictionary(n => n.InternalName);
+			_fields = new ReadOnlyDictionary<string,Field>(fields.ToDictionary(n => n.InternalName));
 		}
 
 		public Field GetFieldByInternalName(string internalName)
