@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reflection;
-using Microsoft.SharePoint.Client;
 
 namespace Untech.SharePoint.Client.Data
 {
 	internal sealed class AttributedMetaModel : MetaModel
 	{
 		private ReadOnlyCollection<MetaList> _lists;
+		private ReadOnlyDictionary<MemberInfo, MetaList> _membersListsMap;
 
 		public AttributedMetaModel(Type dataContextType, ISpFieldsResolver resolver)
 		{
@@ -31,10 +31,12 @@ namespace Untech.SharePoint.Client.Data
 
 			var metaLists = DataContextType.GetProperties(BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public)
 				.Where(n => n.PropertyType.IsGenericType && n.PropertyType.GetGenericTypeDefinition() == listGenericType)
-				.Select(GetMetaList)
+				.Select(n => new KeyValuePair<PropertyInfo, MetaList>(n, GetMetaList(n)))
 				.ToList();
 
-			_lists = metaLists.AsReadOnly();
+			_lists = metaLists.Select(n=>n.Value).ToList().AsReadOnly();
+			_membersListsMap =
+				new ReadOnlyDictionary<MemberInfo, MetaList>(metaLists.ToDictionary(n => (MemberInfo) n.Key, n => n.Value));
 		}
 
 		private MetaList GetMetaList(PropertyInfo property)
@@ -50,6 +52,11 @@ namespace Untech.SharePoint.Client.Data
 			return new AttributedMetaList(this, listAttribute, itemType, FieldsResolver);
 		}
 
+
+		public override MetaList GetList(MemberInfo memberInfo)
+		{
+			return _membersListsMap[memberInfo];
+		}
 
 		public override MetaList GetList(string listTitle, Type itemType)
 		{
