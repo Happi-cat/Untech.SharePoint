@@ -1,28 +1,47 @@
 using System;
+using System.Linq;
+using System.Collections.Generic;
+using System.Reflection;
 
 namespace Untech.SharePoint.Client.Data
 {
 	internal sealed class AttributedMetaType : MetaType
 	{
+		private DataMemberCollection _dataMembers;
 
-		public override MetaModel Model
+		public AttributedMetaType(MetaModel model, MetaList list, Type type)
+			: base(model, list, type)
 		{
-			get { throw new NotImplementedException(); }
+			InitDataMembers();
 		}
 
-		public override MetaList List
-		{
-			get { throw new NotImplementedException(); }
-		}
-
-		public override Type Type
-		{
-			get { throw new NotImplementedException(); }
-		}
 
 		public override DataMemberCollection DataMembers
 		{
-			get { throw new NotImplementedException(); }
+			get { return _dataMembers; }
+		}
+
+		private void InitDataMembers()
+		{
+			var attributeType = typeof(SpFieldAttribute);
+
+			var properties = Type.GetProperties(BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public)
+				.Where(n => n.IsDefined(attributeType))
+				.Where(n => n.CanRead && n.CanWrite)
+				.Select(CreateDataMember)
+				.ToList();
+
+			var fields = Type.GetFields(BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public)
+				.Where(n => n.IsDefined(attributeType))
+				.Select(CreateDataMember)
+				.ToList();
+
+			_dataMembers = new DataMemberCollection(properties.Concat(fields));
+		}
+
+		private MetaDataMember CreateDataMember(MemberInfo memberInfo)
+		{
+			return new AttributedMetaDataMember(this, memberInfo);
 		}
 	}
 }

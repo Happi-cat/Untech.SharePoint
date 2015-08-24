@@ -2,39 +2,21 @@ using System;
 using System.Reflection;
 using Microsoft.SharePoint.Client;
 using Untech.SharePoint.Client.Data.FieldConverters;
+using Untech.SharePoint.Client.Reflection;
 
 namespace Untech.SharePoint.Client.Data
 {
-	internal class AttributedMetaDataMember : MetaDataMember
+	internal sealed class AttributedMetaDataMember : MetaDataMember
 	{
-		private readonly MetaType _declaringType;
-		private readonly MemberInfo _member;
-		private readonly string _name;
-		private readonly Type _type;
 		private string _spFieldInternalName;
 		private Type _customConverterType;
 		private IFieldConverter _converter;
 		private MetaAccessor<object> _memberAccessor;
 		private MetaAccessor<ListItem> _spClientAccessor;
 
-		public AttributedMetaDataMember(MetaType declarintType, PropertyInfo propertyInfo)
-			: this(declarintType, (MemberInfo)propertyInfo)
+		public AttributedMetaDataMember(MetaType declarintType, MemberInfo memberInfo)
+			: base(declarintType, memberInfo)
 		{
-			_type = propertyInfo.PropertyType;
-		}
-
-		public AttributedMetaDataMember(MetaType declarintType, FieldInfo fieldInfo)
-			: this(declarintType, (MemberInfo)fieldInfo)
-		{
-			_type = fieldInfo.FieldType;
-		}
-
-		private AttributedMetaDataMember(MetaType declaringType, MemberInfo memberInfo)
-		{
-			_declaringType = declaringType;
-			_member = memberInfo;
-			_name = memberInfo.Name;
-
 			RetrieveSpFieldInfo(memberInfo);
 			RegisterCustomConverter();
 		}
@@ -47,26 +29,6 @@ namespace Untech.SharePoint.Client.Data
 		public Field Field
 		{
 			get { return Fields.GetFieldByInternalName(SpFieldInternalName); }
-		}
-
-		public override MetaType DeclaringType
-		{
-			get { return _declaringType; }
-		}
-
-		public override MemberInfo Member
-		{
-			get { return _member; }
-		}
-
-		public override string Name
-		{
-			get { return _name; }
-		}
-
-		public override Type Type
-		{
-			get { return _type; }
 		}
 
 		public override string SpFieldInternalName
@@ -99,6 +61,8 @@ namespace Untech.SharePoint.Client.Data
 			get { return _customConverterType; }
 		}
 
+		#region [Private Methods]
+
 		private IFieldConverter CreateConverter()
 		{
 			var converter = CustomConverterType == null
@@ -112,7 +76,7 @@ namespace Untech.SharePoint.Client.Data
 
 		private MetaAccessor<object> CreateMemberAccessor()
 		{
-			return new MemberMetaAccessor(this, null);
+			return new MemberMetaAccessor(this, MemberAccessorPool.Instance.Get(DeclaringType.Type));
 		}
 
 		private MetaAccessor<ListItem> CreateSpClientAccessor()
@@ -139,5 +103,8 @@ namespace Untech.SharePoint.Client.Data
 				FieldConverterResolver.Instance.Register(CustomConverterType);
 			}
 		}
+
+		#endregion
+
 	}
 }

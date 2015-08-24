@@ -2,18 +2,35 @@ using System;
 using System.Reflection;
 using Microsoft.SharePoint.Client;
 using Untech.SharePoint.Client.Data.FieldConverters;
+using Untech.SharePoint.Client.Utility;
 
 namespace Untech.SharePoint.Client.Data
 {
 	internal abstract class MetaDataMember
 	{
-		public abstract MetaType DeclaringType { get; }
+		private readonly MetaType _declaringType;
+		private readonly MemberInfo _member;
+		private readonly string _name;
+		private readonly Type _type;
 
-		public abstract MemberInfo Member { get; }
+		protected MetaDataMember(MetaType declaringType, MemberInfo memberInfo)
+		{
+			Guard.CheckNotNull("declaringType", declaringType);
+			Guard.CheckNotNull("memberInfo", memberInfo);
 
-		public abstract string Name { get; }
+			_declaringType = declaringType;
+			_member = memberInfo;
+			_name = memberInfo.Name;
+			_type = TypeSystem.GetMemberType(memberInfo);
+		}
 
-		public abstract Type Type { get; }
+		public MetaType DeclaringType { get { return _declaringType; } }
+
+		public MemberInfo Member { get { return _member; } }
+
+		public string Name { get { return _name; } }
+
+		public Type Type { get { return _type; } }
 
 		public abstract string SpFieldInternalName { get; }
 
@@ -27,7 +44,7 @@ namespace Untech.SharePoint.Client.Data
 
 		public override string ToString()
 		{
-			return string.Format("(Name={0}; SpFieldInternalName={1})", Name, SpFieldInternalName);
+			return string.Format("( Name={0}; SpFieldInternalName={1}; )", Name, SpFieldInternalName);
 		}
 	}
 }

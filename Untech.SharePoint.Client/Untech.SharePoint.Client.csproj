@@ -87,6 +87,7 @@
     <Compile Include="Data\AttributedMetaDataMember.cs" />
     <Compile Include="Data\AttributedMetaList.cs" />
     <Compile Include="Data\AttributedMetaType.cs" />
+    <Compile Include="Data\ClientContextHelpers.cs" />
     <Compile Include="Data\DataMemberMapper.cs" />
     <Compile Include="Data\DataMemberCollection.cs" />
     <Compile Include="Data\FieldConverters\Basic\CounterFieldConverter.cs" />
@@ -107,8 +108,10 @@
     <Compile Include="Data\MetaType.cs" />
     <Compile Include="Data\PropertyMappingException.cs" />
     <Compile Include="Data\SpClientMetaAccessor.cs" />
+    <Compile Include="Data\SpDataContext.cs" />
     <Compile Include="Data\SpFieldAttribute.cs" />
     <Compile Include="Data\SpFieldCollection.cs" />
+    <Compile Include="Data\SpListAttribute.cs" />
     <Compile Include="Data\TypeMapper.cs" />
     <Compile Include="Guard.cs" />
     <Compile Include="Extensions\EnumerableExtensions.cs" />
@@ -119,6 +122,7 @@
     <Compile Include="Reflection\InstanceCreationFactory.cs" />
     <Compile Include="Reflection\InstanceCreationUtility.cs" />
     <Compile Include="Reflection\MemberAccessor.cs" />
+    <Compile Include="Reflection\MemberAccessorPool.cs" />
     <Compile Include="Utility\Singleton.cs" />
     <Compile Include="Utility\TypeSystem.cs" />
   </ItemGroup>
