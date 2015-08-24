@@ -1,6 +1,5 @@
 using System;
 using System.Linq;
-using System.Collections.Generic;
 using System.Reflection;
 
 namespace Untech.SharePoint.Client.Data
@@ -27,7 +26,7 @@ namespace Untech.SharePoint.Client.Data
 
 			var properties = Type.GetProperties(BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public)
 				.Where(n => n.IsDefined(attributeType))
-				.Where(n => n.CanRead && n.CanWrite)
+				.Where(n => n.CanRead || n.CanWrite)
 				.Select(CreateDataMember)
 				.ToList();
 

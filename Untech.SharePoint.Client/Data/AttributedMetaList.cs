@@ -1,6 +1,5 @@
-using Microsoft.SharePoint.Client;
 using System;
-using System.Collections.Generic;
+using Microsoft.SharePoint.Client;
 
 namespace Untech.SharePoint.Client.Data
 {
@@ -10,12 +9,12 @@ namespace Untech.SharePoint.Client.Data
 		private readonly MetaType _itemType;
 		private readonly SpFieldCollection _fields;
 
-		public AttributedMetaList(MetaModel model, SpListAttribute listAttr, Type itemType, ClientContext context)
+		public AttributedMetaList(MetaModel model, SpListAttribute listAttr, Type itemType, ISpFieldsResolver resolver)
 			: base(model)
 		{
 			_listTitle = listAttr.ListTitle;
 			_itemType = new AttributedMetaType(model, this, itemType);
-			_fields = new SpFieldCollection(context.GetListFields(_listTitle));
+			_fields = resolver.GetFields(_listTitle);
 		}
 
 		public override string ListTitle

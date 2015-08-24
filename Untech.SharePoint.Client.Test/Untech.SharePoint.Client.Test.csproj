@@ -97,8 +97,12 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="Data\AttributedMetaDataMemberTest.cs" />
     <Compile Include="Data\Example.cs" />
     <Compile Include="Data\FieldConverters\FieldConverterResolverTest.cs" />
+    <Compile Include="Data\AttributedMetaTypeTest.cs" />
+    <Compile Include="Data\AttributedMetaListTest.cs" />
+    <Compile Include="Data\AttributedMetaModelTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Reflection\InstanceCreationUtilityTest.cs" />
     <Compile Include="Reflection\InstanceCreationFactoryTest.cs" />

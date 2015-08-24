@@ -86,6 +86,7 @@
   <ItemGroup>
     <Compile Include="Data\AttributedMetaDataMember.cs" />
     <Compile Include="Data\AttributedMetaList.cs" />
+    <Compile Include="Data\AttributedMetaModel.cs" />
     <Compile Include="Data\AttributedMetaType.cs" />
     <Compile Include="Data\ClientContextHelpers.cs" />
     <Compile Include="Data\DataMemberMapper.cs" />
@@ -99,6 +100,8 @@
     <Compile Include="Data\FieldConverters\IFieldConverterResolver.cs" />
     <Compile Include="Data\FieldConverters\InvalidFieldConverterException.cs" />
     <Compile Include="Data\FieldConverters\SpFieldConverterAttribute.cs" />
+    <Compile Include="Data\ISpList.cs" />
+    <Compile Include="Data\ISpListFieldsResolver.cs" />
     <Compile Include="Data\MappingSource.cs" />
     <Compile Include="Data\MemberMetaAccessor.cs" />
     <Compile Include="Data\MetaAccessor.cs" />
@@ -111,6 +114,7 @@
     <Compile Include="Data\SpDataContext.cs" />
     <Compile Include="Data\SpFieldAttribute.cs" />
     <Compile Include="Data\SpFieldCollection.cs" />
+    <Compile Include="Data\SpList.cs" />
     <Compile Include="Data\SpListAttribute.cs" />
     <Compile Include="Data\TypeMapper.cs" />
     <Compile Include="Guard.cs" />
@@ -132,6 +136,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Data\FieldConverters\Custom\" />
+    <Folder Include="Data\Queryable\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

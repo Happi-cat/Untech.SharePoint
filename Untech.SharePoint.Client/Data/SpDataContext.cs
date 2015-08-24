@@ -1,12 +1,19 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Linq.Expressions;
+using Microsoft.SharePoint.Client;
 
 namespace Untech.SharePoint.Client.Data
 {
-	public class SpDataContext
+	public abstract class SpDataContext<TDerived> where TDerived : SpDataContext<TDerived>
 	{
+		protected SpDataContext(ClientContext context)
+		{
+
+		}
+
+		protected SpList<T> GetList<T>(Expression<Func<TDerived, SpList<T>>> listProperty)
+		{
+			throw new NotImplementedException();
+		}
 	}
 }
