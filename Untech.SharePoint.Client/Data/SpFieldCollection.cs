@@ -7,7 +7,7 @@ namespace Untech.SharePoint.Client.Data
 {
 	internal sealed class SpFieldCollection : IReadOnlyCollection<Field>
 	{
-		private readonly Dictionary<string, Field> _fields;
+		private readonly IReadOnlyDictionary<string, Field> _fields;
 
 		public SpFieldCollection(IEnumerable<Field> fields)
 		{

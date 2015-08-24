@@ -6,7 +6,7 @@ namespace Untech.SharePoint.Client.Data
 {
 	internal class DataMemberCollection : IReadOnlyCollection<MetaDataMember>
 	{
-		private readonly Dictionary<string, MetaDataMember> _members;
+		private readonly IReadOnlyDictionary<string, MetaDataMember> _members;
 
 		public DataMemberCollection(IEnumerable<MetaDataMember> members)
 		{
