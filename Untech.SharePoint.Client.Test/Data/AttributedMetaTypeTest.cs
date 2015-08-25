@@ -42,6 +42,11 @@ namespace Untech.SharePoint.Client.Test.Data
 			{
 				throw new NotImplementedException();
 			}
+
+			public override MetaList GetList(System.Reflection.MemberInfo memberInfo)
+			{
+				throw new NotImplementedException();
+			}
 		}
 
 		internal class TestModel

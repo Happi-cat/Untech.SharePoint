@@ -1,6 +1,6 @@
 ﻿namespace Untech.SharePoint.Client.Data
 {
-	internal abstract class MetaAccessor<T>
+	public abstract class MetaAccessor<T>
 	{
 		protected MetaAccessor(MetaDataMember member) 
 		{

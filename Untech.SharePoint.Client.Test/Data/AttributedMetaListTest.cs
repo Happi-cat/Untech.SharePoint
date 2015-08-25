@@ -25,6 +25,11 @@ namespace Untech.SharePoint.Client.Test.Data
 			{
 				return new SpFieldCollection(new List<Field>());
 			}
+
+			public override MetaList GetList(System.Reflection.MemberInfo memberInfo)
+			{
+				throw new NotImplementedException();
+			}
 		}
 
 		internal class TestModel

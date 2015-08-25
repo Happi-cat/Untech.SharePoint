@@ -6,7 +6,7 @@ using Untech.SharePoint.Client.Utility;
 
 namespace Untech.SharePoint.Client.Data
 {
-	internal abstract class MetaDataMember
+	public abstract class MetaDataMember
 	{
 		private readonly MetaType _declaringType;
 		private readonly MemberInfo _member;

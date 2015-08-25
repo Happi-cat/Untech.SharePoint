@@ -6,7 +6,7 @@ using System.Collections.ObjectModel;
 
 namespace Untech.SharePoint.Client.Data
 {
-	internal sealed class SpFieldCollection : IReadOnlyCollection<Field>
+	public sealed class SpFieldCollection : IReadOnlyCollection<Field>
 	{
 		private readonly ReadOnlyDictionary<string, Field> _fields;
 

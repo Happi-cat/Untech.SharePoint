@@ -3,7 +3,7 @@ using Untech.SharePoint.Client.Extensions;
 
 namespace Untech.SharePoint.Client.Data
 {
-	internal abstract class MetaType
+	public abstract class MetaType
 	{
 		private readonly MetaModel _model;
 		private readonly MetaList _list;

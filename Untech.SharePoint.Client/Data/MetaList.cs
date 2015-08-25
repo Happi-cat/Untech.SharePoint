@@ -1,6 +1,6 @@
 namespace Untech.SharePoint.Client.Data
 {
-	internal abstract class MetaList
+	public abstract class MetaList
 	{
 		private readonly MetaModel _model;
 

@@ -5,7 +5,7 @@ using Untech.SharePoint.Client.Extensions;
 
 namespace Untech.SharePoint.Client.Data
 {
-	internal abstract class MetaModel
+	public abstract class MetaModel
 	{
 		public abstract MetaList GetList(MemberInfo memberInfo);
 

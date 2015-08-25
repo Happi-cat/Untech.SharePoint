@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace Untech.SharePoint.Client.Data
 {
-	internal sealed class DataMemberCollection : IReadOnlyCollection<MetaDataMember>
+	public sealed class DataMemberCollection : IReadOnlyCollection<MetaDataMember>
 	{
 		private readonly ReadOnlyDictionary<string, MetaDataMember> _members;
 
