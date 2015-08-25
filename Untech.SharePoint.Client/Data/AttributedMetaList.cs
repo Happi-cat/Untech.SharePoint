@@ -11,6 +11,10 @@ namespace Untech.SharePoint.Client.Data
 		public AttributedMetaList(MetaModel model, SpListAttribute listAttr, Type itemType, ISpFieldsResolver resolver)
 			: base(model)
 		{
+			Guard.CheckNotNull("listAttr", listAttr);
+			Guard.CheckNotNull("itemType", itemType);
+			Guard.CheckNotNull("resolver", resolver);
+
 			_listTitle = listAttr.ListTitle;
 			_itemType = new AttributedMetaType(model, this, itemType);
 			_fields = resolver.GetFields(_listTitle);
