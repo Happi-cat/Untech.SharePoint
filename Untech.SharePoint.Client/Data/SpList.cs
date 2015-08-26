@@ -6,7 +6,7 @@ using System.Linq.Expressions;
 
 namespace Untech.SharePoint.Client.Data
 {
-	public sealed class SpList<T> : IQueryable<T>, ISpList<T>
+	public sealed class SpList<T> : ISpList<T>, IQueryProvider
 	{
 		public IEnumerator<T> GetEnumerator()
 		{
@@ -39,6 +39,31 @@ namespace Untech.SharePoint.Client.Data
 		}
 
 		public void Update(T item)
+		{
+			throw new NotImplementedException();
+		}
+
+		public IDataContext DataContext
+		{
+			get { throw new NotImplementedException(); }
+		}
+
+		public IQueryable<TElement> CreateQuery<TElement>(Expression expression)
+		{
+			throw new NotImplementedException();
+		}
+
+		public IQueryable CreateQuery(Expression expression)
+		{
+			throw new NotImplementedException();
+		}
+
+		public TResult Execute<TResult>(Expression expression)
+		{
+			throw new NotImplementedException();
+		}
+
+		public object Execute(Expression expression)
 		{
 			throw new NotImplementedException();
 		}

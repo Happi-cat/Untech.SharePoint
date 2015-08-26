@@ -4,7 +4,7 @@ namespace Untech.SharePoint.Client.Data
 {
 	public interface ISpList<T> : IQueryable<T>
 	{
-		BaseDataContext DataContext { get; }
+		IDataContext DataContext { get; }
 
 		void Add(T item);
 

@@ -88,9 +88,9 @@
     <Compile Include="Data\AttributedMetaList.cs" />
     <Compile Include="Data\AttributedMetaModel.cs" />
     <Compile Include="Data\AttributedMetaType.cs" />
-    <Compile Include="Data\BaseDataContext.cs" />
+    <Compile Include="Data\IDataContext.cs" />
     <Compile Include="Data\ClientContextHelpers.cs" />
-    <Compile Include="Data\DataMemberMapper.cs" />
+    <Compile Include="Data\Mapper\DataMemberMapper.cs" />
     <Compile Include="Data\DataMemberCollection.cs" />
     <Compile Include="Data\FieldConverters\Basic\CounterFieldConverter.cs" />
     <Compile Include="Data\FieldConverters\FieldConverterException.cs" />
@@ -118,7 +118,7 @@
     <Compile Include="Data\SpFieldCollection.cs" />
     <Compile Include="Data\SpList.cs" />
     <Compile Include="Data\SpListAttribute.cs" />
-    <Compile Include="Data\TypeMapper.cs" />
+    <Compile Include="Data\Mapper\TypeMapper.cs" />
     <Compile Include="Guard.cs" />
     <Compile Include="Extensions\EnumerableExtensions.cs" />
     <Compile Include="Extensions\ExpressionExtensions.cs" />
@@ -139,7 +139,6 @@
   <ItemGroup>
     <Folder Include="Data\FieldConverters\Custom\" />
     <Folder Include="Data\Queryable\" />
-    <Folder Include="Data\Services\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

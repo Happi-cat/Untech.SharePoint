@@ -1,7 +1,7 @@
 using System.Linq;
 using Microsoft.SharePoint.Client;
 
-namespace Untech.SharePoint.Client.Data
+namespace Untech.SharePoint.Client.Data.Mapper
 {
 	internal sealed class TypeMapper
 	{

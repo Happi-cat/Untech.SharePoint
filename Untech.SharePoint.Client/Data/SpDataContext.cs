@@ -5,7 +5,7 @@ using Untech.SharePoint.Client.Extensions;
 
 namespace Untech.SharePoint.Client.Data
 {
-	public abstract class SpDataContext<TDerived> : BaseDataContext
+	public abstract class SpDataContext<TDerived> : IDataContext
 		where TDerived : SpDataContext<TDerived>
 	{
 		protected SpDataContext(ClientContext context)
@@ -21,7 +21,7 @@ namespace Untech.SharePoint.Client.Data
 				var memberNode = (MemberExpression) node;
 				var memberInfo = memberNode.Member;
 
-				return GetList<T>(Model.GetList(memberInfo));
+				return GetList<T>(Mapping.GetList(memberInfo));
 			}
 
 			throw new ArgumentException("Selector is invalid", "listSelector");
@@ -30,6 +30,16 @@ namespace Untech.SharePoint.Client.Data
 		private SpList<T> GetList<T>(MetaList metaList)
 		{
 			throw new NotImplementedException();
+		}
+
+		public ClientContext ClientContext
+		{
+			get { throw new NotImplementedException(); }
+		}
+
+		public MetaModel Mapping
+		{
+			get { throw new NotImplementedException(); }
 		}
 	}
 }

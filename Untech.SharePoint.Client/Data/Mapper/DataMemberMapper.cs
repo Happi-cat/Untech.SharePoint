@@ -2,7 +2,7 @@ using System;
 using Microsoft.SharePoint.Client;
 using Untech.SharePoint.Client.Data.FieldConverters;
 
-namespace Untech.SharePoint.Client.Data
+namespace Untech.SharePoint.Client.Data.Mapper
 {
 	internal sealed class DataMemberMapper
 	{
