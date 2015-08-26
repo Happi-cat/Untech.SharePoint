@@ -5,14 +5,13 @@ using Untech.SharePoint.Client.Extensions;
 
 namespace Untech.SharePoint.Client.Data
 {
-	public abstract class SpDataContext<TDerived> where TDerived : SpDataContext<TDerived>
+	public abstract class SpDataContext<TDerived> : BaseDataContext
+		where TDerived : SpDataContext<TDerived>
 	{
 		protected SpDataContext(ClientContext context)
 		{
 
 		}
-
-		internal MetaModel Model { get; private set; }
 
 		protected SpList<T> GetList<T>(Expression<Func<TDerived, SpList<T>>> listSelector)
 		{

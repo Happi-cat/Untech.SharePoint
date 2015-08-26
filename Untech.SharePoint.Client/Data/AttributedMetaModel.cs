@@ -14,6 +14,7 @@ namespace Untech.SharePoint.Client.Data
 		public AttributedMetaModel(Type dataContextType, ISpFieldsResolver resolver)
 		{
 			Guard.CheckNotNull("dataContextType", dataContextType);
+			Guard.CheckNotNull("resolver", resolver);
 
 			DataContextType = dataContextType;
 			FieldsResolver = resolver;
