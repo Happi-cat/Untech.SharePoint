@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 
-namespace Untech.SharePoint.Client.Meta
+namespace Untech.SharePoint.Client.Meta.Collections
 {
 	public sealed class DataMemberCollection : IReadOnlyCollection<MetaDataMember>
 	{

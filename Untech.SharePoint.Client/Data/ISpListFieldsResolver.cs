@@ -1,4 +1,6 @@
-﻿namespace Untech.SharePoint.Client.Data
+﻿using Untech.SharePoint.Client.Meta.Collections;
+
+namespace Untech.SharePoint.Client.Data
 {
 	internal interface ISpFieldsResolver
 	{

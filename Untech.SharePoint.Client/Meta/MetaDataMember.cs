@@ -3,6 +3,8 @@ using System.Reflection;
 using Microsoft.SharePoint.Client;
 using Untech.SharePoint.Client.Data;
 using Untech.SharePoint.Client.FieldConverters;
+using Untech.SharePoint.Client.Meta.Accessors;
+using Untech.SharePoint.Client.Meta.Collections;
 using Untech.SharePoint.Client.Utils;
 using Untech.SharePoint.Client.Utils.Reflection;
 

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Untech.SharePoint.Client.Extensions;
+using Untech.SharePoint.Client.Meta.Collections;
 using Untech.SharePoint.Client.Meta.Providers;
 
 namespace Untech.SharePoint.Client.Meta

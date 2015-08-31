@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.SharePoint.Client;
 
-namespace Untech.SharePoint.Client.Meta
+namespace Untech.SharePoint.Client.Meta.Accessors
 {
 	internal class SpClientMetaAccessor : MetaAccessor<ListItem>
 	{

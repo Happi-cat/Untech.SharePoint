@@ -1,7 +1,7 @@
 ﻿using System;
 using Untech.SharePoint.Client.Utils.Reflection;
 
-namespace Untech.SharePoint.Client.Meta
+namespace Untech.SharePoint.Client.Meta.Accessors
 {
 	internal class MemberMetaAccessor : MetaAccessor<object>
 	{

@@ -1,10 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using Microsoft.SharePoint.Client;
-using System.Collections.ObjectModel;
 
-namespace Untech.SharePoint.Client.Data
+namespace Untech.SharePoint.Client.Meta.Collections
 {
 	public sealed class SpFieldCollection : IReadOnlyCollection<Field>
 	{

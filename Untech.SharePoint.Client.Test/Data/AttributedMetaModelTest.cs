@@ -4,6 +4,7 @@ using Microsoft.SharePoint.Client;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Untech.SharePoint.Client.AttributedMapping;
 using Untech.SharePoint.Client.Data;
+using Untech.SharePoint.Client.Meta.Collections;
 
 namespace Untech.SharePoint.Client.Test.Data
 {

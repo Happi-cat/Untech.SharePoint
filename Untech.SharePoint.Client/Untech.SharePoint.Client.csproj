@@ -92,7 +92,7 @@
     <Compile Include="Data\Mapper\DataMemberMapper.cs" />
     <Compile Include="Mapping\PropertyPart.cs" />
     <Compile Include="Mapping\TypeMap.cs" />
-    <Compile Include="Meta\DataMemberCollection.cs" />
+    <Compile Include="Meta\Collections\DataMemberCollection.cs" />
     <Compile Include="FieldConverters\Basic\CounterFieldConverter.cs" />
     <Compile Include="FieldConverters\FieldConverterException.cs" />
     <Compile Include="FieldConverters\FieldConverterResolver.cs" />
@@ -105,7 +105,7 @@
     <Compile Include="Data\ISpList.cs" />
     <Compile Include="Data\ISpListFieldsResolver.cs" />
     <Compile Include="Data\MappingSource.cs" />
-    <Compile Include="Meta\MemberMetaAccessor.cs" />
+    <Compile Include="Meta\Accessors\MemberMetaAccessor.cs" />
     <Compile Include="Mapping\ListMap.cs" />
     <Compile Include="Meta\Providers\IMetaDataMemberProvider.cs" />
     <Compile Include="Meta\Providers\IMetaListProvider.cs" />
@@ -117,10 +117,10 @@
     <Compile Include="Data\MemberMappingException.cs" />
     <Compile Include="Data\DataQuery.cs" />
     <Compile Include="Meta\Providers\IMetaTypeProvider.cs" />
-    <Compile Include="Meta\SpClientMetaAccessor.cs" />
+    <Compile Include="Meta\Accessors\SpClientMetaAccessor.cs" />
     <Compile Include="Data\SpDataContext.cs" />
     <Compile Include="AttributedMapping\SpFieldAttribute.cs" />
-    <Compile Include="Data\SpFieldCollection.cs" />
+    <Compile Include="Meta\Collections\SpFieldCollection.cs" />
     <Compile Include="Data\SpList.cs" />
     <Compile Include="Data\SpListAttribute.cs" />
     <Compile Include="Data\Mapper\TypeMapper.cs" />

@@ -1,4 +1,5 @@
 using Untech.SharePoint.Client.Data;
+using Untech.SharePoint.Client.Meta.Collections;
 using Untech.SharePoint.Client.Meta.Providers;
 
 namespace Untech.SharePoint.Client.Meta
