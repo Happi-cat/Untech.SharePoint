@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Untech.SharePoint.Client.AttributedMapping;
 using Untech.SharePoint.Client.Data;
+using Untech.SharePoint.Client.Meta;
 
 namespace Untech.SharePoint.Client.Test.Data
 {

@@ -1,6 +1,7 @@
 using System;
 using Microsoft.SharePoint.Client;
-using Untech.SharePoint.Client.Data.FieldConverters;
+using Untech.SharePoint.Client.FieldConverters;
+using Untech.SharePoint.Client.Meta;
 
 namespace Untech.SharePoint.Client.Data.Mapper
 {

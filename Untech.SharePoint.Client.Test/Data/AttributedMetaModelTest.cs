@@ -2,6 +2,7 @@
 using System.Linq;
 using Microsoft.SharePoint.Client;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Untech.SharePoint.Client.AttributedMapping;
 using Untech.SharePoint.Client.Data;
 
 namespace Untech.SharePoint.Client.Test.Data

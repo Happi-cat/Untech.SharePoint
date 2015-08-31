@@ -84,37 +84,42 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Data\AttributedMetaDataMember.cs" />
-    <Compile Include="Data\AttributedMetaList.cs" />
-    <Compile Include="Data\AttributedMetaModel.cs" />
-    <Compile Include="Data\AttributedMetaType.cs" />
+    <Compile Include="AttributedMapping\AttributedPropertyPart.cs" />
+    <Compile Include="AttributedMapping\AttributedTypeMap.cs" />
     <Compile Include="Data\IDataContext.cs" />
     <Compile Include="Data\ClientContextHelpers.cs" />
+    <Compile Include="Data\IEntity.cs" />
     <Compile Include="Data\Mapper\DataMemberMapper.cs" />
-    <Compile Include="Data\DataMemberCollection.cs" />
-    <Compile Include="Data\FieldConverters\Basic\CounterFieldConverter.cs" />
-    <Compile Include="Data\FieldConverters\FieldConverterException.cs" />
-    <Compile Include="Data\FieldConverters\FieldConverterResolver.cs" />
-    <Compile Include="Data\FieldConverters\FieldConverterWrapper.cs" />
-    <Compile Include="Data\FieldConverters\IFieldConverter.cs" />
-    <Compile Include="Data\FieldConverters\FieldConverterInitializationException.cs" />
-    <Compile Include="Data\FieldConverters\IFieldConverterResolver.cs" />
-    <Compile Include="Data\FieldConverters\InvalidFieldConverterException.cs" />
-    <Compile Include="Data\FieldConverters\SpFieldConverterAttribute.cs" />
+    <Compile Include="Mapping\PropertyPart.cs" />
+    <Compile Include="Mapping\TypeMap.cs" />
+    <Compile Include="Meta\DataMemberCollection.cs" />
+    <Compile Include="FieldConverters\Basic\CounterFieldConverter.cs" />
+    <Compile Include="FieldConverters\FieldConverterException.cs" />
+    <Compile Include="FieldConverters\FieldConverterResolver.cs" />
+    <Compile Include="FieldConverters\FieldConverterWrapper.cs" />
+    <Compile Include="FieldConverters\IFieldConverter.cs" />
+    <Compile Include="FieldConverters\FieldConverterInitializationException.cs" />
+    <Compile Include="FieldConverters\IFieldConverterResolver.cs" />
+    <Compile Include="FieldConverters\InvalidFieldConverterException.cs" />
+    <Compile Include="FieldConverters\SpFieldConverterAttribute.cs" />
     <Compile Include="Data\ISpList.cs" />
     <Compile Include="Data\ISpListFieldsResolver.cs" />
     <Compile Include="Data\MappingSource.cs" />
-    <Compile Include="Data\MemberMetaAccessor.cs" />
-    <Compile Include="Data\MetaAccessor.cs" />
-    <Compile Include="Data\MetaDataMember.cs" />
-    <Compile Include="Data\MetaList.cs" />
-    <Compile Include="Data\MetaModel.cs" />
-    <Compile Include="Data\MetaType.cs" />
+    <Compile Include="Meta\MemberMetaAccessor.cs" />
+    <Compile Include="Mapping\ListMap.cs" />
+    <Compile Include="Meta\Providers\IMetaDataMemberProvider.cs" />
+    <Compile Include="Meta\Providers\IMetaListProvider.cs" />
+    <Compile Include="Meta\MetaAccessor.cs" />
+    <Compile Include="Meta\MetaDataMember.cs" />
+    <Compile Include="Meta\MetaList.cs" />
+    <Compile Include="Meta\MetaModel.cs" />
+    <Compile Include="Meta\MetaType.cs" />
     <Compile Include="Data\MemberMappingException.cs" />
     <Compile Include="Data\DataQuery.cs" />
-    <Compile Include="Data\SpClientMetaAccessor.cs" />
+    <Compile Include="Meta\Providers\IMetaTypeProvider.cs" />
+    <Compile Include="Meta\SpClientMetaAccessor.cs" />
     <Compile Include="Data\SpDataContext.cs" />
-    <Compile Include="Data\SpFieldAttribute.cs" />
+    <Compile Include="AttributedMapping\SpFieldAttribute.cs" />
     <Compile Include="Data\SpFieldCollection.cs" />
     <Compile Include="Data\SpList.cs" />
     <Compile Include="Data\SpListAttribute.cs" />
@@ -125,20 +130,20 @@
     <Compile Include="Extensions\ObjectExtensions.cs" />
     <Compile Include="Extensions\TypeExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Reflection\InstanceCreationFactory.cs" />
-    <Compile Include="Reflection\InstanceCreationUtility.cs" />
-    <Compile Include="Reflection\MemberAccessor.cs" />
-    <Compile Include="Reflection\MemberAccessorPool.cs" />
-    <Compile Include="Utility\Singleton.cs" />
-    <Compile Include="Utility\TypeSystem.cs" />
+    <Compile Include="Utils\Reflection\InstanceCreationFactory.cs" />
+    <Compile Include="Utils\Reflection\InstanceCreationUtility.cs" />
+    <Compile Include="Utils\Reflection\MemberAccessor.cs" />
+    <Compile Include="Utils\Reflection\MemberAccessorPool.cs" />
+    <Compile Include="Utils\Singleton.cs" />
+    <Compile Include="Utils\TypeSystem.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="key.snk" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Data\FieldConverters\Custom\" />
     <Folder Include="Data\Queryable\" />
+    <Folder Include="FieldConverters\Custom\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

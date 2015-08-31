@@ -1,6 +1,6 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Untech.SharePoint.Client.Reflection;
+using Untech.SharePoint.Client.Utils.Reflection;
 using Getter = System.Func<object, object>;
 
 namespace Untech.SharePoint.Client.Test.Reflection

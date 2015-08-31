@@ -2,6 +2,7 @@
 using System.Linq.Expressions;
 using Microsoft.SharePoint.Client;
 using Untech.SharePoint.Client.Extensions;
+using Untech.SharePoint.Client.Meta;
 
 namespace Untech.SharePoint.Client.Data
 {

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Microsoft.SharePoint.Client;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Untech.SharePoint.Client.Data.FieldConverters;
+using Untech.SharePoint.Client.FieldConverters;
 
 namespace Untech.SharePoint.Client.Test.Data.FieldConverters
 {

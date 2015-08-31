@@ -1,4 +1,5 @@
 ﻿using System;
+using Untech.SharePoint.Client.Meta;
 
 namespace Untech.SharePoint.Client.Data
 {

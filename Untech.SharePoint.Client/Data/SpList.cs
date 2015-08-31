@@ -15,7 +15,7 @@ namespace Untech.SharePoint.Client.Data
 
 		IEnumerator IEnumerable.GetEnumerator()
 		{
-			throw new NotImplementedException();
+			return GetEnumerator();
 		}
 
 		public Type ElementType

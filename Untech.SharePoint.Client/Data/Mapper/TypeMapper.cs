@@ -1,5 +1,6 @@
 using System.Linq;
 using Microsoft.SharePoint.Client;
+using Untech.SharePoint.Client.Meta;
 
 namespace Untech.SharePoint.Client.Data.Mapper
 {
