@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Untech.SharePoint.Client.AttributedMapping
+namespace Untech.SharePoint.Common.AnnotationMapping
 {
 	[AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
 	public sealed class SpFieldAttribute : Attribute
