@@ -90,6 +90,7 @@
     <Compile Include="Data\ClientContextHelpers.cs" />
     <Compile Include="Data\IEntity.cs" />
     <Compile Include="Data\Mapper\DataMemberMapper.cs" />
+    <Compile Include="Mapping\Contextmap.cs" />
     <Compile Include="Mapping\PropertyPart.cs" />
     <Compile Include="Mapping\TypeMap.cs" />
     <Compile Include="Meta\Collections\DataMemberCollection.cs" />
