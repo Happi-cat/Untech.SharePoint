@@ -7,6 +7,8 @@ namespace Untech.SharePoint.Common.AnnotationMapping
 	{
 		public string InternalName { get; set; }
 
+		public string TypeAsString { get; set; }
+
 		public Type CustomConverterType { get; set; }
 	}
 }
