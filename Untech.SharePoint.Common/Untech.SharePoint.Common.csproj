@@ -42,6 +42,7 @@
     <Compile Include="AnnotationMapping\AnnotatedContentTypeProvider.cs" />
     <Compile Include="AnnotationMapping\AnnotatedContextProvider.cs" />
     <Compile Include="AnnotationMapping\AnnotatedFieldProvider.cs" />
+    <Compile Include="AnnotationMapping\AnnotatedListProvider.cs" />
     <Compile Include="AnnotationMapping\SpContentTypeAttribute.cs" />
     <Compile Include="AnnotationMapping\SpFieldAttribute.cs" />
     <Compile Include="AnnotationMapping\SpListAttribute.cs" />

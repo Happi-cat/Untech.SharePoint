@@ -13,7 +13,7 @@ namespace Untech.SharePoint.Common.AnnotationMapping
 		public AnnotatedContextProvider()
 		{
 			ContextType = typeof (T);
-			ListProviders = new Dictionary<string, IMetaListProvider>();
+			ListProviders = new Dictionary<string, AnnotatedListProvider>();
 
 			FillListProviders();
 		}
@@ -32,39 +32,35 @@ namespace Untech.SharePoint.Common.AnnotationMapping
 			var listAttribute = typeof (SpListAttribute);
 			var listType = typeof (ISpList<>);
 
-			var listProperties = ContextType.GetProperties(BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public)
+			ContextType.GetProperties(BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public)
 				.Where(n => n.IsDefined(listAttribute))
 				.Where(n => n.CanRead)
 				.Where(n => n.PropertyType.IsGenericType)
-				.Where(n => listType.IsAssignableFrom(n.PropertyType.GetGenericTypeDefinition()))
-				.ToList();
-
-			listProperties
-				.Select(n => n.GetCustomAttribute<SpListAttribute>())
-				.Select(n => n.ListTitle)
+				.Where(n => listType == n.PropertyType.GetGenericTypeDefinition())
 				.ToList()
-				.ForEach(n => ListProviders.Add(n, new AnnotatedListProvider(n)));
-
+				.ForEach(AddListContentType);
 		}
 
-	}
-
-	internal class AnnotatedListProvider : IMetaListProvider
-	{
-		public AnnotatedListProvider(string listTitle)
+		private void AddListContentType(PropertyInfo member)
 		{
-			ListTitle = listTitle;
-			ContentTypeProviders = new Dictionary<Type, AnnotatedContentTypeProvider>();
+			var listAttribute = member.GetCustomAttribute<SpListAttribute>();
+
+			if (!ListProviders.ContainsKey(listAttribute.ListTitle))
+			{
+				ListProviders.Add(listAttribute.ListTitle, new AnnotatedListProvider(listAttribute.ListTitle));
+			}
+
+			var provider = ListProviders[listAttribute.ListTitle];
+
+			var modelType = member.PropertyType.GetGenericArguments()[0];
+
+			if (provider.ContentTypeProviders.ContainsKey(modelType))
+			{
+				return;
+			}
+
+			provider.ContentTypeProviders.Add(modelType, new AnnotatedContentTypeProvider(modelType));
 		}
 
-		public string ListTitle { get; private set; }
-
-		public Dictionary<Type, AnnotatedContentTypeProvider> ContentTypeProviders { get; private set; }
-
-
-		public MetaList GetMetaList(MetaContext parent)
-		{
-			return new MetaList(parent, ListTitle, ContentTypeProviders.Values.ToList());
-		}
 	}
 }
