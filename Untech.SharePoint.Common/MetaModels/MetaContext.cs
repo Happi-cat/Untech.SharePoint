@@ -1,21 +1,25 @@
 ﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
+using Untech.SharePoint.Common.MetaModels.Collections;
 using Untech.SharePoint.Common.MetaModels.Providers;
+using Untech.SharePoint.Common.MetaModels.Visitors;
 
 namespace Untech.SharePoint.Common.MetaModels
 {
-	public sealed class MetaContext
+	public sealed class MetaContext : MetaModel
 	{
 		public MetaContext(IReadOnlyCollection<IMetaListProvider> listProviders)
 		{
 			Guard.CheckNotNull("listProviders", listProviders);
 
-			Lists = new ReadOnlyDictionary<string, MetaList>(listProviders
-				.Select(n => n.GetMetaList(this))
-				.ToDictionary(n => n.ListTitle));
+			Lists = new MetaListCollection(listProviders.Select(n => n.GetMetaList(this)));
 		}
 
-		public IReadOnlyDictionary<string, MetaList> Lists { get; private set; } 
+		public MetaListCollection Lists { get; private set; }
+
+		public override void Accept(IMetaModelVisitor visitor)
+		{
+			visitor.VisitContext(this);
+		}
 	}
 }

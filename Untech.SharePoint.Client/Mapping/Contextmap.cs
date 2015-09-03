@@ -9,22 +9,5 @@ using Untech.SharePoint.Client.Meta.Providers;
 
 namespace Untech.SharePoint.Client.Mapping
 {
-	public class ContextMap<T>
-	{
-		public ListMap List<TEntity>(Expression<Func<T, ISpList<TEntity>>> listExpression, string listTitle) 
-		{
-			throw new NotImplementedException();
-		}
-
-		public ListMap List<TEntity, TProvider>(Expression<Func<T, ISpList<TEntity>>> listExpression) 
-			where TProvider : IMetaListProvider, new()
-		{
-			throw new NotImplementedException();
-		}
-
-		public ListMap List<TEntity>(Expression<Func<T, ISpList<TEntity>>> listExpression, IMetaListProvider listProvider) 
-		{
-			throw new NotImplementedException();
-		}
-	}
+	
 }

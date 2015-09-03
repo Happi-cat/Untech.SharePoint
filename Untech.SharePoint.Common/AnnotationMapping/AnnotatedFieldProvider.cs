@@ -14,7 +14,7 @@ namespace Untech.SharePoint.Common.AnnotationMapping
 			FieldAttribute = member.GetCustomAttribute<SpFieldAttribute>();
 			if (FieldAttribute == null)
 			{
-				throw new ArgumentException(string.Format("Member {0} has no attribute SpFieldAttribute", Member.Name), "memberInfo");
+				throw new ArgumentException(string.Format("Member {0} has no attribute SpFieldAttribute", Member.Name), "member");
 			}
 		}
 

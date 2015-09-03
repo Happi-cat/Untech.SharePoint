@@ -7,7 +7,7 @@ using Untech.SharePoint.Common.MetaModels.Providers;
 
 namespace Untech.SharePoint.Common.AnnotationMapping
 {
-	internal class AnnotatedContentTypeProvider : IMetaContentTypeProvider
+	internal sealed class AnnotatedContentTypeProvider : IMetaContentTypeProvider
 	{
 		public AnnotatedContentTypeProvider(Type modelType)
 		{

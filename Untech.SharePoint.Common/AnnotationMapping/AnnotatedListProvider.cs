@@ -18,6 +18,15 @@ namespace Untech.SharePoint.Common.AnnotationMapping
 
 		public Dictionary<Type, AnnotatedContentTypeProvider> ContentTypeProviders { get; private set; }
 
+		public AnnotatedContentTypeProvider GetOrAddContentType(Type entityType, Func<AnnotatedContentTypeProvider> builder)
+		{
+			if (!ContentTypeProviders.ContainsKey(entityType))
+			{
+				ContentTypeProviders.Add(entityType, builder());
+			}
+
+			return ContentTypeProviders[entityType];
+		}
 
 		public MetaList GetMetaList(MetaContext parent)
 		{

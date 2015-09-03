@@ -55,12 +55,12 @@ namespace Untech.SharePoint.Common
 
 			if (actualValue == null)
 			{
-				if (expectedType.IsNullableType()) 
-				{
-					return;
-				}
-				throw new ArgumentException(string.Format("Parameter '{0}' is null, but '{2}' is not a nullable type.",
-					paramName, expectedType), paramName);
+				//if (expectedType.IsNullableType()) 
+				//{
+				//	return;
+				//}
+				//throw new ArgumentException(string.Format("Parameter '{0}' is null, but '{2}' is not a nullable type.",
+				//	paramName, expectedType), paramName);
 			}
 
 			if (expectedType.IsInstanceOfType(actualValue))
