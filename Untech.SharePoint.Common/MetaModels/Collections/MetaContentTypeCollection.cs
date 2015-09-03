@@ -1,35 +1,25 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 
 namespace Untech.SharePoint.Common.MetaModels.Collections
 {
-	public sealed class MetaContentTypeCollection : IReadOnlyCollection<MetaContentType>
+	public sealed class MetaContentTypeCollection : ReadOnlyDictionary<Type, MetaContentType>, IReadOnlyCollection<MetaContentType>
 	{
-		private readonly ReadOnlyDictionary<Type, MetaContentType> _contentTypes;
-
-		public MetaContentTypeCollection(IEnumerable<MetaContentType> contentTypes)
+		public MetaContentTypeCollection(IEnumerable<MetaContentType> enumerable) 
+			: base(CreateDictionary(enumerable))
 		{
-			_contentTypes = new ReadOnlyDictionary<Type, MetaContentType>(contentTypes.ToDictionary(n => n.EntityType));
 		}
 
-		public IEnumerator<MetaContentType> GetEnumerator()
+		IEnumerator<MetaContentType> IEnumerable<MetaContentType>.GetEnumerator()
 		{
-			return _contentTypes.Values.GetEnumerator();
+			return Values.GetEnumerator();
 		}
 
-		IEnumerator IEnumerable.GetEnumerator()
+		private static IDictionary<Type, MetaContentType> CreateDictionary(IEnumerable<MetaContentType> enumerable)
 		{
-			return GetEnumerator();
-		}
-
-		public int Count { get { return _contentTypes.Values.Count; } }
-
-		public MetaContentType GetByEntityType(Type entityType)
-		{
-			return _contentTypes[entityType];
+			return enumerable.ToDictionary(n => n.EntityType);
 		}
 	}
 }

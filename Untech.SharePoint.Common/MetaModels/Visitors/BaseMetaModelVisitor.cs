@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using Untech.SharePoint.Common.Extensions;
 
 namespace Untech.SharePoint.Common.MetaModels.Visitors
 {
@@ -7,23 +8,17 @@ namespace Untech.SharePoint.Common.MetaModels.Visitors
 	{
 		public virtual void VisitContext(MetaContext context)
 		{
-			context.Lists
-				.ToList()
-				.ForEach(Visit);
+			context.Lists.Each<MetaList>(Visit);
 		}
 
 		public virtual void VisitList(MetaList list)
 		{
-			list.ContentTypes
-				.ToList()
-				.ForEach(Visit);
+			list.ContentTypes.Each<MetaModel>(Visit);
 		}
 
 		public virtual void VisitContentType(MetaContentType contentType)
 		{
-			contentType.Fields
-				.ToList()
-				.ForEach(Visit);
+			contentType.Fields.Each<MetaField>(Visit);
 		}
 
 		public virtual void VisitField(MetaField field)

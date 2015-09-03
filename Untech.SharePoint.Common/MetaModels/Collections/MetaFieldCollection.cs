@@ -5,30 +5,21 @@ using System.Linq;
 
 namespace Untech.SharePoint.Common.MetaModels.Collections
 {
-	public sealed class MetaFieldCollection : IReadOnlyCollection<MetaField>
+	public sealed class MetaFieldCollection : ReadOnlyDictionary<string, MetaField>, IEnumerable<MetaField>
 	{
-		private readonly ReadOnlyDictionary<string, MetaField> _fields;
-
-		public MetaFieldCollection(IEnumerable<MetaField> fields)
+		public MetaFieldCollection(IEnumerable<MetaField> enumerable)
+			: base(CreateDictionary(enumerable))
 		{
-			_fields = new ReadOnlyDictionary<string, MetaField>(fields.ToDictionary(n => n.MemberName));
 		}
 
-		public IEnumerator<MetaField> GetEnumerator()
+		IEnumerator<MetaField> IEnumerable<MetaField>.GetEnumerator()
 		{
-			return _fields.Values.GetEnumerator();
+			return Values.GetEnumerator();
 		}
 
-		IEnumerator IEnumerable.GetEnumerator()
+		private static IDictionary<string, MetaField> CreateDictionary(IEnumerable<MetaField> enumerable)
 		{
-			return GetEnumerator();
-		}
-
-		public int Count { get { return _fields.Values.Count; } }
-
-		public MetaField GetByMemberName(string memberName)
-		{
-			return _fields[memberName];
+			return enumerable.ToDictionary(n => n.MemberName);
 		}
 	}
 }

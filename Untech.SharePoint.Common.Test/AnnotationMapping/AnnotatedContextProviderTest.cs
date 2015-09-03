@@ -20,8 +20,8 @@ namespace Untech.SharePoint.Common.Test.AnnotationMapping
 			var model = new AnnotatedContextProvider<TestContext>().GetMetaContext();
 
 			Assert.AreEqual(2, model.Lists.Count);
-			Assert.AreEqual(2, model.Lists.GetByListTitle("List1").ContentTypes.Count);
-			Assert.AreEqual(1, model.Lists.GetByListTitle("List2").ContentTypes.Count);
+			Assert.AreEqual(2, model.Lists["List1"].ContentTypes.Count);
+			Assert.AreEqual(1, model.Lists["List2"].ContentTypes.Count);
 		}
 
 		[TestMethod]
@@ -29,8 +29,8 @@ namespace Untech.SharePoint.Common.Test.AnnotationMapping
 		{
 			var model = new AnnotatedContextProvider<TestContext>().GetMetaContext();
 
-			Assert.AreEqual("0x0010", model.Lists.GetByListTitle("List1").ContentTypes.GetByEntityType(typeof(TestEntity)).ContentTypeId);
-			Assert.AreEqual("0x001020", model.Lists.GetByListTitle("List1").ContentTypes.GetByEntityType(typeof(DerivedTestEntity1)).ContentTypeId);
+			Assert.AreEqual("0x0010", model.Lists["List1"].ContentTypes[typeof(TestEntity)].ContentTypeId);
+			Assert.AreEqual("0x001020", model.Lists["List1"].ContentTypes[typeof(DerivedTestEntity1)].ContentTypeId);
 		}
 
 		[TestMethod]
@@ -38,7 +38,7 @@ namespace Untech.SharePoint.Common.Test.AnnotationMapping
 		{
 			var model = new AnnotatedContextProvider<TestContext>().GetMetaContext();
 
-			Assert.AreEqual("0x0010", model.Lists.GetByListTitle("List2").ContentTypes.GetByEntityType(typeof(DerivedTestEntity2)).ContentTypeId);
+			Assert.AreEqual("0x0010", model.Lists["List2"].ContentTypes[typeof(DerivedTestEntity2)].ContentTypeId);
 		}
 
 		[TestMethod]
@@ -46,9 +46,9 @@ namespace Untech.SharePoint.Common.Test.AnnotationMapping
 		{
 			var model = new AnnotatedContextProvider<TestContext>().GetMetaContext();
 
-			Assert.AreEqual(3, model.Lists.GetByListTitle("List1").ContentTypes.GetByEntityType(typeof(TestEntity)).Fields.Count);
-			Assert.AreEqual(4, model.Lists.GetByListTitle("List1").ContentTypes.GetByEntityType(typeof(DerivedTestEntity1)).Fields.Count);
-			Assert.AreEqual(4, model.Lists.GetByListTitle("List2").ContentTypes.GetByEntityType(typeof(DerivedTestEntity2)).Fields.Count);
+			Assert.AreEqual(3, model.Lists["List1"].ContentTypes[typeof(TestEntity)].Fields.Count);
+			Assert.AreEqual(4, model.Lists["List1"].ContentTypes[typeof(DerivedTestEntity1)].Fields.Count);
+			Assert.AreEqual(4, model.Lists["List2"].ContentTypes[typeof(DerivedTestEntity2)].Fields.Count);
 		}
 
 		[TestMethod]
@@ -56,7 +56,7 @@ namespace Untech.SharePoint.Common.Test.AnnotationMapping
 		{
 			var model = new AnnotatedContextProvider<TestContext>().GetMetaContext();
 
-			Assert.AreEqual("OldInternalName", model.Lists.GetByListTitle("List1").ContentTypes.GetByEntityType(typeof(DerivedTestEntity1)).Fields.GetByMemberName("OverrideProperty").FieldInternalName);
+			Assert.AreEqual("OldInternalName", model.Lists["List1"].ContentTypes[typeof(DerivedTestEntity1)].Fields["OverrideProperty"].FieldInternalName);
 		}
 
 		[TestMethod]
@@ -64,7 +64,7 @@ namespace Untech.SharePoint.Common.Test.AnnotationMapping
 		{
 			var model = new AnnotatedContextProvider<TestContext>().GetMetaContext();
 
-			Assert.AreEqual("NewInternalName", model.Lists.GetByListTitle("List2").ContentTypes.GetByEntityType(typeof(DerivedTestEntity2)).Fields.GetByMemberName("OverrideProperty").FieldInternalName);
+			Assert.AreEqual("NewInternalName", model.Lists["List2"].ContentTypes[typeof(DerivedTestEntity2)].Fields["OverrideProperty"].FieldInternalName);
 		}
 	}
 }

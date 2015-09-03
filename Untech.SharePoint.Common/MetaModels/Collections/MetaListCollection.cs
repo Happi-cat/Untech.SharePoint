@@ -5,30 +5,21 @@ using System.Linq;
 
 namespace Untech.SharePoint.Common.MetaModels.Collections
 {
-	public sealed class MetaListCollection : IReadOnlyCollection<MetaList>
+	public sealed class MetaListCollection : ReadOnlyDictionary<string, MetaList>, IEnumerable<MetaList>
 	{
-		private readonly ReadOnlyDictionary<string, MetaList> _lists;
-
-		public MetaListCollection(IEnumerable<MetaList> lists)
+		public MetaListCollection(IEnumerable<MetaList> enumerable)
+			: base(CreateDictionary(enumerable))
 		{
-			_lists = new ReadOnlyDictionary<string, MetaList>(lists.ToDictionary(n => n.ListTitle));
 		}
 
-		public IEnumerator<MetaList> GetEnumerator()
+		IEnumerator<MetaList> IEnumerable<MetaList>.GetEnumerator()
 		{
-			return _lists.Values.GetEnumerator();
+			return Values.GetEnumerator();
 		}
 
-		IEnumerator IEnumerable.GetEnumerator()
+		private static IDictionary<string, MetaList> CreateDictionary(IEnumerable<MetaList> enumerable)
 		{
-			return GetEnumerator();
-		}
-
-		public int Count { get { return _lists.Values.Count; } }
-
-		public MetaList GetByListTitle(string listTitle)
-		{
-			return _lists[listTitle];
+			return enumerable.ToDictionary(n => n.ListTitle);
 		}
 	}
 }

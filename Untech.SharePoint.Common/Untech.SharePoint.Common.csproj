@@ -53,6 +53,10 @@
     <Compile Include="Converters\InvalidFieldConverterException.cs" />
     <Compile Include="Converters\SPFieldConverterAttribute.cs" />
     <Compile Include="Data\ISpList.cs" />
+    <Compile Include="Extensions\EnumerableExtensions.cs" />
+    <Compile Include="Extensions\ExpressionExtensions.cs" />
+    <Compile Include="Extensions\ObjectExtensions.cs" />
+    <Compile Include="Extensions\TypeExtensions.cs" />
     <Compile Include="Guard.cs" />
     <Compile Include="MetaModels\Collections\MetaContentTypeCollection.cs" />
     <Compile Include="MetaModels\Collections\MetaFieldCollection.cs" />
