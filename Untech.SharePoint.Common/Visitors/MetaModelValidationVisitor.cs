@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Reflection;
+using Untech.SharePoint.Common.MetaModels;
 
-namespace Untech.SharePoint.Common.MetaModels.Visitors
+namespace Untech.SharePoint.Common.Visitors
 {
-	public class MetaModelValidator : BaseMetaModelVisitor
+	public class MetaModelValidationVisitor : BaseMetaModelVisitor
 	{
 		public override void VisitContentType(MetaContentType contentType)
 		{
@@ -22,6 +24,11 @@ namespace Untech.SharePoint.Common.MetaModels.Visitors
 			}
 
 			base.VisitField(field);
+		}
+
+		protected virtual void VisitFieldMember(MemberInfo member)
+		{
+			
 		}
 	}
 

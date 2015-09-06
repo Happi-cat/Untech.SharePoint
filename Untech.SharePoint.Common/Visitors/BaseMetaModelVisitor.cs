@@ -1,24 +1,25 @@
 ﻿using System;
-using System.Linq;
+using System.Collections.Generic;
 using Untech.SharePoint.Common.Extensions;
+using Untech.SharePoint.Common.MetaModels;
 
-namespace Untech.SharePoint.Common.MetaModels.Visitors
+namespace Untech.SharePoint.Common.Visitors
 {
 	public abstract class BaseMetaModelVisitor : IMetaModelVisitor
 	{
 		public virtual void VisitContext(MetaContext context)
 		{
-			context.Lists.Each<MetaList>(Visit);
+			VisitCollection(context.Lists);
 		}
 
 		public virtual void VisitList(MetaList list)
 		{
-			list.ContentTypes.Each<MetaModel>(Visit);
+			VisitCollection(list.ContentTypes);
 		}
 
 		public virtual void VisitContentType(MetaContentType contentType)
 		{
-			contentType.Fields.Each<MetaField>(Visit);
+			VisitCollection(contentType.Fields);
 		}
 
 		public virtual void VisitField(MetaField field)
@@ -37,6 +38,11 @@ namespace Untech.SharePoint.Common.MetaModels.Visitors
 			{
 				model.Accept(this);
 			}
+		}
+
+		protected void VisitCollection(IEnumerable<MetaModel> models)
+		{
+			models.Each(Visit);
 		}
 	}
 }

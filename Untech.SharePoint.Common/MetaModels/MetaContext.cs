@@ -2,7 +2,7 @@
 using System.Linq;
 using Untech.SharePoint.Common.MetaModels.Collections;
 using Untech.SharePoint.Common.MetaModels.Providers;
-using Untech.SharePoint.Common.MetaModels.Visitors;
+using Untech.SharePoint.Common.Visitors;
 
 namespace Untech.SharePoint.Common.MetaModels
 {

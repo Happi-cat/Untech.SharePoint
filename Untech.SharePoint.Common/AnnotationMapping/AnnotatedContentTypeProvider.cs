@@ -45,6 +45,7 @@ namespace Untech.SharePoint.Common.AnnotationMapping
 			var properties = modelType.GetProperties(BindingFlags.Instance | BindingFlags.Public)
 				.Where(n => n.IsDefined(attributeType))
 				.Where(n => n.CanRead || n.CanWrite)
+				.Where(n => !n.GetIndexParameters().Any())
 				.Select(CreateFieldProvider)
 				.ToList();
 

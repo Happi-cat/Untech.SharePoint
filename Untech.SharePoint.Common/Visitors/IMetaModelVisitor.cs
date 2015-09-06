@@ -1,4 +1,6 @@
-﻿namespace Untech.SharePoint.Common.MetaModels.Visitors
+﻿using Untech.SharePoint.Common.MetaModels;
+
+namespace Untech.SharePoint.Common.Visitors
 {
 	public interface IMetaModelVisitor
 	{
@@ -13,6 +15,5 @@
 		void VisitContentType(MetaContentType contentType);
 
 		void VisitField(MetaField field);
-
 	}
 }
