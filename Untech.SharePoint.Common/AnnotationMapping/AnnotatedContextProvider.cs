@@ -11,17 +11,20 @@ namespace Untech.SharePoint.Common.AnnotationMapping
 {
 	internal sealed class AnnotatedContextProvider<T> : IMetaContextProvider
 	{
+		private readonly Dictionary<string, AnnotatedListProvider> _listProviders;
+
 		public AnnotatedContextProvider()
 		{
 			ContextType = typeof(T);
-			ListProviders = new Dictionary<string, AnnotatedListProvider>();
 
-			Init();
+			_listProviders = new Dictionary<string, AnnotatedListProvider>();
+
+			RegisterLists();
 		}
 
 		public Type ContextType { get; private set; }
 
-		public Dictionary<string, AnnotatedListProvider> ListProviders { get; private set; }
+		public IReadOnlyDictionary<string, AnnotatedListProvider> ListProviders { get { return _listProviders; } }
 
 
 		public MetaContext GetMetaContext()
@@ -31,15 +34,15 @@ namespace Untech.SharePoint.Common.AnnotationMapping
 
 		public AnnotatedListProvider GetOrAddList(string listTitle)
 		{
-			if (!ListProviders.ContainsKey(listTitle))
+			if (!_listProviders.ContainsKey(listTitle))
 			{
-				ListProviders.Add(listTitle, new AnnotatedListProvider(listTitle));
+				_listProviders.Add(listTitle, new AnnotatedListProvider(listTitle));
 			}
 
-			return ListProviders[listTitle];
+			return _listProviders[listTitle];
 		}
 
-		private void Init()
+		private void RegisterLists()
 		{
 			var attributeType = typeof(SpListAttribute);
 			var listType = typeof(ISpList<>);
@@ -48,15 +51,18 @@ namespace Untech.SharePoint.Common.AnnotationMapping
 				.Where(n => n.IsDefined(attributeType))
 				.Where(n => n.CanRead)
 				.Where(n => n.PropertyType.IsGenericType && n.PropertyType.GetGenericTypeDefinition() == listType)
-				.Each(RegisterListContentType);
+				.Each(RegisterListWithContentType);
 		}
 
-		private void RegisterListContentType(PropertyInfo member)
+		private void RegisterListWithContentType(PropertyInfo member)
 		{
 			var listAttribute = member.GetCustomAttribute<SpListAttribute>();
-			var listProvider = GetOrAddList(listAttribute.ListTitle);
+			var listTitle = string.IsNullOrEmpty(listAttribute.ListTitle) ? member.Name : listAttribute.ListTitle;
+
+			var listProvider = GetOrAddList(listTitle);
 
 			var modelType = member.PropertyType.GetGenericArguments()[0];
+
 			listProvider.GetOrAddContentType(modelType, () => new AnnotatedContentTypeProvider(modelType));
 		}
 

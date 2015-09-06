@@ -51,7 +51,7 @@
     <Compile Include="Converters\FieldConverterWrapper.cs" />
     <Compile Include="Converters\IFieldConverter.cs" />
     <Compile Include="Converters\InvalidFieldConverterException.cs" />
-    <Compile Include="Converters\SPFieldConverterAttribute.cs" />
+    <Compile Include="Converters\SpFieldConverterAttribute.cs" />
     <Compile Include="Data\ISpList.cs" />
     <Compile Include="Extensions\EnumerableExtensions.cs" />
     <Compile Include="Extensions\ExpressionExtensions.cs" />
