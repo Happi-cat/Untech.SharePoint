@@ -5,9 +5,9 @@ using Untech.SharePoint.Common.MetaModels.Providers;
 
 namespace Untech.SharePoint.Common.AnnotationMapping
 {
-	internal sealed class AnnotatedFieldProvider : IMetaFieldProvider
+	internal sealed class AnnotatedFieldPart : IMetaFieldProvider
 	{
-		public AnnotatedFieldProvider(MemberInfo member)
+		public AnnotatedFieldPart(MemberInfo member)
 		{
 			Member = member;
 

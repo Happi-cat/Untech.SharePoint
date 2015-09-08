@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Untech.SharePoint.Common.Extensions
 {
@@ -16,6 +17,11 @@ namespace Untech.SharePoint.Common.Extensions
 			{
 				action(item);
 			}
+		}
+
+		public static bool IsNullOrEmpty<T>(this IEnumerable<T> enumerable)
+		{
+			return enumerable == null || !enumerable.Any();
 		}
 	}
 }

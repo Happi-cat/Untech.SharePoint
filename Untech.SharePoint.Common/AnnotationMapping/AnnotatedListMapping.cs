@@ -6,19 +6,21 @@ using Untech.SharePoint.Common.MetaModels.Providers;
 
 namespace Untech.SharePoint.Common.AnnotationMapping
 {
-	internal class AnnotatedListProvider : IMetaListProvider
+	internal class AnnotatedListMapping : IMetaListProvider
 	{
-		public AnnotatedListProvider(string listTitle)
+		public AnnotatedListMapping(string listTitle)
 		{
+			Guard.CheckNotNull("listTitle", listTitle);
+
 			ListTitle = listTitle;
-			ContentTypeProviders = new Dictionary<Type, AnnotatedContentTypeProvider>();
+			ContentTypeProviders = new Dictionary<Type, AnnotatedContentTypeMapping>();
 		}
 
 		public string ListTitle { get; private set; }
 
-		public Dictionary<Type, AnnotatedContentTypeProvider> ContentTypeProviders { get; private set; }
+		public Dictionary<Type, AnnotatedContentTypeMapping> ContentTypeProviders { get; private set; }
 
-		public AnnotatedContentTypeProvider GetOrAddContentType(Type entityType, Func<AnnotatedContentTypeProvider> builder)
+		public AnnotatedContentTypeMapping GetOrAddContentType(Type entityType, Func<AnnotatedContentTypeMapping> builder)
 		{
 			if (!ContentTypeProviders.ContainsKey(entityType))
 			{

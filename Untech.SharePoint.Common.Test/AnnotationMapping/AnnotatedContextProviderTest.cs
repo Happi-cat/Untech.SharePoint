@@ -9,7 +9,7 @@ namespace Untech.SharePoint.Common.Test.AnnotationMapping
 		[TestMethod]
 		public void CanCreateContextAndGetModel()
 		{
-			var model = new AnnotatedContextProvider<TestContext>().GetMetaContext();
+			var model = new AnnotatedContextMapping<TestContext>().GetMetaContext();
 
 			Assert.IsNotNull(model);
 		}
@@ -17,7 +17,7 @@ namespace Untech.SharePoint.Common.Test.AnnotationMapping
 		[TestMethod]
 		public void CanSeeOnlyAnnotatedContextPropertiesWithISpListType()
 		{
-			var model = new AnnotatedContextProvider<TestContext>().GetMetaContext();
+			var model = new AnnotatedContextMapping<TestContext>().GetMetaContext();
 
 			Assert.AreEqual(2, model.Lists.Count);
 			Assert.AreEqual(2, model.Lists["List1"].ContentTypes.Count);
@@ -27,7 +27,7 @@ namespace Untech.SharePoint.Common.Test.AnnotationMapping
 		[TestMethod]
 		public void CanSeeContentTypeId()
 		{
-			var model = new AnnotatedContextProvider<TestContext>().GetMetaContext();
+			var model = new AnnotatedContextMapping<TestContext>().GetMetaContext();
 
 			Assert.AreEqual("0x0010", model.Lists["List1"].ContentTypes[typeof(TestEntity)].ContentTypeId);
 			Assert.AreEqual("0x001020", model.Lists["List1"].ContentTypes[typeof(DerivedTestEntity1)].ContentTypeId);
@@ -36,7 +36,7 @@ namespace Untech.SharePoint.Common.Test.AnnotationMapping
 		[TestMethod]
 		public void CanInheritContentTypeAnnotation()
 		{
-			var model = new AnnotatedContextProvider<TestContext>().GetMetaContext();
+			var model = new AnnotatedContextMapping<TestContext>().GetMetaContext();
 
 			Assert.AreEqual("0x0010", model.Lists["List2"].ContentTypes[typeof(DerivedTestEntity2)].ContentTypeId);
 		}
@@ -44,7 +44,7 @@ namespace Untech.SharePoint.Common.Test.AnnotationMapping
 		[TestMethod]
 		public void CanSeeAnnotatedProperties()
 		{
-			var model = new AnnotatedContextProvider<TestContext>().GetMetaContext();
+			var model = new AnnotatedContextMapping<TestContext>().GetMetaContext();
 
 			Assert.AreEqual(3, model.Lists["List1"].ContentTypes[typeof(TestEntity)].Fields.Count);
 			Assert.AreEqual(4, model.Lists["List1"].ContentTypes[typeof(DerivedTestEntity1)].Fields.Count);
@@ -54,7 +54,7 @@ namespace Untech.SharePoint.Common.Test.AnnotationMapping
 		[TestMethod]
 		public void CanInheritFieldAnnotation()
 		{
-			var model = new AnnotatedContextProvider<TestContext>().GetMetaContext();
+			var model = new AnnotatedContextMapping<TestContext>().GetMetaContext();
 
 			Assert.AreEqual("OldInternalName", model.Lists["List1"].ContentTypes[typeof(DerivedTestEntity1)].Fields["OverrideProperty"].FieldInternalName);
 		}
@@ -62,7 +62,7 @@ namespace Untech.SharePoint.Common.Test.AnnotationMapping
 		[TestMethod]
 		public void CanOverwriteFieldAnnotation()
 		{
-			var model = new AnnotatedContextProvider<TestContext>().GetMetaContext();
+			var model = new AnnotatedContextMapping<TestContext>().GetMetaContext();
 
 			Assert.AreEqual("NewInternalName", model.Lists["List2"].ContentTypes[typeof(DerivedTestEntity2)].Fields["OverrideProperty"].FieldInternalName);
 		}

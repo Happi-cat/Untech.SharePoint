@@ -39,10 +39,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AnnotationMapping\AnnotatedContentTypeProvider.cs" />
-    <Compile Include="AnnotationMapping\AnnotatedContextProvider.cs" />
-    <Compile Include="AnnotationMapping\AnnotatedFieldProvider.cs" />
-    <Compile Include="AnnotationMapping\AnnotatedListProvider.cs" />
+    <Compile Include="AnnotationMapping\AnnotatedContentTypeMapping.cs" />
+    <Compile Include="AnnotationMapping\AnnotatedContextMapping.cs" />
+    <Compile Include="AnnotationMapping\AnnotatedFieldPart.cs" />
+    <Compile Include="AnnotationMapping\AnnotatedListMapping.cs" />
     <Compile Include="AnnotationMapping\SpContentTypeAttribute.cs" />
     <Compile Include="AnnotationMapping\SpFieldAttribute.cs" />
     <Compile Include="AnnotationMapping\SpListAttribute.cs" />
