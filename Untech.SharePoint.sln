@@ -15,6 +15,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Untech.SharePoint.Common", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Untech.SharePoint.Common.Test", "Untech.SharePoint.Common.Test\Untech.SharePoint.Common.Test.csproj", "{672ADF77-0D40-4CB1-821E-54DED0E8AAA2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Untech.SharePoint.Server", "Untech.SharePoint.Server\Untech.SharePoint.Server.csproj", "{9656B27C-2D1C-4403-B691-C456E5D64630}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +47,10 @@ Global
 		{672ADF77-0D40-4CB1-821E-54DED0E8AAA2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{672ADF77-0D40-4CB1-821E-54DED0E8AAA2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{672ADF77-0D40-4CB1-821E-54DED0E8AAA2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9656B27C-2D1C-4403-B691-C456E5D64630}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9656B27C-2D1C-4403-B691-C456E5D64630}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9656B27C-2D1C-4403-B691-C456E5D64630}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9656B27C-2D1C-4403-B691-C456E5D64630}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

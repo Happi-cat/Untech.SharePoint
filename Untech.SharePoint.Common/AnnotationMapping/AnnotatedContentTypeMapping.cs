@@ -20,7 +20,7 @@ namespace Untech.SharePoint.Common.AnnotationMapping
 
 			ContentTypeAttribute = entityType.GetCustomAttribute<SpContentTypeAttribute>();
 
-			RegisterFieldParts();
+			InitFieldParts();
 		}
 
 		public Type EntityType { get; private set; }
@@ -47,7 +47,7 @@ namespace Untech.SharePoint.Common.AnnotationMapping
 			return metaContentType;
 		}
 
-		private void RegisterFieldParts()
+		private void InitFieldParts()
 		{
 			_fieldParts = new List<AnnotatedFieldPart>();
 
@@ -61,6 +61,7 @@ namespace Untech.SharePoint.Common.AnnotationMapping
 
 			EntityType.GetFields(BindingFlags.Instance | BindingFlags.Public)
 				.Where(n => n.IsDefined(attributeType))
+				.Where(n => !n.IsInitOnly && !n.IsLiteral)
 				.Each(RegisterFieldPart);
 		}
 

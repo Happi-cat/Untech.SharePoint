@@ -17,7 +17,7 @@ namespace Untech.SharePoint.Common.AnnotationMapping
 		{
 			ContextType = typeof(T);
 
-			RegisterListProviders();
+			InitListProviders();
 		}
 
 		public Type ContextType { get; private set; }
@@ -40,7 +40,7 @@ namespace Untech.SharePoint.Common.AnnotationMapping
 			return _listProviders[listTitle];
 		}
 
-		private void RegisterListProviders()
+		private void InitListProviders()
 		{
 			_listProviders = new Dictionary<string, AnnotatedListMapping>();
 

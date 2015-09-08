@@ -46,12 +46,14 @@
     <Compile Include="AnnotationMapping\SpContentTypeAttribute.cs" />
     <Compile Include="AnnotationMapping\SpFieldAttribute.cs" />
     <Compile Include="AnnotationMapping\SpListAttribute.cs" />
+    <Compile Include="Configuration\Configuration.cs" />
     <Compile Include="Converters\FieldConverterException.cs" />
     <Compile Include="Converters\FieldConverterInitializationException.cs" />
     <Compile Include="Converters\FieldConverterWrapper.cs" />
     <Compile Include="Converters\IFieldConverter.cs" />
     <Compile Include="Converters\InvalidFieldConverterException.cs" />
     <Compile Include="Converters\SpFieldConverterAttribute.cs" />
+    <Compile Include="Data\ISpContext.cs" />
     <Compile Include="Data\ISpList.cs" />
     <Compile Include="Extensions\EnumerableExtensions.cs" />
     <Compile Include="Extensions\ExpressionExtensions.cs" />
@@ -70,6 +72,12 @@
     <Compile Include="MetaModels\Providers\IMetaContextProvider.cs" />
     <Compile Include="MetaModels\Providers\IMetaListProvider.cs" />
     <Compile Include="MetaModels\Providers\IMetaFieldProvider.cs" />
+    <Compile Include="Models\Entity.cs" />
+    <Compile Include="Services\ICommonService.cs" />
+    <Compile Include="Utils\Reflection\InstanceCreationFactory.cs" />
+    <Compile Include="Utils\Reflection\InstanceCreationUtility.cs" />
+    <Compile Include="Utils\Reflection\MemberAccessor.cs" />
+    <Compile Include="Utils\Reflection\MemberAccessorPool.cs" />
     <Compile Include="Visitors\BaseMetaModelVisitor.cs" />
     <Compile Include="Visitors\FieldConverterRegistrator.cs" />
     <Compile Include="Visitors\IMetaModelVisitor.cs" />
@@ -77,10 +85,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utils\TypeSystem.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Configuration\" />
-    <Folder Include="Services\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

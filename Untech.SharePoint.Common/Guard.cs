@@ -27,7 +27,7 @@ namespace Untech.SharePoint.Common
 			throw new ArgumentException("Collection is null or empty", paramName);
 		}
 
-		public static void CheckTypeIsAssignableFrom(string paramName, Type actualType, Type expectedType)
+		public static void CheckTypeIsAssignableTo(string paramName, Type actualType, Type expectedType)
 		{
 			CheckNotNull("actualType", actualType);
 			CheckNotNull("expectedType", expectedType);
@@ -42,9 +42,9 @@ namespace Untech.SharePoint.Common
 			throw new ArgumentException(message, paramName);
 		}
 
-		public static void CheckTypeIsAssignableFrom<TExpected>(string paramName, Type actualType)
+		public static void CheckTypeIsAssignableTo<TExpected>(string paramName, Type actualType)
 		{
-			CheckTypeIsAssignableFrom(paramName, actualType, typeof(TExpected));
+			CheckTypeIsAssignableTo(paramName, actualType, typeof(TExpected));
 		}
 
 
