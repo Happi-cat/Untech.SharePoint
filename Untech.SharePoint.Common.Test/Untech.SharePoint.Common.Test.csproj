@@ -54,7 +54,7 @@
     <Compile Include="AnnotationMapping\DerivedTestEntity2.cs" />
     <Compile Include="AnnotationMapping\TestEntity.cs" />
     <Compile Include="AnnotationMapping\TestContext.cs" />
-    <Compile Include="AnnotationMapping\AnnotatedContextProviderTest.cs" />
+    <Compile Include="AnnotationMapping\AnnotatedContextMappingTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

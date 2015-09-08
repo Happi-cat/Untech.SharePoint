@@ -13,7 +13,6 @@ namespace Untech.SharePoint.Common.AnnotationMapping
 	{
 		private Dictionary<string, AnnotatedListMapping> _listProviders;
 
-
 		public AnnotatedContextMapping()
 		{
 			ContextType = typeof(T);
@@ -67,6 +66,7 @@ namespace Untech.SharePoint.Common.AnnotationMapping
 		private static string ResolveListTitle(PropertyInfo property)
 		{
 			var listAttribute = property.GetCustomAttribute<SpListAttribute>();
+
 			return string.IsNullOrEmpty(listAttribute.ListTitle)
 				? property.Name
 				: listAttribute.ListTitle;

@@ -1,10 +1,11 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Untech.SharePoint.Common.AnnotationMapping;
+using Untech.SharePoint.Common.MetaModels;
 
 namespace Untech.SharePoint.Common.Test.AnnotationMapping
 {
 	[TestClass]
-	public class AnnotatedContextProviderTest
+	public class AnnotatedContextMappingTest
 	{
 		[TestMethod]
 		public void CanCreateContextAndGetModel()
@@ -29,8 +30,8 @@ namespace Untech.SharePoint.Common.Test.AnnotationMapping
 		{
 			var model = new AnnotatedContextMapping<TestContext>().GetMetaContext();
 
-			Assert.AreEqual("0x0010", model.Lists["List1"].ContentTypes[typeof(TestEntity)].ContentTypeId);
-			Assert.AreEqual("0x001020", model.Lists["List1"].ContentTypes[typeof(DerivedTestEntity1)].ContentTypeId);
+			Assert.AreEqual("0x0010", GetContenType<TestEntity>(model, "List1").ContentTypeId);
+			Assert.AreEqual("0x001020", GetContenType<DerivedTestEntity1>(model, "List1").ContentTypeId);
 		}
 
 		[TestMethod]
@@ -38,7 +39,7 @@ namespace Untech.SharePoint.Common.Test.AnnotationMapping
 		{
 			var model = new AnnotatedContextMapping<TestContext>().GetMetaContext();
 
-			Assert.AreEqual("0x0010", model.Lists["List2"].ContentTypes[typeof(DerivedTestEntity2)].ContentTypeId);
+			Assert.AreEqual("0x0010", GetContenType<DerivedTestEntity2>(model, "List2").ContentTypeId);
 		}
 
 		[TestMethod]
@@ -46,9 +47,9 @@ namespace Untech.SharePoint.Common.Test.AnnotationMapping
 		{
 			var model = new AnnotatedContextMapping<TestContext>().GetMetaContext();
 
-			Assert.AreEqual(3, model.Lists["List1"].ContentTypes[typeof(TestEntity)].Fields.Count);
-			Assert.AreEqual(4, model.Lists["List1"].ContentTypes[typeof(DerivedTestEntity1)].Fields.Count);
-			Assert.AreEqual(4, model.Lists["List2"].ContentTypes[typeof(DerivedTestEntity2)].Fields.Count);
+			Assert.AreEqual(3, GetContenType<TestEntity>(model, "List1").Fields.Count);
+			Assert.AreEqual(4, GetContenType<DerivedTestEntity1>(model, "List1").Fields.Count);
+			Assert.AreEqual(4, GetContenType<DerivedTestEntity2>(model, "List2").Fields.Count);
 		}
 
 		[TestMethod]
@@ -56,7 +57,7 @@ namespace Untech.SharePoint.Common.Test.AnnotationMapping
 		{
 			var model = new AnnotatedContextMapping<TestContext>().GetMetaContext();
 
-			Assert.AreEqual("OldInternalName", model.Lists["List1"].ContentTypes[typeof(DerivedTestEntity1)].Fields["OverrideProperty"].FieldInternalName);
+			Assert.AreEqual("OldInternalName", GetContenType<DerivedTestEntity1>(model, "List1").Fields["OverrideProperty"].FieldInternalName);
 		}
 
 		[TestMethod]
@@ -64,7 +65,12 @@ namespace Untech.SharePoint.Common.Test.AnnotationMapping
 		{
 			var model = new AnnotatedContextMapping<TestContext>().GetMetaContext();
 
-			Assert.AreEqual("NewInternalName", model.Lists["List2"].ContentTypes[typeof(DerivedTestEntity2)].Fields["OverrideProperty"].FieldInternalName);
+			Assert.AreEqual("NewInternalName", GetContenType<DerivedTestEntity2>(model, "List2").Fields["OverrideProperty"].FieldInternalName);
+		}
+
+		private MetaContentType GetContenType<T>(MetaContext context, string list)
+		{
+			return context.Lists[list].ContentTypes[typeof(T)];
 		}
 	}
 }

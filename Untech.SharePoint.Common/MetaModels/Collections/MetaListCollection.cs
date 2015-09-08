@@ -1,11 +1,10 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 
 namespace Untech.SharePoint.Common.MetaModels.Collections
 {
-	public sealed class MetaListCollection : ReadOnlyDictionary<string, MetaList>, IEnumerable<MetaList>
+	public sealed class MetaListCollection : ReadOnlyDictionary<string, MetaList>, IReadOnlyCollection<MetaList>
 	{
 		public MetaListCollection(IEnumerable<MetaList> enumerable)
 			: base(CreateDictionary(enumerable))

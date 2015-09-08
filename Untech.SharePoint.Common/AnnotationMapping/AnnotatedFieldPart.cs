@@ -22,14 +22,33 @@ namespace Untech.SharePoint.Common.AnnotationMapping
 
 		public SpFieldAttribute FieldAttribute { get; private set; }
 
+		public string FieldInternalName
+		{
+			get
+			{
+				return string.IsNullOrEmpty(FieldAttribute.InternalName)
+					? Member.Name
+					: FieldAttribute.InternalName;
+			}
+		}
+
+		public string FieldTypeAsString
+		{
+			get { return FieldAttribute.TypeAsString; }
+		}
+
+		public Type CustomConverterType
+		{
+			get { return FieldAttribute.CustomConverterType; }
+		}
+
 		public MetaField GetMetaField(MetaContentType parent)
 		{
-			var metaField = new MetaField(parent, Member, FieldAttribute.InternalName ?? Member.Name);
-
-			if (FieldAttribute.CustomConverterType != null)
+			var metaField = new MetaField(parent, Member, FieldInternalName)
 			{
-				metaField.CustomConverterType = FieldAttribute.CustomConverterType;
-			}
+				CustomConverterType = CustomConverterType,
+				FieldTypeAsString = FieldTypeAsString
+			};
 
 			return metaField;
 		}
