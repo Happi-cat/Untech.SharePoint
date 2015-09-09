@@ -27,7 +27,5 @@ namespace Untech.SharePoint.Common.Utils
 
 			return null;
 		}
-		
-
 	}
 }

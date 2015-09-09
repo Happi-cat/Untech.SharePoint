@@ -5,6 +5,7 @@ using System.Linq.Expressions;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using Untech.SharePoint.Common.Extensions;
 using Getter = System.Func<object, object>;
 using Setter = System.Action<object, object>;
 
@@ -12,9 +13,45 @@ namespace Untech.SharePoint.Common.Utils.Reflection
 {
 	public class MemberAccessUtility
 	{
+		public static Getter CreateGetter(MemberInfo memberInfo)
+		{
+			var property = memberInfo as PropertyInfo;
+			if (property != null) 
+			{
+				return CreateGetter(property);
+			}
+
+			var field = memberInfo as FieldInfo;
+			if (field != null)
+			{
+				return CreateGetter(field);
+			}
+
+			throw new ArgumentException();
+		}
+
+
+		public static Setter CreateSetter(MemberInfo memberInfo)
+		{
+			var property = memberInfo as PropertyInfo;
+			if (property != null)
+			{
+				return CreateSetter(property);
+			}
+
+			var field = memberInfo as FieldInfo;
+			if (field != null)
+			{
+				return CreateSetter(field);
+			}
+
+			throw new ArgumentException();
+		}
+
+
 		public static Getter CreateGetter(PropertyInfo propertyInfo)
 		{
-			if (propertyInfo.CanRead)
+			if (CanCreateGetter(propertyInfo))
 			{
 				return CreateGetter(propertyInfo.DeclaringType, propertyInfo.Name);
 			}
@@ -22,14 +59,24 @@ namespace Untech.SharePoint.Common.Utils.Reflection
 			throw new ArgumentException();
 		}
 
+		private static bool CanCreateGetter(PropertyInfo propertyInfo)
+		{
+			return propertyInfo.GetIndexParameters().IsNullOrEmpty() && propertyInfo.CanRead;
+		}
+
 		public static Setter CreateSetter(PropertyInfo propertyInfo)
 		{
-			if (propertyInfo.CanWrite)
+			if (CanCreateSetter(propertyInfo))
 			{
 				return CreateSetter(propertyInfo.DeclaringType, propertyInfo.Name, propertyInfo.PropertyType);
 			}
 
 			throw new ArgumentException();
+		}
+
+		private static bool CanCreateSetter(PropertyInfo propertyInfo)
+		{
+			return propertyInfo.GetIndexParameters().IsNullOrEmpty() && propertyInfo.CanWrite;
 		}
 
 		public static Getter CreateGetter(FieldInfo fieldInfo)
@@ -39,7 +86,7 @@ namespace Untech.SharePoint.Common.Utils.Reflection
 
 		public static Setter CreateSetter(FieldInfo fieldInfo)
 		{
-			if (!fieldInfo.IsInitOnly && !fieldInfo.IsLiteral)
+			if (CanCreateSetter(fieldInfo))
 			{
 				return CreateSetter(fieldInfo.DeclaringType, fieldInfo.Name, fieldInfo.FieldType);
 			}
@@ -47,10 +94,15 @@ namespace Untech.SharePoint.Common.Utils.Reflection
 			throw new ArgumentException();
 		}
 
+		private static bool CanCreateSetter(FieldInfo fieldInfo)
+		{
+			return !fieldInfo.IsInitOnly && !fieldInfo.IsLiteral;
+		}
+
 		private static Setter CreateSetter(Type declaringType, string memberName, Type propertyType)
 		{
-			var objectParameter = Expression.Parameter(typeof(object));
-			var valueParameter = Expression.Parameter(typeof(object));
+			var objectParameter = Expression.Parameter(typeof(object), "object");
+			var valueParameter = Expression.Parameter(typeof(object), "value");
 
 			var propertyExpression = Expression.PropertyOrField(Expression.Convert(objectParameter, declaringType), memberName);
 
@@ -62,7 +114,7 @@ namespace Untech.SharePoint.Common.Utils.Reflection
 
 		private static Getter CreateGetter(Type declaringType, string memberName)
 		{
-			var objectParameter = Expression.Parameter(typeof(object));
+			var objectParameter = Expression.Parameter(typeof(object), "object");
 
 			var propertyExpression = Expression.PropertyOrField(Expression.Convert(objectParameter, declaringType), memberName);
 
