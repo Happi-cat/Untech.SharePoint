@@ -5,7 +5,7 @@ using Untech.SharePoint.Common.Visitors;
 
 namespace Untech.SharePoint.Common.MetaModels
 {
-	public sealed class MetaField : MetaModel
+	public sealed class MetaField : IMetaModel
 	{
 		public MetaField(MetaContentType contentType, MemberInfo member, string internalName)
 		{
@@ -38,7 +38,7 @@ namespace Untech.SharePoint.Common.MetaModels
 
 		public Type CustomConverterType { get; set; }
 
-		public override void Accept(IMetaModelVisitor visitor)
+		public void Accept(IMetaModelVisitor visitor)
 		{
 			visitor.VisitField(this);
 		}

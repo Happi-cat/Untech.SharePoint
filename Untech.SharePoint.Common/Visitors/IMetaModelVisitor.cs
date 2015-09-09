@@ -4,9 +4,7 @@ namespace Untech.SharePoint.Common.Visitors
 {
 	public interface IMetaModelVisitor
 	{
-		void Visit(MetaModel model);
-
-		void VisitUnkown(MetaModel model);
+		void Visit(IMetaModel model);
 
 		void VisitContext(MetaContext context);
 

@@ -27,12 +27,7 @@ namespace Untech.SharePoint.Common.Visitors
 			
 		}
 
-		public virtual void VisitUnkown(MetaModel model)
-		{
-			throw new NotSupportedException();
-		}
-
-		public virtual void Visit(MetaModel model)
+		public virtual void Visit(IMetaModel model)
 		{
 			if (model != null)
 			{
@@ -40,7 +35,7 @@ namespace Untech.SharePoint.Common.Visitors
 			}
 		}
 
-		protected void VisitCollection(IEnumerable<MetaModel> models)
+		protected void VisitCollection(IEnumerable<IMetaModel> models)
 		{
 			models.Each(Visit);
 		}
