@@ -85,6 +85,7 @@
     <Compile Include="Utils\Reflection\MemberAccessor.cs" />
     <Compile Include="Utils\Reflection\MemberAccessorPool.cs" />
     <Compile Include="Utils\Reflection\MemberAccessUtility.cs" />
+    <Compile Include="Collections\Container.cs" />
     <Compile Include="Utils\Singleton.cs" />
     <Compile Include="Visitors\BaseMetaModelVisitor.cs" />
     <Compile Include="Visitors\FieldConverterRegistrator.cs" />
