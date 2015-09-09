@@ -3,7 +3,7 @@ using Untech.SharePoint.Common.AnnotationMapping;
 
 namespace Untech.SharePoint.Common.Models
 {
-	[SpContentType(ContentTypeId = "0x0100")]
+	[SpContentType(ContentTypeId = "0x01")]
 	public class Entity
 	{
 		[SpField(InternalName = "ID", TypeAsString = "Counter")]
