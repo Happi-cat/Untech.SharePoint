@@ -3,22 +3,22 @@ using Untech.SharePoint.Common.AnnotationMapping;
 
 namespace Untech.SharePoint.Common.Models
 {
-	[SpContentType(ContentTypeId = "0x01")]
+	[SpContentType(Id = "0x01")]
 	public class Entity
 	{
-		[SpField(InternalName = "ID", TypeAsString = "Counter")]
+		[SpField(Name = "ID", FieldType = "Counter")]
 		public virtual int Id { get; set; }
 
-		[SpField(TypeAsString = "Text")]
+		[SpField(FieldType = "Text")]
 		public virtual string Title { get; set; }
 
-		[SpField(TypeAsString = "DateTime")]
+		[SpField(FieldType = "DateTime")]
 		public virtual DateTime Created { get; set; }
 
-		[SpField(TypeAsString = "DateTime")]
+		[SpField(FieldType = "DateTime")]
 		public virtual DateTime Modified { get; set; }
 
-		[SpField(TypeAsString = "ContentTypeId")]
+		[SpField(FieldType = "ContentTypeId")]
 		public virtual string ContentTypeId { get; set; }
 	}
 }

@@ -26,15 +26,15 @@ namespace Untech.SharePoint.Common.AnnotationMapping
 		{
 			get
 			{
-				return string.IsNullOrEmpty(FieldAttribute.InternalName)
+				return string.IsNullOrEmpty(FieldAttribute.Name)
 					? Member.Name
-					: FieldAttribute.InternalName;
+					: FieldAttribute.Name;
 			}
 		}
 
 		public string FieldTypeAsString
 		{
-			get { return FieldAttribute.TypeAsString; }
+			get { return FieldAttribute.FieldType; }
 		}
 
 		public Type CustomConverterType
@@ -47,7 +47,7 @@ namespace Untech.SharePoint.Common.AnnotationMapping
 			var metaField = new MetaField(parent, Member, FieldInternalName)
 			{
 				CustomConverterType = CustomConverterType,
-				FieldTypeAsString = FieldTypeAsString
+				TypeAsString = FieldTypeAsString
 			};
 
 			return metaField;

@@ -12,11 +12,11 @@ namespace Untech.SharePoint.Common.AnnotationMapping
 		{
 			Guard.CheckNotNull("listTitle", listTitle);
 
-			ListTitle = listTitle;
+			Title = listTitle;
 			ContentTypeProviders = new Dictionary<Type, AnnotatedContentTypeMapping>();
 		}
 
-		public string ListTitle { get; private set; }
+		public string Title { get; private set; }
 
 		public Dictionary<Type, AnnotatedContentTypeMapping> ContentTypeProviders { get; private set; }
 
@@ -32,7 +32,7 @@ namespace Untech.SharePoint.Common.AnnotationMapping
 
 		public MetaList GetMetaList(MetaContext parent)
 		{
-			return new MetaList(parent, ListTitle, ContentTypeProviders.Values.ToList());
+			return new MetaList(parent, Title, ContentTypeProviders.Values.ToList());
 		}
 	}
 }

@@ -1,8 +1,9 @@
 ﻿using System;
+using System.Reflection;
 
 namespace Untech.SharePoint.Common.Extensions
 {
-	public static class TypeExtensions
+	public static class ReflectionExtensions
 	{
 		public static bool IsNullableType(this Type type)
 		{
@@ -19,5 +20,9 @@ namespace Untech.SharePoint.Common.Extensions
 			return type == typeof (T);
 		}
 
+		public static bool IsDefined<T>(this MemberInfo member)
+		{
+			return member.IsDefined(typeof(T));
+		}
 	}
 }

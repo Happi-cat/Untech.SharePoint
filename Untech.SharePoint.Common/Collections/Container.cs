@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Untech.SharePoint.Common.Collections;
+namespace Untech.SharePoint.Common.Collections
 {
 	public class Container<TKey, TObject>
 	{

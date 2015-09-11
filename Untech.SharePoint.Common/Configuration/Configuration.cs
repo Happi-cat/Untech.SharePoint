@@ -8,7 +8,7 @@ namespace Untech.SharePoint.Common.Configuration
 	{
 		public IMetaContextProvider AnnotatedMapping<T>()
 		{
-			return new AnnotationMapping.AnnotatedContextMapping<T>()
+			return new AnnotationMapping.AnnotatedContextMapping<T>();
 		}
 	}
 
@@ -16,14 +16,16 @@ namespace Untech.SharePoint.Common.Configuration
 	{
 		private Container<Type, IMetaContextProvider> _metaContextProviders = new Container<Type,IMetaContextProvider>();
 
-		public void RegisterMapping<TContext>(Func<MappingConfiguration, IMetaContextProvider> contextProviderBuidler)
+		public Configuration RegisterMapping<TContext>(Func<MappingConfiguration, IMetaContextProvider> contextProviderBuidler)
 		{
-			RegisterMapping<TContext>(contextProviderBuidler);
+			RegisterMapping<TContext>(contextProviderBuidler(null));
+			return this;
 		}
 
-		public void RegisterMapping<TContext>(IMetaContextProvider contextProvider)
+		public Configuration RegisterMapping<TContext>(IMetaContextProvider contextProvider)
 		{
 			_metaContextProviders.Register(typeof(TContext), contextProvider);
+			return this;
 		}
 	}
 }

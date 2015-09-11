@@ -8,7 +8,7 @@ namespace Untech.SharePoint.Common.Visitors
 	{
 		public override void VisitContentType(MetaContentType contentType)
 		{
-			if (string.IsNullOrEmpty(contentType.ContentTypeId))
+			if (string.IsNullOrEmpty(contentType.Id))
 			{
 				throw new Exception();
 			}
@@ -18,7 +18,7 @@ namespace Untech.SharePoint.Common.Visitors
 
 		public override void VisitField(MetaField field)
 		{
-			if (string.IsNullOrEmpty(field.FieldTypeAsString))
+			if (string.IsNullOrEmpty(field.TypeAsString))
 			{
 				throw new Exception();
 			}

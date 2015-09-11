@@ -21,13 +21,15 @@ namespace Untech.SharePoint.Common.MetaModels
 			Fields = new MetaFieldCollection(fieldProviders.Select(n => n.GetMetaField(this)));
 		}
 
-		public MetaList List { get; private set; }
+		public string Id { get; set; }
 
-		public Type EntityType { get; private set; }
+		public string Name { get; set; }
+
+		public MetaList List { get; private set; }
 
 		public MetaFieldCollection Fields { get; private set; }
 
-		public string ContentTypeId { get; set; }
+		public Type EntityType { get; private set; }
 
 		public void Accept(IMetaModelVisitor visitor)
 		{

@@ -13,6 +13,11 @@ namespace Untech.SharePoint.Common.Converters
 			ConverterInstance = converterInstance;
 		}
 
+		public void Initialize(MetaModels.MetaField field)
+		{
+			throw new NotImplementedException();
+		}
+
 		public object FromSpValue(object value)
 		{
 			try
@@ -48,5 +53,7 @@ namespace Untech.SharePoint.Common.Converters
 				throw new FieldConverterException(ConverterType, e);
 			}
 		}
+
+		
 	}
 }

@@ -18,7 +18,7 @@ namespace Untech.SharePoint.Common.MetaModels.Collections
 
 		private static IDictionary<string, MetaList> CreateDictionary(IEnumerable<MetaList> enumerable)
 		{
-			return enumerable.ToDictionary(n => n.ListTitle);
+			return enumerable.ToDictionary(n => n.Title);
 		}
 	}
 }

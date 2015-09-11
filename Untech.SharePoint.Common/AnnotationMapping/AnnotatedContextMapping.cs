@@ -24,7 +24,6 @@ namespace Untech.SharePoint.Common.AnnotationMapping
 
 		public IReadOnlyDictionary<string, AnnotatedListMapping> ListProviders { get { return _listProviders; } }
 
-
 		public MetaContext GetMetaContext()
 		{
 			return new MetaContext(ListProviders.Values.ToList());
@@ -67,9 +66,9 @@ namespace Untech.SharePoint.Common.AnnotationMapping
 		{
 			var listAttribute = property.GetCustomAttribute<SpListAttribute>();
 
-			return string.IsNullOrEmpty(listAttribute.ListTitle)
+			return string.IsNullOrEmpty(listAttribute.Title)
 				? property.Name
-				: listAttribute.ListTitle;
+				: listAttribute.Title;
 		}
 	}
 }

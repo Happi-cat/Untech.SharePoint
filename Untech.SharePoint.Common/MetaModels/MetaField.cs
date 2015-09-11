@@ -11,32 +11,49 @@ namespace Untech.SharePoint.Common.MetaModels
 		{
 			Guard.CheckNotNull("contentType", contentType);
 			Guard.CheckNotNull("member", member);
-			Guard.CheckNotNull("internalName", internalName);
+			Guard.CheckNotNullOrEmpty("internalName", internalName);
 
 			ContentType = contentType;
+
 			Member = member;
 			MemberName = member.Name;
 			MemberType = TypeSystem.GetMemberType(member);
-			DeclaringType = member.DeclaringType;
+			MemberDeclaringType = member.DeclaringType;
 
-			FieldInternalName = internalName;
+			InternalName = internalName;
 		}
 
-		public MetaContentType ContentType { get; private set; }
+		public Guid Id { get; set; }
+
+		public string Title { get; set; }
+
+		public string InternalName { get; private set; }
+
+		public string TypeAsString { get; set; }
+
+		public bool IsCalculated { get; set; }
+
+		public bool ReadOnly { get; set; }
+
+		public bool Required { get; set; }
+
+		public bool AllowMultipleValues { get; set; }
+
+		public string LookupList { get; set; }
+
+		public string LookupDisplayColumn { get; set; }
+
+		public Type CustomConverterType { get; set; }
+
+		public MemberInfo Member { get; private set; }
 
 		public string MemberName { get; private set; }
 
 		public Type MemberType { get; private set; }
 
-		public MemberInfo Member { get; private set; }
+		public Type MemberDeclaringType { get; private set; }
 
-		public Type DeclaringType { get; private set; }
-
-		public string FieldInternalName { get; private set; }
-
-		public string FieldTypeAsString { get; set; }
-
-		public Type CustomConverterType { get; set; }
+		public MetaContentType ContentType { get; private set; }
 
 		public void Accept(IMetaModelVisitor visitor)
 		{

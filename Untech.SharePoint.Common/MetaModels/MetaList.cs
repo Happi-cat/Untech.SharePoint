@@ -15,14 +15,14 @@ namespace Untech.SharePoint.Common.MetaModels
 			Guard.CheckNotNullOrEmpty("contentTypeProviders", contentTypeProviders);
 
 			Context = context;
-			ListTitle = listTitle;
+			Title = listTitle;
 			
 			ContentTypes = new MetaContentTypeCollection(contentTypeProviders.Select(n => n.GetMetaContentType(this)));
 		}
 
-		public MetaContext Context { get; private set; }
+		public string Title { get; private set; }
 
-		public string ListTitle { get; private set; }
+		public MetaContext Context { get; private set; }
 
 		public MetaContentTypeCollection ContentTypes { get; private set; }
 

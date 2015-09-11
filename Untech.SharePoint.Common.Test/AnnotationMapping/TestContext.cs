@@ -5,13 +5,13 @@ namespace Untech.SharePoint.Common.Test.AnnotationMapping
 {
 	public class TestContext
 	{
-		[SpList(ListTitle = "List1")]
+		[SpList(Title = "List1")]
 		public ISpList<TestEntity> Entities { get; set; }
 
-		[SpList(ListTitle = "List1")]
+		[SpList(Title = "List1")]
 		public ISpList<DerivedTestEntity1> DerivedEntities { get; set; }
 
-		[SpList(ListTitle = "List2")]
+		[SpList(Title = "List2")]
 		public ISpList<DerivedTestEntity2> OtherEntities { get; set; }
 
 		public ISpList<TestEntity> MissingAttribute { get; set; }

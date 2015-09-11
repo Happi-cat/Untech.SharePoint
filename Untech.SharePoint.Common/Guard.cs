@@ -13,7 +13,7 @@ namespace Untech.SharePoint.Common
 			throw new ArgumentNullException(paramName);
 		}
 
-		public static void CheckNotNullOrEmpty<T>(string paramName, string value)
+		public static void CheckNotNullOrEmpty(string paramName, string value)
 		{
 			if (!string.IsNullOrEmpty(value)) return;
 

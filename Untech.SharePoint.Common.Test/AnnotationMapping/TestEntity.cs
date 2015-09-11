@@ -2,17 +2,21 @@
 
 namespace Untech.SharePoint.Common.Test.AnnotationMapping
 {
-	[SpContentType(ContentTypeId = "0x0010")]
+	[SpContentType(Id = "0x0010")]
 	public class TestEntity
 	{
 		[SpField]
 		public string Title { get; set; }
 
-		[SpField(InternalName = "Details")]
+		[SpField(Name = "Details")]
 		public string Description { get; set; }
 
-		[SpField(InternalName = "OldInternalName")]
+		[SpField(Name = "OldInternalName")]
 		public virtual string OverrideProperty { get; set; }
+
+		[SpField]
+		[SpFieldRemoved]
+		public virtual string RemovedFromBeginning { get; set; }
 
 		public string MissingAttribute { get; set; }
 	}

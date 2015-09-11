@@ -33,15 +33,21 @@ namespace Untech.SharePoint.Common.AnnotationMapping
 		{
 			get
 			{
-				return ContentTypeAttribute != null ? ContentTypeAttribute.ContentTypeId : string.Empty;
+				return ContentTypeAttribute != null ? ContentTypeAttribute.Id : string.Empty;
 			}
+		}
+
+		public string ContentTypeName
+		{
+			get { return ContentTypeAttribute.Name; }
 		}
 
 		public MetaContentType GetMetaContentType(MetaList parent)
 		{
 			var metaContentType = new MetaContentType(parent, EntityType, FieldParts)
 			{
-				ContentTypeId = ContentTypeId
+				Id = ContentTypeId,
+				Name = ContentTypeName
 			};
 
 			return metaContentType;
@@ -51,16 +57,18 @@ namespace Untech.SharePoint.Common.AnnotationMapping
 		{
 			_fieldParts = new List<AnnotatedFieldPart>();
 
-			var attributeType = typeof(SpFieldAttribute);
+			var fieldAttribute = typeof(SpFieldAttribute);
 
 			EntityType.GetProperties(BindingFlags.Instance | BindingFlags.Public)
-				.Where(n => n.IsDefined(attributeType))
+				.Where(n => n.IsDefined<SpFieldAttribute>())
+				.Where(n => !n.IsDefined<SpFieldRemovedAttribute>())
 				.Where(n => n.CanRead || n.CanWrite)
 				.Where(n => n.GetIndexParameters().IsNullOrEmpty())
 				.Each(RegisterFieldPart);
 
 			EntityType.GetFields(BindingFlags.Instance | BindingFlags.Public)
-				.Where(n => n.IsDefined(attributeType))
+				.Where(n => n.IsDefined<SpFieldAttribute>())
+				.Where(n => !n.IsDefined<SpFieldRemovedAttribute>())
 				.Where(n => !n.IsInitOnly && !n.IsLiteral)
 				.Each(RegisterFieldPart);
 		}

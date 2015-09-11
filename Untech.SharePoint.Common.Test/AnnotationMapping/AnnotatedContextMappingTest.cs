@@ -30,8 +30,8 @@ namespace Untech.SharePoint.Common.Test.AnnotationMapping
 		{
 			var model = new AnnotatedContextMapping<TestContext>().GetMetaContext();
 
-			Assert.AreEqual("0x0010", GetContenType<TestEntity>(model, "List1").ContentTypeId);
-			Assert.AreEqual("0x001020", GetContenType<DerivedTestEntity1>(model, "List1").ContentTypeId);
+			Assert.AreEqual("0x0010", GetContenType<TestEntity>(model, "List1").Id);
+			Assert.AreEqual("0x001020", GetContenType<DerivedTestEntity1>(model, "List1").Id);
 		}
 
 		[TestMethod]
@@ -39,7 +39,7 @@ namespace Untech.SharePoint.Common.Test.AnnotationMapping
 		{
 			var model = new AnnotatedContextMapping<TestContext>().GetMetaContext();
 
-			Assert.AreEqual("0x0010", GetContenType<DerivedTestEntity2>(model, "List2").ContentTypeId);
+			Assert.AreEqual("0x0010", GetContenType<DerivedTestEntity2>(model, "List2").Id);
 		}
 
 		[TestMethod]
@@ -57,7 +57,7 @@ namespace Untech.SharePoint.Common.Test.AnnotationMapping
 		{
 			var model = new AnnotatedContextMapping<TestContext>().GetMetaContext();
 
-			Assert.AreEqual("OldInternalName", GetContenType<DerivedTestEntity1>(model, "List1").Fields["OverrideProperty"].FieldInternalName);
+			Assert.AreEqual("OldInternalName", GetContenType<DerivedTestEntity1>(model, "List1").Fields["OverrideProperty"].InternalName);
 		}
 
 		[TestMethod]
@@ -65,7 +65,7 @@ namespace Untech.SharePoint.Common.Test.AnnotationMapping
 		{
 			var model = new AnnotatedContextMapping<TestContext>().GetMetaContext();
 
-			Assert.AreEqual("NewInternalName", GetContenType<DerivedTestEntity2>(model, "List2").Fields["OverrideProperty"].FieldInternalName);
+			Assert.AreEqual("NewInternalName", GetContenType<DerivedTestEntity2>(model, "List2").Fields["OverrideProperty"].InternalName);
 		}
 
 		private MetaContentType GetContenType<T>(MetaContext context, string list)

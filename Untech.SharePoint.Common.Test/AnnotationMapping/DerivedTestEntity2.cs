@@ -4,10 +4,10 @@ namespace Untech.SharePoint.Common.Test.AnnotationMapping
 {
 	public class DerivedTestEntity2 : TestEntity
 	{
-		[SpField(InternalName = "HtmlBody")]
+		[SpField(Name = "HtmlBody")]
 		public string Html { get; set; }
 
-		[SpField(InternalName = "NewInternalName")]
+		[SpField(Name = "NewInternalName")]
 		public override string OverrideProperty { get; set; }
 	}
 }
