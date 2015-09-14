@@ -41,7 +41,7 @@ namespace Untech.SharePoint.Common.AnnotationMapping
 		private void Initialize()
 		{
 			_contextType.GetProperties(BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public)
-				.Where(AnnotationConventions.HasListAnnotatinon)
+				.Where(AnnotationUtils.HasListAnnotatinon)
 				.Each(RegisterList);
 		}
 

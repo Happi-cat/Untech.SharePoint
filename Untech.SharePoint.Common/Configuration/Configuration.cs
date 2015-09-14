@@ -8,7 +8,7 @@ namespace Untech.SharePoint.Common.Configuration
 {
 	public class MappingSources
 	{
-		public IMappingSource Annotated<T>()
+		public IMappingSource<T> Annotated<T>()
 			where T: ISpContext
 		{
 			return new AnnotationMapping.AnnotatedMappingSource<T>();
@@ -19,7 +19,7 @@ namespace Untech.SharePoint.Common.Configuration
 	{
 		private Container<Type, IMappingSource> _mappingSources = new Container<Type, IMappingSource>();
 
-		public Configuration RegisterMapping<TContext>(Func<MappingSources, IMappingSource> mappingBuilder)
+		public Configuration RegisterMapping<TContext>(Func<MappingSources, IMappingSource<TContext>> mappingBuilder)
 			where TContext : ISpContext
 		{
 			RegisterMapping<TContext>(mappingBuilder(new MappingSources()));

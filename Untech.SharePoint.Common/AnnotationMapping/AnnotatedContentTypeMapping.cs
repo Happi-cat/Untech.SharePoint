@@ -38,11 +38,11 @@ namespace Untech.SharePoint.Common.AnnotationMapping
 			var mapping = new AnnotatedContentTypeMapping(entityType);
 
 			mapping._fieldParts.AddRange(entityType.GetProperties(BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public)
-				.Where(AnnotationConventions.HasFieldAnnotation)
+				.Where(AnnotationUtils.HasFieldAnnotation)
 				.Select(AnnotatedFieldPart.Create));
 
 			mapping._fieldParts.AddRange(entityType.GetFields(BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public)
-				.Where(AnnotationConventions.HasFieldAnnotation)
+				.Where(AnnotationUtils.HasFieldAnnotation)
 				.Select(AnnotatedFieldPart.Create));
 
 			return mapping;

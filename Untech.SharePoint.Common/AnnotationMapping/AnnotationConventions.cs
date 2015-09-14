@@ -8,7 +8,7 @@ using Untech.SharePoint.Common.Data;
 
 namespace Untech.SharePoint.Common.AnnotationMapping
 {
-	internal static class AnnotationConventions
+	internal static class AnnotationUtils
 	{
 		public static bool HasListAnnotatinon(MemberInfo member)
 		{

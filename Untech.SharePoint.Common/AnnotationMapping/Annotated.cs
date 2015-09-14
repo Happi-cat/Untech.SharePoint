@@ -10,14 +10,16 @@ using Untech.SharePoint.Common.Services;
 
 namespace Untech.SharePoint.Common.AnnotationMapping
 {
-	internal sealed class AnnotatedMappingSource<T> : IMappingSource
-		where T : ISpContext
+	internal sealed class AnnotatedMappingSource<TContext> : IMappingSource<TContext>
+		where TContext : ISpContext
 	{
-		private readonly AnnotatedContextMapping<T> _contextMapping;
+		private readonly Type _contextType;
+		private readonly AnnotatedContextMapping<TContext> _contextMapping;
 
 		public AnnotatedMappingSource()
 		{
-			_contextMapping = new AnnotatedContextMapping<T>();
+			_contextType = typeof(TContext);
+			_contextMapping = new AnnotatedContextMapping<TContext>();
 		}
 
 		public IMetaContextProvider ContextProvider
@@ -28,6 +30,11 @@ namespace Untech.SharePoint.Common.AnnotationMapping
 		public IListTitleResolver ListTitleResolver
 		{
 			get { return _contextMapping; }
+		}
+
+		public Type ContextType
+		{
+			get { return _contextType; }
 		}
 	}
 }
