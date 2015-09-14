@@ -49,8 +49,10 @@
     <Compile Include="AnnotationMapping\AnnotatedContextMapping.cs" />
     <Compile Include="AnnotationMapping\AnnotatedFieldPart.cs" />
     <Compile Include="AnnotationMapping\AnnotatedListMapping.cs" />
+    <Compile Include="AnnotationMapping\AnnotationConventions.cs" />
     <Compile Include="AnnotationMapping\SpContentTypeAttribute.cs" />
     <Compile Include="AnnotationMapping\SpFieldAttribute.cs" />
+    <Compile Include="AnnotationMapping\SpFieldRemovedAttribute.cs" />
     <Compile Include="AnnotationMapping\SpListAttribute.cs" />
     <Compile Include="Configuration\Configuration.cs" />
     <Compile Include="Converters\FieldConverterException.cs" />

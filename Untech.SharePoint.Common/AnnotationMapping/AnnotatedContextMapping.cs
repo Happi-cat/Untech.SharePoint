@@ -11,22 +11,20 @@ namespace Untech.SharePoint.Common.AnnotationMapping
 {
 	internal sealed class AnnotatedContextMapping<T> : IMetaContextProvider
 	{
-		private Dictionary<string, AnnotatedListMapping> _listProviders;
+		private readonly Type _contextType;
+		private readonly Dictionary<string, AnnotatedListMapping> _listProviders;
 
 		public AnnotatedContextMapping()
 		{
-			ContextType = typeof(T);
+			_contextType = typeof(T);
+			_listProviders = new Dictionary<string, AnnotatedListMapping>();
 
-			InitListProviders();
+			Initialize();
 		}
-
-		public Type ContextType { get; private set; }
-
-		public IReadOnlyDictionary<string, AnnotatedListMapping> ListProviders { get { return _listProviders; } }
 
 		public MetaContext GetMetaContext()
 		{
-			return new MetaContext(ListProviders.Values.ToList());
+			return new MetaContext(_listProviders.Values.ToList());
 		}
 
 		public AnnotatedListMapping GetOrAddList(string listTitle)
@@ -39,22 +37,17 @@ namespace Untech.SharePoint.Common.AnnotationMapping
 			return _listProviders[listTitle];
 		}
 
-		private void InitListProviders()
+		private void Initialize()
 		{
-			_listProviders = new Dictionary<string, AnnotatedListMapping>();
-
-			var attributeType = typeof(SpListAttribute);
-			var listType = typeof(ISpList<>);
-
-			ContextType.GetProperties(BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public)
-				.Where(n => n.IsDefined(attributeType))
-				.Where(n => n.CanRead)
-				.Where(n => n.PropertyType.IsGenericType && n.PropertyType.GetGenericTypeDefinition() == listType)
-				.Each(RegisterListProvider);
+			_contextType.GetProperties(BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public)
+				.Where(AnnotationConventions.HasListAnnotatinon)
+				.Each(RegisterList);
 		}
 
-		private void RegisterListProvider(PropertyInfo property)
+		private void RegisterList(PropertyInfo property)
 		{
+			AnnotationConventions.ValidateList(property);
+
 			var listProvider = GetOrAddList(ResolveListTitle(property));
 
 			var entityType = property.PropertyType.GetGenericArguments()[0];
@@ -66,9 +59,7 @@ namespace Untech.SharePoint.Common.AnnotationMapping
 		{
 			var listAttribute = property.GetCustomAttribute<SpListAttribute>();
 
-			return string.IsNullOrEmpty(listAttribute.Title)
-				? property.Name
-				: listAttribute.Title;
+			return string.IsNullOrEmpty(listAttribute.Title) ? property.Name : listAttribute.Title;
 		}
 	}
 }

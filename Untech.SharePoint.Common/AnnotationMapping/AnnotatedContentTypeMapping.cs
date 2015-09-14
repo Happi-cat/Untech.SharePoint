@@ -10,72 +10,63 @@ namespace Untech.SharePoint.Common.AnnotationMapping
 {
 	internal sealed class AnnotatedContentTypeMapping : IMetaContentTypeProvider
 	{
-		private List<AnnotatedFieldPart> _fieldParts;
+		private readonly Type _entityType;
+		private readonly List<AnnotatedFieldPart> _fieldParts;
+		private readonly SpContentTypeAttribute _contentTypeAttrbiute;
 
 		public AnnotatedContentTypeMapping(Type entityType)
 		{
 			Guard.CheckNotNull("entityType", entityType);
 
-			EntityType = entityType;
+			_entityType = entityType;
+			_fieldParts = new List<AnnotatedFieldPart>();
+			_contentTypeAttrbiute = _entityType.GetCustomAttribute<SpContentTypeAttribute>();
 
-			ContentTypeAttribute = entityType.GetCustomAttribute<SpContentTypeAttribute>();
-
-			InitFieldParts();
+			Initialize();
 		}
-
-		public Type EntityType { get; private set; }
-
-		public IReadOnlyCollection<AnnotatedFieldPart> FieldParts { get { return _fieldParts; } }
-
-		public SpContentTypeAttribute ContentTypeAttribute { get; private set; }
 
 		public string ContentTypeId
 		{
-			get
-			{
-				return ContentTypeAttribute != null ? ContentTypeAttribute.Id : string.Empty;
-			}
+			get { return _contentTypeAttrbiute != null ? _contentTypeAttrbiute.Id : string.Empty; }
 		}
 
 		public string ContentTypeName
 		{
-			get { return ContentTypeAttribute.Name; }
+			get { return _contentTypeAttrbiute.Name; }
 		}
 
 		public MetaContentType GetMetaContentType(MetaList parent)
 		{
-			var metaContentType = new MetaContentType(parent, EntityType, FieldParts)
+			return new MetaContentType(parent, _entityType, _fieldParts)
 			{
 				Id = ContentTypeId,
 				Name = ContentTypeName
 			};
-
-			return metaContentType;
 		}
 
-		private void InitFieldParts()
+		private void Initialize()
 		{
-			_fieldParts = new List<AnnotatedFieldPart>();
-
-			var fieldAttribute = typeof(SpFieldAttribute);
-
-			EntityType.GetProperties(BindingFlags.Instance | BindingFlags.Public)
-				.Where(n => n.IsDefined<SpFieldAttribute>())
-				.Where(n => !n.IsDefined<SpFieldRemovedAttribute>())
-				.Where(n => n.CanRead || n.CanWrite)
-				.Where(n => n.GetIndexParameters().IsNullOrEmpty())
+			_entityType.GetProperties(BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public)
+				.Where(AnnotationConventions.HasFieldAnnotation)
 				.Each(RegisterFieldPart);
 
-			EntityType.GetFields(BindingFlags.Instance | BindingFlags.Public)
-				.Where(n => n.IsDefined<SpFieldAttribute>())
-				.Where(n => !n.IsDefined<SpFieldRemovedAttribute>())
-				.Where(n => !n.IsInitOnly && !n.IsLiteral)
+			_entityType.GetFields(BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public)
+				.Where(AnnotationConventions.HasFieldAnnotation)
 				.Each(RegisterFieldPart);
 		}
 
-		private void RegisterFieldPart(MemberInfo member)
+		private void RegisterFieldPart(PropertyInfo property)
 		{
-			_fieldParts.Add(new AnnotatedFieldPart(member));
+			AnnotationConventions.ValidateField(property);
+
+			_fieldParts.Add(new AnnotatedFieldPart(property));
+		}
+
+		private void RegisterFieldPart(FieldInfo field)
+		{
+			AnnotationConventions.ValidateField(field);
+
+			_fieldParts.Add(new AnnotatedFieldPart(field));
 		}
 	}
 }

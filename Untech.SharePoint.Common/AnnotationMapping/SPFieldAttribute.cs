@@ -11,10 +11,4 @@ namespace Untech.SharePoint.Common.AnnotationMapping
 
 		public Type CustomConverterType { get; set; }
 	}
-
-	[AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
-	public sealed class SpFieldRemovedAttribute : Attribute
-	{
-
-	}
 }

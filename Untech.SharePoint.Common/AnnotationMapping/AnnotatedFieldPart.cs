@@ -7,50 +7,47 @@ namespace Untech.SharePoint.Common.AnnotationMapping
 {
 	internal sealed class AnnotatedFieldPart : IMetaFieldProvider
 	{
+		private readonly MemberInfo _member;
+		private readonly SpFieldAttribute _fieldAttribute;
+
 		public AnnotatedFieldPart(MemberInfo member)
 		{
-			Member = member;
+			Guard.CheckNotNull("member", member);
 
-			FieldAttribute = member.GetCustomAttribute<SpFieldAttribute>();
-			if (FieldAttribute == null)
+			_member = member;
+
+			_fieldAttribute = member.GetCustomAttribute<SpFieldAttribute>();
+			if (_fieldAttribute == null)
 			{
-				throw new ArgumentException(string.Format("Member {0} has no attribute SpFieldAttribute", Member.Name), "member");
+				throw new ArgumentException(string.Format("Member {0} has no attribute SpFieldAttribute", _member.Name), "member");
 			}
 		}
 
-		public MemberInfo Member { get; private set; }
-
-		public SpFieldAttribute FieldAttribute { get; private set; }
-
-		public string FieldInternalName
+		public string InternalName
 		{
 			get
 			{
-				return string.IsNullOrEmpty(FieldAttribute.Name)
-					? Member.Name
-					: FieldAttribute.Name;
+				return string.IsNullOrEmpty(_fieldAttribute.Name) ? _member.Name : _fieldAttribute.Name;
 			}
 		}
 
-		public string FieldTypeAsString
+		public string TypeAsString
 		{
-			get { return FieldAttribute.FieldType; }
+			get { return _fieldAttribute.FieldType; }
 		}
 
 		public Type CustomConverterType
 		{
-			get { return FieldAttribute.CustomConverterType; }
+			get { return _fieldAttribute.CustomConverterType; }
 		}
 
 		public MetaField GetMetaField(MetaContentType parent)
 		{
-			var metaField = new MetaField(parent, Member, FieldInternalName)
+			return new MetaField(parent, _member, InternalName)
 			{
 				CustomConverterType = CustomConverterType,
-				TypeAsString = FieldTypeAsString
+				TypeAsString = TypeAsString
 			};
-
-			return metaField;
 		}
 	}
 }

@@ -8,31 +8,30 @@ namespace Untech.SharePoint.Common.AnnotationMapping
 {
 	internal class AnnotatedListMapping : IMetaListProvider
 	{
+		private readonly string _title;
+		private readonly Dictionary<Type, AnnotatedContentTypeMapping> _contentTypeProviders;
+
 		public AnnotatedListMapping(string listTitle)
 		{
 			Guard.CheckNotNull("listTitle", listTitle);
 
-			Title = listTitle;
-			ContentTypeProviders = new Dictionary<Type, AnnotatedContentTypeMapping>();
+			_title = listTitle;
+			_contentTypeProviders = new Dictionary<Type, AnnotatedContentTypeMapping>();
 		}
-
-		public string Title { get; private set; }
-
-		public Dictionary<Type, AnnotatedContentTypeMapping> ContentTypeProviders { get; private set; }
 
 		public AnnotatedContentTypeMapping GetOrAddContentType(Type entityType, Func<AnnotatedContentTypeMapping> builder)
 		{
-			if (!ContentTypeProviders.ContainsKey(entityType))
+			if (!_contentTypeProviders.ContainsKey(entityType))
 			{
-				ContentTypeProviders.Add(entityType, builder());
+				_contentTypeProviders.Add(entityType, builder());
 			}
 
-			return ContentTypeProviders[entityType];
+			return _contentTypeProviders[entityType];
 		}
 
 		public MetaList GetMetaList(MetaContext parent)
 		{
-			return new MetaList(parent, Title, ContentTypeProviders.Values.ToList());
+			return new MetaList(parent, _title, _contentTypeProviders.Values.ToList());
 		}
 	}
 }
