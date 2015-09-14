@@ -6,10 +6,11 @@ using Untech.SharePoint.Common.Data;
 using Untech.SharePoint.Common.Extensions;
 using Untech.SharePoint.Common.MetaModels;
 using Untech.SharePoint.Common.MetaModels.Providers;
+using Untech.SharePoint.Common.Services;
 
 namespace Untech.SharePoint.Common.AnnotationMapping
 {
-	internal sealed class AnnotatedContextMapping<T> : IMetaContextProvider
+	internal sealed class AnnotatedContextMapping<T> : IMetaContextProvider, IListTitleResolver
 	{
 		private readonly Type _contextType;
 		private readonly Dictionary<string, AnnotatedListMapping> _listProviders;
@@ -46,16 +47,29 @@ namespace Untech.SharePoint.Common.AnnotationMapping
 
 		private void RegisterList(PropertyInfo property)
 		{
-			AnnotationConventions.ValidateList(property);
+			ValidateList(property);
 
-			var listProvider = GetOrAddList(ResolveListTitle(property));
+			var listProvider = GetOrAddList(GetListTitleFromContextProperty(property));
 
 			var entityType = property.PropertyType.GetGenericArguments()[0];
 
-			listProvider.GetOrAddContentType(entityType, () => new AnnotatedContentTypeMapping(entityType));
+			listProvider.GetOrAddContentType(entityType, () => AnnotatedContentTypeMapping.Create(entityType));
 		}
 
-		private static string ResolveListTitle(PropertyInfo property)
+		public static void ValidateList(PropertyInfo property)
+		{
+			if (!property.CanRead)
+			{
+				throw new AnnotationException(string.Format("Property {0} from {1} should be readable", property.Name, property.DeclaringType));
+			}
+
+			if (!property.PropertyType.IsGenericType || property.PropertyType.GetGenericTypeDefinition() != typeof(ISpList<>))
+			{
+				throw new AnnotationException(string.Format("Property {0} from {1} should have 'ISpList<T>' type", property.Name, property.DeclaringType));
+			}
+		}
+
+		public string GetListTitleFromContextProperty(PropertyInfo property)
 		{
 			var listAttribute = property.GetCustomAttribute<SpListAttribute>();
 

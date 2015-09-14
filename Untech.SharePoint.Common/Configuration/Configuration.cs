@@ -1,30 +1,34 @@
 ﻿using Untech.SharePoint.Common.MetaModels.Providers;
 using Untech.SharePoint.Common.Collections;
 using System;
+using Untech.SharePoint.Common.Services;
+using Untech.SharePoint.Common.Data;
 
 namespace Untech.SharePoint.Common.Configuration
 {
-	public class MappingConfiguration
+	public class MappingSources
 	{
-		public IMetaContextProvider AnnotatedMapping<T>()
+		public IMappingSource Annotated<T>()
+			where T: ISpContext
 		{
-			return new AnnotationMapping.AnnotatedContextMapping<T>();
+			return new AnnotationMapping.AnnotatedMappingSource<T>();
 		}
 	}
 
 	public class Configuration
 	{
-		private Container<Type, IMetaContextProvider> _metaContextProviders = new Container<Type,IMetaContextProvider>();
+		private Container<Type, IMappingSource> _mappingSources = new Container<Type, IMappingSource>();
 
-		public Configuration RegisterMapping<TContext>(Func<MappingConfiguration, IMetaContextProvider> contextProviderBuidler)
+		public Configuration RegisterMapping<TContext>(Func<MappingSources, IMappingSource> mappingBuilder)
+			where TContext : ISpContext
 		{
-			RegisterMapping<TContext>(contextProviderBuidler(null));
+			RegisterMapping<TContext>(mappingBuilder(new MappingSources()));
 			return this;
 		}
 
-		public Configuration RegisterMapping<TContext>(IMetaContextProvider contextProvider)
+		private Configuration RegisterMapping<TContext>(IMappingSource contextProvider)
 		{
-			_metaContextProviders.Register(typeof(TContext), contextProvider);
+			_mappingSources.Register(typeof(TContext), contextProvider);
 			return this;
 		}
 	}

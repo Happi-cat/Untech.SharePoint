@@ -45,11 +45,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AnnotationMapping\Annotated.cs" />
     <Compile Include="AnnotationMapping\AnnotatedContentTypeMapping.cs" />
     <Compile Include="AnnotationMapping\AnnotatedContextMapping.cs" />
     <Compile Include="AnnotationMapping\AnnotatedFieldPart.cs" />
     <Compile Include="AnnotationMapping\AnnotatedListMapping.cs" />
     <Compile Include="AnnotationMapping\AnnotationConventions.cs" />
+    <Compile Include="AnnotationMapping\AnnotationException.cs" />
     <Compile Include="AnnotationMapping\SpContentTypeAttribute.cs" />
     <Compile Include="AnnotationMapping\SpFieldAttribute.cs" />
     <Compile Include="AnnotationMapping\SpFieldRemovedAttribute.cs" />
@@ -83,6 +85,7 @@
     <Compile Include="MetaModels\Providers\IMetaFieldProvider.cs" />
     <Compile Include="Models\Entity.cs" />
     <Compile Include="Services\ICommonService.cs" />
+    <Compile Include="Services\IMetaModelResolver.cs" />
     <Compile Include="Utils\Reflection\InstanceCreationUtility.cs" />
     <Compile Include="Utils\Reflection\MemberAccessor.cs" />
     <Compile Include="Utils\Reflection\MemberAccessorPool.cs" />

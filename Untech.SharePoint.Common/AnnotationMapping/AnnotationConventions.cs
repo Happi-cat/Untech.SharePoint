@@ -19,38 +19,5 @@ namespace Untech.SharePoint.Common.AnnotationMapping
 		{
 			return member.IsDefined(typeof(SpFieldAttribute)) && !member.IsDefined(typeof(SpFieldRemovedAttribute));
 		}
-
-		public static void ValidateList(PropertyInfo property)
-		{
-			if (!property.CanRead) 
-			{
-				throw new Exception();
-			}
-
-			if (!property.PropertyType.IsGenericType || property.PropertyType.GetGenericTypeDefinition() != typeof(ISpList<>))
-			{
-				throw new Exception();
-			}
-		}
-
-		public static void ValidateField(PropertyInfo property)
-		{
-			if (!property.CanRead || !property.CanWrite) 
-			{
-				throw new Exception();
-			}
-			if (property.GetIndexParameters().Any())
-			{
-				throw new Exception();
-			}
-		}
-
-		public static void ValidateField(FieldInfo field)
-		{
-			if (field.IsInitOnly || field.IsLiteral)
-			{
-				throw new Exception();
-			}
-		}
 	}
 }
