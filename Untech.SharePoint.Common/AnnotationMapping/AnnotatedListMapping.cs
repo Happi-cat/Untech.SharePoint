@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Untech.SharePoint.Common.Data;
 using Untech.SharePoint.Common.MetaModels;
 using Untech.SharePoint.Common.MetaModels.Providers;
 
@@ -20,14 +21,39 @@ namespace Untech.SharePoint.Common.AnnotationMapping
 			_contentTypeProviders = new Dictionary<Type, AnnotatedContentTypeMapping>();
 		}
 
-		public AnnotatedContentTypeMapping GetOrAddContentType(Type entityType, Func<AnnotatedContentTypeMapping> builder)
+		public static bool IsAnnotated(PropertyInfo property)
+		{
+			return property.IsDefined(typeof(SpListAttribute));
+		}
+
+		public static AnnotatedListMapping Create(string listTitle, PropertyInfo property)
+		{
+			if (!property.CanRead)
+			{
+				throw new AnnotationException(string.Format("Property {0} from {1} should be readable", property.Name, property.DeclaringType));
+			}
+
+			if (!property.PropertyType.IsGenericType || property.PropertyType.GetGenericTypeDefinition() != typeof(ISpList<>))
+			{
+				throw new AnnotationException(string.Format("Property {0} from {1} should have 'ISpList<T>' type", property.Name, property.DeclaringType));
+			}
+
+			return new AnnotatedListMapping(listTitle);
+		}
+
+		public void RegisterFromContextProperty(PropertyInfo property)
+		{
+			var entityType = property.PropertyType.GetGenericArguments()[0];
+
+			Register(entityType);
+		}
+
+		public void Register(Type entityType)
 		{
 			if (!_contentTypeProviders.ContainsKey(entityType))
 			{
-				_contentTypeProviders.Add(entityType, builder());
+				_contentTypeProviders.Add(entityType, AnnotatedContentTypeMapping.Create(entityType));
 			}
-
-			return _contentTypeProviders[entityType];
 		}
 
 		public MetaList GetMetaList(MetaContext parent)
