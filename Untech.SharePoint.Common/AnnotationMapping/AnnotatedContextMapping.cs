@@ -23,57 +23,40 @@ namespace Untech.SharePoint.Common.AnnotationMapping
 			Initialize();
 		}
 
-		public MetaContext GetMetaContext()
-		{
-			return new MetaContext(_listProviders.Values.ToList());
-		}
-
-		public AnnotatedListMapping GetOrAddList(string listTitle)
-		{
-			if (!_listProviders.ContainsKey(listTitle))
-			{
-				_listProviders.Add(listTitle, new AnnotatedListMapping(listTitle));
-			}
-
-			return _listProviders[listTitle];
-		}
-
-		private void Initialize()
-		{
-			_contextType.GetProperties(BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public)
-				.Where(AnnotationUtils.HasListAnnotatinon)
-				.Each(RegisterList);
-		}
-
-		private void RegisterList(PropertyInfo property)
-		{
-			ValidateList(property);
-
-			var listProvider = GetOrAddList(GetListTitleFromContextProperty(property));
-
-			var entityType = property.PropertyType.GetGenericArguments()[0];
-
-			listProvider.GetOrAddContentType(entityType, () => AnnotatedContentTypeMapping.Create(entityType));
-		}
-
-		public static void ValidateList(PropertyInfo property)
-		{
-			if (!property.CanRead)
-			{
-				throw new AnnotationException(string.Format("Property {0} from {1} should be readable", property.Name, property.DeclaringType));
-			}
-
-			if (!property.PropertyType.IsGenericType || property.PropertyType.GetGenericTypeDefinition() != typeof(ISpList<>))
-			{
-				throw new AnnotationException(string.Format("Property {0} from {1} should have 'ISpList<T>' type", property.Name, property.DeclaringType));
-			}
-		}
-
 		public string GetListTitleFromContextProperty(PropertyInfo property)
 		{
 			var listAttribute = property.GetCustomAttribute<SpListAttribute>();
 
 			return string.IsNullOrEmpty(listAttribute.Title) ? property.Name : listAttribute.Title;
+		}
+
+		public MetaContext GetMetaContext()
+		{
+			return new MetaContext(_listProviders.Values.ToList());
+		}
+		
+		private void Initialize()
+		{
+			_contextType.GetProperties(BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public)
+				.Where(AnnotatedListMapping.IsAnnotated)
+				.Each(Register);
+		}
+
+		private void Register(PropertyInfo property)
+		{
+			GetOrAddList(property).RegisterFromContextProperty(property);
+		}
+
+		private AnnotatedListMapping GetOrAddList(PropertyInfo property)
+		{
+			var listTitle = GetListTitleFromContextProperty(property);
+
+			if (!_listProviders.ContainsKey(listTitle))
+			{
+				_listProviders.Add(listTitle, AnnotatedListMapping.Create(listTitle, property));
+			}
+
+			return _listProviders[listTitle];
 		}
 	}
 }

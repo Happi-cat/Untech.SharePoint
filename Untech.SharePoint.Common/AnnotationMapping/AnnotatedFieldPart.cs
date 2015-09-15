@@ -19,6 +19,11 @@ namespace Untech.SharePoint.Common.AnnotationMapping
 			_fieldAttribute = member.GetCustomAttribute<SpFieldAttribute>();
 		}
 
+		public static bool IsAnnotated(MemberInfo member)
+		{
+			return member.IsDefined(typeof(SpFieldAttribute)) && !member.IsDefined(typeof(SpFieldRemovedAttribute));
+		}
+
 		public static AnnotatedFieldPart Create(PropertyInfo property)
 		{
 			if (!property.CanRead || !property.CanWrite)
