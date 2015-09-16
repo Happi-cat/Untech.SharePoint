@@ -1,24 +1,27 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using System;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Untech.SharePoint.Common.AnnotationMapping;
 using Untech.SharePoint.Common.MetaModels;
+using Untech.SharePoint.Common.Test.AnnotationMapping.Models;
+using TestContext = Untech.SharePoint.Common.Test.AnnotationMapping.Models.TestContext;
 
 namespace Untech.SharePoint.Common.Test.AnnotationMapping
 {
 	[TestClass]
 	public class AnnotatedContextMappingTest
-	{
+	{	
 		[TestMethod]
 		public void CanCreateContextAndGetModel()
 		{
-			var model = new AnnotatedContextMapping<TestContext>().GetMetaContext();
+			var model = GetCtx<TestContext>();
 
 			Assert.IsNotNull(model);
 		}
 
 		[TestMethod]
-		public void CanSeeOnlyAnnotatedContextPropertiesWithISpListType()
+		public void CanSeeOnlyAnnotatedContextProperties()
 		{
-			var model = new AnnotatedContextMapping<TestContext>().GetMetaContext();
+			var model = GetCtx<TestContext>();
 
 			Assert.AreEqual(2, model.Lists.Count);
 			Assert.AreEqual(2, model.Lists["List1"].ContentTypes.Count);
@@ -26,51 +29,45 @@ namespace Untech.SharePoint.Common.Test.AnnotationMapping
 		}
 
 		[TestMethod]
-		public void CanSeeContentTypeId()
+		public void CanSeeDerivedContextProperties()
 		{
-			var model = new AnnotatedContextMapping<TestContext>().GetMetaContext();
+			var model = GetCtx<DerivedTestContext>();
 
-			Assert.AreEqual("0x0010", GetContenType<TestEntity>(model, "List1").Id);
-			Assert.AreEqual("0x001020", GetContenType<DerivedTestEntity1>(model, "List1").Id);
+			Assert.AreEqual(2, model.Lists.Count);
+			Assert.AreEqual(2, model.Lists["List1"].ContentTypes.Count);
+			Assert.AreEqual(1, model.Lists["List2"].ContentTypes.Count);
 		}
 
 		[TestMethod]
-		public void CanInheritContentTypeAnnotation()
+		public void ThrowErrorForContextPropertiesWithInvalidType()
 		{
-			var model = new AnnotatedContextMapping<TestContext>().GetMetaContext();
-
-			Assert.AreEqual("0x0010", GetContenType<DerivedTestEntity2>(model, "List2").Id);
+			CustomAssert.Throw<AnnotationException>(() =>
+			{
+				var model = GetCtx<ContextWithInvalidContextPropertyType>();
+			});
 		}
 
 		[TestMethod]
-		public void CanSeeAnnotatedProperties()
+		public void ThrowErrorForWriteonlyContextProperties()
 		{
-			var model = new AnnotatedContextMapping<TestContext>().GetMetaContext();
-
-			Assert.AreEqual(3, GetContenType<TestEntity>(model, "List1").Fields.Count);
-			Assert.AreEqual(4, GetContenType<DerivedTestEntity1>(model, "List1").Fields.Count);
-			Assert.AreEqual(4, GetContenType<DerivedTestEntity2>(model, "List2").Fields.Count);
+			CustomAssert.Throw<AnnotationException>(() =>
+			{
+				var model = GetCtx<ContextWithWriteOnlyContextProperty>();
+			});
 		}
 
 		[TestMethod]
-		public void CanInheritFieldAnnotation()
+		public void ThrowErrorForWriteOnlyEntityProperty()
 		{
-			var model = new AnnotatedContextMapping<TestContext>().GetMetaContext();
-
-			Assert.AreEqual("OldInternalName", GetContenType<DerivedTestEntity1>(model, "List1").Fields["OverrideProperty"].InternalName);
+			CustomAssert.Throw<AnnotationException>(() =>
+			{
+				var model = GetCtx<ContextWithWriteOnlyEntityProperty>();
+			});
 		}
 
-		[TestMethod]
-		public void CanOverwriteFieldAnnotation()
+		private MetaContext GetCtx<T>()
 		{
-			var model = new AnnotatedContextMapping<TestContext>().GetMetaContext();
-
-			Assert.AreEqual("NewInternalName", GetContenType<DerivedTestEntity2>(model, "List2").Fields["OverrideProperty"].InternalName);
-		}
-
-		private MetaContentType GetContenType<T>(MetaContext context, string list)
-		{
-			return context.Lists[list].ContentTypes[typeof(T)];
+			return new AnnotatedContextMapping<T>().GetMetaContext();
 		}
 	}
 }

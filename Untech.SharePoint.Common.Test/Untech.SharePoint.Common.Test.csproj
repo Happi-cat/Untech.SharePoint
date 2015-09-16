@@ -56,10 +56,24 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="AnnotationMapping\DerivedTestEntity1.cs" />
-    <Compile Include="AnnotationMapping\DerivedTestEntity2.cs" />
-    <Compile Include="AnnotationMapping\TestEntity.cs" />
-    <Compile Include="AnnotationMapping\TestContext.cs" />
+    <Compile Include="AnnotationMapping\AnnotatedContentTypeMappingTest.cs" />
+    <Compile Include="AnnotationMapping\AnnotatedFieldPartTest.cs" />
+    <Compile Include="AnnotationMapping\Models\ContextWithEntityIndexer.cs" />
+    <Compile Include="AnnotationMapping\Models\ContextWithInvalidContextPropertyType.cs" />
+    <Compile Include="AnnotationMapping\Models\ContextWithReadOnlyEntityField.cs" />
+    <Compile Include="AnnotationMapping\Models\ContextWithReadOnlyEntityProperty.cs" />
+    <Compile Include="AnnotationMapping\Models\ContextWithWriteOnlyEntityProperty.cs" />
+    <Compile Include="CustomAssert.cs" />
+    <Compile Include="AnnotationMapping\Models\DerivedTestContext.cs" />
+    <Compile Include="AnnotationMapping\Models\ContextWithWriteOnlyContextProperty.cs" />
+    <Compile Include="AnnotationMapping\Models\DerivedTestEntityWithIheritedAnnotation.cs" />
+    <Compile Include="AnnotationMapping\Models\DerivedTestEntityWithOverwrittenAnnotation.cs" />
+    <Compile Include="AnnotationMapping\Models\EntityWithIndexer.cs" />
+    <Compile Include="AnnotationMapping\Models\EntityWithReadOnlyField.cs" />
+    <Compile Include="AnnotationMapping\Models\EntityWithReadOnlyProperty.cs" />
+    <Compile Include="AnnotationMapping\Models\EntityWithWriteOnlyProperty.cs" />
+    <Compile Include="AnnotationMapping\Models\TestEntity.cs" />
+    <Compile Include="AnnotationMapping\Models\TestContext.cs" />
     <Compile Include="AnnotationMapping\AnnotatedContextMappingTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

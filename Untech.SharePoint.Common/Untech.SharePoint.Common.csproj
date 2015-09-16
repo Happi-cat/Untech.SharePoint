@@ -68,6 +68,8 @@
     <Compile Include="Converters\SpFieldConverterAttribute.cs" />
     <Compile Include="Data\ISpContext.cs" />
     <Compile Include="Data\ISpList.cs" />
+    <Compile Include="Data\SpContext.cs" />
+    <Compile Include="Data\SpList.cs" />
     <Compile Include="Extensions\EnumerableExtensions.cs" />
     <Compile Include="Extensions\ExpressionExtensions.cs" />
     <Compile Include="Extensions\ObjectExtensions.cs" />
