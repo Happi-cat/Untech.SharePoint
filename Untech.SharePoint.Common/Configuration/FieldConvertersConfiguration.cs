@@ -15,6 +15,8 @@ namespace Untech.SharePoint.Common.Configuration
 
 		public FieldConvertersConfiguration RegisterFromAssembly(Assembly assembly)
 		{
+			Guard.CheckNotNull("assembly", assembly);
+
 			assembly.GetTypes()
 				.Where(n => n.IsDefined(typeof(SpFieldConverterAttribute)))
 				.Where(n => typeof(IFieldConverter).IsAssignableFrom(n) && !n.IsAbstract)
@@ -32,6 +34,8 @@ namespace Untech.SharePoint.Common.Configuration
 
 		public FieldConvertersConfiguration Register(Type converterType)
 		{
+			Guard.CheckNotNull("converterType", converterType);
+
 			Register(converterType, InstanceCreationUtility.GetCreator<IFieldConverter>(converterType));
 			return this;
 		}
@@ -39,6 +43,8 @@ namespace Untech.SharePoint.Common.Configuration
 		public FieldConvertersConfiguration Register<TConverter>(Func<IFieldConverter> converterBuilder)
 			where TConverter: IFieldConverter
 		{
+			Guard.CheckNotNull("converterBuilder", converterBuilder);
+
 			Register(typeof(TConverter), converterBuilder);
 			return this;
 		}

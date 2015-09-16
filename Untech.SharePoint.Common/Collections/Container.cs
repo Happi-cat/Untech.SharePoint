@@ -23,6 +23,8 @@ namespace Untech.SharePoint.Common.Collections
 
 		public TObject Resolve(TKey key)
 		{
+			Guard.CheckNotNull("key", key);
+
 			if (IsRegistered(key))
 			{
 				return _registeredObjects[key];
@@ -32,6 +34,8 @@ namespace Untech.SharePoint.Common.Collections
 
 		public bool IsRegistered(TKey key)
 		{
+			Guard.CheckNotNull("key", key);
+
 			return _registeredObjects.ContainsKey(key);
 		}
 	}
