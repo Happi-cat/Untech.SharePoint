@@ -1,4 +1,5 @@
 ﻿using System;
+using Untech.SharePoint.Common.MetaModels;
 
 namespace Untech.SharePoint.Common.Converters
 {
@@ -13,9 +14,16 @@ namespace Untech.SharePoint.Common.Converters
 			ConverterInstance = converterInstance;
 		}
 
-		public void Initialize(MetaModels.MetaField field)
+		public void Initialize(MetaField field)
 		{
-			throw new NotImplementedException();
+			try
+			{
+				ConverterInstance.Initialize(field);
+			}
+			catch (Exception e)
+			{
+				throw new FieldConverterInitializationException(ConverterType, e);
+			}
 		}
 
 		public object FromSpValue(object value)

@@ -45,22 +45,25 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AnnotationMapping\Annotated.cs" />
     <Compile Include="AnnotationMapping\AnnotatedContentTypeMapping.cs" />
     <Compile Include="AnnotationMapping\AnnotatedContextMapping.cs" />
     <Compile Include="AnnotationMapping\AnnotatedFieldPart.cs" />
-    <Compile Include="AnnotationMapping\AnnotatedListMapping.cs" />
-    <Compile Include="AnnotationMapping\AnnotationConventions.cs" />
+    <Compile Include="AnnotationMapping\AnnotatedListPart.cs" />
+    <Compile Include="AnnotationMapping\AnnotatedMappingSource.cs" />
     <Compile Include="AnnotationMapping\AnnotationException.cs" />
     <Compile Include="AnnotationMapping\SpContentTypeAttribute.cs" />
     <Compile Include="AnnotationMapping\SpFieldAttribute.cs" />
     <Compile Include="AnnotationMapping\SpFieldRemovedAttribute.cs" />
     <Compile Include="AnnotationMapping\SpListAttribute.cs" />
-    <Compile Include="Configuration\Configuration.cs" />
+    <Compile Include="Configuration\BaseConfiguration.cs" />
+    <Compile Include="Configuration\FieldConvertersConfiguration.cs" />
+    <Compile Include="Configuration\MappingsConfiguration.cs" />
+    <Compile Include="Configuration\MappingSources.cs" />
     <Compile Include="Converters\FieldConverterException.cs" />
     <Compile Include="Converters\FieldConverterInitializationException.cs" />
     <Compile Include="Converters\FieldConverterWrapper.cs" />
     <Compile Include="Converters\IFieldConverter.cs" />
+    <Compile Include="Converters\IFieldConverterResolver.cs" />
     <Compile Include="Converters\InvalidFieldConverterException.cs" />
     <Compile Include="Converters\SpFieldConverterAttribute.cs" />
     <Compile Include="Data\ISpContext.cs" />
@@ -85,7 +88,8 @@
     <Compile Include="MetaModels\Providers\IMetaFieldProvider.cs" />
     <Compile Include="Models\Entity.cs" />
     <Compile Include="Services\ICommonService.cs" />
-    <Compile Include="Services\IMetaModelResolver.cs" />
+    <Compile Include="Services\IListTitleResolver.cs" />
+    <Compile Include="Services\IMappingSource.cs" />
     <Compile Include="Utils\Reflection\InstanceCreationUtility.cs" />
     <Compile Include="Utils\Reflection\MemberAccessor.cs" />
     <Compile Include="Utils\Reflection\MemberAccessorPool.cs" />

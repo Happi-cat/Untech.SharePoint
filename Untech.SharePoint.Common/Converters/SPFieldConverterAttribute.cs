@@ -3,7 +3,7 @@
 namespace Untech.SharePoint.Common.Converters
 {
 	[AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
-	public class SpFieldConverterAttribute : Attribute
+	public sealed class SpFieldConverterAttribute : Attribute
 	{
 		public SpFieldConverterAttribute(string fieldType)
 		{

@@ -1,14 +1,15 @@
+using Untech.SharePoint.Common.AnnotationMapping;
 using Untech.SharePoint.Common.Data;
 using Untech.SharePoint.Common.Services;
 
 namespace Untech.SharePoint.Common.Configuration
 {
-	public class MappingSources
+	public sealed class MappingSources
 	{
-		public IMappingSource<T> Annotated<T>()
-			where T: ISpContext
+		public IMappingSource<TContext> Annotated<TContext>()
+			where TContext: ISpContext
 		{
-			return new AnnotationMapping.AnnotatedMappingSource<T>();
+			return new AnnotatedMappingSource<TContext>();
 		}
 	}
 }

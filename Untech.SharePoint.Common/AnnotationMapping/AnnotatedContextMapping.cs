@@ -2,25 +2,21 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using Untech.SharePoint.Common.Data;
-using Untech.SharePoint.Common.Extensions;
 using Untech.SharePoint.Common.MetaModels;
 using Untech.SharePoint.Common.MetaModels.Providers;
 using Untech.SharePoint.Common.Services;
 
 namespace Untech.SharePoint.Common.AnnotationMapping
 {
-	internal sealed class AnnotatedContextMapping<T> : IMetaContextProvider, IListTitleResolver
+	internal class AnnotatedContextMapping<T> : IMetaContextProvider, IListTitleResolver
 	{
 		private readonly Type _contextType;
-		private readonly Dictionary<string, AnnotatedListMapping> _listProviders;
+		private readonly List<AnnotatedListPart> _listProviders;
 
 		public AnnotatedContextMapping()
 		{
 			_contextType = typeof(T);
-			_listProviders = new Dictionary<string, AnnotatedListMapping>();
-
-			Initialize();
+			_listProviders = CreateListParts();
 		}
 
 		public string GetListTitleFromContextProperty(PropertyInfo property)
@@ -32,31 +28,26 @@ namespace Untech.SharePoint.Common.AnnotationMapping
 
 		public MetaContext GetMetaContext()
 		{
-			return new MetaContext(_listProviders.Values.ToList());
+			return new MetaContext(_listProviders);
 		}
-		
-		private void Initialize()
+
+		#region [Private Methods]
+
+		private List<AnnotatedListPart> CreateListParts()
 		{
-			_contextType.GetProperties(BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public)
-				.Where(AnnotatedListMapping.IsAnnotated)
-				.Each(Register);
+			return _contextType.GetProperties(BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public)
+				.Where(AnnotatedListPart.IsAnnotated)
+				.GroupBy(GetListTitleFromContextProperty)
+				.Select(CreateList)
+				.ToList();
 		}
 
-		private void Register(PropertyInfo property)
+		private static AnnotatedListPart CreateList(IGrouping<string, PropertyInfo> listProperties)
 		{
-			GetOrAddList(property).RegisterFromContextProperty(property);
+			return AnnotatedListPart.Create(listProperties.Key, listProperties);
 		}
 
-		private AnnotatedListMapping GetOrAddList(PropertyInfo property)
-		{
-			var listTitle = GetListTitleFromContextProperty(property);
+		#endregion
 
-			if (!_listProviders.ContainsKey(listTitle))
-			{
-				_listProviders.Add(listTitle, AnnotatedListMapping.Create(listTitle, property));
-			}
-
-			return _listProviders[listTitle];
-		}
 	}
 }
