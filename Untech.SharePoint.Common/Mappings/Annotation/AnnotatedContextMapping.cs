@@ -18,7 +18,7 @@ namespace Untech.SharePoint.Common.Mappings.Annotation
 			_listProviders = CreateListParts();
 		}
 
-		public string GetListTitleFromContextProperty(MemberInfo member)
+		public string GetListTitleFromContextMember(MemberInfo member)
 		{
 			var listAttribute = member.GetCustomAttribute<SpListAttribute>();
 
@@ -36,7 +36,7 @@ namespace Untech.SharePoint.Common.Mappings.Annotation
 		{
 			return _contextType.GetProperties(BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public)
 				.Where(AnnotatedListPart.IsAnnotated)
-				.GroupBy(GetListTitleFromContextProperty)
+				.GroupBy(GetListTitleFromContextMember)
 				.Select(CreateListPart)
 				.ToList();
 		}

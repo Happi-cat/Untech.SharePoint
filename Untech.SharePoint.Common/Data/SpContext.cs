@@ -3,6 +3,7 @@ using System.Linq.Expressions;
 using Untech.SharePoint.Common.Configuration;
 using Untech.SharePoint.Common.Mappings;
 using Untech.SharePoint.Common.MetaModels;
+using Untech.SharePoint.Common.Visitors;
 
 namespace Untech.SharePoint.Common.Data
 {
@@ -15,6 +16,8 @@ namespace Untech.SharePoint.Common.Data
 			Config = config;
 			MappingSource = Config.Mappings.Resolve(GetType());
 			Model = MappingSource.GetMetaContext();
+
+			(new FieldConverterRegistrator(config.FieldConverters)).Visit(Model);
 		}
 
 		protected Config Config { get; private set; }
@@ -28,7 +31,7 @@ namespace Untech.SharePoint.Common.Data
 			var lambdaExpression = (LambdaExpression) listAccessor;
 
 			var memberExp = (MemberExpression) lambdaExpression.Body;
-			var listTitle = MappingSource.GetListTitleFromContextProperty(memberExp.Member);
+			var listTitle = MappingSource.GetListTitleFromContextMember(memberExp.Member);
 
 			throw new NotImplementedException();
 		}

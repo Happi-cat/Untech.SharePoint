@@ -27,9 +27,9 @@ namespace Untech.SharePoint.Common.Mappings.Annotation
 			return _contextMapping.GetMetaContext();
 		}
 
-		public string GetListTitleFromContextProperty(MemberInfo member)
+		public string GetListTitleFromContextMember(MemberInfo member)
 		{
-			return _contextMapping.GetListTitleFromContextProperty(member);
+			return _contextMapping.GetListTitleFromContextMember(member);
 		}
 	}
 }

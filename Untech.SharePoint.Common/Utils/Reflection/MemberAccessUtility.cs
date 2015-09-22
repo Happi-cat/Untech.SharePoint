@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using Untech.SharePoint.Common.Extensions;
 using Getter = System.Func<object, object>;
 using Setter = System.Action<object, object>;
