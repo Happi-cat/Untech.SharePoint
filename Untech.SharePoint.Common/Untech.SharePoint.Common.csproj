@@ -50,14 +50,14 @@
     <Compile Include="AnnotationMapping\AnnotatedFieldPart.cs" />
     <Compile Include="AnnotationMapping\AnnotatedListPart.cs" />
     <Compile Include="AnnotationMapping\AnnotatedMappingSource.cs" />
-    <Compile Include="AnnotationMapping\AnnotationException.cs" />
+    <Compile Include="AnnotationMapping\InvalidAnnotationException.cs" />
     <Compile Include="AnnotationMapping\SpContentTypeAttribute.cs" />
     <Compile Include="AnnotationMapping\SpFieldAttribute.cs" />
     <Compile Include="AnnotationMapping\SpFieldRemovedAttribute.cs" />
     <Compile Include="AnnotationMapping\SpListAttribute.cs" />
     <Compile Include="Configuration\BaseConfiguration.cs" />
-    <Compile Include="Configuration\FieldConvertersConfiguration.cs" />
-    <Compile Include="Configuration\MappingsConfiguration.cs" />
+    <Compile Include="Converters\FieldConvertersContainer.cs" />
+    <Compile Include="Configuration\MappingsContainer.cs" />
     <Compile Include="Configuration\MappingSources.cs" />
     <Compile Include="Converters\FieldConverterException.cs" />
     <Compile Include="Converters\FieldConverterInitializationException.cs" />

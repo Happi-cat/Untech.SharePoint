@@ -38,11 +38,11 @@ namespace Untech.SharePoint.Common.AnnotationMapping
 			return _contextType.GetProperties(BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public)
 				.Where(AnnotatedListPart.IsAnnotated)
 				.GroupBy(GetListTitleFromContextProperty)
-				.Select(CreateList)
+				.Select(CreateListPart)
 				.ToList();
 		}
 
-		private static AnnotatedListPart CreateList(IGrouping<string, PropertyInfo> listProperties)
+		private static AnnotatedListPart CreateListPart(IGrouping<string, PropertyInfo> listProperties)
 		{
 			return AnnotatedListPart.Create(listProperties.Key, listProperties);
 		}

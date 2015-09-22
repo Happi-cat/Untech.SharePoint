@@ -41,7 +41,7 @@ namespace Untech.SharePoint.Common.Test.AnnotationMapping
 		[TestMethod]
 		public void ThrowErrorForContextPropertiesWithInvalidType()
 		{
-			CustomAssert.Throw<AnnotationException>(() =>
+			CustomAssert.Throw<InvalidAnnotationException>(() =>
 			{
 				var model = GetCtx<ContextWithInvalidContextPropertyType>();
 			});
@@ -50,7 +50,7 @@ namespace Untech.SharePoint.Common.Test.AnnotationMapping
 		[TestMethod]
 		public void ThrowErrorForWriteonlyContextProperties()
 		{
-			CustomAssert.Throw<AnnotationException>(() =>
+			CustomAssert.Throw<InvalidAnnotationException>(() =>
 			{
 				var model = GetCtx<ContextWithWriteOnlyContextProperty>();
 			});
@@ -59,7 +59,7 @@ namespace Untech.SharePoint.Common.Test.AnnotationMapping
 		[TestMethod]
 		public void ThrowErrorForWriteOnlyEntityProperty()
 		{
-			CustomAssert.Throw<AnnotationException>(() =>
+			CustomAssert.Throw<InvalidAnnotationException>(() =>
 			{
 				var model = GetCtx<ContextWithWriteOnlyEntityProperty>();
 			});

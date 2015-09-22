@@ -2,18 +2,17 @@
 using System.Linq;
 using System.Reflection;
 using Untech.SharePoint.Common.Collections;
-using Untech.SharePoint.Common.Converters;
 using Untech.SharePoint.Common.Extensions;
 using Untech.SharePoint.Common.Utils.Reflection;
 
-namespace Untech.SharePoint.Common.Configuration
+namespace Untech.SharePoint.Common.Converters
 {
-	public class FieldConvertersConfiguration : IFieldConverterResolver
+	public class FieldConvertersContainer : IFieldConverterResolver
 	{
-		private readonly Container<string, Type> _fieldConvertersResolver = new Container<string, Type>();
+		private readonly Container<string, Type> _fieldTypesMap = new Container<string, Type>();
 		private readonly Container<Type, Func<IFieldConverter>> _fieldConvertersBuilders = new Container<Type, Func<IFieldConverter>>();
 
-		public FieldConvertersConfiguration RegisterFromAssembly(Assembly assembly)
+		public void AddFromAssembly(Assembly assembly)
 		{
 			Guard.CheckNotNull("assembly", assembly);
 
@@ -21,37 +20,34 @@ namespace Untech.SharePoint.Common.Configuration
 				.Where(n => n.IsDefined(typeof(SpFieldConverterAttribute)))
 				.Where(n => typeof(IFieldConverter).IsAssignableFrom(n) && !n.IsAbstract)
 				.Each(RegisterBuiltInConverter);
-
-			return this;
 		}
 
-		public FieldConvertersConfiguration Register<TConverter>()
+		public void Add<TConverter>()
 			where TConverter : IFieldConverter
 		{
-			Register(typeof (TConverter));
-			return this;
+			var converterType = typeof (TConverter);
+
+			Register(converterType, InstanceCreationUtility.GetCreator<IFieldConverter>(converterType));
 		}
 
-		public FieldConvertersConfiguration Register(Type converterType)
+		public void Add(Type converterType)
 		{
 			Guard.CheckNotNull("converterType", converterType);
 
 			Register(converterType, InstanceCreationUtility.GetCreator<IFieldConverter>(converterType));
-			return this;
 		}
 
-		public FieldConvertersConfiguration Register<TConverter>(Func<IFieldConverter> converterBuilder)
+		public void Add<TConverter>(Func<IFieldConverter> converterBuilder)
 			where TConverter: IFieldConverter
 		{
 			Guard.CheckNotNull("converterBuilder", converterBuilder);
 
 			Register(typeof(TConverter), converterBuilder);
-			return this;
 		}
 
 		public IFieldConverter Resolve(string typeAsString)
 		{
-			return Resolve(_fieldConvertersResolver.Resolve(typeAsString));
+			return Resolve(_fieldTypesMap.Resolve(typeAsString));
 		}
 
 		public IFieldConverter Resolve<TConverter>()
@@ -76,7 +72,7 @@ namespace Untech.SharePoint.Common.Configuration
 
 			converterAttributes
 				.Where(n => !string.IsNullOrEmpty(n.FieldTypeAsString))
-				.Each(n => _fieldConvertersResolver.Register(n.FieldTypeAsString, converterType));
+				.Each(n => _fieldTypesMap.Register(n.FieldTypeAsString, converterType));
 
 			Register(converterType, creator);
 		}

@@ -52,14 +52,14 @@ namespace Untech.SharePoint.Common.AnnotationMapping
 		{
 			if (!contextProperty.CanRead)
 			{
-				throw new AnnotationException(string.Format("Property {0} from {1} should be readable", contextProperty.Name,
+				throw new InvalidAnnotationException(string.Format("Property {0} from {1} should be readable", contextProperty.Name,
 					contextProperty.DeclaringType));
 			}
 
 			if (!contextProperty.PropertyType.IsGenericType ||
 			    contextProperty.PropertyType.GetGenericTypeDefinition() != typeof (ISpList<>))
 			{
-				throw new AnnotationException(string.Format("Property {0} from {1} should have 'ISpList<T>' type",
+				throw new InvalidAnnotationException(string.Format("Property {0} from {1} should have 'ISpList<T>' type",
 					contextProperty.Name, contextProperty.DeclaringType));
 			}
 

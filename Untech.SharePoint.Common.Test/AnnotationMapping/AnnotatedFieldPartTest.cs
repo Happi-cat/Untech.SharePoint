@@ -28,7 +28,7 @@ namespace Untech.SharePoint.Common.Test.AnnotationMapping
 		[TestMethod]
 		public void ThrowErrorForReadOnlyEntityField()
 		{
-			CustomAssert.Throw<AnnotationException>(() =>
+			CustomAssert.Throw<InvalidAnnotationException>(() =>
 			{
 				var model = GetCtx<ContextWithReadOnlyEntityField>();
 			});
@@ -37,7 +37,7 @@ namespace Untech.SharePoint.Common.Test.AnnotationMapping
 		[TestMethod]
 		public void ThrowErrorForEntityIndexer()
 		{
-			CustomAssert.Throw<AnnotationException>(() =>
+			CustomAssert.Throw<InvalidAnnotationException>(() =>
 			{
 				var model = GetCtx<ContextWithEntityIndexer>();
 			});
@@ -46,7 +46,7 @@ namespace Untech.SharePoint.Common.Test.AnnotationMapping
 		[TestMethod]
 		public void ThrowErrorForReadOnlyEntityProperty()
 		{
-			CustomAssert.Throw<AnnotationException>(() =>
+			CustomAssert.Throw<InvalidAnnotationException>(() =>
 			{
 				var model = GetCtx<ContextWithReadOnlyEntityProperty>();
 			});

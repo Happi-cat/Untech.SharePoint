@@ -2,9 +2,9 @@
 
 namespace Untech.SharePoint.Common.AnnotationMapping
 {
-	public class AnnotationException : Exception
+	public class InvalidAnnotationException : Exception
 	{
-		public AnnotationException(string message)
+		public InvalidAnnotationException(string message)
 			: base(message)
 		{
 

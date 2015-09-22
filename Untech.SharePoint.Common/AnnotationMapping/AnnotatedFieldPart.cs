@@ -16,7 +16,7 @@ namespace Untech.SharePoint.Common.AnnotationMapping
 			Guard.CheckNotNull("member", member);
 
 			_member = member;
-			_fieldAttribute = member.GetCustomAttribute<SpFieldAttribute>() ?? new SpFieldAttribute();
+			_fieldAttribute = member.GetCustomAttribute<SpFieldAttribute>();
 		}
 
 		#region [Public Static]
@@ -30,16 +30,12 @@ namespace Untech.SharePoint.Common.AnnotationMapping
 		{
 			if (!property.CanRead || !property.CanWrite)
 			{
-				throw new AnnotationException(string.Format("Property {1}.{0} should be readable and writable", property.Name, property.DeclaringType));
+				throw new InvalidAnnotationException(string.Format("Property {1}.{0} should be readable and writable", property.Name, property.DeclaringType));
 			}
 			if (property.GetIndexParameters().Any())
 			{
-				throw new AnnotationException(string.Format("Indexer in {0} cannot be annotated",
+				throw new InvalidAnnotationException(string.Format("Indexer in {0} cannot be annotated",
 					property.DeclaringType));
-			}
-			if (!IsAnnotated(property))
-			{
-				throw new AnnotationException(string.Format("Property {1}.{0} has no attribute SpFieldAttribute or was marked with SpFieldRemovedAttribute", property.Name, property.DeclaringType));
 			}
 
 			return new AnnotatedFieldPart(property);
@@ -49,11 +45,7 @@ namespace Untech.SharePoint.Common.AnnotationMapping
 		{
 			if (field.IsInitOnly || field.IsLiteral)
 			{
-				throw new AnnotationException(string.Format("Field {1}.{0} cannot be readonly or const", field.Name, field.DeclaringType));
-			}
-			if (!IsAnnotated(field))
-			{
-				throw new AnnotationException(string.Format("Field {1}.{0} has no attribute SpFieldAttribute", field.Name, field.DeclaringType));
+				throw new InvalidAnnotationException(string.Format("Field {1}.{0} cannot be readonly or const", field.Name, field.DeclaringType));
 			}
 
 			return new AnnotatedFieldPart(field);

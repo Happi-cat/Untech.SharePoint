@@ -8,7 +8,6 @@ namespace Untech.SharePoint.Common.Collections
 
 		public void Register(TKey key, TObject obj)
 		{
-			Guard.CheckNotNull("key", key);
 			Guard.CheckNotNull("obj", obj);
 
 			if (IsRegistered(key))
@@ -23,8 +22,6 @@ namespace Untech.SharePoint.Common.Collections
 
 		public TObject Resolve(TKey key)
 		{
-			Guard.CheckNotNull("key", key);
-
 			if (IsRegistered(key))
 			{
 				return _registeredObjects[key];
