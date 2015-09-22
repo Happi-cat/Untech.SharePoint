@@ -10,7 +10,7 @@ namespace Untech.SharePoint.Common.Converters
 	public class FieldConvertersContainer : IFieldConverterResolver
 	{
 		private readonly Container<string, Type> _fieldTypesMap = new Container<string, Type>();
-		private readonly Container<Type, Func<IFieldConverter>> _fieldConvertersBuilders = new Container<Type, Func<IFieldConverter>>();
+		private readonly KeyedFactory<Type, IFieldConverter> _fieldConvertersBuilders = new KeyedFactory<Type, IFieldConverter>();
 
 		public void AddFromAssembly(Assembly assembly)
 		{
@@ -58,8 +58,7 @@ namespace Untech.SharePoint.Common.Converters
 
 		public IFieldConverter Resolve(Type converterType)
 		{
-			var creator = _fieldConvertersBuilders.Resolve(converterType);
-			return new FieldConverterWrapper(converterType, creator());
+			return new FieldConverterWrapper(converterType, _fieldConvertersBuilders.Create(converterType));
 		}
 
 		#region [Private Methods]

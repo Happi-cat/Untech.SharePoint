@@ -45,20 +45,20 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AnnotationMapping\AnnotatedContentTypeMapping.cs" />
-    <Compile Include="AnnotationMapping\AnnotatedContextMapping.cs" />
-    <Compile Include="AnnotationMapping\AnnotatedFieldPart.cs" />
-    <Compile Include="AnnotationMapping\AnnotatedListPart.cs" />
-    <Compile Include="AnnotationMapping\AnnotatedMappingSource.cs" />
-    <Compile Include="AnnotationMapping\InvalidAnnotationException.cs" />
-    <Compile Include="AnnotationMapping\SpContentTypeAttribute.cs" />
-    <Compile Include="AnnotationMapping\SpFieldAttribute.cs" />
-    <Compile Include="AnnotationMapping\SpFieldRemovedAttribute.cs" />
-    <Compile Include="AnnotationMapping\SpListAttribute.cs" />
+    <Compile Include="Mappings\Annotation\AnnotatedContentTypeMapping.cs" />
+    <Compile Include="Mappings\Annotation\AnnotatedContextMapping.cs" />
+    <Compile Include="Mappings\Annotation\AnnotatedFieldPart.cs" />
+    <Compile Include="Mappings\Annotation\AnnotatedListPart.cs" />
+    <Compile Include="Mappings\Annotation\AnnotatedMappingSource.cs" />
+    <Compile Include="Mappings\Annotation\InvalidAnnotationException.cs" />
+    <Compile Include="Mappings\Annotation\SpContentTypeAttribute.cs" />
+    <Compile Include="Mappings\Annotation\SpFieldAttribute.cs" />
+    <Compile Include="Mappings\Annotation\SpFieldRemovedAttribute.cs" />
+    <Compile Include="Mappings\Annotation\SpListAttribute.cs" />
     <Compile Include="Configuration\BaseConfiguration.cs" />
     <Compile Include="Converters\FieldConvertersContainer.cs" />
-    <Compile Include="Configuration\MappingsContainer.cs" />
-    <Compile Include="Configuration\MappingSources.cs" />
+    <Compile Include="Mappings\IMappingSourceResolver.cs" />
+    <Compile Include="Mappings\MappingsContainer.cs" />
     <Compile Include="Converters\FieldConverterException.cs" />
     <Compile Include="Converters\FieldConverterInitializationException.cs" />
     <Compile Include="Converters\FieldConverterWrapper.cs" />
@@ -74,7 +74,7 @@
     <Compile Include="Extensions\ExpressionExtensions.cs" />
     <Compile Include="Extensions\ObjectExtensions.cs" />
     <Compile Include="Extensions\TypeExtensions.cs" />
-    <Compile Include="Factory\KeyedFactory.cs" />
+    <Compile Include="Collections\KeyedFactory.cs" />
     <Compile Include="Guard.cs" />
     <Compile Include="MetaModels\Collections\MetaContentTypeCollection.cs" />
     <Compile Include="MetaModels\Collections\MetaFieldCollection.cs" />
@@ -90,8 +90,8 @@
     <Compile Include="MetaModels\Providers\IMetaFieldProvider.cs" />
     <Compile Include="Models\Entity.cs" />
     <Compile Include="Services\ICommonService.cs" />
-    <Compile Include="Services\IListTitleResolver.cs" />
-    <Compile Include="Services\IMappingSource.cs" />
+    <Compile Include="Mappings\IListTitleResolver.cs" />
+    <Compile Include="Mappings\IMappingSource.cs" />
     <Compile Include="Utils\Reflection\InstanceCreationUtility.cs" />
     <Compile Include="Utils\Reflection\MemberAccessor.cs" />
     <Compile Include="Utils\Reflection\MemberAccessorPool.cs" />

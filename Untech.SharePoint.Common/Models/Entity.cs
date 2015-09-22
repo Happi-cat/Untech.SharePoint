@@ -1,5 +1,5 @@
 ﻿using System;
-using Untech.SharePoint.Common.AnnotationMapping;
+using Untech.SharePoint.Common.Mappings.Annotation;
 
 namespace Untech.SharePoint.Common.Models
 {

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Untech.SharePoint.Common.Converters;
+using Untech.SharePoint.Common.Mappings;
 
 namespace Untech.SharePoint.Common.Configuration
 {
