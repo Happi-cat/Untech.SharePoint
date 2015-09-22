@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Untech.SharePoint.Common.Extensions;
 using Untech.SharePoint.Common.MetaModels;
 

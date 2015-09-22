@@ -2,7 +2,6 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Untech.SharePoint.Common.Mappings.Annotation;
 using Untech.SharePoint.Common.MetaModels;
 using Untech.SharePoint.Common.Test.Mappings.Annotation.Models;
-using TestContext = Untech.SharePoint.Common.Test.Mappings.Annotation.Models.TestContext;
 
 namespace Untech.SharePoint.Common.Test.Mappings.Annotation
 {
@@ -12,17 +11,17 @@ namespace Untech.SharePoint.Common.Test.Mappings.Annotation
 		[TestMethod]
 		public void CanInheritFieldAnnotation()
 		{
-			var model = GetCtx<TestContext>();
+			var model = GetCtx<AnnotatedContext>();
 
-			Assert.AreEqual("OldInternalName", GetField<DerivedTestEntityWithIheritedAnnotation>(model, "List1", "OverrideProperty").InternalName);
+			Assert.AreEqual("OldInternalName", GetField<DerivedAnnotatedEntityWithIheritedAnnotation>(model, "List1", "OverrideProperty").InternalName);
 		}
 
 		[TestMethod]
 		public void CanOverwriteFieldAnnotation()
 		{
-			var model = new AnnotatedContextMapping<TestContext>().GetMetaContext();
+			var model = new AnnotatedContextMapping<AnnotatedContext>().GetMetaContext();
 
-			Assert.AreEqual("NewInternalName", GetField<DerivedTestEntityWithOverwrittenAnnotation>(model, "List2", "OverrideProperty").InternalName);
+			Assert.AreEqual("NewInternalName", GetField<DerivedAnnotatedEntityWithOverwrittenAnnotation>(model, "List2", "OverrideProperty").InternalName);
 		}
 
 		[TestMethod]

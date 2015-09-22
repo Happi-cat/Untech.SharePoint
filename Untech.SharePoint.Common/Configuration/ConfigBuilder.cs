@@ -5,33 +5,33 @@ using Untech.SharePoint.Common.Mappings;
 
 namespace Untech.SharePoint.Common.Configuration
 {
-	public abstract class BaseConfiguration
+	public sealed class ConfigBuilder
 	{
 		private readonly Queue<Action<MappingsContainer>> _mappingsRegistrators;
 		private readonly Queue<Action<FieldConvertersContainer>> _converterRegistrators;
 
-		protected BaseConfiguration()
+		public ConfigBuilder()
 		{
 			_mappingsRegistrators = new Queue<Action<MappingsContainer>>();
 			_converterRegistrators = new Queue<Action<FieldConvertersContainer>>();
 		}
 
-		public BaseConfiguration RegisterMapping(Action<MappingsContainer> action)
+		public ConfigBuilder RegisterMappings(Action<MappingsContainer> action)
 		{
 			_mappingsRegistrators.Enqueue(action);
 			return this;
 		}
 
-		public BaseConfiguration RegisterConverters(Action<FieldConvertersContainer> action)
+		public ConfigBuilder RegisterConverters(Action<FieldConvertersContainer> action)
 		{
 			_converterRegistrators.Enqueue(action);
 			return this;
 		}
 
-		public void BuildConfig()
+		public Config BuildConfig()
 		{
 			var mappingsContainer = new MappingsContainer();
-			var fieldContainer = new FieldConvertersContainer();
+			var fieldConvertersContainer = new FieldConvertersContainer();
 
 			foreach (var action in _mappingsRegistrators)
 			{
@@ -40,8 +40,14 @@ namespace Untech.SharePoint.Common.Configuration
 
 			foreach (var action in _converterRegistrators)
 			{
-				action(fieldContainer);
+				action(fieldConvertersContainer);
 			}
+
+			return new Config
+			{
+				FieldConverters = fieldConvertersContainer,
+				Mappings = mappingsContainer
+			};
 		}
 	}
 }

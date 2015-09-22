@@ -3,7 +3,7 @@ using Untech.SharePoint.Common.Mappings.Annotation;
 
 namespace Untech.SharePoint.Common.Test.Mappings.Annotation.Models
 {
-	public class ContextWithEntityIndexer : TestContext
+	public class ContextWithEntityIndexer : AnnotatedContext
 	{
 		[SpList(Title = "Test")]
 		public ISpList<EntityWithIndexer> InvalidEntity { get; set; }

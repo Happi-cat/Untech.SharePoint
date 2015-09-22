@@ -2,12 +2,12 @@ using Untech.SharePoint.Common.Mappings.Annotation;
 
 namespace Untech.SharePoint.Common.Test.Mappings.Annotation.Models
 {
-	[SpContentType(Id = "0x001020")]
-	public class DerivedTestEntityWithIheritedAnnotation : TestEntity
+	public class DerivedAnnotatedEntityWithOverwrittenAnnotation : AnnotatedEntity
 	{
 		[SpField(Name = "HtmlBody")]
 		public string Html { get; set; }
 
+		[SpField(Name = "NewInternalName")]
 		public override string OverrideProperty { get; set; }
 	}
 }

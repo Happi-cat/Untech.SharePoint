@@ -1,6 +1,7 @@
 ﻿using System;
+using System.Reflection;
 using Untech.SharePoint.Common.Data;
-using Untech.SharePoint.Common.MetaModels.Providers;
+using Untech.SharePoint.Common.MetaModels;
 
 namespace Untech.SharePoint.Common.Mappings.Annotation
 {
@@ -16,19 +17,19 @@ namespace Untech.SharePoint.Common.Mappings.Annotation
 			_contextMapping = new AnnotatedContextMapping<TContext>();
 		}
 
-		public IMetaContextProvider ContextProvider
-		{
-			get { return _contextMapping; }
-		}
-
-		public IListTitleResolver ListTitleResolver
-		{
-			get { return _contextMapping; }
-		}
-
 		public Type ContextType
 		{
 			get { return _contextType; }
+		}
+
+		public MetaContext GetMetaContext()
+		{
+			return _contextMapping.GetMetaContext();
+		}
+
+		public string GetListTitleFromContextProperty(MemberInfo member)
+		{
+			return _contextMapping.GetListTitleFromContextProperty(member);
 		}
 	}
 }

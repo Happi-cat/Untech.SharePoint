@@ -4,10 +4,10 @@ using Untech.SharePoint.Common.Mappings.Annotation;
 
 namespace Untech.SharePoint.Common.Test.Mappings.Annotation.Models
 {
-	public class ContextWithWriteOnlyContextProperty : TestContext
+	public class ContextWithWriteOnlyContextProperty : AnnotatedContext
 	{
 		[SpList(Title = "WriteOnlyProperty")]
-		public ISpList<TestEntity> WriteOnlyProperty
+		public ISpList<AnnotatedEntity> WriteOnlyProperty
 		{
 			set { throw new NotImplementedException(); }
 		}

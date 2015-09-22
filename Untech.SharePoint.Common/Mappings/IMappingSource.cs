@@ -4,13 +4,9 @@ using Untech.SharePoint.Common.MetaModels.Providers;
 
 namespace Untech.SharePoint.Common.Mappings
 {
-	public interface IMappingSource
+	public interface IMappingSource : IMetaContextProvider, IListTitleResolver
 	{
 		Type ContextType { get; }
-
-		IMetaContextProvider ContextProvider { get; }
-
-		IListTitleResolver ListTitleResolver { get; }
 	}
 
 	public interface IMappingSource<TContext> : IMappingSource

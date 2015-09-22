@@ -18,11 +18,11 @@ namespace Untech.SharePoint.Common.Mappings.Annotation
 			_listProviders = CreateListParts();
 		}
 
-		public string GetListTitleFromContextProperty(PropertyInfo property)
+		public string GetListTitleFromContextProperty(MemberInfo member)
 		{
-			var listAttribute = property.GetCustomAttribute<SpListAttribute>();
+			var listAttribute = member.GetCustomAttribute<SpListAttribute>();
 
-			return string.IsNullOrEmpty(listAttribute.Title) ? property.Name : listAttribute.Title;
+			return string.IsNullOrEmpty(listAttribute.Title) ? member.Name : listAttribute.Title;
 		}
 
 		public MetaContext GetMetaContext()

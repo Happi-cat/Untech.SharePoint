@@ -3,7 +3,7 @@ using Untech.SharePoint.Common.Mappings.Annotation;
 
 namespace Untech.SharePoint.Common.Test.Mappings.Annotation.Models
 {
-	public class EntityWithReadOnlyProperty : TestEntity
+	public class EntityWithReadOnlyProperty : AnnotatedEntity
 	{
 		[SpField]
 		public string ReadonlyProperty

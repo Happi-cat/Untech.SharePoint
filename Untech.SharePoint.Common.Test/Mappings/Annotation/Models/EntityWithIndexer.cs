@@ -3,7 +3,7 @@ using Untech.SharePoint.Common.Mappings.Annotation;
 
 namespace Untech.SharePoint.Common.Test.Mappings.Annotation.Models
 {
-	public class EntityWithIndexer : TestEntity
+	public class EntityWithIndexer : AnnotatedEntity
 	{
 		[SpField]
 		public string this[string key]

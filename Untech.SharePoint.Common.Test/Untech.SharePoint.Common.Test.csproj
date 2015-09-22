@@ -56,6 +56,8 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="Configuration\BuiltInFieldConverter.cs" />
+    <Compile Include="Configuration\ConfigBuilderTest.cs" />
     <Compile Include="Mappings\Annotation\AnnotatedContentTypeMappingTest.cs" />
     <Compile Include="Mappings\Annotation\AnnotatedFieldPartTest.cs" />
     <Compile Include="Mappings\Annotation\Models\ContextWithEntityIndexer.cs" />
@@ -64,16 +66,16 @@
     <Compile Include="Mappings\Annotation\Models\ContextWithReadOnlyEntityProperty.cs" />
     <Compile Include="Mappings\Annotation\Models\ContextWithWriteOnlyEntityProperty.cs" />
     <Compile Include="CustomAssert.cs" />
-    <Compile Include="Mappings\Annotation\Models\DerivedTestContext.cs" />
+    <Compile Include="Mappings\Annotation\Models\DerivedAnnotatedContext.cs" />
     <Compile Include="Mappings\Annotation\Models\ContextWithWriteOnlyContextProperty.cs" />
-    <Compile Include="Mappings\Annotation\Models\DerivedTestEntityWithIheritedAnnotation.cs" />
-    <Compile Include="Mappings\Annotation\Models\DerivedTestEntityWithOverwrittenAnnotation.cs" />
+    <Compile Include="Mappings\Annotation\Models\DerivedAnnotatedEntityWithIheritedAnnotation.cs" />
+    <Compile Include="Mappings\Annotation\Models\DerivedAnnotatedEntityWithOverwrittenAnnotation.cs" />
     <Compile Include="Mappings\Annotation\Models\EntityWithIndexer.cs" />
     <Compile Include="Mappings\Annotation\Models\EntityWithReadOnlyField.cs" />
     <Compile Include="Mappings\Annotation\Models\EntityWithReadOnlyProperty.cs" />
     <Compile Include="Mappings\Annotation\Models\EntityWithWriteOnlyProperty.cs" />
-    <Compile Include="Mappings\Annotation\Models\TestEntity.cs" />
-    <Compile Include="Mappings\Annotation\Models\TestContext.cs" />
+    <Compile Include="Mappings\Annotation\Models\AnnotatedEntity.cs" />
+    <Compile Include="Mappings\Annotation\Models\AnnotatedContext.cs" />
     <Compile Include="Mappings\Annotation\AnnotatedContextMappingTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -1,5 +1,4 @@
-﻿using Untech.SharePoint.Common.Configuration;
-using Untech.SharePoint.Common.Converters;
+﻿using Untech.SharePoint.Common.Converters;
 using Untech.SharePoint.Common.MetaModels;
 
 namespace Untech.SharePoint.Common.Visitors

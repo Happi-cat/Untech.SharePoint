@@ -4,6 +4,6 @@ namespace Untech.SharePoint.Common.Mappings
 {
 	public interface IListTitleResolver
 	{
-		string GetListTitleFromContextProperty(PropertyInfo property);
+		string GetListTitleFromContextProperty(MemberInfo member);
 	}
 }

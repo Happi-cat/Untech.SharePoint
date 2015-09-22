@@ -45,6 +45,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Configuration\Config.cs" />
     <Compile Include="Mappings\Annotation\AnnotatedContentTypeMapping.cs" />
     <Compile Include="Mappings\Annotation\AnnotatedContextMapping.cs" />
     <Compile Include="Mappings\Annotation\AnnotatedFieldPart.cs" />
@@ -55,7 +56,7 @@
     <Compile Include="Mappings\Annotation\SpFieldAttribute.cs" />
     <Compile Include="Mappings\Annotation\SpFieldRemovedAttribute.cs" />
     <Compile Include="Mappings\Annotation\SpListAttribute.cs" />
-    <Compile Include="Configuration\BaseConfiguration.cs" />
+    <Compile Include="Configuration\ConfigBuilder.cs" />
     <Compile Include="Converters\FieldConvertersContainer.cs" />
     <Compile Include="Mappings\IMappingSourceResolver.cs" />
     <Compile Include="Mappings\MappingsContainer.cs" />

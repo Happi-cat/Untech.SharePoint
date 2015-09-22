@@ -2,7 +2,6 @@
 using Untech.SharePoint.Common.Mappings.Annotation;
 using Untech.SharePoint.Common.MetaModels;
 using Untech.SharePoint.Common.Test.Mappings.Annotation.Models;
-using TestContext = Untech.SharePoint.Common.Test.Mappings.Annotation.Models.TestContext;
 
 namespace Untech.SharePoint.Common.Test.Mappings.Annotation
 {
@@ -12,7 +11,7 @@ namespace Untech.SharePoint.Common.Test.Mappings.Annotation
 		[TestMethod]
 		public void CanCreateContextAndGetModel()
 		{
-			var model = GetCtx<TestContext>();
+			var model = GetCtx<AnnotatedContext>();
 
 			Assert.IsNotNull(model);
 		}
@@ -20,7 +19,7 @@ namespace Untech.SharePoint.Common.Test.Mappings.Annotation
 		[TestMethod]
 		public void CanSeeOnlyAnnotatedContextProperties()
 		{
-			var model = GetCtx<TestContext>();
+			var model = GetCtx<AnnotatedContext>();
 
 			Assert.AreEqual(2, model.Lists.Count);
 			Assert.AreEqual(2, model.Lists["List1"].ContentTypes.Count);
@@ -30,7 +29,7 @@ namespace Untech.SharePoint.Common.Test.Mappings.Annotation
 		[TestMethod]
 		public void CanSeeDerivedContextProperties()
 		{
-			var model = GetCtx<DerivedTestContext>();
+			var model = GetCtx<DerivedAnnotatedContext>();
 
 			Assert.AreEqual(2, model.Lists.Count);
 			Assert.AreEqual(2, model.Lists["List1"].ContentTypes.Count);
