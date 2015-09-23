@@ -37,14 +37,6 @@ namespace Untech.SharePoint.Common.Converters
 			Register(converterType, InstanceCreationUtility.GetCreator<IFieldConverter>(converterType));
 		}
 
-		public void Add<TConverter>(Func<IFieldConverter> converterBuilder)
-			where TConverter: IFieldConverter
-		{
-			Guard.CheckNotNull("converterBuilder", converterBuilder);
-
-			Register(typeof(TConverter), converterBuilder);
-		}
-
 		public IFieldConverter Resolve(string typeAsString)
 		{
 			return Resolve(_fieldTypesMap.Resolve(typeAsString));
