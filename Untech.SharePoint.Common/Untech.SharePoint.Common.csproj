@@ -36,8 +36,12 @@
     <AssemblyOriginatorKeyFile>key.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.6.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -46,6 +50,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Configuration\Config.cs" />
+    <Compile Include="Converters\BuiltIn\BooleanFieldConverter.cs" />
+    <Compile Include="Converters\BuiltIn\CounterFieldConverter.cs" />
+    <Compile Include="Converters\BuiltIn\DateTimeFieldConverter.cs" />
+    <Compile Include="Converters\BuiltIn\GuidFieldConverter.cs" />
+    <Compile Include="Converters\BuiltIn\NumberFieldConverter.cs" />
+    <Compile Include="Converters\BuiltIn\TextFieldConverter.cs" />
+    <Compile Include="Converters\Custom\EnumFieldConverter.cs" />
+    <Compile Include="Converters\Custom\JsonFieldConverter.cs" />
+    <Compile Include="Converters\Custom\XmlFieldConverter.cs" />
     <Compile Include="Data\ExpressionTreeVisitors\QueryBinder.cs" />
     <Compile Include="Data\QueryModels\ComparisonModel.cs" />
     <Compile Include="Data\QueryModels\ComparisonOperator.cs" />
@@ -56,6 +69,7 @@
     <Compile Include="Data\QueryModels\OrderByModel.cs" />
     <Compile Include="Data\QueryModels\QueryModel.cs" />
     <Compile Include="Data\QueryModels\WhereModel.cs" />
+    <Compile Include="Data\QueryTranslator.cs" />
     <Compile Include="Mappings\Annotation\AnnotatedContentTypeMapping.cs" />
     <Compile Include="Mappings\Annotation\AnnotatedContextMapping.cs" />
     <Compile Include="Mappings\Annotation\AnnotatedFieldPart.cs" />
@@ -120,6 +134,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="key.snk" />
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

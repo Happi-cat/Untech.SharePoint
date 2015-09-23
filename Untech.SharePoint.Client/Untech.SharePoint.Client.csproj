@@ -100,7 +100,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Untech.SharePoint.Common\Untech.SharePoint.Common.csproj">
-      <Project>{8836BB37-FECF-4503-933D-479A3D404900}</Project>
+      <Project>{8836bb37-fecf-4503-933d-479a3d404900}</Project>
       <Name>Untech.SharePoint.Common</Name>
     </ProjectReference>
   </ItemGroup>

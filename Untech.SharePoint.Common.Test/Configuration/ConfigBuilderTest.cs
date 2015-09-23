@@ -27,7 +27,8 @@ namespace Untech.SharePoint.Common.Test.Configuration
 		public void CanRegisterBuiltInConverters()
 		{
 			var config = new ConfigBuilder()
-				.RegisterConverters(n => n.AddFromAssembly(GetType().Assembly))
+				.RegisterConverters(n => n.AddFromAssembly(typeof(ConfigBuilder).Assembly))
+				.RegisterConverters(n => n.AddFromAssembly(typeof(ConfigBuilderTest).Assembly))
 				.BuildConfig();
 
 			Assert.IsNotNull(config.FieldConverters.Resolve("BUILT_IN_TEST_CONVERTER"));
@@ -48,7 +49,7 @@ namespace Untech.SharePoint.Common.Test.Configuration
 		{
 			var config = new ConfigBuilder()
 				.RegisterMappings(n => n.Annotated<AnnotatedContext>())
-				.RegisterConverters(n => n.AddFromAssembly(GetType().Assembly))
+				.RegisterConverters(n => n.AddFromAssembly(typeof(ConfigBuilderTest).Assembly))
 				.RegisterConverters(n => n.Add<BuiltInFieldConverter>())
 				.BuildConfig();
 

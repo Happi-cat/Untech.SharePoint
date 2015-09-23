@@ -7,7 +7,8 @@ namespace Untech.SharePoint.Server.Configuration
 		public static ConfigBuilder Begin()
 		{
 			return (new ConfigBuilder())
-				.RegisterConverters(n => n.AddFromAssembly(typeof (ServerConfig).Assembly));
+				.RegisterConverters(n => n.AddFromAssembly(typeof(ConfigBuilder).Assembly))
+				.RegisterConverters(n => n.AddFromAssembly(typeof(ServerConfig).Assembly));
 		}
 	}
 }
