@@ -7,5 +7,6 @@ namespace Untech.SharePoint.Common.Services
 	{
 		IEnumerable<IMetaModelVisitor> MetaModelProcessors { get; }
 
+		IListService ListService { get; }
 	}
 }
