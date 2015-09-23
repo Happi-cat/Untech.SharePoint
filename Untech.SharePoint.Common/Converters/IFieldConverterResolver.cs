@@ -7,7 +7,5 @@ namespace Untech.SharePoint.Common.Converters
 		IFieldConverter Resolve(string typeAsString);
 
 		IFieldConverter Resolve(Type converterType);
-
-		IFieldConverter Resolve<TConverter>() where TConverter : IFieldConverter;
 	}
 }

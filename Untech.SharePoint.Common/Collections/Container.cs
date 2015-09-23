@@ -2,7 +2,7 @@
 
 namespace Untech.SharePoint.Common.Collections
 {
-	public class Container<TKey, TObject>
+	public class Container<TKey, TObject> : IEnumerable<KeyValuePair<TKey, TObject>>
 	{
 		private readonly Dictionary<TKey, TObject> _registeredObjects = new Dictionary<TKey, TObject>();
 
@@ -34,6 +34,16 @@ namespace Untech.SharePoint.Common.Collections
 			Guard.CheckNotNull("key", key);
 
 			return _registeredObjects.ContainsKey(key);
+		}
+
+		public IEnumerator<KeyValuePair<TKey, TObject>> GetEnumerator()
+		{
+			return _registeredObjects.GetEnumerator();
+		}
+
+		System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+		{
+			return GetEnumerator();
 		}
 	}
 }

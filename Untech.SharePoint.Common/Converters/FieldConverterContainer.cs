@@ -7,7 +7,7 @@ using Untech.SharePoint.Common.Utils.Reflection;
 
 namespace Untech.SharePoint.Common.Converters
 {
-	public class FieldConvertersContainer : IFieldConverterResolver
+	public class FieldConverterContainer : IFieldConverterResolver
 	{
 		private readonly Container<string, Type> _fieldTypesMap = new Container<string, Type>();
 		private readonly KeyedFactory<Type, IFieldConverter> _fieldConvertersBuilders = new KeyedFactory<Type, IFieldConverter>();
@@ -48,12 +48,6 @@ namespace Untech.SharePoint.Common.Converters
 		public IFieldConverter Resolve(string typeAsString)
 		{
 			return Resolve(_fieldTypesMap.Resolve(typeAsString));
-		}
-
-		public IFieldConverter Resolve<TConverter>()
-			where TConverter : IFieldConverter
-		{
-			return Resolve(typeof (TConverter));
 		}
 
 		public IFieldConverter Resolve(Type converterType)

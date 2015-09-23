@@ -1,28 +1,33 @@
 ﻿using System;
 using System.Collections.Generic;
+using Untech.SharePoint.Common.Collections;
 using Untech.SharePoint.Common.Converters;
+using Untech.SharePoint.Common.Data;
+using Untech.SharePoint.Common.Extensions;
 using Untech.SharePoint.Common.Mappings;
+using Untech.SharePoint.Common.Visitors;
 
 namespace Untech.SharePoint.Common.Configuration
 {
 	public sealed class ConfigBuilder
 	{
-		private readonly Queue<Action<MappingsContainer>> _mappingsRegistrators;
-		private readonly Queue<Action<FieldConvertersContainer>> _converterRegistrators;
+		private readonly Container<Type, Func<Mappings.Mappings, IMappingSource>> _mappingSourceBuilders;
+		private readonly Queue<Action<FieldConverterContainer>> _converterRegistrators;
 
 		public ConfigBuilder()
 		{
-			_mappingsRegistrators = new Queue<Action<MappingsContainer>>();
-			_converterRegistrators = new Queue<Action<FieldConvertersContainer>>();
+			_mappingSourceBuilders = new Container<Type, Func<Mappings.Mappings, IMappingSource>>();
+			_converterRegistrators = new Queue<Action<FieldConverterContainer>>();
 		}
 
-		public ConfigBuilder RegisterMappings(Action<MappingsContainer> action)
+		public ConfigBuilder RegisterMappings<TContext>(Func<Mappings.Mappings, IMappingSource<TContext>> action)
+			where TContext: ISpContext
 		{
-			_mappingsRegistrators.Enqueue(action);
+			_mappingSourceBuilders.Register(typeof(TContext), action);
 			return this;
 		}
 
-		public ConfigBuilder RegisterConverters(Action<FieldConvertersContainer> action)
+		public ConfigBuilder RegisterConverters(Action<FieldConverterContainer> action)
 		{
 			_converterRegistrators.Enqueue(action);
 			return this;
@@ -30,23 +35,29 @@ namespace Untech.SharePoint.Common.Configuration
 
 		public Config BuildConfig()
 		{
-			var mappingsContainer = new MappingsContainer();
-			var fieldConvertersContainer = new FieldConvertersContainer();
+			var mappings = new MappingSourceContainer();
+			var converters = new FieldConverterContainer();
 
-			foreach (var action in _mappingsRegistrators)
+			foreach (var pair in _mappingSourceBuilders)
 			{
-				action(mappingsContainer);
+				var mappingSource = pair.Value(new Mappings.Mappings());
+
+				mappings.Register(pair.Key, mappingSource);
+
+				var customConverters = FieldConverterFinder.Find(mappingSource.GetMetaContext());
+
+				customConverters.Each(n => converters.Add(n));
 			}
 
 			foreach (var action in _converterRegistrators)
 			{
-				action(fieldConvertersContainer);
+				action(converters);
 			}
 
 			return new Config
 			{
-				FieldConverters = fieldConvertersContainer,
-				Mappings = mappingsContainer
+				FieldConverters = converters,
+				Mappings = mappings
 			};
 		}
 	}

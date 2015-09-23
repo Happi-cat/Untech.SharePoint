@@ -20,7 +20,7 @@ namespace Untech.SharePoint.Common.Test.Configuration
 				.RegisterMappings(n => n.Annotated<AnnotatedContext>())
 				.BuildConfig();
 
-			Assert.IsNotNull(config.Mappings.Resolve<AnnotatedContext>());
+			Assert.IsNotNull(config.Mappings.Resolve(typeof(AnnotatedContext)));
 		}
 
 		[TestMethod]
@@ -52,7 +52,7 @@ namespace Untech.SharePoint.Common.Test.Configuration
 				.RegisterConverters(n => n.Add<BuiltInFieldConverter>())
 				.BuildConfig();
 
-			Assert.IsNotNull(config.Mappings.Resolve<AnnotatedContext>());
+			Assert.IsNotNull(config.Mappings.Resolve(typeof (AnnotatedContext)));
 			Assert.IsNotNull(config.FieldConverters.Resolve("BUILT_IN_TEST_CONVERTER"));
 			Assert.IsNotNull(config.FieldConverters.Resolve(typeof(BuiltInFieldConverter)));
 		}

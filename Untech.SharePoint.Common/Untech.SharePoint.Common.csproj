@@ -57,9 +57,9 @@
     <Compile Include="Mappings\Annotation\SpFieldRemovedAttribute.cs" />
     <Compile Include="Mappings\Annotation\SpListAttribute.cs" />
     <Compile Include="Configuration\ConfigBuilder.cs" />
-    <Compile Include="Converters\FieldConvertersContainer.cs" />
+    <Compile Include="Converters\FieldConverterContainer.cs" />
     <Compile Include="Mappings\IMappingSourceResolver.cs" />
-    <Compile Include="Mappings\MappingsContainer.cs" />
+    <Compile Include="Mappings\Mappings.cs" />
     <Compile Include="Converters\FieldConverterException.cs" />
     <Compile Include="Converters\FieldConverterInitializationException.cs" />
     <Compile Include="Converters\FieldConverterWrapper.cs" />
@@ -77,6 +77,7 @@
     <Compile Include="Extensions\TypeExtensions.cs" />
     <Compile Include="Collections\KeyedFactory.cs" />
     <Compile Include="Guard.cs" />
+    <Compile Include="Mappings\MappingSourceContainer.cs" />
     <Compile Include="MetaModels\Collections\MetaContentTypeCollection.cs" />
     <Compile Include="MetaModels\Collections\MetaFieldCollection.cs" />
     <Compile Include="MetaModels\Collections\MetaListCollection.cs" />
@@ -100,7 +101,7 @@
     <Compile Include="Collections\Container.cs" />
     <Compile Include="Utils\Singleton.cs" />
     <Compile Include="Visitors\BaseMetaModelVisitor.cs" />
-    <Compile Include="Visitors\FieldConverterRegistrator.cs" />
+    <Compile Include="Visitors\FieldConverterFinder.cs" />
     <Compile Include="Visitors\IMetaModelVisitor.cs" />
     <Compile Include="Visitors\MetaModelValidationVisitor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
