@@ -1,30 +1,28 @@
 ﻿using System;
-using Microsoft.SharePoint.Client;
+using Untech.SharePoint.Common.Converters;
+using Untech.SharePoint.Common.MetaModels;
 
 namespace Untech.SharePoint.Client.FieldConverters.Basic
 {
 	[SpFieldConverter("Counter")]
 	internal class CounterFieldConverter : IFieldConverter
 	{
-		public Field Field { get; set; }
+		public MetaField Field { get; set; }
 		public Type PropertyType { get; set; }
 
-		public void Initialize(Field field, Type propertyType)
+		public void Initialize(MetaField field)
 		{
 			Guard.CheckNotNull("field", field);
-			Guard.CheckNotNull("propertyType", propertyType);
-			Guard.CheckType<int>("propertyType", propertyType);
 
 			Field = field;
-			PropertyType = propertyType;
 		}
 
-		public object FromSpClientValue(object value)
+		public object FromSpValue(object value)
 		{
 			return (int)value;
 		}
 
-		public object ToSpClientValue(object value)
+		public object ToSpValue(object value)
 		{
 			return (int)value;
 		}

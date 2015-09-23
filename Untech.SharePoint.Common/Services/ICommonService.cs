@@ -5,7 +5,7 @@ namespace Untech.SharePoint.Common.Services
 {
 	public interface ICommonService
 	{
-		IEnumerable<IMetaModelVisitor> Visitors { get; }
+		IEnumerable<IMetaModelVisitor> MetaModelProcessors { get; }
 
 	}
 }

@@ -1,5 +1,5 @@
 ﻿using System;
-using Untech.SharePoint.Client.Extensions;
+using Untech.SharePoint.Common.Extensions;
 
 namespace Untech.SharePoint.Client
 {

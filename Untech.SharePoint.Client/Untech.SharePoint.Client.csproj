@@ -84,67 +84,25 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AttributedMapping\AttributedPropertyPart.cs" />
-    <Compile Include="AttributedMapping\AttributedTypeMap.cs" />
-    <Compile Include="Data\IDataContext.cs" />
-    <Compile Include="Data\ClientContextHelpers.cs" />
-    <Compile Include="Data\IEntity.cs" />
-    <Compile Include="Data\Mapper\DataMemberMapper.cs" />
-    <Compile Include="Mapping\Contextmap.cs" />
-    <Compile Include="Mapping\PropertyPart.cs" />
-    <Compile Include="Mapping\TypeMap.cs" />
-    <Compile Include="Meta\Collections\DataMemberCollection.cs" />
+    <Compile Include="Configuration\ClientConfig.cs" />
+    <Compile Include="Data\ClientContextExtensions.cs" />
     <Compile Include="FieldConverters\Basic\CounterFieldConverter.cs" />
-    <Compile Include="FieldConverters\FieldConverterException.cs" />
-    <Compile Include="FieldConverters\FieldConverterResolver.cs" />
-    <Compile Include="FieldConverters\FieldConverterWrapper.cs" />
-    <Compile Include="FieldConverters\IFieldConverter.cs" />
-    <Compile Include="FieldConverters\FieldConverterInitializationException.cs" />
-    <Compile Include="FieldConverters\IFieldConverterResolver.cs" />
-    <Compile Include="FieldConverters\InvalidFieldConverterException.cs" />
-    <Compile Include="FieldConverters\SpFieldConverterAttribute.cs" />
-    <Compile Include="Data\ISpList.cs" />
-    <Compile Include="Data\ISpListFieldsResolver.cs" />
-    <Compile Include="Data\MappingSource.cs" />
-    <Compile Include="Meta\Accessors\MemberMetaAccessor.cs" />
-    <Compile Include="Mapping\ListMap.cs" />
-    <Compile Include="Meta\Providers\IMetaDataMemberProvider.cs" />
-    <Compile Include="Meta\Providers\IMetaListProvider.cs" />
-    <Compile Include="Meta\MetaAccessor.cs" />
-    <Compile Include="Meta\MetaDataMember.cs" />
-    <Compile Include="Meta\MetaList.cs" />
-    <Compile Include="Meta\MetaModel.cs" />
-    <Compile Include="Meta\MetaType.cs" />
-    <Compile Include="Data\MemberMappingException.cs" />
-    <Compile Include="Data\DataQuery.cs" />
-    <Compile Include="Meta\Providers\IMetaTypeProvider.cs" />
-    <Compile Include="Meta\Accessors\SpClientMetaAccessor.cs" />
-    <Compile Include="Data\SpDataContext.cs" />
-    <Compile Include="AttributedMapping\SpFieldAttribute.cs" />
-    <Compile Include="Meta\Collections\SpFieldCollection.cs" />
-    <Compile Include="Data\SpList.cs" />
-    <Compile Include="Data\SpListAttribute.cs" />
-    <Compile Include="Data\Mapper\TypeMapper.cs" />
+    <Compile Include="Data\SpClientContext.cs" />
     <Compile Include="Guard.cs" />
-    <Compile Include="Extensions\EnumerableExtensions.cs" />
-    <Compile Include="Extensions\ExpressionExtensions.cs" />
-    <Compile Include="Extensions\ObjectExtensions.cs" />
-    <Compile Include="Extensions\TypeExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Utils\Reflection\InstanceCreationFactory.cs" />
-    <Compile Include="Utils\Reflection\InstanceCreationUtility.cs" />
-    <Compile Include="Utils\Reflection\MemberAccessor.cs" />
-    <Compile Include="Utils\Reflection\MemberAccessorPool.cs" />
-    <Compile Include="Utils\Singleton.cs" />
-    <Compile Include="Utils\TypeSystem.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="key.snk" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Data\Queryable\" />
     <Folder Include="FieldConverters\Custom\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Untech.SharePoint.Common\Untech.SharePoint.Common.csproj">
+      <Project>{8836BB37-FECF-4503-933D-479A3D404900}</Project>
+      <Name>Untech.SharePoint.Common</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
