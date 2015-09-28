@@ -58,6 +58,10 @@
   <ItemGroup>
     <Compile Include="Configuration\BuiltInFieldConverter.cs" />
     <Compile Include="Configuration\ConfigBuilderTest.cs" />
+    <Compile Include="Converters\ConverterContext.cs" />
+    <Compile Include="Converters\Custom\EnumFieldConverterTest.cs" />
+    <Compile Include="Converters\Custom\JsonFieldConverterTest.cs" />
+    <Compile Include="Converters\Custom\XmlFieldConverterTest.cs" />
     <Compile Include="Mappings\Annotation\AnnotatedContentTypeMappingTest.cs" />
     <Compile Include="Mappings\Annotation\AnnotatedFieldPartTest.cs" />
     <Compile Include="Mappings\Annotation\Models\ContextWithEntityIndexer.cs" />
@@ -87,6 +91,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="key.snk" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Converters\BuiltIn\" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
