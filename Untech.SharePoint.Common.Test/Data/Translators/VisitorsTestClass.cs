@@ -1,4 +1,4 @@
-namespace Untech.SharePoint.Common.Test.Data.Translators.ExpressionVisitors
+namespace Untech.SharePoint.Common.Test.Data.Translators
 {
 	public class VisitorsTestClass
 	{

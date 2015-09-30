@@ -2,7 +2,7 @@
 using System.Linq.Expressions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Untech.SharePoint.Common.Test.Data.Translators.ExpressionVisitors
+namespace Untech.SharePoint.Common.Test.Data.Translators
 {
 	public class BaseExpressionVisitorTest<T>
 		where T: ExpressionVisitor, new()
