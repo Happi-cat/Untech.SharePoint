@@ -59,7 +59,11 @@
     <Compile Include="Converters\Custom\EnumFieldConverter.cs" />
     <Compile Include="Converters\Custom\JsonFieldConverter.cs" />
     <Compile Include="Converters\Custom\XmlFieldConverter.cs" />
-    <Compile Include="Data\ExpressionTreeVisitors\QueryBinder.cs" />
+    <Compile Include="Data\Translators\ExpressionVisitors\Evaluator.cs" />
+    <Compile Include="Data\Translators\ExpressionVisitors\Nominator.cs" />
+    <Compile Include="Data\Translators\ExpressionVisitors\PushNotDownVisitor.cs" />
+    <Compile Include="Data\Translators\ExpressionVisitors\QueryBinder.cs" />
+    <Compile Include="Data\ISpItemsProvider.cs" />
     <Compile Include="Data\OpUtils.cs" />
     <Compile Include="Data\QueryModels\ComparisonModel.cs" />
     <Compile Include="Data\QueryModels\ComparisonOperator.cs" />
@@ -71,6 +75,9 @@
     <Compile Include="Data\QueryModels\QueryModel.cs" />
     <Compile Include="Data\QueryModels\WhereModel.cs" />
     <Compile Include="Data\QueryTranslator.cs" />
+    <Compile Include="Data\Translators\CamlPredicateProcessor.cs" />
+    <Compile Include="Data\Translators\ExpressionVisitors\RedundantConditionRemover.cs" />
+    <Compile Include="Data\Translators\ExpressionVisitors\StringIsNullOrEmptyRewriter.cs" />
     <Compile Include="Data\SpQueryable.cs" />
     <Compile Include="Mappings\Annotation\AnnotatedContentTypeMapping.cs" />
     <Compile Include="Mappings\Annotation\AnnotatedContextMapping.cs" />

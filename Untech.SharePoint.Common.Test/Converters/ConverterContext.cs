@@ -1,9 +1,15 @@
-﻿using System.Collections.Generic;
-using Untech.SharePoint.Common.Data;
+﻿using Untech.SharePoint.Common.Data;
 using Untech.SharePoint.Common.Mappings.Annotation;
 
 namespace Untech.SharePoint.Common.Test.Converters
 {
+	public enum ExampleEnum
+	{
+		Value1,
+		Value2,
+		Value3
+	}
+
 	public class ConverterDataContext : ISpContext
 	{
 		[SpList]

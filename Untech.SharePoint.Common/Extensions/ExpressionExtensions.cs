@@ -1,4 +1,5 @@
-﻿using System.Linq.Expressions;
+﻿using System;
+using System.Linq.Expressions;
 
 namespace Untech.SharePoint.Common.Extensions
 {
@@ -21,6 +22,14 @@ namespace Untech.SharePoint.Common.Extensions
 				return ((ConstantExpression)node).Value as LambdaExpression;
 			}
 			return node as LambdaExpression;
+		}
+
+		public static bool IsConstant(this Expression node, object value)
+		{
+			if (value == null)
+				throw new ArgumentNullException("value");
+			var constNode = node.StripQuotes() as ConstantExpression;
+			return constNode != null && value.Equals(constNode.Value);
 		}
 	}
 }
