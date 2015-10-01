@@ -67,6 +67,7 @@
     <Compile Include="Data\Translators\ExpressionVisitors\StringIsNullOrEmptyRewriterTest.cs" />
     <Compile Include="Data\Translators\ExpressionVisitors\RedundantConditionRemoverTest.cs" />
     <Compile Include="Data\Translators\ExpressionVisitors\EvaluatorTest.cs" />
+    <Compile Include="Data\Translators\ExpressionVisitors\InRewriterTest.cs" />
     <Compile Include="Data\Translators\VisitorsTestClass.cs" />
     <Compile Include="Mappings\Annotation\AnnotatedContentTypeMappingTest.cs" />
     <Compile Include="Mappings\Annotation\AnnotatedFieldPartTest.cs" />

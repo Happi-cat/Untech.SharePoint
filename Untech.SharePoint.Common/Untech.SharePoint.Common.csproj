@@ -60,6 +60,7 @@
     <Compile Include="Converters\Custom\JsonFieldConverter.cs" />
     <Compile Include="Converters\Custom\XmlFieldConverter.cs" />
     <Compile Include="Data\Translators\ExpressionVisitors\Evaluator.cs" />
+    <Compile Include="Data\Translators\ExpressionVisitors\InRewriter.cs" />
     <Compile Include="Data\Translators\ExpressionVisitors\Nominator.cs" />
     <Compile Include="Data\Translators\ExpressionVisitors\PushNotDownVisitor.cs" />
     <Compile Include="Data\Translators\ExpressionVisitors\QueryBinder.cs" />

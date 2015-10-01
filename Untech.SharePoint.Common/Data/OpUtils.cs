@@ -4,6 +4,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using Untech.SharePoint.Common.Data.QueryModels;
+using Untech.SharePoint.Common.Extensions;
 
 namespace Untech.SharePoint.Common.Data
 {
@@ -17,6 +18,7 @@ namespace Untech.SharePoint.Common.Data
 		public static readonly MethodInfo EAny = GetMethodInfo(() => default(IEnumerable<int>).Any());
 		public static readonly MethodInfo EAnyP = GetMethodInfo(() => default(IEnumerable<int>).Any(default(Func<int, bool>)));
 		public static readonly MethodInfo EAll = GetMethodInfo(() => default(IEnumerable<int>).All(default(Func<int, bool>)));
+		public static readonly MethodInfo EContains = GetMethodInfo(() => default(IEnumerable<int>).Contains(default(int)));
 		
 		public static readonly MethodInfo QWhere = GetMethodInfo(() => default(IQueryable<int>).Where(default(Expression<Func<int, bool>>)));
 		public static readonly MethodInfo QAny = GetMethodInfo(() => default(IQueryable<int>).Any());
@@ -25,6 +27,10 @@ namespace Untech.SharePoint.Common.Data
 
 		public static readonly MethodInfo SpqGetItems = GetMethodInfo(() => SpQueryable.GetSpListItems<int>(default(ISpItemsProvider), default(QueryModel)));
 		public static readonly MethodInfo SpqAnyItems = GetMethodInfo(() => SpQueryable.AnySpListItems(default(ISpItemsProvider), default(QueryModel)));
+
+		public static readonly MethodInfo ObjIn = GetMethodInfo(() => default(object).In(default(IEnumerable<object>)));
+
+		public static readonly MethodInfo ListContains = GetMethodInfo(() => default(List<int>).Contains(default(int)));
 
 		public static MethodInfo GetMethodInfo<TResult>(Expression<Func<TResult>> expression)
 		{
@@ -38,5 +44,15 @@ namespace Untech.SharePoint.Common.Data
 			var memberAccess = (MemberExpression)expression.Body;
 			return (PropertyInfo)memberAccess.Member;
 		}
+
+		public static bool IsOperator(MethodInfo x, MethodInfo op)
+		{
+			if (x.IsGenericMethod)
+			{
+				x = x.GetGenericMethodDefinition();
+			}
+			return x == op;
+		}
+
 	}
 }
