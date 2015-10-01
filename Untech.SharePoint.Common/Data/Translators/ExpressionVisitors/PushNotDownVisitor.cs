@@ -7,20 +7,25 @@ namespace Untech.SharePoint.Common.Data.Translators.ExpressionVisitors
 {
 	public class PushNotDownVisitor : ExpressionVisitor
 	{
-		protected interface INegateRule
+		public interface INegateRule
 		{
 			bool CanNegate(Expression node);
 
 			Expression Negate(Expression node);
 		}
 
-		private static readonly IReadOnlyCollection<INegateRule> NegateRules = new List<INegateRule>
+		public PushNotDownVisitor()
 		{
-			new ComparisonNegateRule(),
-			new LogicalJoinNegateRule(),
-			new NotNegateRule(),
-			new BoolConstNegateRule()
-		};
+			NegateRules = new List<INegateRule>
+			{
+				new ComparisonNegateRule(),
+				new LogicalJoinNegateRule(),
+				new NotNegateRule(),
+				new BoolConstNegateRule()
+			};
+		}
+
+		protected IReadOnlyCollection<INegateRule> NegateRules { get; set; }
 
 		protected override Expression VisitUnary(UnaryExpression node)
 		{
@@ -37,7 +42,7 @@ namespace Untech.SharePoint.Common.Data.Translators.ExpressionVisitors
 
 		#region [Negate Rules]
 
-		protected class ComparisonNegateRule : INegateRule
+		public class ComparisonNegateRule : INegateRule
 		{
 
 			private static readonly IReadOnlyDictionary<ExpressionType, ExpressionType> NegateMap = new Dictionary
@@ -58,14 +63,14 @@ namespace Untech.SharePoint.Common.Data.Translators.ExpressionVisitors
 
 			public Expression Negate(Expression node)
 			{
-				var binaryNode = (BinaryExpression) node;
+				var binaryNode = (BinaryExpression)node;
 
 				return Expression.MakeBinary(NegateMap[node.NodeType], binaryNode.Left, binaryNode.Right,
 					binaryNode.IsLiftedToNull, binaryNode.Method, binaryNode.Conversion);
 			}
 		}
 
-		protected class LogicalJoinNegateRule : INegateRule
+		public class LogicalJoinNegateRule : INegateRule
 		{
 			private static readonly IReadOnlyDictionary<ExpressionType, ExpressionType> NegateMap = new Dictionary
 				<ExpressionType, ExpressionType>
@@ -83,7 +88,7 @@ namespace Untech.SharePoint.Common.Data.Translators.ExpressionVisitors
 
 			public Expression Negate(Expression node)
 			{
-				var binaryNode = (BinaryExpression) node;
+				var binaryNode = (BinaryExpression)node;
 
 				return Expression.MakeBinary(NegateMap[node.NodeType],
 					Expression.Not(binaryNode.Left), Expression.Not(binaryNode.Right),
@@ -91,7 +96,7 @@ namespace Untech.SharePoint.Common.Data.Translators.ExpressionVisitors
 			}
 		}
 
-		protected class NotNegateRule : INegateRule
+		public class NotNegateRule : INegateRule
 		{
 			public bool CanNegate(Expression node)
 			{
@@ -100,13 +105,13 @@ namespace Untech.SharePoint.Common.Data.Translators.ExpressionVisitors
 
 			public Expression Negate(Expression node)
 			{
-				var notNode = (UnaryExpression) node;
+				var notNode = (UnaryExpression)node;
 
 				return notNode.Operand;
 			}
 		}
 
-		protected class BoolConstNegateRule : INegateRule
+		public class BoolConstNegateRule : INegateRule
 		{
 			public bool CanNegate(Expression node)
 			{
@@ -115,7 +120,7 @@ namespace Untech.SharePoint.Common.Data.Translators.ExpressionVisitors
 
 			public Expression Negate(Expression node)
 			{
-				var constNode = (ConstantExpression) node;
+				var constNode = (ConstantExpression)node;
 
 				if (constNode.Value.Equals(true))
 				{

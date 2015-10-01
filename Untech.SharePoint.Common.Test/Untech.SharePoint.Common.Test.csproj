@@ -62,7 +62,9 @@
     <Compile Include="Converters\Custom\EnumFieldConverterTest.cs" />
     <Compile Include="Converters\Custom\JsonFieldConverterTest.cs" />
     <Compile Include="Converters\Custom\XmlFieldConverterTest.cs" />
+    <Compile Include="Data\QueryModels\QueryModelTest.cs" />
     <Compile Include="Data\Translators\BaseExpressionVisitorTest.cs" />
+    <Compile Include="Data\Translators\CamlPredicateProcessorTest.cs" />
     <Compile Include="Data\Translators\ExpressionVisitors\PushNotDownVisitorTest.cs" />
     <Compile Include="Data\Translators\ExpressionVisitors\StringIsNullOrEmptyRewriterTest.cs" />
     <Compile Include="Data\Translators\ExpressionVisitors\RedundantConditionRemoverTest.cs" />

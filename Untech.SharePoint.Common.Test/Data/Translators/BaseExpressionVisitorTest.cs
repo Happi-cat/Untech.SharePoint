@@ -3,7 +3,6 @@ using System.Linq;
 using System.Linq.Expressions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Untech.SharePoint.Common.Data.Translators.ExpressionVisitors;
-using Untech.SharePoint.Common.Test.Data.Translators.ExpressionVisitors;
 
 namespace Untech.SharePoint.Common.Test.Data.Translators
 {
@@ -19,8 +18,9 @@ namespace Untech.SharePoint.Common.Test.Data.Translators
 		{
 			var visitors = new ExpressionVisitor[] { new Evaluator(), new T() };
 
+			var processed = visitors.Aggregate((Expression) original, (expr, visitor) => visitor.Visit(expr));
 
-			Assert.AreEqual(expected.ToString(), visitors.Aggregate((Expression)original, (expr, visitor) => visitor.Visit(expr)).ToString());
+			Assert.AreEqual(expected.ToString(), processed.ToString());
 		}
 	}
 }

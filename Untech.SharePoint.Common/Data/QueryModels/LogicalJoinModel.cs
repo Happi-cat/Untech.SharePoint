@@ -21,5 +21,10 @@
 
 			return new LogicalJoinModel(negativeOperator, First.Negate(), Second.Negate());
 		}
+
+		public override string ToString()
+		{
+			return string.Format("<{0}>{1}{2}</{0}>", LogicalOperator, First, Second);
+		}
 	}
 }

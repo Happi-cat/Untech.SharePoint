@@ -30,8 +30,6 @@ namespace Untech.SharePoint.Common.Data
 
 		public static readonly MethodInfo ObjIn = GetMethodInfo(() => default(object).In(default(IEnumerable<object>)));
 
-		public static readonly MethodInfo ListContains = GetMethodInfo(() => default(List<int>).Contains(default(int)));
-
 		public static MethodInfo GetMethodInfo<TResult>(Expression<Func<TResult>> expression)
 		{
 			var methodCall = (MethodCallExpression)expression.Body;

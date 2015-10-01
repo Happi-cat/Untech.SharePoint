@@ -69,7 +69,6 @@
     <Compile Include="Data\QueryModels\ComparisonModel.cs" />
     <Compile Include="Data\QueryModels\ComparisonOperator.cs" />
     <Compile Include="Data\QueryModels\FieldRefModel.cs" />
-    <Compile Include="Data\QueryModels\GroupByModel.cs" />
     <Compile Include="Data\QueryModels\LogicalJoinModel.cs" />
     <Compile Include="Data\QueryModels\LogicalJoinOperator.cs" />
     <Compile Include="Data\QueryModels\OrderByModel.cs" />

@@ -39,5 +39,16 @@ namespace Untech.SharePoint.Common.Data.QueryModels
 			}
 			throw new NotSupportedException();
 		}
+
+		public override string ToString()
+		{
+			var valueString = "";
+			if (ComparisonOperator != ComparisonOperator.IsNull && ComparisonOperator != ComparisonOperator.IsNotNull)
+			{
+				valueString = string.Format("<Value>{0}</Value>", Convert.ToString(Value));
+			}
+
+			return string.Format("<{0}>{1}{2}</{0}>", ComparisonOperator, Field, valueString);
+		}
 	}
 }

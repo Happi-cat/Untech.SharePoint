@@ -16,5 +16,10 @@
 		{
 			return new OrderByModel(Field, !Ascending);
 		}
+
+		public override string ToString()
+		{
+			return string.Format("<FieldRef Name='' Ascending='{0}' />", Ascending.ToString().ToUpper());
+		}
 	}
 }

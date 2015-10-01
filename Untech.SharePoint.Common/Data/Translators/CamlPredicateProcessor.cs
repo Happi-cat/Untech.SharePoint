@@ -20,6 +20,15 @@ namespace Untech.SharePoint.Common.Data.Translators
 			{ExpressionType.GreaterThanOrEqual, ComparisonOperator.Geq}
 		};
 
+		private static readonly IReadOnlyDictionary<ComparisonOperator, ComparisonOperator> SwapMap = new Dictionary
+			<ComparisonOperator, ComparisonOperator>
+		{
+			{ComparisonOperator.Gt, ComparisonOperator.Leq},
+			{ComparisonOperator.Geq, ComparisonOperator.Lt},
+			{ComparisonOperator.Leq, ComparisonOperator.Gt},
+			{ComparisonOperator.Lt, ComparisonOperator.Geq}
+		};
+
 		private readonly IEnumerable<ExpressionVisitor> _preProcessors;
 
 		public CamlPredicateProcessor()
@@ -29,6 +38,7 @@ namespace Untech.SharePoint.Common.Data.Translators
 				new Evaluator(),
 				new StringIsNullOrEmptyRewriter(),
 				new PushNotDownVisitor(),
+				new InRewriter(),
 				new RedundantConditionRemover(),
 			};
 		}
@@ -37,7 +47,7 @@ namespace Untech.SharePoint.Common.Data.Translators
 		{
 			predicate = _preProcessors.Aggregate(predicate, (n, v) => v.Visit(n));
 
-			throw new NotImplementedException();
+			return Translate(predicate);
 		}
 
 		protected WhereModel Translate(Expression node)
@@ -57,18 +67,15 @@ namespace Untech.SharePoint.Common.Data.Translators
 				case ExpressionType.Or:
 				case ExpressionType.OrElse:
 					return TranslateOr((BinaryExpression)node);
-				case ExpressionType.Not:
-					return TranslateNot((UnaryExpression)node);
 				case ExpressionType.Call:
-					return TranslateCall((MethodCallExpression) node);
+					return TranslateCall((MethodCallExpression)node);
+				case ExpressionType.Quote:
+					return Translate(((UnaryExpression)node).Operand);
+				case ExpressionType.Lambda:
+					return Translate(((LambdaExpression)node).Body);
 
 			}
 			throw new NotSupportedException();
-		}
-
-		private WhereModel TranslateNot(UnaryExpression unaryNode)
-		{
-			throw new NotImplementedException();
 		}
 
 		private WhereModel TranslateAnd(BinaryExpression binaryNode)
@@ -101,9 +108,16 @@ namespace Untech.SharePoint.Common.Data.Translators
 		{
 			if (ExpressionTypeMap.ContainsKey(binaryNode.NodeType))
 			{
-				return new ComparisonModel(ExpressionTypeMap[binaryNode.NodeType], null, null);
+				if (binaryNode.Left.NodeType == ExpressionType.MemberAccess)
+				{
+					return new ComparisonModel(ExpressionTypeMap[binaryNode.NodeType], GetFieldRef(binaryNode.Left), GetValue(binaryNode.Right));
+				}
+				if (binaryNode.Right.NodeType == ExpressionType.MemberAccess)
+				{
+					return new ComparisonModel(SwapMap[ExpressionTypeMap[binaryNode.NodeType]], GetFieldRef(binaryNode.Right), GetValue(binaryNode.Left));
+				}
 			}
-			throw new NotImplementedException();
+			throw new NotSupportedException();
 		}
 
 		private WhereModel TranslateCall(MethodCallExpression callNode)
@@ -116,21 +130,27 @@ namespace Untech.SharePoint.Common.Data.Translators
 			{
 				return TranslateStartsWith(callNode);
 			}
-			if (callNode.Method == OpUtils.StrIsNullOrEmpty)
-			{
-				return TranslateStartsWith(callNode);
-			}
 			throw new NotImplementedException();
 		}
 
 		private WhereModel TranslateContains(MethodCallExpression callNode)
 		{
-			throw new NotImplementedException();
+			return new ComparisonModel(ComparisonOperator.Contains, GetFieldRef(callNode.Object), GetValue(callNode.Arguments[0]));
 		}
 
 		private WhereModel TranslateStartsWith(MethodCallExpression callNode)
 		{
-			throw new NotImplementedException();
+			return new ComparisonModel(ComparisonOperator.BeginsWith, GetFieldRef(callNode.Object), GetValue(callNode.Arguments[0]));
+		}
+
+		private object GetValue(Expression node)
+		{
+			return new object();
+		}
+
+		private FieldRefModel GetFieldRef(Expression node)
+		{
+			return new FieldRefModel();
 		}
 	}
 }
