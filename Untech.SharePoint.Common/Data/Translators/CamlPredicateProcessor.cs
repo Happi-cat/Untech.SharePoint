@@ -20,32 +20,30 @@ namespace Untech.SharePoint.Common.Data.Translators
 			{ExpressionType.GreaterThanOrEqual, ComparisonOperator.Geq}
 		};
 
-		private static readonly IReadOnlyDictionary<ComparisonOperator, ComparisonOperator> SwapMap = new Dictionary
-			<ComparisonOperator, ComparisonOperator>
-		{
-			{ComparisonOperator.Gt, ComparisonOperator.Leq},
-			{ComparisonOperator.Geq, ComparisonOperator.Lt},
-			{ComparisonOperator.Leq, ComparisonOperator.Gt},
-			{ComparisonOperator.Lt, ComparisonOperator.Geq}
-		};
-
-		private readonly IEnumerable<ExpressionVisitor> _preProcessors;
-
 		public CamlPredicateProcessor()
 		{
-			_preProcessors = new List<ExpressionVisitor>
+			PreProcessors = new List<ExpressionVisitor>
 			{
 				new Evaluator(),
 				new StringIsNullOrEmptyRewriter(),
 				new PushNotDownVisitor(),
 				new InRewriter(),
 				new RedundantConditionRemover(),
+				new SwapComparisonVisitor()
 			};
 		}
 
+		protected IEnumerable<ExpressionVisitor> PreProcessors { get; set; }
+
 		public WhereModel Process(Expression predicate)
 		{
-			predicate = _preProcessors.Aggregate(predicate, (n, v) => v.Visit(n));
+			predicate = predicate.StripQuotes();
+			if (predicate.NodeType == ExpressionType.Lambda)
+			{
+				predicate = ((LambdaExpression) predicate).Body;
+			}
+			
+			predicate = PreProcessors.Aggregate(predicate, (n, v) => v.Visit(n));
 
 			return Translate(predicate);
 		}
@@ -56,51 +54,48 @@ namespace Untech.SharePoint.Common.Data.Translators
 			{
 				case ExpressionType.And:
 				case ExpressionType.AndAlso:
-					return TranslateAnd((BinaryExpression)node);
+					return TranslateAnd((BinaryExpression) node);
 				case ExpressionType.Equal:
 				case ExpressionType.GreaterThan:
 				case ExpressionType.GreaterThanOrEqual:
 				case ExpressionType.LessThan:
 				case ExpressionType.LessThanOrEqual:
 				case ExpressionType.NotEqual:
-					return TranslateComparison((BinaryExpression)node);
+					return TranslateComparison((BinaryExpression) node);
 				case ExpressionType.Or:
 				case ExpressionType.OrElse:
-					return TranslateOr((BinaryExpression)node);
+					return TranslateOr((BinaryExpression) node);
 				case ExpressionType.Call:
-					return TranslateCall((MethodCallExpression)node);
+					return TranslateCall((MethodCallExpression) node);
 				case ExpressionType.Quote:
-					return Translate(((UnaryExpression)node).Operand);
-				case ExpressionType.Lambda:
-					return Translate(((LambdaExpression)node).Body);
-
+					return Translate(((UnaryExpression) node).Operand);
+				case ExpressionType.MemberAccess:
+					return TranslateTrueProperty((MemberExpression) node);
+				case ExpressionType.Not:
+					return TranslateFalseProperty((UnaryExpression) node);
 			}
-			throw new NotSupportedException();
+			throw InvalidQuery(node);
+		}
+
+		#region [Private Methods]
+
+		private WhereModel TranslateTrueProperty(MemberExpression memberNode)
+		{
+			return new ComparisonModel(ComparisonOperator.Eq, GetFieldRef(memberNode), true);
+		}
+
+		private WhereModel TranslateFalseProperty(UnaryExpression unaryNode)
+		{
+			return new ComparisonModel(ComparisonOperator.Eq, GetFieldRef(unaryNode.Operand), false);
 		}
 
 		private WhereModel TranslateAnd(BinaryExpression binaryNode)
 		{
-			if (binaryNode.Left.IsConstant(true))
-			{
-				return Translate(binaryNode.Right);
-			}
-			if (binaryNode.Right.IsConstant(true))
-			{
-				return Translate(binaryNode.Left);
-			}
 			return WhereModel.And(Translate(binaryNode.Left), Translate(binaryNode.Right));
 		}
 
 		private WhereModel TranslateOr(BinaryExpression binaryNode)
 		{
-			if (binaryNode.Left.IsConstant(false))
-			{
-				return Translate(binaryNode.Right);
-			}
-			if (binaryNode.Right.IsConstant(false))
-			{
-				return Translate(binaryNode.Left);
-			}
 			return WhereModel.Or(Translate(binaryNode.Left), Translate(binaryNode.Right));
 		}
 
@@ -108,16 +103,30 @@ namespace Untech.SharePoint.Common.Data.Translators
 		{
 			if (ExpressionTypeMap.ContainsKey(binaryNode.NodeType))
 			{
+				if (binaryNode.Right.IsConstant(null))
+				{
+					return TranslateComparisonWithNull(binaryNode);
+				}
 				if (binaryNode.Left.NodeType == ExpressionType.MemberAccess)
 				{
-					return new ComparisonModel(ExpressionTypeMap[binaryNode.NodeType], GetFieldRef(binaryNode.Left), GetValue(binaryNode.Right));
-				}
-				if (binaryNode.Right.NodeType == ExpressionType.MemberAccess)
-				{
-					return new ComparisonModel(SwapMap[ExpressionTypeMap[binaryNode.NodeType]], GetFieldRef(binaryNode.Right), GetValue(binaryNode.Left));
+					return new ComparisonModel(ExpressionTypeMap[binaryNode.NodeType], GetFieldRef(binaryNode.Left),
+						GetValue(binaryNode.Right));
 				}
 			}
-			throw new NotSupportedException();
+			throw InvalidQuery(binaryNode);
+		}
+
+		private WhereModel TranslateComparisonWithNull(BinaryExpression binaryNode)
+		{
+			if (binaryNode.NodeType == ExpressionType.Equal)
+			{
+				return new ComparisonModel(ComparisonOperator.IsNull, GetFieldRef(binaryNode.Left), null);
+			}
+			if (binaryNode.NodeType == ExpressionType.NotEqual)
+			{
+				return new ComparisonModel(ComparisonOperator.IsNotNull, GetFieldRef(binaryNode.Left), null);
+			}
+			throw InvalidQuery(binaryNode);
 		}
 
 		private WhereModel TranslateCall(MethodCallExpression callNode)
@@ -130,7 +139,7 @@ namespace Untech.SharePoint.Common.Data.Translators
 			{
 				return TranslateStartsWith(callNode);
 			}
-			throw new NotImplementedException();
+			throw InvalidQuery(callNode);
 		}
 
 		private WhereModel TranslateContains(MethodCallExpression callNode)
@@ -140,17 +149,34 @@ namespace Untech.SharePoint.Common.Data.Translators
 
 		private WhereModel TranslateStartsWith(MethodCallExpression callNode)
 		{
-			return new ComparisonModel(ComparisonOperator.BeginsWith, GetFieldRef(callNode.Object), GetValue(callNode.Arguments[0]));
+			return new ComparisonModel(ComparisonOperator.BeginsWith, GetFieldRef(callNode.Object),
+				GetValue(callNode.Arguments[0]));
 		}
 
 		private object GetValue(Expression node)
 		{
-			return new object();
+			if (node.NodeType == ExpressionType.Constant)
+			{
+				return ((ConstantExpression) node).Value;
+			}
+			throw InvalidQuery(node);
 		}
 
 		private FieldRefModel GetFieldRef(Expression node)
 		{
-			return new FieldRefModel();
+			if (node.NodeType == ExpressionType.MemberAccess)
+			{
+				return new FieldRefModel(((MemberExpression) node).Member);
+			}
+			throw InvalidQuery(node);
 		}
+
+		private static Exception InvalidQuery(Expression node)
+		{
+			return new NotSupportedException(node.ToString());
+		}
+
+		#endregion
+
 	}
 }

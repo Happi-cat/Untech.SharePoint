@@ -63,7 +63,6 @@
     <Compile Include="Data\Translators\ExpressionVisitors\InRewriter.cs" />
     <Compile Include="Data\Translators\ExpressionVisitors\Nominator.cs" />
     <Compile Include="Data\Translators\ExpressionVisitors\PushNotDownVisitor.cs" />
-    <Compile Include="Data\Translators\ExpressionVisitors\QueryBinder.cs" />
     <Compile Include="Data\ISpItemsProvider.cs" />
     <Compile Include="Data\OpUtils.cs" />
     <Compile Include="Data\QueryModels\ComparisonModel.cs" />
@@ -79,6 +78,8 @@
     <Compile Include="Data\Translators\ExpressionVisitors\RedundantConditionRemover.cs" />
     <Compile Include="Data\Translators\ExpressionVisitors\StringIsNullOrEmptyRewriter.cs" />
     <Compile Include="Data\SpQueryable.cs" />
+    <Compile Include="Data\Translators\ExpressionVisitors\SwapComparisonVisitor.cs" />
+    <Compile Include="Data\Translators\IQueryToCamlTranslator.cs" />
     <Compile Include="Mappings\Annotation\AnnotatedContentTypeMapping.cs" />
     <Compile Include="Mappings\Annotation\AnnotatedContextMapping.cs" />
     <Compile Include="Mappings\Annotation\AnnotatedFieldPart.cs" />

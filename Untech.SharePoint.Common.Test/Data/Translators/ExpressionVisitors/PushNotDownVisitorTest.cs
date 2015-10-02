@@ -1,10 +1,11 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using System.Linq.Expressions;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Untech.SharePoint.Common.Data.Translators.ExpressionVisitors;
 
 namespace Untech.SharePoint.Common.Test.Data.Translators.ExpressionVisitors
 {
 	[TestClass]
-	public class PushNotDownVisitorTest : BaseExpressionVisitorTest<PushNotDownVisitor>
+	public class PushNotDownVisitorTest : BaseExpressionVisitorTest
 	{
 		[TestMethod]
 		public void CanRemainSame()
@@ -40,6 +41,11 @@ namespace Untech.SharePoint.Common.Test.Data.Translators.ExpressionVisitors
 		public void CanNegateBoolConsts()
 		{
 			Test(obj => !(obj.Bool1 && true), obj => !obj.Bool1 || false);
+		}
+
+		protected override ExpressionVisitor Visitor
+		{
+			get { return new PushNotDownVisitor(); }
 		}
 	}
 }

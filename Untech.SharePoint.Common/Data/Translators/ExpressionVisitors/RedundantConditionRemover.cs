@@ -3,7 +3,7 @@ using Untech.SharePoint.Common.Extensions;
 
 namespace Untech.SharePoint.Common.Data.Translators.ExpressionVisitors
 {
-	public class RedundantConditionRemover : ExpressionVisitor
+	internal class RedundantConditionRemover : ExpressionVisitor
 	{
 		protected override Expression VisitBinary(BinaryExpression node)
 		{

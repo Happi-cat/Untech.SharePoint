@@ -5,7 +5,7 @@ using Untech.SharePoint.Common.Extensions;
 
 namespace Untech.SharePoint.Common.Data.Translators.ExpressionVisitors
 {
-	public class PushNotDownVisitor : ExpressionVisitor
+	internal class PushNotDownVisitor : ExpressionVisitor
 	{
 		public interface INegateRule
 		{
@@ -42,7 +42,7 @@ namespace Untech.SharePoint.Common.Data.Translators.ExpressionVisitors
 
 		#region [Negate Rules]
 
-		public class ComparisonNegateRule : INegateRule
+		protected class ComparisonNegateRule : INegateRule
 		{
 
 			private static readonly IReadOnlyDictionary<ExpressionType, ExpressionType> NegateMap = new Dictionary
@@ -70,7 +70,7 @@ namespace Untech.SharePoint.Common.Data.Translators.ExpressionVisitors
 			}
 		}
 
-		public class LogicalJoinNegateRule : INegateRule
+		protected class LogicalJoinNegateRule : INegateRule
 		{
 			private static readonly IReadOnlyDictionary<ExpressionType, ExpressionType> NegateMap = new Dictionary
 				<ExpressionType, ExpressionType>
@@ -96,7 +96,7 @@ namespace Untech.SharePoint.Common.Data.Translators.ExpressionVisitors
 			}
 		}
 
-		public class NotNegateRule : INegateRule
+		protected class NotNegateRule : INegateRule
 		{
 			public bool CanNegate(Expression node)
 			{
@@ -111,7 +111,7 @@ namespace Untech.SharePoint.Common.Data.Translators.ExpressionVisitors
 			}
 		}
 
-		public class BoolConstNegateRule : INegateRule
+		protected class BoolConstNegateRule : INegateRule
 		{
 			public bool CanNegate(Expression node)
 			{

@@ -2,7 +2,7 @@
 
 namespace Untech.SharePoint.Common.Data.Translators.ExpressionVisitors
 {
-	public class StringIsNullOrEmptyRewriter : ExpressionVisitor
+	internal class StringIsNullOrEmptyRewriter : ExpressionVisitor
 	{
 		protected override Expression VisitMethodCall(MethodCallExpression node)
 		{

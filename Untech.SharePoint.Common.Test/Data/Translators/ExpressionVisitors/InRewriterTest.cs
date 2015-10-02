@@ -1,6 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Untech.SharePoint.Common.Data.Translators.ExpressionVisitors;
 using Untech.SharePoint.Common.Extensions;
@@ -8,7 +8,7 @@ using Untech.SharePoint.Common.Extensions;
 namespace Untech.SharePoint.Common.Test.Data.Translators.ExpressionVisitors
 {
 	[TestClass]
-	public class InRewriterTest : BaseExpressionVisitorTest<InRewriter>
+	public class InRewriterTest : BaseExpressionVisitorTest
 	{
 		[TestMethod]
 		public void CanRewriteInArray()
@@ -72,6 +72,11 @@ namespace Untech.SharePoint.Common.Test.Data.Translators.ExpressionVisitors
 		public void CannotRewriteStringContains()
 		{
 			TestWitEvaluator(n => n.String1.Contains("TEST"), n => n.String1.Contains("TEST"));
+		}
+
+		protected override ExpressionVisitor Visitor
+		{
+			get { return new InRewriter(); }
 		}
 	}
 }

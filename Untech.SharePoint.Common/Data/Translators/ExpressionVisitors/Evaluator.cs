@@ -4,7 +4,7 @@ using System.Linq.Expressions;
 
 namespace Untech.SharePoint.Common.Data.Translators.ExpressionVisitors
 {
-	public class Evaluator : ExpressionVisitor
+	internal class Evaluator : ExpressionVisitor
 	{
 		protected Nominator Nominator { get; private set; }
 

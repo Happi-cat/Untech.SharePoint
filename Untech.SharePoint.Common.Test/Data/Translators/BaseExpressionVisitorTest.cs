@@ -1,26 +1,26 @@
 ﻿using System;
-using System.Linq;
 using System.Linq.Expressions;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Untech.SharePoint.Common.Data.Translators.ExpressionVisitors;
 
 namespace Untech.SharePoint.Common.Test.Data.Translators
 {
-	public class BaseExpressionVisitorTest<T>
-		where T: ExpressionVisitor, new()
+	public abstract class BaseExpressionVisitorTest
 	{
-		protected void Test(Expression<Func<VisitorsTestClass, bool>> original, Expression<Func<VisitorsTestClass, bool>> expected)
+		protected abstract ExpressionVisitor Visitor { get; }
+
+		protected virtual void Test(Expression<Func<VisitorsTestClass, bool>> original,
+			Expression<Func<VisitorsTestClass, bool>> expected)
 		{
-			Assert.AreEqual(expected.ToString(), new T().Visit(original).ToString());
+			var visitors = new[] {Visitor};
+
+			CustomAssert.AreEqualAfterVisit(visitors, original, expected);
 		}
 
-		protected void TestWitEvaluator(Expression<Func<VisitorsTestClass, bool>> original, Expression<Func<VisitorsTestClass, bool>> expected)
+		protected virtual void TestWitEvaluator(Expression<Func<VisitorsTestClass, bool>> original, Expression<Func<VisitorsTestClass, bool>> expected)
 		{
-			var visitors = new ExpressionVisitor[] { new Evaluator(), new T() };
+			var visitors = new[] { new Evaluator(),  Visitor };
 
-			var processed = visitors.Aggregate((Expression) original, (expr, visitor) => visitor.Visit(expr));
-
-			Assert.AreEqual(expected.ToString(), processed.ToString());
+			CustomAssert.AreEqualAfterVisit(visitors, original, expected);
 		}
 	}
 }

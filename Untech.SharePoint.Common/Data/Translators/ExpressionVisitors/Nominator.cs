@@ -3,7 +3,7 @@ using System.Linq.Expressions;
 
 namespace Untech.SharePoint.Common.Data.Translators.ExpressionVisitors
 {
-	public class Nominator : ExpressionVisitor
+	internal class Nominator : ExpressionVisitor
 	{
 		internal Nominator()
 		{

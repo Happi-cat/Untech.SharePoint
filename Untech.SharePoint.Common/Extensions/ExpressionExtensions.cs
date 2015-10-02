@@ -26,10 +26,8 @@ namespace Untech.SharePoint.Common.Extensions
 
 		public static bool IsConstant(this Expression node, object value)
 		{
-			if (value == null)
-				throw new ArgumentNullException("value");
 			var constNode = node.StripQuotes() as ConstantExpression;
-			return constNode != null && value.Equals(constNode.Value);
+			return constNode != null && Equals(value, constNode.Value);
 		}
 	}
 }

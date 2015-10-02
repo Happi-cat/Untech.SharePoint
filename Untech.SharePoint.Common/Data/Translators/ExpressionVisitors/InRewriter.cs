@@ -5,7 +5,7 @@ using Untech.SharePoint.Common.Extensions;
 
 namespace Untech.SharePoint.Common.Data.Translators.ExpressionVisitors
 {
-	public class InRewriter : ExpressionVisitor
+	internal class InRewriter : ExpressionVisitor
 	{
 		protected override Expression VisitMethodCall(MethodCallExpression node)
 		{
@@ -38,23 +38,25 @@ namespace Untech.SharePoint.Common.Data.Translators.ExpressionVisitors
 			return base.VisitUnary(node);
 		}
 
+		#region [Private Methods]
+
 		private static bool IsValidObjectInCall(MethodCallExpression node)
 		{
 			return OpUtils.IsOperator(node.Method, OpUtils.ObjIn) &&
-				   node.Arguments[0].NodeType == ExpressionType.MemberAccess &&
-				   node.Arguments[1].NodeType == ExpressionType.Constant;
+			       node.Arguments[0].NodeType == ExpressionType.MemberAccess &&
+			       node.Arguments[1].NodeType == ExpressionType.Constant;
 		}
 
 		private static bool IsValidEnumerableContainsCall(MethodCallExpression node)
 		{
 			return OpUtils.IsOperator(node.Method, OpUtils.EContains) &&
-				   node.Arguments[0].NodeType == ExpressionType.Constant &&
-				   node.Arguments[1].NodeType == ExpressionType.MemberAccess;
+			       node.Arguments[0].NodeType == ExpressionType.Constant &&
+			       node.Arguments[1].NodeType == ExpressionType.MemberAccess;
 		}
 
 		private Expression RewriteIn(MemberExpression memberNode, ConstantExpression arrayNode)
 		{
-			var array = (IEnumerable)arrayNode.Value;
+			var array = (IEnumerable) arrayNode.Value;
 
 			return array.Cast<object>().Aggregate<object, Expression>(null, (whereNode, value) =>
 			{
@@ -66,7 +68,7 @@ namespace Untech.SharePoint.Common.Data.Translators.ExpressionVisitors
 
 		private Expression RewriteNotIn(MemberExpression memberNode, ConstantExpression arrayNode)
 		{
-			var array = (IEnumerable)arrayNode.Value;
+			var array = (IEnumerable) arrayNode.Value;
 
 			return array.Cast<object>().Aggregate<object, Expression>(null, (whereNode, value) =>
 			{
@@ -75,5 +77,7 @@ namespace Untech.SharePoint.Common.Data.Translators.ExpressionVisitors
 				return whereNode == null ? notEqualNode : Expression.AndAlso(whereNode, notEqualNode);
 			});
 		}
+
+		#endregion
 	}
 }

@@ -1,11 +1,12 @@
 ﻿using System.Diagnostics.CodeAnalysis;
+using System.Linq.Expressions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Untech.SharePoint.Common.Data.Translators.ExpressionVisitors;
 
 namespace Untech.SharePoint.Common.Test.Data.Translators.ExpressionVisitors
 {
 	[TestClass]
-	public class EvaluatorTest : BaseExpressionVisitorTest<Evaluator>
+	public class EvaluatorTest : BaseExpressionVisitorTest
 	{
 		[TestMethod]
 		public void CanEvaluateCall()
@@ -25,6 +26,11 @@ namespace Untech.SharePoint.Common.Test.Data.Translators.ExpressionVisitors
 		private string GetSomeExternalString()
 		{
 			return "TEST";
+		}
+
+		protected override ExpressionVisitor Visitor
+		{
+			get { return new Evaluator(); }
 		}
 	}
 }
