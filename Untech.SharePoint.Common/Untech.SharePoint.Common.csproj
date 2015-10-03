@@ -59,9 +59,15 @@
     <Compile Include="Converters\Custom\EnumFieldConverter.cs" />
     <Compile Include="Converters\Custom\JsonFieldConverter.cs" />
     <Compile Include="Converters\Custom\XmlFieldConverter.cs" />
+    <Compile Include="Data\Translators\CamlExpressionTreeProcessor.cs" />
     <Compile Include="Data\Translators\ExpressionVisitors\Evaluator.cs" />
     <Compile Include="Data\Translators\ExpressionVisitors\InRewriter.cs" />
     <Compile Include="Data\Translators\ExpressionVisitors\Nominator.cs" />
+    <Compile Include="Data\Translators\NegateRules\BoolConstNegateRule.cs" />
+    <Compile Include="Data\Translators\NegateRules\ComparisonNegateRule.cs" />
+    <Compile Include="Data\Translators\NegateRules\INegateRule.cs" />
+    <Compile Include="Data\Translators\NegateRules\LogicalJoinNegateRule.cs" />
+    <Compile Include="Data\Translators\NegateRules\NotNegateRule.cs" />
     <Compile Include="Data\Translators\ExpressionVisitors\PushNotDownVisitor.cs" />
     <Compile Include="Data\ISpItemsProvider.cs" />
     <Compile Include="Data\OpUtils.cs" />
@@ -80,6 +86,7 @@
     <Compile Include="Data\SpQueryable.cs" />
     <Compile Include="Data\Translators\ExpressionVisitors\SwapComparisonVisitor.cs" />
     <Compile Include="Data\Translators\IQueryToCamlTranslator.cs" />
+    <Compile Include="Data\Translators\QueryToCamlTranslator.cs" />
     <Compile Include="Mappings\Annotation\AnnotatedContentTypeMapping.cs" />
     <Compile Include="Mappings\Annotation\AnnotatedContextMapping.cs" />
     <Compile Include="Mappings\Annotation\AnnotatedFieldPart.cs" />

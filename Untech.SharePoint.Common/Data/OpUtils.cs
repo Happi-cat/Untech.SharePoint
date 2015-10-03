@@ -26,7 +26,19 @@ namespace Untech.SharePoint.Common.Data
 		public static readonly MethodInfo QAll = GetMethodInfo(() => default(IQueryable<int>).All(default(Expression<Func<int, bool>>)));
 
 		public static readonly MethodInfo SpqGetItems = GetMethodInfo(() => SpQueryable.GetSpListItems<int>(default(ISpItemsProvider), default(QueryModel)));
+
+		public static readonly MethodInfo SpqTakeItems =
+			GetMethodInfo(() => SpQueryable.TakeSpListItems<int>(default(ISpItemsProvider), default(QueryModel)));
+		public static readonly MethodInfo SpqSkipItems =
+			GetMethodInfo(() => SpQueryable.SkipSpListItems<int>(default(ISpItemsProvider), default(QueryModel)));
+
+		public static readonly MethodInfo SpqFirstItem =
+			GetMethodInfo(() => SpQueryable.FirstSpListItem<int>(default(ISpItemsProvider), default(QueryModel)));
+		public static readonly MethodInfo SpqLastItem =
+			GetMethodInfo(() => SpQueryable.LastSpListItem<int>(default(ISpItemsProvider), default(QueryModel)));
+
 		public static readonly MethodInfo SpqAnyItems = GetMethodInfo(() => SpQueryable.AnySpListItems(default(ISpItemsProvider), default(QueryModel)));
+		public static readonly MethodInfo SpqCountItems = GetMethodInfo(() => SpQueryable.CountSpListItems(default(ISpItemsProvider), default(QueryModel)));
 
 		public static readonly MethodInfo ObjIn = GetMethodInfo(() => default(object).In(default(IEnumerable<object>)));
 
