@@ -71,7 +71,7 @@ namespace Untech.SharePoint.Common.Data
 
 		public static readonly MethodInfo SpqGetItems = GetMethodInfo(() => SpQueryable.GetSpListItems<int>(null, null));
 
-		public static readonly MethodInfo SpqTakeItems = GetMethodInfo(() => SpQueryable.TakeSpListItems<int>(null, null, 0));
+		public static readonly MethodInfo SpqTakeItems = GetMethodInfo(() => SpQueryable.TakeSpListItems<int>(null, null));
 		public static readonly MethodInfo SpqSkipItems = GetMethodInfo(() => SpQueryable.SkipSpListItems<int>(null, null, 0));
 
 		public static readonly MethodInfo SpqFirstItem = GetMethodInfo(() => SpQueryable.FirstSpListItem<int>(null, null, false, false));

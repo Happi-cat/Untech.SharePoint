@@ -27,17 +27,16 @@ namespace Untech.SharePoint.Common.Data
 			return Expression.Call(OpUtils.QAsQueryable.MakeGenericMethod(entityType), source);
 		}
 
-		internal static IEnumerable<T> TakeSpListItems<T>(ISpItemsProvider itemsProvider, QueryModel queryModel, int count)
+		internal static IEnumerable<T> TakeSpListItems<T>(ISpItemsProvider itemsProvider, QueryModel queryModel)
 		{
 			throw new NotImplementedException();
 		}
 
-		internal static MethodCallExpression MakeTakeSpListItems(Type entityType, ISpItemsProvider itemsProvider, QueryModel queryModel, int count)
+		internal static MethodCallExpression MakeTakeSpListItems(Type entityType, ISpItemsProvider itemsProvider, QueryModel queryModel)
 		{
 			return Expression.Call(OpUtils.SpqTakeItems.MakeGenericMethod(entityType),
 				Expression.Constant(itemsProvider, typeof(ISpItemsProvider)),
-				Expression.Constant(queryModel, typeof(QueryModel)),
-				Expression.Constant(count));
+				Expression.Constant(queryModel, typeof(QueryModel)));
 		}
 
 		internal static IEnumerable<T> SkipSpListItems<T>(ISpItemsProvider itemsProvider, QueryModel queryModel, int count)

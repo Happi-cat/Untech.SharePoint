@@ -219,9 +219,9 @@ namespace Untech.SharePoint.Common.Data.Translators
 				var provider = GetItemsProvider(source);
 				var model = GetQueryModel(source);
 
-				var count = (int)((ConstantExpression) node.Arguments[1].StripQuotes()).Value;
+				model.RowLimit = (uint)((ConstantExpression) node.Arguments[1].StripQuotes()).Value;
 
-				return SpQueryable.MakeTakeSpListItems(node.Method.GetGenericArguments()[0], provider, model, count);
+				return SpQueryable.MakeTakeSpListItems(node.Method.GetGenericArguments()[0], provider, model);
 			}
 		}
 
