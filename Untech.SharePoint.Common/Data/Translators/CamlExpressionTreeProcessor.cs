@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -17,19 +18,42 @@ namespace Untech.SharePoint.Common.Data.Translators
 			Expression Apply(MethodCallExpression node);
 		}
 
-		private static readonly IReadOnlyDictionary<MethodInfo, IRewriterRule> Rules = new Dictionary
-			<MethodInfo, IRewriterRule>
+		public CamlExpressionTreeProcessor()
 		{
-			{OpUtils.QWhere, new WhereRewriterRule()},
-			{OpUtils.QAny, new AnyRewriterRule()},
-			{OpUtils.QAnyP, new AnyRewriterRule()},
-			{OpUtils.QAll, new AllRewriterRule()},
-			{OpUtils.QOrderBy, new OrderByRewriterRule(OrderByRewriterRuleType.Asc)},
-			{OpUtils.QOrderByDescending, new OrderByRewriterRule(OrderByRewriterRuleType.Desc)},
-			{OpUtils.QThenBy, new OrderByRewriterRule(OrderByRewriterRuleType.Asc)},
-			{OpUtils.QThenrByDescending, new OrderByRewriterRule(OrderByRewriterRuleType.Desc)},
+			Rules = new Dictionary<MethodInfo, IRewriterRule>
+			{
+				{OpUtils.QWhere, new WhereRewriterRule()},
+				{OpUtils.QAny, new AnyRewriterRule()},
+				{OpUtils.QAnyP, new AnyRewriterRule()},
+				{OpUtils.QAll, new AllRewriterRule()},
 
-		};
+				{OpUtils.QOrderBy, new OrderByRewriterRule {Ascending = true}},
+				{OpUtils.QOrderByDescending, new OrderByRewriterRule()},
+				{OpUtils.QThenBy, new OrderByRewriterRule {Ascending = true}},
+				{OpUtils.QThenrByDescending, new OrderByRewriterRule()},
+
+				{OpUtils.QTake, new TakeRewriterRule()},
+				{OpUtils.QSkip, new SkipRewriterRule()},
+
+				{OpUtils.QSingle, new FirstRewriterRule {ThrowIfMultiple = true, ThrowIfNothing = true}},
+				{OpUtils.QSingleOrDefault, new FirstRewriterRule {ThrowIfMultiple = true}},
+
+				{OpUtils.QFirst, new FirstRewriterRule {ThrowIfNothing = true}},
+				{OpUtils.QFirstOrDefault, new FirstRewriterRule()},
+
+				{OpUtils.QLast, new LastRewriteRule {ThrowIfNothing = true}},
+				{OpUtils.QLastOrDefault, new LastRewriteRule()},
+
+				{OpUtils.QElementAt, new ElementAtRewriteRule {ThrowIfNothing = true}},
+				{OpUtils.QElementAtOrDefault, new ElementAtRewriteRule()},
+
+				{OpUtils.QReverse, new ReverseRewriteRule()},
+
+				{OpUtils.QCount, new CountRewriteRule()}
+			};
+		}
+
+		protected IReadOnlyDictionary<MethodInfo, IRewriterRule> Rules { get; set; }
 
 		protected override Expression VisitMethodCall(MethodCallExpression node)
 		{
@@ -157,30 +181,172 @@ namespace Untech.SharePoint.Common.Data.Translators
 			}
 		}
 
-		protected enum OrderByRewriterRuleType
-		{
-			Asc,
-			Desc
-		}
-
 		protected class OrderByRewriterRule : BaseRewriterRule, IRewriterRule
 		{
-			public OrderByRewriterRule(OrderByRewriterRuleType type)
-			{
-				
-			}
+			public bool Ascending { get; set; }
 
 			public bool CanApply(MethodCallExpression node)
 			{
-				throw new System.NotImplementedException();
+				var source = FindSource(node);
+				return source != null && OpUtils.IsOperator(source.Method, OpUtils.SpqGetItems);
 			}
 
 			public Expression Apply(MethodCallExpression node)
 			{
-				throw new System.NotImplementedException();
+				var source = FindSource(node);
+				var provider = GetItemsProvider(source);
+				var model = GetQueryModel(source);
+
+				var memberNode = (MemberExpression)node.Arguments[1].GetLambda().Body;
+
+				model.MergeOrderBys(new OrderByModel(new FieldRefModel(memberNode.Member), Ascending));
+
+				return SpQueryable.MakeAsQueryable(node.Method.GetGenericArguments()[0], SpQueryable.MakeGetSpListItems(node.Method.GetGenericArguments()[0], provider, model));
 			}
 		}
 
+		protected class TakeRewriterRule : BaseRewriterRule, IRewriterRule
+		{
+			public bool CanApply(MethodCallExpression node)
+			{
+				var source = FindSource(node);
+				return source != null && OpUtils.IsOperator(source.Method, OpUtils.SpqGetItems);
+			}
 
+			public Expression Apply(MethodCallExpression node)
+			{
+				var source = FindSource(node);
+				var provider = GetItemsProvider(source);
+				var model = GetQueryModel(source);
+
+				var count = (int)((ConstantExpression) node.Arguments[1].StripQuotes()).Value;
+
+				return SpQueryable.MakeTakeSpListItems(node.Method.GetGenericArguments()[0], provider, model, count);
+			}
+		}
+
+		protected class SkipRewriterRule : BaseRewriterRule, IRewriterRule
+		{
+			public bool CanApply(MethodCallExpression node)
+			{
+				var source = FindSource(node);
+				return source != null && OpUtils.IsOperator(source.Method, OpUtils.SpqGetItems);
+			}
+
+			public Expression Apply(MethodCallExpression node)
+			{
+				var source = FindSource(node);
+				var provider = GetItemsProvider(source);
+				var model = GetQueryModel(source);
+
+				var count = (int)((ConstantExpression)node.Arguments[1].StripQuotes()).Value;
+
+				return SpQueryable.MakeSkipSpListItems(node.Method.GetGenericArguments()[0], provider, model, count);
+			}
+		}
+
+		protected class FirstRewriterRule : BaseRewriterRule, IRewriterRule
+		{
+			public bool ThrowIfNothing { get; set; }
+
+			public bool ThrowIfMultiple { get; set; }
+
+			public bool CanApply(MethodCallExpression node)
+			{
+				var source = FindSource(node);
+				return source != null && OpUtils.IsOperator(source.Method, OpUtils.SpqGetItems);
+			}
+
+			public Expression Apply(MethodCallExpression node)
+			{
+				var source = FindSource(node);
+				var provider = GetItemsProvider(source);
+				var model = GetQueryModel(source);
+
+				return SpQueryable.MakeFirstSpListItems(node.Method.GetGenericArguments()[0], provider, model, ThrowIfNothing, ThrowIfMultiple);
+			}
+		}
+
+		protected class LastRewriteRule : BaseRewriterRule, IRewriterRule
+		{
+			public bool ThrowIfNothing { get; set; }
+
+			public bool CanApply(MethodCallExpression node)
+			{
+				var source = FindSource(node);
+				return source != null && OpUtils.IsOperator(source.Method, OpUtils.SpqGetItems);
+			}
+
+			public Expression Apply(MethodCallExpression node)
+			{
+				var source = FindSource(node);
+				var provider = GetItemsProvider(source);
+				var model = GetQueryModel(source);
+
+				model.ReverseOrder();
+
+				return SpQueryable.MakeFirstSpListItems(node.Method.GetGenericArguments()[0], provider, model, ThrowIfNothing, false);
+			}
+		}
+
+		protected class ElementAtRewriteRule : BaseRewriterRule, IRewriterRule
+		{
+			public bool ThrowIfNothing { get; set; }
+
+			public bool CanApply(MethodCallExpression node)
+			{
+				var source = FindSource(node);
+				return source != null && OpUtils.IsOperator(source.Method, OpUtils.SpqGetItems);
+			}
+
+			public Expression Apply(MethodCallExpression node)
+			{
+				var source = FindSource(node);
+				var provider = GetItemsProvider(source);
+				var model = GetQueryModel(source);
+
+				var count = (int)((ConstantExpression)node.Arguments[1].StripQuotes()).Value;
+
+				return SpQueryable.MakeElementAtSpListItems(node.Method.GetGenericArguments()[0], provider, model, count, ThrowIfNothing);
+			}
+		}
+
+		protected class ReverseRewriteRule : BaseRewriterRule, IRewriterRule
+		{
+			public bool CanApply(MethodCallExpression node)
+			{
+				var source = FindSource(node);
+				return source != null && OpUtils.IsOperator(source.Method, OpUtils.SpqGetItems);
+			}
+
+			public Expression Apply(MethodCallExpression node)
+			{
+				var source = FindSource(node);
+				var provider = GetItemsProvider(source);
+				var model = GetQueryModel(source);
+
+				model.ReverseOrder();
+
+				return SpQueryable.MakeGetSpListItems(node.Method.GetGenericArguments()[0], provider, model);
+			}
+		}
+
+		protected class CountRewriteRule : BaseRewriterRule, IRewriterRule
+		{
+			public bool CanApply(MethodCallExpression node)
+			{
+				var source = FindSource(node);
+				return source != null && OpUtils.IsOperator(source.Method, OpUtils.SpqGetItems);
+			}
+
+			public Expression Apply(MethodCallExpression node)
+			{
+				var source = FindSource(node);
+				var provider = GetItemsProvider(source);
+				var model = GetQueryModel(source);
+
+				return SpQueryable.MakeCountSpListItems(node.Method.GetGenericArguments()[0], provider, model);
+			}
+		}
 	}
 }

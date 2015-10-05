@@ -66,7 +66,7 @@
     <Compile Include="Converters\Custom\XmlFieldConverterTest.cs" />
     <Compile Include="Data\QueryModels\QueryModelTest.cs" />
     <Compile Include="Data\Translators\BaseExpressionVisitorTest.cs" />
-    <Compile Include="Data\Translators\CamlPredicateProcessorTest.cs" />
+    <Compile Include="Data\Translators\Predicate\CamlPredicateProcessorTest.cs" />
     <Compile Include="Data\Translators\Predicate\PushNotDownVisitorTest.cs" />
     <Compile Include="Data\Translators\Predicate\StringIsNullOrEmptyRewriterTest.cs" />
     <Compile Include="Data\Translators\Predicate\RedundantConditionRemoverTest.cs" />

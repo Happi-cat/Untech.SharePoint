@@ -12,14 +12,9 @@
 
 		public FieldRefModel Field { get; set; }
 
-		public OrderByModel Reverse()
-		{
-			return new OrderByModel(Field, !Ascending);
-		}
-
 		public override string ToString()
 		{
-			return string.Format("<FieldRef Name='' Ascending='{0}' />", Ascending.ToString().ToUpper());
+			return string.Format("<FieldRef Name='{0}' Ascending='{1}' />", Field.Member.Name, Ascending.ToString().ToUpper());
 		}
 	}
 }

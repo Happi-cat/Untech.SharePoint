@@ -8,7 +8,7 @@ using Untech.SharePoint.Common.Data.QueryModels;
 
 namespace Untech.SharePoint.Common.Test.Data.Translators
 {
-	public class FakeQueryable<T> : IQueryable<T>, IQueryProvider
+	public class FakeQueryable<T> : IOrderedQueryable<T>, IQueryProvider
 	{
 		public FakeQueryable()
 		{
