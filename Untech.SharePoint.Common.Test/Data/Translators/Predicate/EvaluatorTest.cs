@@ -1,9 +1,9 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.Linq.Expressions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Untech.SharePoint.Common.Data.Translators.ExpressionVisitors;
+using Untech.SharePoint.Common.Data.Translators.Predicate;
 
-namespace Untech.SharePoint.Common.Test.Data.Translators.ExpressionVisitors
+namespace Untech.SharePoint.Common.Test.Data.Translators.Predicate
 {
 	[TestClass]
 	public class EvaluatorTest : BaseExpressionVisitorTest

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq.Expressions;
 
-namespace Untech.SharePoint.Common.Data.Translators.ExpressionVisitors
+namespace Untech.SharePoint.Common.Data.Translators.Predicate
 {
 	internal class Evaluator : ExpressionVisitor
 	{

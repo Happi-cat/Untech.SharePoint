@@ -1,7 +1,7 @@
 ﻿using System.Linq.Expressions;
 using Untech.SharePoint.Common.Extensions;
 
-namespace Untech.SharePoint.Common.Data.Translators.ExpressionVisitors
+namespace Untech.SharePoint.Common.Data.Translators.Predicate
 {
 	internal class RedundantConditionRemover : ExpressionVisitor
 	{

@@ -2,10 +2,10 @@
 using System.Linq;
 using System.Linq.Expressions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Untech.SharePoint.Common.Data.Translators.ExpressionVisitors;
+using Untech.SharePoint.Common.Data.Translators.Predicate;
 using Untech.SharePoint.Common.Extensions;
 
-namespace Untech.SharePoint.Common.Test.Data.Translators.ExpressionVisitors
+namespace Untech.SharePoint.Common.Test.Data.Translators.Predicate
 {
 	[TestClass]
 	public class InRewriterTest : BaseExpressionVisitorTest

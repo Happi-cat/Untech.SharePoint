@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Linq.Expressions;
-using Untech.SharePoint.Common.Data.Translators.ExpressionVisitors;
+using Untech.SharePoint.Common.Data.Translators.Predicate;
 
 namespace Untech.SharePoint.Common.Test.Data.Translators
 {
