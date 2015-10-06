@@ -35,7 +35,7 @@ namespace Untech.SharePoint.Common.Data.QueryModels
 			}
 			if (orderBy != null)
 			{
-				newOrderBys.Add(orderBy);
+				newOrderBys.Add(IsOrderReversed ? orderBy.Reverse() : orderBy);
 			}
 			OrderBys = newOrderBys;
 		}
@@ -49,7 +49,7 @@ namespace Untech.SharePoint.Common.Data.QueryModels
 			}
 			if (orderBys != null)
 			{
-				newOrderBys.AddRange(orderBys);
+				newOrderBys.AddRange(IsOrderReversed ? orderBys.Select(n => n.Reverse()) : orderBys);
 			}
 			OrderBys = newOrderBys;
 		}
