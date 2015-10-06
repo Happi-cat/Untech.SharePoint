@@ -27,8 +27,8 @@ namespace Untech.SharePoint.Common.Data.Translators
 				{OpUtils.QAnyP, new AnyRewriterRule()},
 				{OpUtils.QAll, new AllRewriterRule()},
 
-				{OpUtils.QOrderBy, new OrderByRewriterRule {Ascending = true}},
-				{OpUtils.QOrderByDescending, new OrderByRewriterRule()},
+				{OpUtils.QOrderBy, new OrderByRewriterRule { ResetOrder = true, Ascending = true}},
+				{OpUtils.QOrderByDescending, new OrderByRewriterRule{ ResetOrder = true }},
 				{OpUtils.QThenBy, new OrderByRewriterRule {Ascending = true}},
 				{OpUtils.QThenrByDescending, new OrderByRewriterRule()},
 
@@ -185,6 +185,8 @@ namespace Untech.SharePoint.Common.Data.Translators
 		{
 			public bool Ascending { get; set; }
 
+			public bool ResetOrder { get; set; }
+
 			public bool CanApply(MethodCallExpression node)
 			{
 				var source = FindSource(node);
@@ -198,6 +200,11 @@ namespace Untech.SharePoint.Common.Data.Translators
 				var model = GetQueryModel(source);
 
 				var memberNode = (MemberExpression)node.Arguments[1].GetLambda().Body;
+
+				if (ResetOrder)
+				{
+					model.ResetOrder();
+				}
 
 				model.MergeOrderBys(new OrderByModel(new FieldRefModel(memberNode.Member), Ascending));
 

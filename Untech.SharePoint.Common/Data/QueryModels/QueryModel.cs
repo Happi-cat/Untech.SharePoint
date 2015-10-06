@@ -59,6 +59,12 @@ namespace Untech.SharePoint.Common.Data.QueryModels
 			IsOrderReversed = !IsOrderReversed;
 		}
 
+		public void ResetOrder()
+		{
+			IsOrderReversed = false;
+			OrderBys = null;
+		}
+
 		public override string ToString()
 		{
 			var sb = new StringBuilder();
