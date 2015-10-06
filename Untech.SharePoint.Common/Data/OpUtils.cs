@@ -69,17 +69,17 @@ namespace Untech.SharePoint.Common.Data
 
 		#region [SpQueryable Methods Infos]
 
-		public static readonly MethodInfo SpqGetItems = GetMethodInfo(() => SpQueryable.GetSpListItems<int>(null, null));
+		public static readonly MethodInfo SpqGetAll = GetMethodInfo(() => SpQueryable.GetAll<int>(null, null));
 
-		public static readonly MethodInfo SpqTakeItems = GetMethodInfo(() => SpQueryable.TakeSpListItems<int>(null, null));
-		public static readonly MethodInfo SpqSkipItems = GetMethodInfo(() => SpQueryable.SkipSpListItems<int>(null, null, 0));
+		public static readonly MethodInfo SpqTake = GetMethodInfo(() => SpQueryable.Take<int>(null, null));
+		public static readonly MethodInfo SpqSkip = GetMethodInfo(() => SpQueryable.Skip<int>(null, null, 0));
 
-		public static readonly MethodInfo SpqFirstItem = GetMethodInfo(() => SpQueryable.FirstSpListItem<int>(null, null, false, false));
+		public static readonly MethodInfo SpqFirst = GetMethodInfo(() => SpQueryable.First<int>(null, null, false, false));
 
-		public static readonly MethodInfo SpqElementAtItems = GetMethodInfo(() => SpQueryable.ElementAtSpListItem<int>(null, null, 0, false));
+		public static readonly MethodInfo SpqElementAt = GetMethodInfo(() => SpQueryable.ElementAt<int>(null, null, 0, false));
 
-		public static readonly MethodInfo SpqAnyItems = GetMethodInfo(() => SpQueryable.AnySpListItems(null, null));
-		public static readonly MethodInfo SpqCountItems = GetMethodInfo(() => SpQueryable.CountSpListItems(null, null));
+		public static readonly MethodInfo SpqAny = GetMethodInfo(() => SpQueryable.Any(null, null));
+		public static readonly MethodInfo SpqCount = GetMethodInfo(() => SpQueryable.Count(null, null));
 
 		#endregion
 

@@ -12,7 +12,7 @@ namespace Untech.SharePoint.Common.Test.Data.Translators
 	{
 		public FakeQueryable()
 		{
-			Expression = SpQueryable.MakeAsQueryable(typeof(T), SpQueryable.MakeGetSpListItems(typeof(T), null, new QueryModel()));
+			Expression = SpQueryable.MakeAsQueryable(typeof(T), SpQueryable.MakeGetAll(typeof(T), null, new QueryModel()));
 		}
 
 		protected FakeQueryable(Expression node)

@@ -65,7 +65,7 @@ namespace Untech.SharePoint.Common.Test.Data.Translators
 			}
 
 			callNode = (MethodCallExpression)((MethodCallExpression)generatedExpression).Arguments[0].StripQuotes();
-			if (!OpUtils.IsOperator(callNode.Method, OpUtils.SpqGetItems))
+			if (!OpUtils.IsOperator(callNode.Method, OpUtils.SpqGetAll))
 			{
 				Assert.Fail("Not a SpQueryable.GetSpItems");
 			}

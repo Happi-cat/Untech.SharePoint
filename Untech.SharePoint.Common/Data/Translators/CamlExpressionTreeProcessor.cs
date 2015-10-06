@@ -116,7 +116,7 @@ namespace Untech.SharePoint.Common.Data.Translators
 			public bool CanApply(MethodCallExpression node)
 			{
 				var source = FindSource(node);
-				return source != null && OpUtils.IsOperator(source.Method, OpUtils.SpqGetItems);
+				return source != null && OpUtils.IsOperator(source.Method, OpUtils.SpqGetAll);
 			}
 
 			public Expression Apply(MethodCallExpression node)
@@ -129,7 +129,7 @@ namespace Untech.SharePoint.Common.Data.Translators
 
 				model.MergeWheres(new CamlPredicateProcessor().Process(predicate));
 
-				return SpQueryable.MakeAsQueryable(node.Method.GetGenericArguments()[0], SpQueryable.MakeGetSpListItems(node.Method.GetGenericArguments()[0], provider, model));
+				return SpQueryable.MakeAsQueryable(node.Method.GetGenericArguments()[0], SpQueryable.MakeGetAll(node.Method.GetGenericArguments()[0], provider, model));
 			}
 		}
 
@@ -138,7 +138,7 @@ namespace Untech.SharePoint.Common.Data.Translators
 			public bool CanApply(MethodCallExpression node)
 			{
 				var source = FindSource(node);
-				return source != null && OpUtils.IsOperator(source.Method, OpUtils.SpqGetItems);
+				return source != null && OpUtils.IsOperator(source.Method, OpUtils.SpqGetAll);
 			}
 
 			public Expression Apply(MethodCallExpression node)
@@ -155,7 +155,7 @@ namespace Untech.SharePoint.Common.Data.Translators
 					model.MergeWheres(new CamlPredicateProcessor().Process(predicate));
 				}
 
-				return SpQueryable.MakeAnySpListItems(node.Method.GetGenericArguments()[0], provider, model);
+				return SpQueryable.MakeAny(node.Method.GetGenericArguments()[0], provider, model);
 			}
 		}
 
@@ -164,7 +164,7 @@ namespace Untech.SharePoint.Common.Data.Translators
 			public bool CanApply(MethodCallExpression node)
 			{
 				var source = FindSource(node);
-				return source != null && OpUtils.IsOperator(source.Method, OpUtils.SpqGetItems);
+				return source != null && OpUtils.IsOperator(source.Method, OpUtils.SpqGetAll);
 			}
 
 			public Expression Apply(MethodCallExpression node)
@@ -177,7 +177,7 @@ namespace Untech.SharePoint.Common.Data.Translators
 
 				model.MergeWheres(new CamlPredicateProcessor().Process(predicate).Negate());
 
-				return SpQueryable.MakeAnySpListItems(node.Method.GetGenericArguments()[0], provider, model);
+				return SpQueryable.MakeAny(node.Method.GetGenericArguments()[0], provider, model);
 			}
 		}
 
@@ -190,7 +190,7 @@ namespace Untech.SharePoint.Common.Data.Translators
 			public bool CanApply(MethodCallExpression node)
 			{
 				var source = FindSource(node);
-				return source != null && OpUtils.IsOperator(source.Method, OpUtils.SpqGetItems);
+				return source != null && OpUtils.IsOperator(source.Method, OpUtils.SpqGetAll);
 			}
 
 			public Expression Apply(MethodCallExpression node)
@@ -206,7 +206,7 @@ namespace Untech.SharePoint.Common.Data.Translators
 
 				model.MergeOrderBys(new OrderByModel(new CamlKeySelectorProcessor().Process(node.Arguments[1]), Ascending));
 
-				return SpQueryable.MakeAsQueryable(node.Method.GetGenericArguments()[0], SpQueryable.MakeGetSpListItems(node.Method.GetGenericArguments()[0], provider, model));
+				return SpQueryable.MakeAsQueryable(node.Method.GetGenericArguments()[0], SpQueryable.MakeGetAll(node.Method.GetGenericArguments()[0], provider, model));
 			}
 		}
 
@@ -215,7 +215,7 @@ namespace Untech.SharePoint.Common.Data.Translators
 			public bool CanApply(MethodCallExpression node)
 			{
 				var source = FindSource(node);
-				return source != null && OpUtils.IsOperator(source.Method, OpUtils.SpqGetItems);
+				return source != null && OpUtils.IsOperator(source.Method, OpUtils.SpqGetAll);
 			}
 
 			public Expression Apply(MethodCallExpression node)
@@ -226,7 +226,7 @@ namespace Untech.SharePoint.Common.Data.Translators
 
 				model.RowLimit = (uint)((ConstantExpression) node.Arguments[1].StripQuotes()).Value;
 
-				return SpQueryable.MakeTakeSpListItems(node.Method.GetGenericArguments()[0], provider, model);
+				return SpQueryable.MakeTake(node.Method.GetGenericArguments()[0], provider, model);
 			}
 		}
 
@@ -235,7 +235,7 @@ namespace Untech.SharePoint.Common.Data.Translators
 			public bool CanApply(MethodCallExpression node)
 			{
 				var source = FindSource(node);
-				return source != null && OpUtils.IsOperator(source.Method, OpUtils.SpqGetItems);
+				return source != null && OpUtils.IsOperator(source.Method, OpUtils.SpqGetAll);
 			}
 
 			public Expression Apply(MethodCallExpression node)
@@ -246,7 +246,7 @@ namespace Untech.SharePoint.Common.Data.Translators
 
 				var count = (int)((ConstantExpression)node.Arguments[1].StripQuotes()).Value;
 
-				return SpQueryable.MakeSkipSpListItems(node.Method.GetGenericArguments()[0], provider, model, count);
+				return SpQueryable.MakeSkip(node.Method.GetGenericArguments()[0], provider, model, count);
 			}
 		}
 
@@ -259,7 +259,7 @@ namespace Untech.SharePoint.Common.Data.Translators
 			public bool CanApply(MethodCallExpression node)
 			{
 				var source = FindSource(node);
-				return source != null && OpUtils.IsOperator(source.Method, OpUtils.SpqGetItems);
+				return source != null && OpUtils.IsOperator(source.Method, OpUtils.SpqGetAll);
 			}
 
 			public Expression Apply(MethodCallExpression node)
@@ -268,7 +268,7 @@ namespace Untech.SharePoint.Common.Data.Translators
 				var provider = GetItemsProvider(source);
 				var model = GetQueryModel(source);
 
-				return SpQueryable.MakeFirstSpListItems(node.Method.GetGenericArguments()[0], provider, model, ThrowIfNothing, ThrowIfMultiple);
+				return SpQueryable.MakeFirst(node.Method.GetGenericArguments()[0], provider, model, ThrowIfNothing, ThrowIfMultiple);
 			}
 		}
 
@@ -279,7 +279,7 @@ namespace Untech.SharePoint.Common.Data.Translators
 			public bool CanApply(MethodCallExpression node)
 			{
 				var source = FindSource(node);
-				return source != null && OpUtils.IsOperator(source.Method, OpUtils.SpqGetItems);
+				return source != null && OpUtils.IsOperator(source.Method, OpUtils.SpqGetAll);
 			}
 
 			public Expression Apply(MethodCallExpression node)
@@ -290,7 +290,7 @@ namespace Untech.SharePoint.Common.Data.Translators
 
 				model.ReverseOrder();
 
-				return SpQueryable.MakeFirstSpListItems(node.Method.GetGenericArguments()[0], provider, model, ThrowIfNothing, false);
+				return SpQueryable.MakeFirst(node.Method.GetGenericArguments()[0], provider, model, ThrowIfNothing, false);
 			}
 		}
 
@@ -301,7 +301,7 @@ namespace Untech.SharePoint.Common.Data.Translators
 			public bool CanApply(MethodCallExpression node)
 			{
 				var source = FindSource(node);
-				return source != null && OpUtils.IsOperator(source.Method, OpUtils.SpqGetItems);
+				return source != null && OpUtils.IsOperator(source.Method, OpUtils.SpqGetAll);
 			}
 
 			public Expression Apply(MethodCallExpression node)
@@ -312,7 +312,7 @@ namespace Untech.SharePoint.Common.Data.Translators
 
 				var count = (int)((ConstantExpression)node.Arguments[1].StripQuotes()).Value;
 
-				return SpQueryable.MakeElementAtSpListItems(node.Method.GetGenericArguments()[0], provider, model, count, ThrowIfNothing);
+				return SpQueryable.MakeElementAt(node.Method.GetGenericArguments()[0], provider, model, count, ThrowIfNothing);
 			}
 		}
 
@@ -321,7 +321,7 @@ namespace Untech.SharePoint.Common.Data.Translators
 			public bool CanApply(MethodCallExpression node)
 			{
 				var source = FindSource(node);
-				return source != null && OpUtils.IsOperator(source.Method, OpUtils.SpqGetItems);
+				return source != null && OpUtils.IsOperator(source.Method, OpUtils.SpqGetAll);
 			}
 
 			public Expression Apply(MethodCallExpression node)
@@ -332,7 +332,7 @@ namespace Untech.SharePoint.Common.Data.Translators
 
 				model.ReverseOrder();
 
-				return SpQueryable.MakeGetSpListItems(node.Method.GetGenericArguments()[0], provider, model);
+				return SpQueryable.MakeGetAll(node.Method.GetGenericArguments()[0], provider, model);
 			}
 		}
 
@@ -341,7 +341,7 @@ namespace Untech.SharePoint.Common.Data.Translators
 			public bool CanApply(MethodCallExpression node)
 			{
 				var source = FindSource(node);
-				return source != null && OpUtils.IsOperator(source.Method, OpUtils.SpqGetItems);
+				return source != null && OpUtils.IsOperator(source.Method, OpUtils.SpqGetAll);
 			}
 
 			public Expression Apply(MethodCallExpression node)
@@ -350,7 +350,7 @@ namespace Untech.SharePoint.Common.Data.Translators
 				var provider = GetItemsProvider(source);
 				var model = GetQueryModel(source);
 
-				return SpQueryable.MakeCountSpListItems(node.Method.GetGenericArguments()[0], provider, model);
+				return SpQueryable.MakeCount(node.Method.GetGenericArguments()[0], provider, model);
 			}
 		}
 	}
