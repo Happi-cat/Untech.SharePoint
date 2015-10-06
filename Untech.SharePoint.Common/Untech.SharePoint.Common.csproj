@@ -64,6 +64,7 @@
     <Compile Include="Data\Translators\Predicate\CamlProcessorUtils.cs" />
     <Compile Include="Data\Translators\Predicate\Evaluator.cs" />
     <Compile Include="Data\Translators\Predicate\InRewriter.cs" />
+    <Compile Include="Data\Translators\IExpressionProcessor.cs" />
     <Compile Include="Data\Translators\Predicate\Nominator.cs" />
     <Compile Include="Data\Translators\Predicate\NegateRules\BoolConstNegateRule.cs" />
     <Compile Include="Data\Translators\Predicate\NegateRules\ComparisonNegateRule.cs" />

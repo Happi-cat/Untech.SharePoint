@@ -4,7 +4,7 @@ using Untech.SharePoint.Common.Extensions;
 
 namespace Untech.SharePoint.Common.Data.Translators.Predicate
 {
-	internal class CamlKeySelectorProcessor
+	internal class CamlKeySelectorProcessor : IExpressionProcessor<FieldRefModel>
 	{
 		public FieldRefModel Process(Expression predicate)
 		{

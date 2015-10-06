@@ -6,7 +6,7 @@ using Untech.SharePoint.Common.Extensions;
 
 namespace Untech.SharePoint.Common.Data.Translators.Predicate
 {
-	internal class CamlPredicateProcessor
+	internal class CamlPredicateProcessor : IExpressionProcessor<WhereModel>
 	{
 		private static readonly IReadOnlyDictionary<ExpressionType, ComparisonOperator> ComparisonMap = new Dictionary<ExpressionType, ComparisonOperator>
 		{
