@@ -60,6 +60,8 @@
     <Compile Include="Converters\Custom\JsonFieldConverter.cs" />
     <Compile Include="Converters\Custom\XmlFieldConverter.cs" />
     <Compile Include="Data\Translators\CamlExpressionTreeProcessor.cs" />
+    <Compile Include="Data\Translators\Predicate\CamlKeySelectorProcessor.cs" />
+    <Compile Include="Data\Translators\Predicate\CamlProcessorUtils.cs" />
     <Compile Include="Data\Translators\Predicate\Evaluator.cs" />
     <Compile Include="Data\Translators\Predicate\InRewriter.cs" />
     <Compile Include="Data\Translators\Predicate\Nominator.cs" />

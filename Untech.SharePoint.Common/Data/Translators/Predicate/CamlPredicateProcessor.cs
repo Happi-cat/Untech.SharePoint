@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using Untech.SharePoint.Common.Data.QueryModels;
@@ -9,7 +8,7 @@ namespace Untech.SharePoint.Common.Data.Translators.Predicate
 {
 	internal class CamlPredicateProcessor
 	{
-		private static readonly IReadOnlyDictionary<ExpressionType, ComparisonOperator> ExpressionTypeMap = new Dictionary<ExpressionType, ComparisonOperator>
+		private static readonly IReadOnlyDictionary<ExpressionType, ComparisonOperator> ComparisonMap = new Dictionary<ExpressionType, ComparisonOperator>
 		{
 			{ExpressionType.Equal, ComparisonOperator.Eq},
 			{ExpressionType.NotEqual, ComparisonOperator.Neq},
@@ -17,6 +16,12 @@ namespace Untech.SharePoint.Common.Data.Translators.Predicate
 			{ExpressionType.LessThan, ComparisonOperator.Lt},
 			{ExpressionType.GreaterThan, ComparisonOperator.Gt},
 			{ExpressionType.GreaterThanOrEqual, ComparisonOperator.Geq}
+		};
+
+		private static readonly IReadOnlyDictionary<ExpressionType, ComparisonOperator> NullComparisonMap = new Dictionary<ExpressionType, ComparisonOperator>
+		{
+			{ExpressionType.Equal, ComparisonOperator.IsNull},
+			{ExpressionType.NotEqual, ComparisonOperator.IsNotNull},
 		};
 
 		public CamlPredicateProcessor()
@@ -73,19 +78,21 @@ namespace Untech.SharePoint.Common.Data.Translators.Predicate
 				case ExpressionType.Not:
 					return TranslateFalseProperty((UnaryExpression) node);
 			}
-			throw InvalidQuery(node);
+			throw CamlProcessorUtils.InvalidQuery(node);
 		}
 
 		#region [Private Methods]
 
 		private WhereModel TranslateTrueProperty(MemberExpression memberNode)
 		{
-			return new ComparisonModel(ComparisonOperator.Eq, GetFieldRef(memberNode), true);
+			var fieldRef = CamlProcessorUtils.GetFieldRef(memberNode);
+			return new ComparisonModel(ComparisonOperator.Eq, fieldRef, true);
 		}
 
 		private WhereModel TranslateFalseProperty(UnaryExpression unaryNode)
 		{
-			return new ComparisonModel(ComparisonOperator.Eq, GetFieldRef(unaryNode.Operand), false);
+			var fieldRef = CamlProcessorUtils.GetFieldRef(unaryNode.Operand);
+			return new ComparisonModel(ComparisonOperator.Eq, fieldRef, false);
 		}
 
 		private WhereModel TranslateAnd(BinaryExpression binaryNode)
@@ -100,7 +107,7 @@ namespace Untech.SharePoint.Common.Data.Translators.Predicate
 
 		private WhereModel TranslateComparison(BinaryExpression binaryNode)
 		{
-			if (ExpressionTypeMap.ContainsKey(binaryNode.NodeType))
+			if (ComparisonMap.ContainsKey(binaryNode.NodeType))
 			{
 				if (binaryNode.Right.IsConstant(null))
 				{
@@ -108,24 +115,21 @@ namespace Untech.SharePoint.Common.Data.Translators.Predicate
 				}
 				if (binaryNode.Left.NodeType == ExpressionType.MemberAccess)
 				{
-					return new ComparisonModel(ExpressionTypeMap[binaryNode.NodeType], GetFieldRef(binaryNode.Left),
-						GetValue(binaryNode.Right));
+					var fieldRef = CamlProcessorUtils.GetFieldRef(binaryNode.Left);
+					return new ComparisonModel(ComparisonMap[binaryNode.NodeType], fieldRef, GetValue(binaryNode.Right));
 				}
 			}
-			throw InvalidQuery(binaryNode);
+			throw CamlProcessorUtils.InvalidQuery(binaryNode);
 		}
 
 		private WhereModel TranslateComparisonWithNull(BinaryExpression binaryNode)
 		{
-			if (binaryNode.NodeType == ExpressionType.Equal)
+			var fieldRef = CamlProcessorUtils.GetFieldRef(binaryNode.Left);
+			if (NullComparisonMap.ContainsKey(binaryNode.NodeType))
 			{
-				return new ComparisonModel(ComparisonOperator.IsNull, GetFieldRef(binaryNode.Left), null);
+				return new ComparisonModel(NullComparisonMap[binaryNode.NodeType], fieldRef, null);
 			}
-			if (binaryNode.NodeType == ExpressionType.NotEqual)
-			{
-				return new ComparisonModel(ComparisonOperator.IsNotNull, GetFieldRef(binaryNode.Left), null);
-			}
-			throw InvalidQuery(binaryNode);
+			throw CamlProcessorUtils.InvalidQuery(binaryNode);
 		}
 
 		private WhereModel TranslateCall(MethodCallExpression callNode)
@@ -138,18 +142,17 @@ namespace Untech.SharePoint.Common.Data.Translators.Predicate
 			{
 				return TranslateStartsWith(callNode);
 			}
-			throw InvalidQuery(callNode);
+			throw CamlProcessorUtils.InvalidQuery(callNode);
 		}
 
 		private WhereModel TranslateContains(MethodCallExpression callNode)
 		{
-			return new ComparisonModel(ComparisonOperator.Contains, GetFieldRef(callNode.Object), GetValue(callNode.Arguments[0]));
+			return new ComparisonModel(ComparisonOperator.Contains, CamlProcessorUtils.GetFieldRef(callNode.Object), GetValue(callNode.Arguments[0]));
 		}
 
 		private WhereModel TranslateStartsWith(MethodCallExpression callNode)
 		{
-			return new ComparisonModel(ComparisonOperator.BeginsWith, GetFieldRef(callNode.Object),
-				GetValue(callNode.Arguments[0]));
+			return new ComparisonModel(ComparisonOperator.BeginsWith, CamlProcessorUtils.GetFieldRef(callNode.Object), GetValue(callNode.Arguments[0]));
 		}
 
 		private object GetValue(Expression node)
@@ -158,21 +161,7 @@ namespace Untech.SharePoint.Common.Data.Translators.Predicate
 			{
 				return ((ConstantExpression) node).Value;
 			}
-			throw InvalidQuery(node);
-		}
-
-		private FieldRefModel GetFieldRef(Expression node)
-		{
-			if (node.NodeType == ExpressionType.MemberAccess)
-			{
-				return new FieldRefModel(((MemberExpression) node).Member);
-			}
-			throw InvalidQuery(node);
-		}
-
-		private static Exception InvalidQuery(Expression node)
-		{
-			return new NotSupportedException(node.ToString());
+			throw CamlProcessorUtils.InvalidQuery(node);
 		}
 
 		#endregion

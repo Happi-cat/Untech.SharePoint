@@ -199,14 +199,12 @@ namespace Untech.SharePoint.Common.Data.Translators
 				var provider = GetItemsProvider(source);
 				var model = GetQueryModel(source);
 
-				var memberNode = (MemberExpression)node.Arguments[1].GetLambda().Body;
-
 				if (ResetOrder)
 				{
 					model.ResetOrder();
 				}
 
-				model.MergeOrderBys(new OrderByModel(new FieldRefModel(memberNode.Member), Ascending));
+				model.MergeOrderBys(new OrderByModel(new CamlKeySelectorProcessor().Process(node.Arguments[1]), Ascending));
 
 				return SpQueryable.MakeAsQueryable(node.Method.GetGenericArguments()[0], SpQueryable.MakeGetSpListItems(node.Method.GetGenericArguments()[0], provider, model));
 			}
