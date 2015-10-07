@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using Untech.SharePoint.Common.Data.QueryModels;
+using Untech.SharePoint.Common.Data.Translators;
 
 namespace Untech.SharePoint.Common.Data
 {
@@ -21,6 +22,9 @@ namespace Untech.SharePoint.Common.Data
 
 		internal static IEnumerable<T> GetAll<T>(ISpItemsProvider itemsProvider, QueryModel queryModel)
 		{
+			var query = new CamlQueryTranslator(null).Translate(queryModel);
+
+
 			throw new NotImplementedException();
 		}
 
@@ -39,7 +43,7 @@ namespace Untech.SharePoint.Common.Data
 
 		internal static IEnumerable<T> Take<T>(ISpItemsProvider itemsProvider, QueryModel queryModel)
 		{
-			throw new NotImplementedException();
+			return GetAll<T>(itemsProvider, queryModel);
 		}
 
 		internal static MethodCallExpression MakeTake(Type entityType, ISpItemsProvider itemsProvider, QueryModel queryModel)
@@ -51,7 +55,7 @@ namespace Untech.SharePoint.Common.Data
 
 		internal static IEnumerable<T> Skip<T>(ISpItemsProvider itemsProvider, QueryModel queryModel, int count)
 		{
-			throw new NotImplementedException();
+			return GetAll<T>(itemsProvider, queryModel).Skip(count);
 		}
 
 		internal static MethodCallExpression MakeSkip(Type entityType, ISpItemsProvider itemsProvider, QueryModel queryModel, int count)
@@ -64,7 +68,19 @@ namespace Untech.SharePoint.Common.Data
 
 		internal static T First<T>(ISpItemsProvider itemsProvider, QueryModel queryModel, bool throwIfNothing, bool throwIfMultiple)
 		{
-			throw new NotImplementedException();
+			if (throwIfMultiple)
+			{
+				queryModel.RowLimit = 2;
+
+				return throwIfNothing 
+					? GetAll<T>(itemsProvider, queryModel).Single() 
+					: GetAll<T>(itemsProvider, queryModel).SingleOrDefault();
+			}
+
+			queryModel.RowLimit = 1;
+			return throwIfNothing 
+				? GetAll<T>(itemsProvider, queryModel).First() 
+				: GetAll<T>(itemsProvider, queryModel).FirstOrDefault();
 		}
 
 		internal static MethodCallExpression MakeFirst(Type entityType, ISpItemsProvider itemsProvider, QueryModel queryModel, bool throwIfNothing, bool throwIfMultiple)
@@ -78,7 +94,11 @@ namespace Untech.SharePoint.Common.Data
 
 		internal static T ElementAt<T>(ISpItemsProvider itemsProvider, QueryModel queryModel, int index, bool throwIfNothing)
 		{
-			throw new NotImplementedException();
+			queryModel.RowLimit = index + 1;
+
+			return throwIfNothing
+				? GetAll<T>(itemsProvider, queryModel).ElementAt(index)
+				: GetAll<T>(itemsProvider, queryModel).ElementAtOrDefault(index);
 		}
 
 		internal static MethodCallExpression MakeElementAt(Type entityType, ISpItemsProvider itemsProvider, QueryModel queryModel, int index, bool throwIfNothing)
@@ -92,12 +112,14 @@ namespace Untech.SharePoint.Common.Data
 
 		internal static bool Any(ISpItemsProvider itemsProvider, QueryModel queryModel)
 		{
+			queryModel.RowLimit = 1;
+			
 			throw new NotImplementedException();
 		}
 
 		internal static MethodCallExpression MakeAny(Type entityType, ISpItemsProvider itemsProvider, QueryModel queryModel)
 		{
-			return Expression.Call(OpUtils.SpqAny.MakeGenericMethod(entityType),
+			return Expression.Call(OpUtils.SpqAny,
 				Expression.Constant(itemsProvider, typeof(ISpItemsProvider)),
 				Expression.Constant(queryModel, typeof(QueryModel)));
 
@@ -110,7 +132,7 @@ namespace Untech.SharePoint.Common.Data
 
 		internal static MethodCallExpression MakeCount(Type entityType, ISpItemsProvider itemsProvider, QueryModel queryModel)
 		{
-			return Expression.Call(OpUtils.SpqCount.MakeGenericMethod(entityType),
+			return Expression.Call(OpUtils.SpqCount,
 				Expression.Constant(itemsProvider, typeof(ISpItemsProvider)),
 				Expression.Constant(queryModel, typeof(QueryModel)));
 

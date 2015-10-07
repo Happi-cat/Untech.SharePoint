@@ -9,7 +9,7 @@ using Untech.SharePoint.Common.MetaModels;
 
 namespace Untech.SharePoint.Common.Data.Translators
 {
-	public class CamlQueryTranslator
+	internal class CamlQueryTranslator
 	{
 		public CamlQueryTranslator(MetaList list)
 		{
@@ -42,7 +42,7 @@ namespace Untech.SharePoint.Common.Data.Translators
 			return xWhere != null ? new XElement(Tags.Where, xWhere) : null;
 		}
 
-		public XElement GetWhere(WhereModel @where)
+		protected XElement GetWhere(WhereModel @where)
 		{
 			if (@where == null)
 			{
