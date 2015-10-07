@@ -11,7 +11,6 @@
 		Leq,
 		Lt,
 		Neq,
-		DateRangesOverlap,
 		IsNotNull,
 		IsNull,
 	}

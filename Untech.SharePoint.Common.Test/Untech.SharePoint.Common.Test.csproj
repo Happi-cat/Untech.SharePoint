@@ -74,8 +74,9 @@
     <Compile Include="Data\Translators\Predicate\InRewriterTest.cs" />
     <Compile Include="Data\Translators\Predicate\SwapComparisonVisitorTest.cs" />
     <Compile Include="Data\Translators\FakeQueryable.cs" />
+    <Compile Include="Data\Translators\Tags.cs" />
     <Compile Include="Data\Translators\VisitorsTestClass.cs" />
-    <Compile Include="Data\Translators\CamlExpressionTreeProcessorTest.cs" />
+    <Compile Include="Data\Translators\CamlQueryTreeProcessorTest.cs" />
     <Compile Include="Mappings\Annotation\AnnotatedContentTypeMappingTest.cs" />
     <Compile Include="Mappings\Annotation\AnnotatedFieldPartTest.cs" />
     <Compile Include="Mappings\Annotation\Models\ContextWithEntityIndexer.cs" />

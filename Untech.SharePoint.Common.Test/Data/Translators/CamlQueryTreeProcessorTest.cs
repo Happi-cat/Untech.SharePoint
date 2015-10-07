@@ -10,7 +10,7 @@ using Untech.SharePoint.Common.Extensions;
 namespace Untech.SharePoint.Common.Test.Data.Translators
 {
 	[TestClass]
-	public class CamlExpressionTreeProcessorTest
+	public class CamlQueryTreeProcessorTest
 	{
 		[TestMethod]
 		public void CanBeRun()
@@ -71,7 +71,7 @@ namespace Untech.SharePoint.Common.Test.Data.Translators
 		{
 			var query = queryBuilder(new FakeQueryable<VisitorsTestClass>());
 
-			var generatedExpression = new CamlQueryBuilder().Process(query.Expression);
+			var generatedExpression = new CamlQueryTreeProcessor().Process(query.Expression);
 
 			if (generatedExpression.NodeType != ExpressionType.Call)
 			{
