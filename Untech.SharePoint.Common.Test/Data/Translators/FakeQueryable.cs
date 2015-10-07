@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using Untech.SharePoint.Common.Data;
-using Untech.SharePoint.Common.Data.QueryModels;
 
 namespace Untech.SharePoint.Common.Test.Data.Translators
 {
@@ -12,7 +11,7 @@ namespace Untech.SharePoint.Common.Test.Data.Translators
 	{
 		public FakeQueryable()
 		{
-			Expression = SpQueryable.MakeAsQueryable(typeof(T), SpQueryable.MakeGetAll(typeof(T), null, new QueryModel()));
+			Expression = SpQueryable.MakeFakeGetAll(typeof(T), null);
 		}
 
 		protected FakeQueryable(Expression node)

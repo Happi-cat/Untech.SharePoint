@@ -41,9 +41,29 @@ namespace Untech.SharePoint.Common.Test.Data.Translators
 		[TestMethod]
 		public void CanProcessOrderBy()
 		{
-			TestModel(source => source.OrderBy(n => n.Bool1),
+			TestModel(source => source.OrderBy(n => n.Bool1).ThenBy(n => n.String1),
 				"<Query>" +
-				"<OrderBy><FieldRef Name='Bool1' Ascending='TRUE' /></OrderBy>" +
+				"<OrderBy><FieldRef Name='Bool1' Ascending='TRUE' /><FieldRef Name='String1' Ascending='TRUE' /></OrderBy>" +
+				"</Query>");
+		}
+
+		[TestMethod]
+		public void CanProcessTake()
+		{
+			TestModel(source => source.Where(n => n.Bool1).Where(n => n.Int1 > 10).Where(n => n.String1.StartsWith("TEST")).Take(10),
+				"<Query><RowLimit>10</RowLimit>" +
+				"<Where><And><And><Eq><FieldRef Name='Bool1' /><Value>True</Value></Eq><Gt><FieldRef Name='Int1' /><Value>10</Value></Gt></And>" +
+				"<BeginsWith><FieldRef Name='String1' /><Value>TEST</Value></BeginsWith></And></Where>" +
+				"</Query>");
+		}
+
+		[TestMethod]
+		public void CanProcessSkip()
+		{
+			TestModel(source => source.Where(n => n.Bool1).Where(n => n.Int1 > 10).Where(n => n.String1.StartsWith("TEST")).Skip(10),
+				"<Query>" +
+				"<Where><And><And><Eq><FieldRef Name='Bool1' /><Value>True</Value></Eq><Gt><FieldRef Name='Int1' /><Value>10</Value></Gt></And>" +
+				"<BeginsWith><FieldRef Name='String1' /><Value>TEST</Value></BeginsWith></And></Where>" +
 				"</Query>");
 		}
 
@@ -51,7 +71,7 @@ namespace Untech.SharePoint.Common.Test.Data.Translators
 		{
 			var query = queryBuilder(new FakeQueryable<VisitorsTestClass>());
 
-			var generatedExpression = new CamlExpressionTreeProcessor().Visit(query.Expression);
+			var generatedExpression = new CamlQueryBuilder().Process(query.Expression);
 
 			if (generatedExpression.NodeType != ExpressionType.Call)
 			{
@@ -65,7 +85,7 @@ namespace Untech.SharePoint.Common.Test.Data.Translators
 			}
 
 			callNode = (MethodCallExpression)((MethodCallExpression)generatedExpression).Arguments[0].StripQuotes();
-			if (!OpUtils.IsOperator(callNode.Method, OpUtils.SpqGetAll))
+			if (!OpUtils.IsOperator(callNode.Method, OpUtils.SpqGetAll) && !OpUtils.IsOperator(callNode.Method, OpUtils.SpqTake) && !OpUtils.IsOperator(callNode.Method, OpUtils.SpqSkip))
 			{
 				Assert.Fail("Not a SpQueryable.GetSpItems");
 			}

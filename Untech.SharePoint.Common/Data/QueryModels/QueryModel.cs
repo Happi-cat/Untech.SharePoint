@@ -7,7 +7,7 @@ namespace Untech.SharePoint.Common.Data.QueryModels
 {
 	public class QueryModel
 	{
-		public uint? RowLimit { get; set; }
+		public int? RowLimit { get; set; }
 
 		public WhereModel Where { get; set; }
 
