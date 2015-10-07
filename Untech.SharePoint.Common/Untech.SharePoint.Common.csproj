@@ -59,6 +59,7 @@
     <Compile Include="Converters\Custom\EnumFieldConverter.cs" />
     <Compile Include="Converters\Custom\JsonFieldConverter.cs" />
     <Compile Include="Converters\Custom\XmlFieldConverter.cs" />
+    <Compile Include="Data\GenericMethodDefinitionComparer.cs" />
     <Compile Include="Data\Translators\CamlQueryBuilder.cs" />
     <Compile Include="Data\Translators\Predicate\CamlKeySelectorProcessor.cs" />
     <Compile Include="Data\Translators\Predicate\CamlProcessorUtils.cs" />
@@ -155,6 +156,9 @@
   <ItemGroup>
     <None Include="key.snk" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Data\Translators\Chain\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

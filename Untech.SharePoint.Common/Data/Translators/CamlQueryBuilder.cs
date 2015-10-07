@@ -11,85 +11,9 @@ namespace Untech.SharePoint.Common.Data.Translators
 {
 	public class CamlQueryBuilder : IExpressionProcessor<Expression>
 	{
-		public interface ICamlQueryBuilderPart
-		{
-			bool IsOuterCallBuildAllowed(MethodCallExpression node);
-
-			void UpdateContext(BuilderContext context, MethodCallExpression node);
-
-			Expression Build(BuilderContext context, MethodCallExpression node);
-		}
-
-		public class BuilderContext
-		{
-			public QueryModel Query { get; set; }
-
-			public ISpItemsProvider ItemsProvider { get; set; }
-		}
-
-		internal class BuilderNominator : ExpressionVisitor
-		{
-			public BuilderNominator(IReadOnlyDictionary<MethodInfo, ICamlQueryBuilderPart> rules)
-			{
-				Candidates = new HashSet<Expression>();
-				Rules = rules;
-			}
-
-
-			public HashSet<Expression> Candidates { get; private set; }
-			public IReadOnlyDictionary<MethodInfo, ICamlQueryBuilderPart> Rules { get; set; }
-			protected bool CanBeOuterCallBuilt { get; set; }
-
-			public override Expression Visit(Expression node)
-			{
-				if (node.NodeType == ExpressionType.Call)
-				{
-					return VisitMethodCall((MethodCallExpression)node);
-				}
-				if (node.NodeType == ExpressionType.Quote)
-				{
-					return VisitUnary((UnaryExpression) node);
-				}
-				return node;
-			}
-
-			protected override Expression VisitMethodCall(MethodCallExpression node)
-			{
-				if (node.Method.DeclaringType == typeof(Queryable))
-				{
-					Visit(node.Arguments[0]);
-				}
-
-				var method = node.Method;
-				if (method.IsGenericMethod)
-				{
-					method = method.GetGenericMethodDefinition();
-				}
-
-				if (OpUtils.SpqFakeGetAll == method)
-				{
-					CanBeOuterCallBuilt = true;
-				}
-				if (Rules.ContainsKey(method))
-				{
-					if (CanBeOuterCallBuilt)
-					{
-						Candidates.Add(node);
-					}
-					CanBeOuterCallBuilt &= Rules[method].IsOuterCallBuildAllowed(node);
-				}
-				else
-				{
-					CanBeOuterCallBuilt = false;
-				}
-
-				return node;
-			}
-		}
-
 		public CamlQueryBuilder()
 		{
-			Rules = new Dictionary<MethodInfo, ICamlQueryBuilderPart>
+			Parts = new Dictionary<MethodInfo, ICamlQueryBuilderPart> (new GenericMethodDefinitionComparer())
 			{
 				{OpUtils.SpqFakeGetAll, new InitBuilderPart()},
 				{OpUtils.QWhere, new WhereBuilderPart()},
@@ -125,15 +49,15 @@ namespace Untech.SharePoint.Common.Data.Translators
 			Context = new BuilderContext();
 		}
 
-		protected IReadOnlyDictionary<MethodInfo, ICamlQueryBuilderPart> Rules { get; set; }
-		public HashSet<Expression> Candidates { get; private set; }
+		protected IReadOnlyDictionary<MethodInfo, ICamlQueryBuilderPart> Parts { get; set; }
+		protected HashSet<Expression> Candidates { get; private set; }
 
 		protected BuilderContext Context { get; set; }
 
 
 		public Expression Process(Expression node)
 		{
-			var nominator = new BuilderNominator(Rules);
+			var nominator = new RewriteNominator(Parts);
 			nominator.Visit(node);
 			Candidates = nominator.Candidates;
 
@@ -146,7 +70,7 @@ namespace Untech.SharePoint.Common.Data.Translators
 			if (node.NodeType == ExpressionType.Call && Candidates.Contains(node))
 			{
 				var rule = VisitBuilderMethodCall((MethodCallExpression)node);
-				return rule.Build(Context, (MethodCallExpression)node);
+				return rule.Rewrite(Context, (MethodCallExpression)node);
 			}
 			if (node.NodeType == ExpressionType.Call)
 			{
@@ -185,15 +109,9 @@ namespace Untech.SharePoint.Common.Data.Translators
 				VisitBuilder(node.Arguments[0]);
 			}
 
-			var method = node.Method;
-			if (method.IsGenericMethod)
+			if (Parts.ContainsKey(node.Method))
 			{
-				method = method.GetGenericMethodDefinition();
-			}
-
-			if (Rules.ContainsKey(method))
-			{
-				var currentRule = Rules[method];
+				var currentRule = Parts[node.Method];
 
 				currentRule.UpdateContext(Context, node);
 
@@ -202,261 +120,329 @@ namespace Untech.SharePoint.Common.Data.Translators
 
 			throw new NotSupportedException();
 		}
+	}
 
-		protected class InitBuilderPart : ICamlQueryBuilderPart
+	internal class RewriteNominator : ExpressionVisitor
+	{
+		public RewriteNominator(IReadOnlyDictionary<MethodInfo, ICamlQueryBuilderPart> builderParts)
 		{
-			public bool IsOuterCallBuildAllowed(MethodCallExpression node)
-			{
-				return true;
-			}
-
-			public void UpdateContext(BuilderContext context, MethodCallExpression node)
-			{
-				context.Query = new QueryModel();
-				context.ItemsProvider = (ISpItemsProvider)((ConstantExpression)node.Arguments[0].StripQuotes()).Value;
-			}
-
-			public Expression Build(BuilderContext context, MethodCallExpression node)
-			{
-				var entityType = node.Method.GetGenericArguments()[0];
-				return SpQueryable.MakeAsQueryable(entityType, SpQueryable.MakeGetAll(entityType, context.ItemsProvider, context.Query));
-			}
+			Candidates = new HashSet<Expression>();
+			BuilderParts = builderParts;
 		}
 
-		protected class WhereBuilderPart : ICamlQueryBuilderPart
+
+		public HashSet<Expression> Candidates { get; private set; }
+		public IReadOnlyDictionary<MethodInfo, ICamlQueryBuilderPart> BuilderParts { get; set; }
+		protected bool OuterCallRewriteAllowed { get; set; }
+
+		public override Expression Visit(Expression node)
 		{
-			public bool IsOuterCallBuildAllowed(MethodCallExpression node)
+			switch (node.NodeType)
 			{
-				return true;
+				case ExpressionType.Call:
+					return VisitMethodCall((MethodCallExpression)node);
+				case ExpressionType.Quote:
+					return VisitUnary((UnaryExpression) node);
 			}
-
-			public void UpdateContext(BuilderContext context, MethodCallExpression node)
-			{
-				var predicate = node.Arguments[1];
-
-				context.Query.MergeWheres(new CamlPredicateProcessor().Process(predicate));
-			}
-
-			public Expression Build(BuilderContext context, MethodCallExpression node)
-			{
-				var entityType = node.Method.GetGenericArguments()[0];
-				return SpQueryable.MakeAsQueryable(entityType, SpQueryable.MakeGetAll(entityType, context.ItemsProvider, context.Query));
-			}
+			return node;
 		}
 
-		protected class AnyBuilderPart : ICamlQueryBuilderPart
+		protected override Expression VisitMethodCall(MethodCallExpression node)
 		{
-			public bool IsOuterCallBuildAllowed(MethodCallExpression node)
+			if (node.Method.DeclaringType == typeof(Queryable))
 			{
-				return false;
+				Visit(node.Arguments[0]);
 			}
 
-			public void UpdateContext(BuilderContext context, MethodCallExpression node)
+			if (OpUtils.IsOperator(OpUtils.SpqFakeGetAll, node.Method))
 			{
-				if (node.Arguments.Count != 2)
+				OuterCallRewriteAllowed = true;
+			}
+			if (BuilderParts.ContainsKey(node.Method))
+			{
+				if (OuterCallRewriteAllowed)
 				{
-					return;
+					Candidates.Add(node);
 				}
-
-				var predicate = node.Arguments[1];
-
-				context.Query.MergeWheres(new CamlPredicateProcessor().Process(predicate));
+				OuterCallRewriteAllowed &= BuilderParts[node.Method].OuterCallRewriteAllowed;
 			}
-
-			public Expression Build(BuilderContext context, MethodCallExpression node)
+			else
 			{
-				return SpQueryable.MakeAny(node.Method.GetGenericArguments()[0], context.ItemsProvider, context.Query);
+				OuterCallRewriteAllowed = false;
 			}
-		}
 
-		protected class AllBuilderPart : ICamlQueryBuilderPart
+			return node;
+		}
+	}
+
+	public class BuilderContext
+	{
+		public QueryModel Query { get; set; }
+
+		public ISpItemsProvider ItemsProvider { get; set; }
+	}
+
+	public class InitBuilderPart : ICamlQueryBuilderPart
+	{
+		public bool OuterCallRewriteAllowed
 		{
-			public bool IsOuterCallBuildAllowed(MethodCallExpression node)
-			{
-				return false;
-			}
-
-			public void UpdateContext(BuilderContext context, MethodCallExpression node)
-			{
-				var predicate = node.Arguments[1];
-
-				context.Query.MergeWheres(new CamlPredicateProcessor().Process(predicate).Negate());
-			}
-
-			public Expression Build(BuilderContext context, MethodCallExpression node)
-			{
-				return SpQueryable.MakeAny(node.Method.GetGenericArguments()[0], context.ItemsProvider, context.Query);
-			}
+			get { return true; }
 		}
 
-		protected class OrderByBuilderPart : ICamlQueryBuilderPart
+		public void UpdateContext(BuilderContext context, MethodCallExpression node)
 		{
-			public bool Ascending { get; set; }
-
-			public bool ResetOrder { get; set; }
-
-			public bool IsOuterCallBuildAllowed(MethodCallExpression node)
-			{
-				return true;
-			}
-
-			public void UpdateContext(BuilderContext context, MethodCallExpression node)
-			{
-				if (ResetOrder)
-				{
-					context.Query.ResetOrder();
-				}
-
-				context.Query.MergeOrderBys(new OrderByModel(new CamlKeySelectorProcessor().Process(node.Arguments[1]), Ascending));
-			}
-
-			public Expression Build(BuilderContext context, MethodCallExpression node)
-			{
-				var entityType = node.Method.GetGenericArguments()[0];
-				return SpQueryable.MakeAsQueryable(entityType, SpQueryable.MakeGetAll(entityType, context.ItemsProvider, context.Query));
-			}
+			context.Query = new QueryModel();
+			context.ItemsProvider = (ISpItemsProvider)((ConstantExpression)node.Arguments[0].StripQuotes()).Value;
 		}
 
-		protected class TakeBuilderPart : ICamlQueryBuilderPart
+		public Expression Rewrite(BuilderContext context, MethodCallExpression node)
 		{
-			public bool IsOuterCallBuildAllowed(MethodCallExpression node)
-			{
-				return false;
-			}
-
-			public void UpdateContext(BuilderContext context, MethodCallExpression node)
-			{
-				context.Query.RowLimit = (int)((ConstantExpression)node.Arguments[1].StripQuotes()).Value;
-			}
-
-			public Expression Build(BuilderContext context, MethodCallExpression node)
-			{
-				var entityType = node.Method.GetGenericArguments()[0];
-				return SpQueryable.MakeAsQueryable(entityType, SpQueryable.MakeTake(entityType, context.ItemsProvider, context.Query));
-			}
+			var entityType = node.Method.GetGenericArguments()[0];
+			return SpQueryable.MakeAsQueryable(entityType, SpQueryable.MakeGetAll(entityType, context.ItemsProvider, context.Query));
 		}
+	}
 
-		protected class SkipBuilderPart : ICamlQueryBuilderPart
+	public class WhereBuilderPart : ICamlQueryBuilderPart
+	{
+		public bool OuterCallRewriteAllowed
 		{
-			public bool IsOuterCallBuildAllowed(MethodCallExpression node)
-			{
-				return false;
-			}
-
-			public void UpdateContext(BuilderContext context, MethodCallExpression node)
-			{
-
-			}
-
-			public Expression Build(BuilderContext context, MethodCallExpression node)
-			{
-				var count = (int)((ConstantExpression)node.Arguments[1].StripQuotes()).Value;
-
-				var entityType = node.Method.GetGenericArguments()[0];
-				return SpQueryable.MakeAsQueryable(entityType, SpQueryable.MakeSkip(entityType, context.ItemsProvider, context.Query, count));
-			}
+			get { return true; }
 		}
 
-		protected class FirstBuilderPart : ICamlQueryBuilderPart
+		public void UpdateContext(BuilderContext context, MethodCallExpression node)
 		{
-			public bool ThrowIfNothing { get; set; }
+			var predicate = node.Arguments[1];
 
-			public bool ThrowIfMultiple { get; set; }
-
-			public bool IsOuterCallBuildAllowed(MethodCallExpression node)
-			{
-				return false;
-			}
-
-			public void UpdateContext(BuilderContext context, MethodCallExpression node)
-			{
-
-			}
-
-			public Expression Build(BuilderContext context, MethodCallExpression node)
-			{
-				return SpQueryable.MakeFirst(node.Method.GetGenericArguments()[0], context.ItemsProvider, context.Query, ThrowIfNothing, ThrowIfMultiple);
-			}
+			context.Query.MergeWheres(new CamlPredicateProcessor().Process(predicate));
 		}
 
-		protected class LastRewriteRule : ICamlQueryBuilderPart
+		public Expression Rewrite(BuilderContext context, MethodCallExpression node)
 		{
-			public bool ThrowIfNothing { get; set; }
-
-			public bool IsOuterCallBuildAllowed(MethodCallExpression node)
-			{
-				return false;
-			}
-
-			public void UpdateContext(BuilderContext context, MethodCallExpression node)
-			{
-				context.Query.ReverseOrder();
-			}
-
-			public Expression Build(BuilderContext context, MethodCallExpression node)
-			{
-				return SpQueryable.MakeFirst(node.Method.GetGenericArguments()[0], context.ItemsProvider, context.Query, ThrowIfNothing, false);
-			}
+			var entityType = node.Method.GetGenericArguments()[0];
+			return SpQueryable.MakeAsQueryable(entityType, SpQueryable.MakeGetAll(entityType, context.ItemsProvider, context.Query));
 		}
+	}
 
-		protected class ElementAtRewriteRule : ICamlQueryBuilderPart
+	public class AnyBuilderPart : ICamlQueryBuilderPart
+	{
+		public bool OuterCallRewriteAllowed
 		{
-			public bool ThrowIfNothing { get; set; }
-
-			public Expression Build(BuilderContext context, MethodCallExpression node)
-			{
-				var count = (int)((ConstantExpression)node.Arguments[1].StripQuotes()).Value;
-
-				return SpQueryable.MakeElementAt(node.Method.GetGenericArguments()[0], context.ItemsProvider, context.Query, count, ThrowIfNothing);
-			}
-
-			public bool IsOuterCallBuildAllowed(MethodCallExpression node)
-			{
-				return false;
-			}
-
-			public void UpdateContext(BuilderContext context, MethodCallExpression node)
-			{
-
-			}
+			get { return false; }
 		}
 
-		protected class ReverseRewriteRule : ICamlQueryBuilderPart
+		public void UpdateContext(BuilderContext context, MethodCallExpression node)
 		{
-			public Expression Build(BuilderContext context, MethodCallExpression node)
+			if (node.Arguments.Count != 2)
 			{
-				var entityType = node.Method.GetGenericArguments()[0];
-				return SpQueryable.MakeAsQueryable(entityType, SpQueryable.MakeGetAll(entityType, context.ItemsProvider, context.Query));
+				return;
 			}
 
-			public bool IsOuterCallBuildAllowed(MethodCallExpression node)
-			{
-				return true;
-			}
+			var predicate = node.Arguments[1];
 
-			public void UpdateContext(BuilderContext context, MethodCallExpression node)
-			{
-				context.Query.ReverseOrder();
-			}
+			context.Query.MergeWheres(new CamlPredicateProcessor().Process(predicate));
 		}
 
-		protected class CountRewriteRule : ICamlQueryBuilderPart
+		public Expression Rewrite(BuilderContext context, MethodCallExpression node)
 		{
-			public bool IsOuterCallBuildAllowed(MethodCallExpression node)
-			{
-				return false;
-			}
+			return SpQueryable.MakeAny(node.Method.GetGenericArguments()[0], context.ItemsProvider, context.Query);
+		}
+	}
 
-			public void UpdateContext(BuilderContext context, MethodCallExpression node)
-			{
-
-			}
-
-			public Expression Build(BuilderContext context, MethodCallExpression node)
-			{
-				return SpQueryable.MakeCount(node.Method.GetGenericArguments()[0], context.ItemsProvider, context.Query);
-			}
+	public class AllBuilderPart : ICamlQueryBuilderPart
+	{
+		public bool OuterCallRewriteAllowed
+		{
+			get { return false; }
 		}
 
+		public void UpdateContext(BuilderContext context, MethodCallExpression node)
+		{
+			var predicate = node.Arguments[1];
+
+			context.Query.MergeWheres(new CamlPredicateProcessor().Process(predicate).Negate());
+		}
+
+		public Expression Rewrite(BuilderContext context, MethodCallExpression node)
+		{
+			return SpQueryable.MakeAny(node.Method.GetGenericArguments()[0], context.ItemsProvider, context.Query);
+		}
+	}
+
+	public class OrderByBuilderPart : ICamlQueryBuilderPart
+	{
+		public bool Ascending { get; set; }
+
+		public bool ResetOrder { get; set; }
+
+		public bool OuterCallRewriteAllowed
+		{
+			get { return true; }
+		}
+
+		public void UpdateContext(BuilderContext context, MethodCallExpression node)
+		{
+			if (ResetOrder)
+			{
+				context.Query.ResetOrder();
+			}
+
+			context.Query.MergeOrderBys(new OrderByModel(new CamlKeySelectorProcessor().Process(node.Arguments[1]), Ascending));
+		}
+
+		public Expression Rewrite(BuilderContext context, MethodCallExpression node)
+		{
+			var entityType = node.Method.GetGenericArguments()[0];
+			return SpQueryable.MakeAsQueryable(entityType, SpQueryable.MakeGetAll(entityType, context.ItemsProvider, context.Query));
+		}
+	}
+
+	public class TakeBuilderPart : ICamlQueryBuilderPart
+	{
+		public bool OuterCallRewriteAllowed
+		{
+			get { return false; }
+		}
+
+		public void UpdateContext(BuilderContext context, MethodCallExpression node)
+		{
+			context.Query.RowLimit = (int)((ConstantExpression)node.Arguments[1].StripQuotes()).Value;
+		}
+
+		public Expression Rewrite(BuilderContext context, MethodCallExpression node)
+		{
+			var entityType = node.Method.GetGenericArguments()[0];
+			return SpQueryable.MakeAsQueryable(entityType, SpQueryable.MakeTake(entityType, context.ItemsProvider, context.Query));
+		}
+	}
+
+	public class SkipBuilderPart : ICamlQueryBuilderPart
+	{
+		public bool OuterCallRewriteAllowed
+		{
+			get { return false; }
+		}
+
+		public void UpdateContext(BuilderContext context, MethodCallExpression node)
+		{
+
+		}
+
+		public Expression Rewrite(BuilderContext context, MethodCallExpression node)
+		{
+			var count = (int)((ConstantExpression)node.Arguments[1].StripQuotes()).Value;
+
+			var entityType = node.Method.GetGenericArguments()[0];
+			return SpQueryable.MakeAsQueryable(entityType, SpQueryable.MakeSkip(entityType, context.ItemsProvider, context.Query, count));
+		}
+	}
+
+	public class FirstBuilderPart : ICamlQueryBuilderPart
+	{
+		public bool ThrowIfNothing { get; set; }
+
+		public bool ThrowIfMultiple { get; set; }
+
+		public bool OuterCallRewriteAllowed
+		{
+			get { return false; }
+		}
+
+		public void UpdateContext(BuilderContext context, MethodCallExpression node)
+		{
+
+		}
+
+		public Expression Rewrite(BuilderContext context, MethodCallExpression node)
+		{
+			return SpQueryable.MakeFirst(node.Method.GetGenericArguments()[0], context.ItemsProvider, context.Query, ThrowIfNothing, ThrowIfMultiple);
+		}
+	}
+
+	public class LastRewriteRule : ICamlQueryBuilderPart
+	{
+		public bool ThrowIfNothing { get; set; }
+
+		public bool OuterCallRewriteAllowed
+		{
+			get { return false; }
+		}
+
+		public void UpdateContext(BuilderContext context, MethodCallExpression node)
+		{
+			context.Query.ReverseOrder();
+		}
+
+		public Expression Rewrite(BuilderContext context, MethodCallExpression node)
+		{
+			return SpQueryable.MakeFirst(node.Method.GetGenericArguments()[0], context.ItemsProvider, context.Query, ThrowIfNothing, false);
+		}
+	}
+
+	public class ElementAtRewriteRule : ICamlQueryBuilderPart
+	{
+		public bool ThrowIfNothing { get; set; }
+
+		public Expression Rewrite(BuilderContext context, MethodCallExpression node)
+		{
+			var count = (int)((ConstantExpression)node.Arguments[1].StripQuotes()).Value;
+
+			return SpQueryable.MakeElementAt(node.Method.GetGenericArguments()[0], context.ItemsProvider, context.Query, count, ThrowIfNothing);
+		}
+
+		public bool OuterCallRewriteAllowed
+		{
+			get { return false; }
+		}
+
+		public void UpdateContext(BuilderContext context, MethodCallExpression node)
+		{
+
+		}
+	}
+
+	public class ReverseRewriteRule : ICamlQueryBuilderPart
+	{
+		public Expression Rewrite(BuilderContext context, MethodCallExpression node)
+		{
+			var entityType = node.Method.GetGenericArguments()[0];
+			return SpQueryable.MakeAsQueryable(entityType, SpQueryable.MakeGetAll(entityType, context.ItemsProvider, context.Query));
+		}
+
+		public bool OuterCallRewriteAllowed
+		{
+			get { return true; }
+		}
+
+		public void UpdateContext(BuilderContext context, MethodCallExpression node)
+		{
+			context.Query.ReverseOrder();
+		}
+	}
+
+	public class CountRewriteRule : ICamlQueryBuilderPart
+	{
+		public bool OuterCallRewriteAllowed
+		{
+			get { return false; }
+		}
+
+		public void UpdateContext(BuilderContext context, MethodCallExpression node)
+		{
+
+		}
+
+		public Expression Rewrite(BuilderContext context, MethodCallExpression node)
+		{
+			return SpQueryable.MakeCount(node.Method.GetGenericArguments()[0], context.ItemsProvider, context.Query);
+		}
+	}
+
+	public interface ICamlQueryBuilderPart
+	{
+		bool OuterCallRewriteAllowed { get; }
+
+		void UpdateContext(BuilderContext context, MethodCallExpression node);
+
+		Expression Rewrite(BuilderContext context, MethodCallExpression node);
 	}
 }

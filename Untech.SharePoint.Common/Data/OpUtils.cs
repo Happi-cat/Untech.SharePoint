@@ -101,14 +101,9 @@ namespace Untech.SharePoint.Common.Data
 			return (PropertyInfo)memberAccess.Member;
 		}
 
-		public static bool IsOperator(MethodInfo x, MethodInfo op)
+		public static bool IsOperator(MethodInfo x, MethodInfo y)
 		{
-			if (x.IsGenericMethod)
-			{
-				x = x.GetGenericMethodDefinition();
-			}
-			return x == op;
+			return new GenericMethodDefinitionComparer().Equals(x, y);
 		}
-
 	}
 }
