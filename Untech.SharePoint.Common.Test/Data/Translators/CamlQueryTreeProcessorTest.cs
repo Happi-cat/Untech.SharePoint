@@ -205,10 +205,10 @@ namespace Untech.SharePoint.Common.Test.Data.Translators
 		[TestMethod]
 		public void CanProcessReverseAndOuterCalls()
 		{
-			TestModel(source => source.OrderBy(n => n.String1).Reverse().Where(n => n.String2 == "TEST"),
+			TestModel(source => source.OrderBy(n => n.String1).ThenByDescending(n => n.String2).Reverse().Where(n => n.String2 == "TEST"),
 				"<Query>" +
 				"<Where><Eq><FieldRef Name='String2' /><Value>TEST</Value></Eq></Where>" +
-				"<OrderBy><FieldRef Name='String1' Ascending='FALSE' /></OrderBy>" +
+				"<OrderBy><FieldRef Name='String1' Ascending='FALSE' /><FieldRef Name='String2' Ascending='TRUE' /></OrderBy>" +
 				"</Query>");
 
 		}
