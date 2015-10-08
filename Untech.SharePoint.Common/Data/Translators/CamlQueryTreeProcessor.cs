@@ -32,11 +32,20 @@ namespace Untech.SharePoint.Common.Data.Translators
 				{OpUtils.QSingle, new FirstCallCombineRule {ThrowIfMultiple = true, ThrowIfNothing = true}},
 				{OpUtils.QSingleOrDefault, new FirstCallCombineRule {ThrowIfMultiple = true}},
 
+				{OpUtils.QSingleP, new FirstCallCombineRule {ThrowIfMultiple = true, ThrowIfNothing = true}},
+				{OpUtils.QSingleOrDefaultP, new FirstCallCombineRule {ThrowIfMultiple = true}},
+
 				{OpUtils.QFirst, new FirstCallCombineRule {ThrowIfNothing = true}},
 				{OpUtils.QFirstOrDefault, new FirstCallCombineRule()},
 
+				{OpUtils.QFirstP, new FirstCallCombineRule {ThrowIfNothing = true}},
+				{OpUtils.QFirstOrDefaultP, new FirstCallCombineRule()},
+
 				{OpUtils.QLast, new LastRewriteRule {ThrowIfNothing = true}},
 				{OpUtils.QLastOrDefault, new LastRewriteRule()},
+
+				{OpUtils.QLastP, new LastRewriteRule {ThrowIfNothing = true}},
+				{OpUtils.QLastOrDefaultP, new LastRewriteRule()},
 
 				{OpUtils.QElementAt, new ElementAtRewriteRule {ThrowIfNothing = true}},
 				{OpUtils.QElementAtOrDefault, new ElementAtRewriteRule()},
@@ -398,7 +407,14 @@ namespace Untech.SharePoint.Common.Data.Translators
 
 			public void UpdateContext(ICallsCombinerContext context, MethodCallExpression node)
 			{
+				if (node.Arguments.Count != 2)
+				{
+					return;
+				}
 
+				var predicate = node.Arguments[1];
+
+				context.Query.MergeWheres(new CamlPredicateProcessor().Process(predicate));
 			}
 
 			public Expression Combine(ICallsCombinerContext context, MethodCallExpression node)
@@ -420,6 +436,15 @@ namespace Untech.SharePoint.Common.Data.Translators
 			public void UpdateContext(ICallsCombinerContext context, MethodCallExpression node)
 			{
 				context.Query.ReverseOrder();
+
+				if (node.Arguments.Count != 2)
+				{
+					return;
+				}
+
+				var predicate = node.Arguments[1];
+
+				context.Query.MergeWheres(new CamlPredicateProcessor().Process(predicate));
 			}
 
 			public Expression Combine(ICallsCombinerContext context, MethodCallExpression node)

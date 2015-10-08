@@ -81,6 +81,10 @@ namespace Untech.SharePoint.Common.Data.QueryModels
 			{
 				sb.AppendFormat("<OrderBy>{0}</OrderBy>", OrderBys.JoinToString(""));
 			}
+			if (IsOrderReversed)
+			{
+				sb.Append("<ReversedOrder />");
+			}
 			sb.Append("</Query>");
 
 			return sb.ToString();

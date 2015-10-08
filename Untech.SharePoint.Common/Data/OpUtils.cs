@@ -50,12 +50,18 @@ namespace Untech.SharePoint.Common.Data
 		public static readonly MethodInfo QSkip = GetMethodInfo(() => Queryable.Skip<int>(null, 0));
 
 		public static readonly MethodInfo QSingle = GetMethodInfo(() => Queryable.Single<int>(null));
+		public static readonly MethodInfo QSingleP = GetMethodInfo(() => Queryable.Single<int>(null, null));
 		public static readonly MethodInfo QFirst = GetMethodInfo(() => Queryable.First<int>(null));
+		public static readonly MethodInfo QFirstP = GetMethodInfo(() => Queryable.First<int>(null, null));
 		public static readonly MethodInfo QLast = GetMethodInfo(() => Queryable.Last<int>(null));
+		public static readonly MethodInfo QLastP = GetMethodInfo(() => Queryable.Last<int>(null, null));
 
 		public static readonly MethodInfo QSingleOrDefault = GetMethodInfo(() => Queryable.SingleOrDefault<int>(null));
+		public static readonly MethodInfo QSingleOrDefaultP = GetMethodInfo(() => Queryable.SingleOrDefault<int>(null, null));
 		public static readonly MethodInfo QFirstOrDefault = GetMethodInfo(() => Queryable.FirstOrDefault<int>(null));
+		public static readonly MethodInfo QFirstOrDefaultP = GetMethodInfo(() => Queryable.FirstOrDefault<int>(null, null));
 		public static readonly MethodInfo QLastOrDefault = GetMethodInfo(() => Queryable.LastOrDefault<int>(null));
+		public static readonly MethodInfo QLastOrDefaultP = GetMethodInfo(() => Queryable.LastOrDefault<int>(null, null));
 
 		public static readonly MethodInfo QReverse = GetMethodInfo(() => Queryable.Reverse<int>(null));
 

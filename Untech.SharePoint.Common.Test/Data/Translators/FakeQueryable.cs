@@ -33,6 +33,8 @@ namespace Untech.SharePoint.Common.Test.Data.Translators
 
 		public Type ElementType { get { return typeof(T); } }
 
+		public Action<Expression>  ExpressionExecutor { get; set; }
+
 		public IQueryProvider Provider
 		{
 			get { return this; }
@@ -40,22 +42,36 @@ namespace Untech.SharePoint.Common.Test.Data.Translators
 
 		public IQueryable CreateQuery(Expression expression)
 		{
-			return new FakeQueryable<T>(expression);
+			return new FakeQueryable<T>(expression)
+			{
+				ExpressionExecutor = ExpressionExecutor
+			};
 		}
 
 		public IQueryable<TElement> CreateQuery<TElement>(Expression expression)
 		{
-			return new FakeQueryable<TElement>(expression);
+			return new FakeQueryable<TElement>(expression)
+			{
+				ExpressionExecutor = ExpressionExecutor
+			};
 		}
 
 		public object Execute(Expression expression)
 		{
-			throw new NotImplementedException();
+			if (ExpressionExecutor != null)
+			{
+				ExpressionExecutor(expression);
+			}
+			return null;
 		}
 
 		public TResult Execute<TResult>(Expression expression)
 		{
-			throw new NotImplementedException();
+			if (ExpressionExecutor != null)
+			{
+				ExpressionExecutor(expression);
+			}
+			return default(TResult);
 		}
 	}
 }
