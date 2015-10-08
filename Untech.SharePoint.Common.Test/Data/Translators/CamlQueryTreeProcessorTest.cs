@@ -52,7 +52,8 @@ namespace Untech.SharePoint.Common.Test.Data.Translators
 		[TestMethod]
 		public void CanProcessTake()
 		{
-			TestModel(source => source.Where(n => n.Bool1).Where(n => n.Int1 > 10).Where(n => n.String1.StartsWith("TEST")).Take(10),
+			TestModel(
+				source => source.Where(n => n.Bool1).Where(n => n.Int1 > 10).Where(n => n.String1.StartsWith("TEST")).Take(10),
 				"<Query><RowLimit>10</RowLimit>" +
 				"<Where><And><And><Eq><FieldRef Name='Bool1' /><Value>True</Value></Eq><Gt><FieldRef Name='Int1' /><Value>10</Value></Gt></And>" +
 				"<BeginsWith><FieldRef Name='String1' /><Value>TEST</Value></BeginsWith></And></Where>" +
@@ -62,7 +63,13 @@ namespace Untech.SharePoint.Common.Test.Data.Translators
 		[TestMethod]
 		public void CanProcessTakeAndOuterCalls()
 		{
-			TestModel(source => source.Where(n => n.Bool1).Where(n => n.Int1 > 10).Where(n => n.String1.StartsWith("TEST")).Take(10).Where(n => n.String1 == "SOME"),
+			TestModel(
+				source =>
+					source.Where(n => n.Bool1)
+						.Where(n => n.Int1 > 10)
+						.Where(n => n.String1.StartsWith("TEST"))
+						.Take(10)
+						.Where(n => n.String1 == "SOME"),
 				"<Query><RowLimit>10</RowLimit>" +
 				"<Where><And><And><Eq><FieldRef Name='Bool1' /><Value>True</Value></Eq><Gt><FieldRef Name='Int1' /><Value>10</Value></Gt></And>" +
 				"<BeginsWith><FieldRef Name='String1' /><Value>TEST</Value></BeginsWith></And></Where>" +
@@ -73,7 +80,8 @@ namespace Untech.SharePoint.Common.Test.Data.Translators
 		[TestMethod]
 		public void CanProcessSkip()
 		{
-			TestModel(source => source.Where(n => n.Bool1).Where(n => n.Int1 > 10).Where(n => n.String1.StartsWith("TEST")).Skip(10),
+			TestModel(
+				source => source.Where(n => n.Bool1).Where(n => n.Int1 > 10).Where(n => n.String1.StartsWith("TEST")).Skip(10),
 				"<Query>" +
 				"<Where><And><And><Eq><FieldRef Name='Bool1' /><Value>True</Value></Eq><Gt><FieldRef Name='Int1' /><Value>10</Value></Gt></And>" +
 				"<BeginsWith><FieldRef Name='String1' /><Value>TEST</Value></BeginsWith></And></Where>" +
@@ -83,7 +91,9 @@ namespace Untech.SharePoint.Common.Test.Data.Translators
 		[TestMethod]
 		public void CanProcessSkipAndOuterCalls()
 		{
-			TestModel(source => source.Where(n => n.Bool1).Where(n => n.Int1 > 10).Where(n => n.String1.StartsWith("TEST")).Skip(10).Take(1),
+			TestModel(
+				source =>
+					source.Where(n => n.Bool1).Where(n => n.Int1 > 10).Where(n => n.String1.StartsWith("TEST")).Skip(10).Take(1),
 				"<Query>" +
 				"<Where><And><And><Eq><FieldRef Name='Bool1' /><Value>True</Value></Eq><Gt><FieldRef Name='Int1' /><Value>10</Value></Gt></And>" +
 				"<BeginsWith><FieldRef Name='String1' /><Value>TEST</Value></BeginsWith></And></Where>" +
@@ -125,6 +135,20 @@ namespace Untech.SharePoint.Common.Test.Data.Translators
 		}
 
 		[TestMethod]
+		public void ThrowForInvalidAll()
+		{
+			CustomAssert.Throw<NotSupportedException>(() =>
+			{
+				// NOTE: unable to process '!n.String1.StartsWith("TEST")'
+				TestModel(
+					source =>
+						source.Where(n => n.Bool1)
+							.Where(n => n.Int1 > 10)
+							.All(n => n.String1.StartsWith("TEST")), "");
+			});
+		}
+
+		[TestMethod]
 		public void CanProcessFirst()
 		{
 			TestModel(source => source.OrderBy(n => n.String1).First(n => n.String2 == "TEST"),
@@ -149,11 +173,21 @@ namespace Untech.SharePoint.Common.Test.Data.Translators
 		[TestMethod]
 		public void CanProcessLast()
 		{
+			TestModel(source => source.Last(n => n.String2 == "TEST"),
+				"<Query>" +
+				"<Where><Eq><FieldRef Name='String2' /><Value>TEST</Value></Eq></Where>" +
+				"<OrderBy><FieldRef Name='ID' Ascending='FALSE' /></OrderBy>" +
+				"</Query>");
+
+		}
+
+		[TestMethod]
+		public void CanProcessLastWithOrderBy()
+		{
 			TestModel(source => source.OrderBy(n => n.String1).Last(n => n.String2 == "TEST"),
 				"<Query>" +
 				"<Where><Eq><FieldRef Name='String2' /><Value>TEST</Value></Eq></Where>" +
-				"<OrderBy><FieldRef Name='String1' Ascending='TRUE' /></OrderBy>" +
-				"<ReversedOrder />" +
+				"<OrderBy><FieldRef Name='String1' Ascending='FALSE' /></OrderBy>" +
 				"</Query>");
 
 		}
@@ -163,8 +197,7 @@ namespace Untech.SharePoint.Common.Test.Data.Translators
 		{
 			TestModel(source => source.OrderBy(n => n.String1).Reverse(),
 				"<Query>" +
-				"<OrderBy><FieldRef Name='String1' Ascending='TRUE' /></OrderBy>" +
-				"<ReversedOrder />" +
+				"<OrderBy><FieldRef Name='String1' Ascending='FALSE' /></OrderBy>" +
 				"</Query>");
 
 		}
@@ -175,13 +208,13 @@ namespace Untech.SharePoint.Common.Test.Data.Translators
 			TestModel(source => source.OrderBy(n => n.String1).Reverse().Where(n => n.String2 == "TEST"),
 				"<Query>" +
 				"<Where><Eq><FieldRef Name='String2' /><Value>TEST</Value></Eq></Where>" +
-				"<OrderBy><FieldRef Name='String1' Ascending='TRUE' /></OrderBy>" +
-				"<ReversedOrder />" +
+				"<OrderBy><FieldRef Name='String1' Ascending='FALSE' /></OrderBy>" +
 				"</Query>");
 
 		}
 
-		protected void TestModel(Func<IQueryable<VisitorsTestClass>, IQueryable<VisitorsTestClass>> actualQueryBuilder, string expectedCaml, Func<IQueryable<VisitorsTestClass>, IQueryable<VisitorsTestClass>> expectedQueryBuilder = null)
+		protected void TestModel(Func<IQueryable<VisitorsTestClass>, IQueryable<VisitorsTestClass>> actualQueryBuilder,
+			string expectedCaml, Func<IQueryable<VisitorsTestClass>, IQueryable<VisitorsTestClass>> expectedQueryBuilder = null)
 		{
 			var actualTree = actualQueryBuilder(new FakeQueryable<VisitorsTestClass>()).Expression;
 			actualTree = new CamlQueryTreeProcessor().Process(actualTree);
@@ -202,7 +235,8 @@ namespace Untech.SharePoint.Common.Test.Data.Translators
 			Assert.AreEqual(expectedTree.ToString(), actualTree.ToString());
 		}
 
-		protected void TestModel(Func<IQueryable<VisitorsTestClass>, object> actualQueryBuilder, string expectedCaml, Func<IQueryable<VisitorsTestClass>, object> expectedQueryBuilder = null)
+		protected void TestModel(Func<IQueryable<VisitorsTestClass>, object> actualQueryBuilder, string expectedCaml,
+			Func<IQueryable<VisitorsTestClass>, object> expectedQueryBuilder = null)
 		{
 			Expression actualTree = null;
 			actualQueryBuilder(new FakeQueryable<VisitorsTestClass>
@@ -231,7 +265,8 @@ namespace Untech.SharePoint.Common.Test.Data.Translators
 			Assert.AreEqual(expectedTree.ToString(), actualTree.ToString());
 		}
 
-		protected void TestModel(Func<IQueryable<VisitorsTestClass>, object> actualQueryBuilder, Func<IQueryable<VisitorsTestClass>, object> expectedTreeBuilder)
+		protected void TestModel(Func<IQueryable<VisitorsTestClass>, object> actualQueryBuilder,
+			Func<IQueryable<VisitorsTestClass>, object> expectedTreeBuilder)
 		{
 			Expression actualTree = null;
 			actualQueryBuilder(new FakeQueryable<VisitorsTestClass>
@@ -256,7 +291,7 @@ namespace Untech.SharePoint.Common.Test.Data.Translators
 			public static QueryModel FindQuery(Expression node)
 			{
 				var finder = new QueryFinder();
-				
+
 				finder.Visit(node);
 
 				return finder.Query;
@@ -281,11 +316,11 @@ namespace Untech.SharePoint.Common.Test.Data.Translators
 			}
 		}
 
-		protected class SpQueryRemover: ExpressionVisitor
+		protected class SpQueryRemover : ExpressionVisitor
 		{
 			protected override Expression VisitMethodCall(MethodCallExpression node)
 			{
-				if (node.Method.DeclaringType == typeof(SpQueryable))
+				if (node.Method.DeclaringType == typeof (SpQueryable))
 				{
 					return Expression.Constant(null, node.Type);
 				}
