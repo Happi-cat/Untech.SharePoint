@@ -42,14 +42,14 @@ namespace Untech.SharePoint.Common.Data.Translators.Predicate
 
 		private static bool IsValidObjectInCall(MethodCallExpression node)
 		{
-			return OpUtils.IsOperator(node.Method, OpUtils.ObjIn) &&
+			return MethodUtils.IsOperator(node.Method, MethodUtils.ObjIn) &&
 			       node.Arguments[0].NodeType == ExpressionType.MemberAccess &&
 			       node.Arguments[1].NodeType == ExpressionType.Constant;
 		}
 
 		private static bool IsValidEnumerableContainsCall(MethodCallExpression node)
 		{
-			return OpUtils.IsOperator(node.Method, OpUtils.EContains) &&
+			return MethodUtils.IsOperator(node.Method, MethodUtils.EContains) &&
 			       node.Arguments[0].NodeType == ExpressionType.Constant &&
 			       node.Arguments[1].NodeType == ExpressionType.MemberAccess;
 		}

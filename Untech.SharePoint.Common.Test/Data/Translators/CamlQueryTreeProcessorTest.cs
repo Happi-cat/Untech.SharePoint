@@ -303,7 +303,7 @@ namespace Untech.SharePoint.Common.Test.Data.Translators
 			{
 				if (node.Method.DeclaringType == typeof (SpQueryable))
 				{
-					if (!OpUtils.IsOperator(node.Method, OpUtils.SpqFakeGetAll))
+					if (!MethodUtils.IsOperator(node.Method, MethodUtils.SpqFakeGetAll))
 					{
 						Query = (QueryModel) ((ConstantExpression) node.Arguments[1].StripQuotes()).Value;
 					}
@@ -325,7 +325,7 @@ namespace Untech.SharePoint.Common.Test.Data.Translators
 					return Expression.Constant(null, node.Type);
 				}
 
-				if (!OpUtils.IsOperator(node.Method, OpUtils.QAsQueryable))
+				if (!MethodUtils.IsOperator(node.Method, MethodUtils.QAsQueryable))
 				{
 					return base.VisitMethodCall(node);
 				}

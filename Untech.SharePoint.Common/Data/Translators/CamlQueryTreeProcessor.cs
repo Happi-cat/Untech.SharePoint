@@ -15,44 +15,44 @@ namespace Untech.SharePoint.Common.Data.Translators
 		{
 			CombineRules = new Dictionary<MethodInfo, ICallCombineRule> (new GenericMethodDefinitionComparer())
 			{
-				{OpUtils.SpqFakeGetAll, new InitContextRule()},
-				{OpUtils.QWhere, new WhereCallCombineRule()},
-				{OpUtils.QAny, new AnyCallCombineRule()},
-				{OpUtils.QAnyP, new AnyCallCombineRule()},
-				{OpUtils.QAll, new AllCallCombineRule()},
+				{MethodUtils.SpqFakeGetAll, new InitContextRule()},
+				{MethodUtils.QWhere, new WhereCallCombineRule()},
+				{MethodUtils.QAny, new AnyCallCombineRule()},
+				{MethodUtils.QAnyP, new AnyCallCombineRule()},
+				{MethodUtils.QAll, new AllCallCombineRule()},
 
-				{OpUtils.QOrderBy, new OrderByCallCombineRule { ResetOrder = true, Ascending = true}},
-				{OpUtils.QOrderByDescending, new OrderByCallCombineRule{ ResetOrder = true }},
-				{OpUtils.QThenBy, new OrderByCallCombineRule {Ascending = true}},
-				{OpUtils.QThenrByDescending, new OrderByCallCombineRule()},
+				{MethodUtils.QOrderBy, new OrderByCallCombineRule { ResetOrder = true, Ascending = true}},
+				{MethodUtils.QOrderByDescending, new OrderByCallCombineRule{ ResetOrder = true }},
+				{MethodUtils.QThenBy, new OrderByCallCombineRule {Ascending = true}},
+				{MethodUtils.QThenrByDescending, new OrderByCallCombineRule()},
 
-				{OpUtils.QTake, new TakeCallCombineRule()},
-				{OpUtils.QSkip, new SkipCallCombineRule()},
+				{MethodUtils.QTake, new TakeCallCombineRule()},
+				{MethodUtils.QSkip, new SkipCallCombineRule()},
 
-				{OpUtils.QSingle, new FirstCallCombineRule {ThrowIfMultiple = true, ThrowIfNothing = true}},
-				{OpUtils.QSingleOrDefault, new FirstCallCombineRule {ThrowIfMultiple = true}},
+				{MethodUtils.QSingle, new FirstCallCombineRule {ThrowIfMultiple = true, ThrowIfNothing = true}},
+				{MethodUtils.QSingleOrDefault, new FirstCallCombineRule {ThrowIfMultiple = true}},
 
-				{OpUtils.QSingleP, new FirstCallCombineRule {ThrowIfMultiple = true, ThrowIfNothing = true}},
-				{OpUtils.QSingleOrDefaultP, new FirstCallCombineRule {ThrowIfMultiple = true}},
+				{MethodUtils.QSingleP, new FirstCallCombineRule {ThrowIfMultiple = true, ThrowIfNothing = true}},
+				{MethodUtils.QSingleOrDefaultP, new FirstCallCombineRule {ThrowIfMultiple = true}},
 
-				{OpUtils.QFirst, new FirstCallCombineRule {ThrowIfNothing = true}},
-				{OpUtils.QFirstOrDefault, new FirstCallCombineRule()},
+				{MethodUtils.QFirst, new FirstCallCombineRule {ThrowIfNothing = true}},
+				{MethodUtils.QFirstOrDefault, new FirstCallCombineRule()},
 
-				{OpUtils.QFirstP, new FirstCallCombineRule {ThrowIfNothing = true}},
-				{OpUtils.QFirstOrDefaultP, new FirstCallCombineRule()},
+				{MethodUtils.QFirstP, new FirstCallCombineRule {ThrowIfNothing = true}},
+				{MethodUtils.QFirstOrDefaultP, new FirstCallCombineRule()},
 
-				{OpUtils.QLast, new LastRewriteRule {ThrowIfNothing = true}},
-				{OpUtils.QLastOrDefault, new LastRewriteRule()},
+				{MethodUtils.QLast, new LastRewriteRule {ThrowIfNothing = true}},
+				{MethodUtils.QLastOrDefault, new LastRewriteRule()},
 
-				{OpUtils.QLastP, new LastRewriteRule {ThrowIfNothing = true}},
-				{OpUtils.QLastOrDefaultP, new LastRewriteRule()},
+				{MethodUtils.QLastP, new LastRewriteRule {ThrowIfNothing = true}},
+				{MethodUtils.QLastOrDefaultP, new LastRewriteRule()},
 
-				{OpUtils.QElementAt, new ElementAtRewriteRule {ThrowIfNothing = true}},
-				{OpUtils.QElementAtOrDefault, new ElementAtRewriteRule()},
+				{MethodUtils.QElementAt, new ElementAtRewriteRule {ThrowIfNothing = true}},
+				{MethodUtils.QElementAtOrDefault, new ElementAtRewriteRule()},
 
-				{OpUtils.QReverse, new ReverseRewriteRule()},
+				{MethodUtils.QReverse, new ReverseRewriteRule()},
 
-				{OpUtils.QCount, new CountRewriteRule()}
+				{MethodUtils.QCount, new CountRewriteRule()}
 			};
 		}
 
@@ -197,7 +197,7 @@ namespace Untech.SharePoint.Common.Data.Translators
 					Visit(node.Arguments[0]);
 				}
 
-				if (OpUtils.IsOperator(OpUtils.SpqFakeGetAll, node.Method))
+				if (MethodUtils.IsOperator(MethodUtils.SpqFakeGetAll, node.Method))
 				{
 					OuterCallCombineAllowed = true;
 				}

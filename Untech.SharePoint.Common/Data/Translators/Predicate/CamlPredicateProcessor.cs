@@ -134,11 +134,11 @@ namespace Untech.SharePoint.Common.Data.Translators.Predicate
 
 		private WhereModel TranslateCall(MethodCallExpression callNode)
 		{
-			if (callNode.Method == OpUtils.StrContains)
+			if (callNode.Method == MethodUtils.StrContains)
 			{
 				return TranslateContains(callNode);
 			}
-			if (callNode.Method == OpUtils.StrStartsWith)
+			if (callNode.Method == MethodUtils.StrStartsWith)
 			{
 				return TranslateStartsWith(callNode);
 			}

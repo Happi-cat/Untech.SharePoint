@@ -6,7 +6,7 @@ namespace Untech.SharePoint.Common.Data.Translators.Predicate
 	{
 		protected override Expression VisitMethodCall(MethodCallExpression node)
 		{
-			if (node.Method != OpUtils.StrIsNullOrEmpty)
+			if (node.Method != MethodUtils.StrIsNullOrEmpty)
 			{
 				return base.VisitMethodCall(node);
 			}

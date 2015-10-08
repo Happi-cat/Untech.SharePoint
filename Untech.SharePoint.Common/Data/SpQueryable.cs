@@ -16,7 +16,7 @@ namespace Untech.SharePoint.Common.Data
 
 		internal static MethodCallExpression MakeFakeGetAll(Type entityType, ISpItemsProvider itemsProvider)
 		{
-			return Expression.Call(OpUtils.SpqFakeGetAll.MakeGenericMethod(entityType),
+			return Expression.Call(MethodUtils.SpqFakeGetAll.MakeGenericMethod(entityType),
 				Expression.Constant(itemsProvider, typeof(ISpItemsProvider)));
 		}
 
@@ -30,7 +30,7 @@ namespace Untech.SharePoint.Common.Data
 
 		internal static MethodCallExpression MakeGetAll(Type entityType, ISpItemsProvider itemsProvider, QueryModel queryModel)
 		{
-			return Expression.Call(OpUtils.SpqGetAll.MakeGenericMethod(entityType),
+			return Expression.Call(MethodUtils.SpqGetAll.MakeGenericMethod(entityType),
 				Expression.Constant(itemsProvider, typeof(ISpItemsProvider)),
 				Expression.Constant(queryModel, typeof(QueryModel)));
 
@@ -38,7 +38,7 @@ namespace Untech.SharePoint.Common.Data
 
 		internal static MethodCallExpression MakeAsQueryable(Type entityType, Expression source)
 		{
-			return Expression.Call(OpUtils.QAsQueryable.MakeGenericMethod(entityType), source);
+			return Expression.Call(MethodUtils.QAsQueryable.MakeGenericMethod(entityType), source);
 		}
 
 		internal static IEnumerable<T> Take<T>(ISpItemsProvider itemsProvider, QueryModel queryModel)
@@ -48,7 +48,7 @@ namespace Untech.SharePoint.Common.Data
 
 		internal static MethodCallExpression MakeTake(Type entityType, ISpItemsProvider itemsProvider, QueryModel queryModel)
 		{
-			return Expression.Call(OpUtils.SpqTake.MakeGenericMethod(entityType),
+			return Expression.Call(MethodUtils.SpqTake.MakeGenericMethod(entityType),
 				Expression.Constant(itemsProvider, typeof(ISpItemsProvider)),
 				Expression.Constant(queryModel, typeof(QueryModel)));
 		}
@@ -60,7 +60,7 @@ namespace Untech.SharePoint.Common.Data
 
 		internal static MethodCallExpression MakeSkip(Type entityType, ISpItemsProvider itemsProvider, QueryModel queryModel, int count)
 		{
-			return Expression.Call(OpUtils.SpqSkip.MakeGenericMethod(entityType),
+			return Expression.Call(MethodUtils.SpqSkip.MakeGenericMethod(entityType),
 				Expression.Constant(itemsProvider, typeof(ISpItemsProvider)),
 				Expression.Constant(queryModel, typeof(QueryModel)),
 				Expression.Constant(count));
@@ -85,7 +85,7 @@ namespace Untech.SharePoint.Common.Data
 
 		internal static MethodCallExpression MakeFirst(Type entityType, ISpItemsProvider itemsProvider, QueryModel queryModel, bool throwIfNothing, bool throwIfMultiple)
 		{
-			return Expression.Call(OpUtils.SpqFirst.MakeGenericMethod(entityType),
+			return Expression.Call(MethodUtils.SpqFirst.MakeGenericMethod(entityType),
 				Expression.Constant(itemsProvider, typeof(ISpItemsProvider)),
 				Expression.Constant(queryModel, typeof(QueryModel)),
 				Expression.Constant(throwIfNothing),
@@ -103,14 +103,14 @@ namespace Untech.SharePoint.Common.Data
 
 		internal static MethodCallExpression MakeElementAt(Type entityType, ISpItemsProvider itemsProvider, QueryModel queryModel, int index, bool throwIfNothing)
 		{
-			return Expression.Call(OpUtils.SpqElementAt.MakeGenericMethod(entityType),
+			return Expression.Call(MethodUtils.SpqElementAt.MakeGenericMethod(entityType),
 				Expression.Constant(itemsProvider, typeof(ISpItemsProvider)),
 				Expression.Constant(queryModel, typeof(QueryModel)),
 				Expression.Constant(index),
 				Expression.Constant(throwIfNothing));
 		}
 
-		internal static bool Any(ISpItemsProvider itemsProvider, QueryModel queryModel)
+		internal static bool Any<T>(ISpItemsProvider itemsProvider, QueryModel queryModel)
 		{
 			queryModel.RowLimit = 1;
 			
@@ -119,20 +119,20 @@ namespace Untech.SharePoint.Common.Data
 
 		internal static MethodCallExpression MakeAny(Type entityType, ISpItemsProvider itemsProvider, QueryModel queryModel)
 		{
-			return Expression.Call(OpUtils.SpqAny,
+			return Expression.Call(MethodUtils.SpqAny.MakeGenericMethod(entityType),
 				Expression.Constant(itemsProvider, typeof(ISpItemsProvider)),
 				Expression.Constant(queryModel, typeof(QueryModel)));
 
 		}
 
-		internal static int Count(ISpItemsProvider itemsProvider, QueryModel queryModel)
+		internal static int Count<T>(ISpItemsProvider itemsProvider, QueryModel queryModel)
 		{
 			throw new NotImplementedException();
 		}
 
 		internal static MethodCallExpression MakeCount(Type entityType, ISpItemsProvider itemsProvider, QueryModel queryModel)
 		{
-			return Expression.Call(OpUtils.SpqCount,
+			return Expression.Call(MethodUtils.SpqCount.MakeGenericMethod(entityType),
 				Expression.Constant(itemsProvider, typeof(ISpItemsProvider)),
 				Expression.Constant(queryModel, typeof(QueryModel)));
 

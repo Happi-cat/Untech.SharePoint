@@ -8,7 +8,7 @@ using Untech.SharePoint.Common.Extensions;
 namespace Untech.SharePoint.Common.Data
 {
 	[SuppressMessage("ReSharper", "InvokeAsExtensionMethod")]
-	internal class OpUtils
+	internal class MethodUtils
 	{
 		#region [String Methods Infos]
 
@@ -86,8 +86,8 @@ namespace Untech.SharePoint.Common.Data
 
 		public static readonly MethodInfo SpqElementAt = GetMethodInfo(() => SpQueryable.ElementAt<int>(null, null, 0, false));
 
-		public static readonly MethodInfo SpqAny = GetMethodInfo(() => SpQueryable.Any(null, null));
-		public static readonly MethodInfo SpqCount = GetMethodInfo(() => SpQueryable.Count(null, null));
+		public static readonly MethodInfo SpqAny = GetMethodInfo(() => SpQueryable.Any<int>(null, null));
+		public static readonly MethodInfo SpqCount = GetMethodInfo(() => SpQueryable.Count<int>(null, null));
 
 		#endregion
 
