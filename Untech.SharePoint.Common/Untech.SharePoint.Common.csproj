@@ -69,7 +69,7 @@
     <Compile Include="Data\Translators\Predicate\Nominator.cs" />
     <Compile Include="Data\Translators\Predicate\PushNotDownVisitor.cs" />
     <Compile Include="Data\ISpItemsProvider.cs" />
-    <Compile Include="Data\OpUtils.cs" />
+    <Compile Include="Data\MethodUtils.cs" />
     <Compile Include="Data\QueryModels\ComparisonModel.cs" />
     <Compile Include="Data\QueryModels\ComparisonOperator.cs" />
     <Compile Include="Data\QueryModels\FieldRefModel.cs" />

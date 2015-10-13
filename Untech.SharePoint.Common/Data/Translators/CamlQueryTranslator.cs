@@ -13,6 +13,7 @@ namespace Untech.SharePoint.Common.Data.Translators
 	{
 		public CamlQueryTranslator(MetaList list)
 		{
+			Guard.CheckNotNull("list", list);
 			List = list;
 		}
 
@@ -117,12 +118,12 @@ namespace Untech.SharePoint.Common.Data.Translators
 
 		private MetaField GetMetaField(MemberInfo member)
 		{
-			throw new NotImplementedException();
+			return List.ContentTypes[member.ReflectedType].Fields[member.Name];
 		}
 
 		private IFieldConverter GetConverter(MemberInfo member)
 		{
-			throw new NotImplementedException();
+			
 		}
 	}
 }
