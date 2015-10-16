@@ -15,7 +15,7 @@ namespace Untech.SharePoint.Common.Data.Translators
 		{
 			CombineRules = new Dictionary<MethodInfo, ICallCombineRule> (new GenericMethodDefinitionComparer())
 			{
-				{MethodUtils.SpqFakeGetAll, new InitContextRule()},
+				{MethodUtils.SpqFakeFetch, new InitContextRule()},
 				{MethodUtils.QWhere, new WhereCallCombineRule()},
 				{MethodUtils.QAny, new AnyCallCombineRule()},
 				{MethodUtils.QAnyP, new AnyCallCombineRule()},
@@ -107,7 +107,7 @@ namespace Untech.SharePoint.Common.Data.Translators
 				CombineRules = combineRules;
 			}
 
-			public ISpItemsProvider ItemsProvider { get; set; }
+			public ISpListItemsProvider ListItemsProvider { get; set; }
 			public QueryModel Query { get; set; }
 			protected IReadOnlyDictionary<MethodInfo, ICallCombineRule> CombineRules { get; set; }
 			
@@ -197,7 +197,7 @@ namespace Untech.SharePoint.Common.Data.Translators
 					Visit(node.Arguments[0]);
 				}
 
-				if (MethodUtils.IsOperator(MethodUtils.SpqFakeGetAll, node.Method))
+				if (MethodUtils.IsOperator(MethodUtils.SpqFakeFetch, node.Method))
 				{
 					OuterCallCombineAllowed = true;
 				}
@@ -223,7 +223,7 @@ namespace Untech.SharePoint.Common.Data.Translators
 		{
 			QueryModel Query { get; set; }
 
-			ISpItemsProvider ItemsProvider { get; set; }
+			ISpListItemsProvider ListItemsProvider { get; set; }
 		}
 
 		internal interface ICallCombineRule
@@ -245,14 +245,14 @@ namespace Untech.SharePoint.Common.Data.Translators
 			public void UpdateContext(ICallsCombinerContext context, MethodCallExpression node)
 			{
 				context.Query = new QueryModel();
-				context.ItemsProvider = (ISpItemsProvider) ((ConstantExpression) node.Arguments[0].StripQuotes()).Value;
+				context.ListItemsProvider = (ISpListItemsProvider) ((ConstantExpression) node.Arguments[0].StripQuotes()).Value;
 			}
 
 			public Expression Combine(ICallsCombinerContext context, MethodCallExpression node)
 			{
 				var entityType = node.Method.GetGenericArguments()[0];
 				return SpQueryable.MakeAsQueryable(entityType,
-					SpQueryable.MakeGetAll(entityType, context.ItemsProvider, context.Query));
+					SpQueryable.MakeFetch(entityType, context.ListItemsProvider, context.Query));
 			}
 		}
 
@@ -274,7 +274,7 @@ namespace Untech.SharePoint.Common.Data.Translators
 			{
 				var entityType = node.Method.GetGenericArguments()[0];
 				return SpQueryable.MakeAsQueryable(entityType,
-					SpQueryable.MakeGetAll(entityType, context.ItemsProvider, context.Query));
+					SpQueryable.MakeFetch(entityType, context.ListItemsProvider, context.Query));
 			}
 		}
 
@@ -299,7 +299,7 @@ namespace Untech.SharePoint.Common.Data.Translators
 
 			public Expression Combine(ICallsCombinerContext context, MethodCallExpression node)
 			{
-				return SpQueryable.MakeAny(node.Method.GetGenericArguments()[0], context.ItemsProvider, context.Query);
+				return SpQueryable.MakeAny(node.Method.GetGenericArguments()[0], context.ListItemsProvider, context.Query);
 			}
 		}
 
@@ -319,7 +319,7 @@ namespace Untech.SharePoint.Common.Data.Translators
 
 			public Expression Combine(ICallsCombinerContext context, MethodCallExpression node)
 			{
-				return SpQueryable.MakeAny(node.Method.GetGenericArguments()[0], context.ItemsProvider, context.Query);
+				return SpQueryable.MakeAny(node.Method.GetGenericArguments()[0], context.ListItemsProvider, context.Query);
 			}
 		}
 
@@ -348,7 +348,7 @@ namespace Untech.SharePoint.Common.Data.Translators
 			{
 				var entityType = node.Method.GetGenericArguments()[0];
 				return SpQueryable.MakeAsQueryable(entityType,
-					SpQueryable.MakeGetAll(entityType, context.ItemsProvider, context.Query));
+					SpQueryable.MakeFetch(entityType, context.ListItemsProvider, context.Query));
 			}
 		}
 
@@ -368,7 +368,7 @@ namespace Untech.SharePoint.Common.Data.Translators
 			{
 				var entityType = node.Method.GetGenericArguments()[0];
 				return SpQueryable.MakeAsQueryable(entityType,
-					SpQueryable.MakeTake(entityType, context.ItemsProvider, context.Query));
+					SpQueryable.MakeTake(entityType, context.ListItemsProvider, context.Query));
 			}
 		}
 
@@ -390,7 +390,7 @@ namespace Untech.SharePoint.Common.Data.Translators
 
 				var entityType = node.Method.GetGenericArguments()[0];
 				return SpQueryable.MakeAsQueryable(entityType,
-					SpQueryable.MakeSkip(entityType, context.ItemsProvider, context.Query, count));
+					SpQueryable.MakeSkip(entityType, context.ListItemsProvider, context.Query, count));
 			}
 		}
 
@@ -419,7 +419,7 @@ namespace Untech.SharePoint.Common.Data.Translators
 
 			public Expression Combine(ICallsCombinerContext context, MethodCallExpression node)
 			{
-				return SpQueryable.MakeFirst(node.Method.GetGenericArguments()[0], context.ItemsProvider, context.Query,
+				return SpQueryable.MakeFirst(node.Method.GetGenericArguments()[0], context.ListItemsProvider, context.Query,
 					ThrowIfNothing, ThrowIfMultiple);
 			}
 		}
@@ -449,7 +449,7 @@ namespace Untech.SharePoint.Common.Data.Translators
 
 			public Expression Combine(ICallsCombinerContext context, MethodCallExpression node)
 			{
-				return SpQueryable.MakeFirst(node.Method.GetGenericArguments()[0], context.ItemsProvider, context.Query,
+				return SpQueryable.MakeFirst(node.Method.GetGenericArguments()[0], context.ListItemsProvider, context.Query,
 					ThrowIfNothing, false);
 			}
 		}
@@ -462,7 +462,7 @@ namespace Untech.SharePoint.Common.Data.Translators
 			{
 				var count = (int) ((ConstantExpression) node.Arguments[1].StripQuotes()).Value;
 
-				return SpQueryable.MakeElementAt(node.Method.GetGenericArguments()[0], context.ItemsProvider, context.Query, count,
+				return SpQueryable.MakeElementAt(node.Method.GetGenericArguments()[0], context.ListItemsProvider, context.Query, count,
 					ThrowIfNothing);
 			}
 
@@ -483,7 +483,7 @@ namespace Untech.SharePoint.Common.Data.Translators
 			{
 				var entityType = node.Method.GetGenericArguments()[0];
 				return SpQueryable.MakeAsQueryable(entityType,
-					SpQueryable.MakeGetAll(entityType, context.ItemsProvider, context.Query));
+					SpQueryable.MakeFetch(entityType, context.ListItemsProvider, context.Query));
 			}
 
 			public bool OuterCallCombineAllowed
@@ -511,7 +511,7 @@ namespace Untech.SharePoint.Common.Data.Translators
 
 			public Expression Combine(ICallsCombinerContext context, MethodCallExpression node)
 			{
-				return SpQueryable.MakeCount(node.Method.GetGenericArguments()[0], context.ItemsProvider, context.Query);
+				return SpQueryable.MakeCount(node.Method.GetGenericArguments()[0], context.ListItemsProvider, context.Query);
 			}
 		}
 

@@ -3,11 +3,11 @@ using Untech.SharePoint.Common.MetaModels;
 
 namespace Untech.SharePoint.Common.Data
 {
-	public interface ISpItemsProvider
+	public interface ISpListItemsProvider
 	{
 		MetaList List { get; set; }
 
-		IEnumerable<T> GetItems<T>(string caml);
+		IEnumerable<T> Fetch<T>(string caml);
 
 		bool Any(string caml);
 

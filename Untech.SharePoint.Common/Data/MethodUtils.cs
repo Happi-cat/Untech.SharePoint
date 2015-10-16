@@ -75,9 +75,9 @@ namespace Untech.SharePoint.Common.Data
 
 		#region [SpQueryable Methods Infos]
 
-		public static readonly MethodInfo SpqFakeGetAll = GetMethodInfo(() => SpQueryable.FakeGetAll<int>(null));
+		public static readonly MethodInfo SpqFakeFetch = GetMethodInfo(() => SpQueryable.FakeFetch<int>(null));
 
-		public static readonly MethodInfo SpqGetAll = GetMethodInfo(() => SpQueryable.GetAll<int>(null, null));
+		public static readonly MethodInfo SpqFetch = GetMethodInfo(() => SpQueryable.Fetch<int>(null, null));
 
 		public static readonly MethodInfo SpqTake = GetMethodInfo(() => SpQueryable.Take<int>(null, null));
 		public static readonly MethodInfo SpqSkip = GetMethodInfo(() => SpQueryable.Skip<int>(null, null, 0));

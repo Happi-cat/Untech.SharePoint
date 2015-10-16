@@ -11,16 +11,14 @@ namespace Untech.SharePoint.Common.Data.Translators
 {
 	internal class CamlQueryTranslator
 	{
-		public CamlQueryTranslator(MetaList list)
+		public CamlQueryTranslator(MetaContentType contentType)
 		{
-			Guard.CheckNotNull("list", list);
+			Guard.CheckNotNull("contentType", contentType);
 			
-			List = list;
+			ContentType = contentType;
 		}
 
-		public MetaList List { get; private set; }
-
-		public string ContentTypeId { get; set; }
+		public MetaContentType ContentType { get; private set; }
 
 		public string Translate(QueryModel query)
 		{
@@ -43,8 +41,8 @@ namespace Untech.SharePoint.Common.Data.Translators
 		protected XElement GetWheres(WhereModel where)
 		{
 			var xWhere = GetWhere(where);
-			
-			if (!string.IsNullOrEmpty(ContentTypeId))
+
+			if (!string.IsNullOrEmpty(ContentType.Id))
 			{
 				xWhere = AppendContentTypeFilter(xWhere);
 			}
@@ -129,7 +127,7 @@ namespace Untech.SharePoint.Common.Data.Translators
 		{
 			var xContentType = new XElement(Tags.BeginsWith,
 					new XElement(Tags.FieldRef, new XAttribute(Tags.Name, "ContentTypeId")),
-					new XElement(Tags.Value, ContentTypeId));
+					new XElement(Tags.Value, ContentType.Id));
 
 			if (xWhere != null)
 			{
@@ -143,7 +141,7 @@ namespace Untech.SharePoint.Common.Data.Translators
 
 		private MetaField GetMetaField(MemberInfo member)
 		{
-			return List.ContentTypes[member.ReflectedType].Fields[member.Name];
+			return ContentType.Fields[member.Name];
 		}
 
 		private IFieldConverter GetConverter(MemberInfo member)

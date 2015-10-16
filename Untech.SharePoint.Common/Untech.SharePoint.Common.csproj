@@ -70,7 +70,7 @@
     <Compile Include="Data\Translators\IExpressionProcessor.cs" />
     <Compile Include="Data\Translators\Predicate\Nominator.cs" />
     <Compile Include="Data\Translators\Predicate\PushNotDownVisitor.cs" />
-    <Compile Include="Data\ISpItemsProvider.cs" />
+    <Compile Include="Data\ISpListItemsProvider.cs" />
     <Compile Include="Data\MethodUtils.cs" />
     <Compile Include="Data\QueryModels\ComparisonModel.cs" />
     <Compile Include="Data\QueryModels\ComparisonOperator.cs" />

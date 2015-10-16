@@ -11,7 +11,7 @@ namespace Untech.SharePoint.Common.Test.Data.Translators
 	{
 		public FakeQueryable()
 		{
-			Expression = SpQueryable.MakeFakeGetAll(typeof(T), null);
+			Expression = SpQueryable.MakeFakeFetch(typeof(T), null);
 		}
 
 		protected FakeQueryable(Expression node)

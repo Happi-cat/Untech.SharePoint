@@ -29,15 +29,18 @@ namespace Untech.SharePoint.Common.Data
 
 		protected ISpList<TEntity> GetList<TEntity>(Expression<Func<ISpContext, TEntity>> listAccessor)
 		{
-			var lambdaExpression = (LambdaExpression) listAccessor;
-
-			var memberExp = (MemberExpression) lambdaExpression.Body;
+			var memberExp = (MemberExpression)listAccessor.Body;
 			var listTitle = MappingSource.GetListTitleFromContextMember(memberExp.Member);
 
-			return GetList<TEntity>(Model.Lists[listTitle].ContentTypes[typeof(TEntity)]);
+			return GetList<TEntity>(Model.Lists[listTitle]);
 		}
 
-		protected virtual ISpList<TEntity> GetList<TEntity>(MetaContentType contentType)
+		protected ISpList<TEntity> GetList<TEntity>(MetaList list)
+		{
+			return new SpList<TEntity>(GetItemsProvider(list));
+		}
+
+		protected virtual ISpListItemsProvider GetItemsProvider(MetaList list)
 		{
 			throw new NotImplementedException();
 		}

@@ -303,7 +303,7 @@ namespace Untech.SharePoint.Common.Test.Data.Translators
 			{
 				if (node.Method.DeclaringType == typeof (SpQueryable))
 				{
-					if (!MethodUtils.IsOperator(node.Method, MethodUtils.SpqFakeGetAll))
+					if (!MethodUtils.IsOperator(node.Method, MethodUtils.SpqFakeFetch))
 					{
 						Query = (QueryModel) ((ConstantExpression) node.Arguments[1].StripQuotes()).Value;
 					}
