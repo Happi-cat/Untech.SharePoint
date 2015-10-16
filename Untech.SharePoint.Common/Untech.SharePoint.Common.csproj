@@ -60,6 +60,8 @@
     <Compile Include="Converters\Custom\JsonFieldConverter.cs" />
     <Compile Include="Converters\Custom\XmlFieldConverter.cs" />
     <Compile Include="Data\GenericMethodDefinitionComparer.cs" />
+    <Compile Include="Data\SpLinqQuery.cs" />
+    <Compile Include="Data\SpLinqQueryProvider.cs" />
     <Compile Include="Data\Translators\CamlQueryTreeProcessor.cs" />
     <Compile Include="Data\Translators\Predicate\CamlKeySelectorProcessor.cs" />
     <Compile Include="Data\Translators\Predicate\CamlProcessorUtils.cs" />

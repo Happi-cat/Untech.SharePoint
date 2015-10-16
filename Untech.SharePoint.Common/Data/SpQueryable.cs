@@ -11,7 +11,7 @@ namespace Untech.SharePoint.Common.Data
 	{
 		internal static IQueryable<T> FakeGetAll<T>(ISpItemsProvider itemsProvider)
 		{
-			throw new NotImplementedException();
+			throw new NotImplementedException("If you see that exception it means that expression tree rewrite failed");
 		}
 
 		internal static MethodCallExpression MakeFakeGetAll(Type entityType, ISpItemsProvider itemsProvider)

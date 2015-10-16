@@ -9,7 +9,7 @@ using Untech.SharePoint.Common.MetaModels;
 
 namespace Untech.SharePoint.Common.Data.Translators
 {
-	internal class CamlQueryTranslator
+	public class CamlQueryTranslator
 	{
 		public CamlQueryTranslator(MetaList list)
 		{
@@ -17,7 +17,8 @@ namespace Untech.SharePoint.Common.Data.Translators
 			List = list;
 		}
 
-		public MetaList List { get; set; }
+		public MetaList List { get; private set; }
+
 		public string Translate(QueryModel query)
 		{
 			return GetQuery(query).ToString();
@@ -123,7 +124,7 @@ namespace Untech.SharePoint.Common.Data.Translators
 
 		private IFieldConverter GetConverter(MemberInfo member)
 		{
-			
+			throw new NotImplementedException();
 		}
 	}
 }
