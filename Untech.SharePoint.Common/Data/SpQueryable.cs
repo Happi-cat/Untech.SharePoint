@@ -22,10 +22,7 @@ namespace Untech.SharePoint.Common.Data
 
 		internal static IEnumerable<T> GetAll<T>(ISpItemsProvider itemsProvider, QueryModel queryModel)
 		{
-			var query = new CamlQueryTranslator(null).Translate(queryModel);
-
-
-			throw new NotImplementedException();
+			return itemsProvider.GetItems<T>(ConvertToCaml<T>(itemsProvider, queryModel));
 		}
 
 		internal static MethodCallExpression MakeGetAll(Type entityType, ISpItemsProvider itemsProvider, QueryModel queryModel)
@@ -68,19 +65,18 @@ namespace Untech.SharePoint.Common.Data
 
 		internal static T First<T>(ISpItemsProvider itemsProvider, QueryModel queryModel, bool throwIfNothing, bool throwIfMultiple)
 		{
-			if (throwIfMultiple)
-			{
-				queryModel.RowLimit = 2;
+			var query = ConvertToCaml<T>(itemsProvider, queryModel);
 
-				return throwIfNothing 
-					? GetAll<T>(itemsProvider, queryModel).Single() 
-					: GetAll<T>(itemsProvider, queryModel).SingleOrDefault();
+			var item = throwIfMultiple
+				? itemsProvider.SingleOrDefault<T>(query)
+				: itemsProvider.FirstOrDefault<T>(query);
+
+			if (throwIfNothing && item == null)
+			{
+				throw new Exception("Not found");
 			}
 
-			queryModel.RowLimit = 1;
-			return throwIfNothing 
-				? GetAll<T>(itemsProvider, queryModel).First() 
-				: GetAll<T>(itemsProvider, queryModel).FirstOrDefault();
+			return item;
 		}
 
 		internal static MethodCallExpression MakeFirst(Type entityType, ISpItemsProvider itemsProvider, QueryModel queryModel, bool throwIfNothing, bool throwIfMultiple)
@@ -94,11 +90,16 @@ namespace Untech.SharePoint.Common.Data
 
 		internal static T ElementAt<T>(ISpItemsProvider itemsProvider, QueryModel queryModel, int index, bool throwIfNothing)
 		{
-			queryModel.RowLimit = index + 1;
+			var query = ConvertToCaml<T>(itemsProvider, queryModel);
 
-			return throwIfNothing
-				? GetAll<T>(itemsProvider, queryModel).ElementAt(index)
-				: GetAll<T>(itemsProvider, queryModel).ElementAtOrDefault(index);
+			var item = itemsProvider.ElementAtOrDefault<T>(query, index);
+
+			if (throwIfNothing && item == null)
+			{
+				throw new Exception("Not found");
+			}
+
+			return item;
 		}
 
 		internal static MethodCallExpression MakeElementAt(Type entityType, ISpItemsProvider itemsProvider, QueryModel queryModel, int index, bool throwIfNothing)
@@ -113,8 +114,8 @@ namespace Untech.SharePoint.Common.Data
 		internal static bool Any<T>(ISpItemsProvider itemsProvider, QueryModel queryModel)
 		{
 			queryModel.RowLimit = 1;
-			
-			throw new NotImplementedException();
+
+			return itemsProvider.Any(ConvertToCaml<T>(itemsProvider, queryModel));
 		}
 
 		internal static MethodCallExpression MakeAny(Type entityType, ISpItemsProvider itemsProvider, QueryModel queryModel)
@@ -127,7 +128,7 @@ namespace Untech.SharePoint.Common.Data
 
 		internal static int Count<T>(ISpItemsProvider itemsProvider, QueryModel queryModel)
 		{
-			throw new NotImplementedException();
+			return itemsProvider.Count(ConvertToCaml<T>(itemsProvider, queryModel));
 		}
 
 		internal static MethodCallExpression MakeCount(Type entityType, ISpItemsProvider itemsProvider, QueryModel queryModel)
@@ -136,6 +137,23 @@ namespace Untech.SharePoint.Common.Data
 				Expression.Constant(itemsProvider, typeof(ISpItemsProvider)),
 				Expression.Constant(queryModel, typeof(QueryModel)));
 
+		}
+
+		private static string ConvertToCaml<T>(ISpItemsProvider itemsProvider, QueryModel queryModel)
+		{
+			var translator = new CamlQueryTranslator(itemsProvider.List)
+			{
+				ContentTypeId = GetContentTypeId<T>(itemsProvider)
+			};
+			
+			return translator.Translate(queryModel);
+		}
+
+		private static string GetContentTypeId<T>(ISpItemsProvider itemsProvider)
+		{
+			var list = itemsProvider.List;
+
+			return list.ContentTypes[typeof(T)].Id;
 		}
 	}
 }

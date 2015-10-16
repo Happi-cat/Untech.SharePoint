@@ -1,12 +1,26 @@
 ﻿using System.Collections.Generic;
-using Untech.SharePoint.Common.Data.QueryModels;
+using Untech.SharePoint.Common.MetaModels;
 
 namespace Untech.SharePoint.Common.Data
 {
 	public interface ISpItemsProvider
 	{
-		IEnumerable<T> GetItems<T>(QueryModel queryModel);
+		MetaList List { get; set; }
 
-		bool AnyItem(QueryModel queryModel);
+		IEnumerable<T> GetItems<T>(string caml);
+
+		bool Any(string caml);
+
+		int Count(string caml);
+
+		T SingleOrDefault<T>(string caml);
+
+		T FirstOrDefault<T>(string caml);
+
+		T ElementAtOrDefault<T>(string caml, int index);
+
+		void Add<T>(T item);
+
+		void Update<T>(T item);
 	}
 }
