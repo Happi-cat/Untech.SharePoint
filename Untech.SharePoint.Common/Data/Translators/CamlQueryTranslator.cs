@@ -9,15 +9,18 @@ using Untech.SharePoint.Common.MetaModels;
 
 namespace Untech.SharePoint.Common.Data.Translators
 {
-	public class CamlQueryTranslator
+	internal class CamlQueryTranslator
 	{
 		public CamlQueryTranslator(MetaList list)
 		{
 			Guard.CheckNotNull("list", list);
+			
 			List = list;
 		}
 
 		public MetaList List { get; private set; }
+
+		public string ContentTypeId { get; set; }
 
 		public string Translate(QueryModel query)
 		{
@@ -40,6 +43,11 @@ namespace Untech.SharePoint.Common.Data.Translators
 		protected XElement GetWheres(WhereModel where)
 		{
 			var xWhere = GetWhere(where);
+			
+			if (!string.IsNullOrEmpty(ContentTypeId))
+			{
+				xWhere = AppendContentTypeFilter(xWhere);
+			}
 
 			return xWhere != null ? new XElement(Tags.Where, xWhere) : null;
 		}
@@ -115,6 +123,22 @@ namespace Untech.SharePoint.Common.Data.Translators
 			return new XElement(Tags.Value,
 				new XAttribute(Tags.Type, GetMetaField(fieldRef.Member).TypeAsString),
 				GetConverter(fieldRef.Member).ToCamlValue(value));
+		}
+
+		private XElement AppendContentTypeFilter(XElement xWhere)
+		{
+			var xContentType = new XElement(Tags.BeginsWith,
+					new XElement(Tags.FieldRef, new XAttribute(Tags.Name, "ContentTypeId")),
+					new XElement(Tags.Value, ContentTypeId));
+
+			if (xWhere != null)
+			{
+				return new XElement(Tags.And,
+					xContentType,
+					xWhere);
+			}
+
+			return xContentType;
 		}
 
 		private MetaField GetMetaField(MemberInfo member)
