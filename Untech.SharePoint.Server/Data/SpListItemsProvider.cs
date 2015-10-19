@@ -7,13 +7,16 @@ namespace Untech.SharePoint.Server.Data
 {
 	internal class SpListItemsProvider : ISpListItemsProvider
 	{
-		public SpListItemsProvider(SPWeb web, MetaList list)
+		public SpListItemsProvider(SPWeb web, SpCommonService commonService, MetaList list)
 		{
 			Web = web;
 			List = list;
+			CommonService = commonService;
 		}
 
 		public SPWeb Web { get; private set; }
+
+		public SpCommonService CommonService { get; private set; }
 
 		public MetaList List { get; private set; }
 

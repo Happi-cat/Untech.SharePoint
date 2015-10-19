@@ -8,7 +8,7 @@ namespace Untech.SharePoint.Server.Data
 	public abstract class SpServerContext : SpContext<SpCommonService>
 	{
 		protected SpServerContext(SPWeb web, Config config) 
-			: base(config, new SpCommonService())
+			: base(config, new SpCommonService(web))
 		{
 			Web = web;
 		}
@@ -17,7 +17,7 @@ namespace Untech.SharePoint.Server.Data
 
 		protected override ISpListItemsProvider GetItemsProvider(MetaList list)
 		{
-			return new SpListItemsProvider(Web, list);
+			return new SpListItemsProvider(Web, CommonService, list);
 		}
 	}
 }

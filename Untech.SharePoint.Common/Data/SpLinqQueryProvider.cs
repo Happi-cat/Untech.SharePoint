@@ -46,10 +46,10 @@ namespace Untech.SharePoint.Common.Data
 			return RewriteAndCompile<TResult>(expression)();
 		}
 
-		internal static Func<T> RewriteAndCompile<T>(Expression expression)
+		private Func<T> RewriteAndCompile<T>(Expression expression)
 		{
 			Guard.CheckNotNull("expression", expression);
-			Guard.CheckTypeIsAssignableTo<T>("expression", expression.Type);
+			Guard.CheckTypeIsAssignableTo<T>("expression.Type", expression.Type);
 
 			return Compile<T>(Rewrite(expression));
 		}

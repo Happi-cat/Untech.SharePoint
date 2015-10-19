@@ -45,9 +45,6 @@ namespace Untech.SharePoint.Common.Data
 			return new SpList<TEntity>(GetItemsProvider(list));
 		}
 
-		protected virtual ISpListItemsProvider GetItemsProvider(MetaList list)
-		{
-			throw new NotImplementedException();
-		}
+		protected abstract ISpListItemsProvider GetItemsProvider(MetaList list);
 	}
 }
