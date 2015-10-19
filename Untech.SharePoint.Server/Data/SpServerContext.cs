@@ -2,6 +2,7 @@
 using Untech.SharePoint.Common.Configuration;
 using Untech.SharePoint.Common.Data;
 using Untech.SharePoint.Common.MetaModels;
+using Untech.SharePoint.Common.Utils;
 
 namespace Untech.SharePoint.Server.Data
 {
@@ -10,6 +11,8 @@ namespace Untech.SharePoint.Server.Data
 		protected SpServerContext(SPWeb web, Config config) 
 			: base(config, new SpCommonService(web))
 		{
+			Guard.CheckNotNull("web", web);
+
 			Web = web;
 		}
 
