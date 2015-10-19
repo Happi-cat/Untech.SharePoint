@@ -5,7 +5,7 @@ using Untech.SharePoint.Common.Converters;
 using Untech.SharePoint.Common.Data;
 using Untech.SharePoint.Common.Extensions;
 using Untech.SharePoint.Common.Mappings;
-using Untech.SharePoint.Common.Visitors;
+using Untech.SharePoint.Common.MetaModels.Visitors;
 
 namespace Untech.SharePoint.Common.Configuration
 {

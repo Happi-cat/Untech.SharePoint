@@ -4,7 +4,13 @@ using Untech.SharePoint.Common.Data;
 
 namespace Untech.SharePoint.Client.Data
 {
-	public abstract class SpClientContext: SpContext
+	public class SpClientCommonService : ICommonService
+	{
+		public IMetaContextProcessor Processor { get; private set; }
+	}
+	
+
+	public abstract class SpClientContext: SpContext<SpClientCommonService>
 	{
 		protected SpClientContext(ClientContext context, Config config)
 			: base(config, null)

@@ -5,7 +5,7 @@ using System.Reflection;
 
 namespace Untech.SharePoint.Common.Utils
 {
-	internal static class TypeSystem
+	public static class TypeSystem
 	{
 		internal static bool IsNullableType(Type type)
 		{

@@ -60,6 +60,8 @@
     <Compile Include="Converters\Custom\JsonFieldConverter.cs" />
     <Compile Include="Converters\Custom\XmlFieldConverter.cs" />
     <Compile Include="Data\GenericMethodDefinitionComparer.cs" />
+    <Compile Include="Data\ICommonService.cs" />
+    <Compile Include="Data\IMetaContextProcessor.cs" />
     <Compile Include="Data\SpLinqQuery.cs" />
     <Compile Include="Data\SpLinqQueryProvider.cs" />
     <Compile Include="Data\Translators\CamlQueryTreeProcessor.cs" />
@@ -88,6 +90,7 @@
     <Compile Include="Data\Translators\Predicate\SwapComparisonVisitor.cs" />
     <Compile Include="Data\Translators\CamlQueryTranslator.cs" />
     <Compile Include="Data\Translators\Tags.cs" />
+    <Compile Include="Diagnostics\ILoggingInterceptor.cs" />
     <Compile Include="Mappings\Annotation\AnnotatedContentTypeMapping.cs" />
     <Compile Include="Mappings\Annotation\AnnotatedContextMapping.cs" />
     <Compile Include="Mappings\Annotation\AnnotatedFieldPart.cs" />
@@ -118,7 +121,7 @@
     <Compile Include="Extensions\ObjectExtensions.cs" />
     <Compile Include="Extensions\TypeExtensions.cs" />
     <Compile Include="Collections\KeyedFactory.cs" />
-    <Compile Include="Guard.cs" />
+    <Compile Include="Utils\Guard.cs" />
     <Compile Include="Mappings\MappingSourceContainer.cs" />
     <Compile Include="MetaModels\Collections\MetaContentTypeCollection.cs" />
     <Compile Include="MetaModels\Collections\MetaFieldCollection.cs" />
@@ -133,20 +136,18 @@
     <Compile Include="MetaModels\Providers\IMetaListProvider.cs" />
     <Compile Include="MetaModels\Providers\IMetaFieldProvider.cs" />
     <Compile Include="Models\Entity.cs" />
-    <Compile Include="Services\ICommonService.cs" />
     <Compile Include="Mappings\IListTitleResolver.cs" />
     <Compile Include="Mappings\IMappingSource.cs" />
-    <Compile Include="Services\IListService.cs" />
     <Compile Include="Utils\Reflection\InstanceCreationUtility.cs" />
     <Compile Include="Utils\Reflection\MemberAccessor.cs" />
     <Compile Include="Utils\Reflection\MemberAccessorPool.cs" />
     <Compile Include="Utils\Reflection\MemberAccessUtility.cs" />
     <Compile Include="Collections\Container.cs" />
     <Compile Include="Utils\Singleton.cs" />
-    <Compile Include="Visitors\BaseMetaModelVisitor.cs" />
-    <Compile Include="Visitors\FieldConverterCreator.cs" />
-    <Compile Include="Visitors\FieldConverterFinder.cs" />
-    <Compile Include="Visitors\IMetaModelVisitor.cs" />
+    <Compile Include="MetaModels\Visitors\BaseMetaModelVisitor.cs" />
+    <Compile Include="MetaModels\Visitors\FieldConverterCreator.cs" />
+    <Compile Include="MetaModels\Visitors\FieldConverterFinder.cs" />
+    <Compile Include="MetaModels\Visitors\IMetaModelVisitor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utils\TypeSystem.cs" />
   </ItemGroup>

@@ -5,7 +5,7 @@ namespace Untech.SharePoint.Common.Data
 {
 	public interface ISpListItemsProvider
 	{
-		MetaList List { get; set; }
+		MetaList List { get; }
 
 		IEnumerable<T> Fetch<T>(string caml);
 

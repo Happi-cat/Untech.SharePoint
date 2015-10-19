@@ -1,27 +1,32 @@
 ﻿using System;
 using System.Linq.Expressions;
 using Untech.SharePoint.Common.Configuration;
-using Untech.SharePoint.Common.Extensions;
 using Untech.SharePoint.Common.Mappings;
 using Untech.SharePoint.Common.MetaModels;
-using Untech.SharePoint.Common.Services;
+using Untech.SharePoint.Common.Utils;
 
 namespace Untech.SharePoint.Common.Data
 {
-	public abstract class SpContext : ISpContext
+	public abstract class SpContext<TCommonService> : ISpContext
+		where TCommonService: ICommonService
 	{
-		protected SpContext(Config config, ICommonService service)
+		protected SpContext(Config config, TCommonService commonService)
 		{
 			Guard.CheckNotNull("config", config);
+			Guard.CheckNotNull("commonService", commonService);
 
 			Config = config;
+			Service = commonService;
+
 			MappingSource = Config.Mappings.Resolve(GetType());
 			Model = MappingSource.GetMetaContext();
 
-			service.MetaModelProcessors.Each(n => n.Visit(Model));
+			Service.Processor.Process(Model);
 		}
 
 		protected Config Config { get; private set; }
+
+		protected TCommonService Service { get; private set; }
 
 		protected IMappingSource MappingSource { get; private set; }
 

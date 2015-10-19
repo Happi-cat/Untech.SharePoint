@@ -1,4 +1,4 @@
-﻿using Untech.SharePoint.Common.Visitors;
+﻿using Untech.SharePoint.Common.MetaModels.Visitors;
 
 namespace Untech.SharePoint.Common.MetaModels
 {

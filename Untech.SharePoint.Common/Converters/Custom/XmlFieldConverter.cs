@@ -3,6 +3,7 @@ using System.Runtime.Serialization;
 using System.Text;
 using System.Xml;
 using Untech.SharePoint.Common.MetaModels;
+using Untech.SharePoint.Common.Utils;
 
 namespace Untech.SharePoint.Common.Converters.Custom
 {
