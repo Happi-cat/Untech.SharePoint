@@ -16,17 +16,17 @@ namespace Untech.SharePoint.Common.Data
 			Guard.CheckNotNull("commonService", commonService);
 
 			Config = config;
-			Service = commonService;
+			CommonService = commonService;
 
 			MappingSource = Config.Mappings.Resolve(GetType());
 			Model = MappingSource.GetMetaContext();
 
-			Service.Processor.Process(Model);
+			CommonService.MetaContextProcessor.Process(Model);
 		}
 
 		protected Config Config { get; private set; }
 
-		protected TCommonService Service { get; private set; }
+		protected TCommonService CommonService { get; private set; }
 
 		protected IMappingSource MappingSource { get; private set; }
 

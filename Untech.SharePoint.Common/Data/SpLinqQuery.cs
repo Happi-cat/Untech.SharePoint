@@ -19,9 +19,7 @@ namespace Untech.SharePoint.Common.Data
 
 		public IEnumerator<T> GetEnumerator()
 		{
-			return SpLinqQueryProvider
-				.RewriteAndCompile<IEnumerable<T>>(Expression)()
-				.GetEnumerator();
+			return Provider.Execute<IEnumerable<T>>(Expression).GetEnumerator();
 		}
 
 		IEnumerator IEnumerable.GetEnumerator()

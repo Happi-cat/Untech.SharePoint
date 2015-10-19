@@ -2,6 +2,6 @@
 {
 	public interface ICommonService
 	{
-		IMetaContextProcessor Processor { get; } 
+		IMetaContextProcessor MetaContextProcessor { get; } 
 	}
 }

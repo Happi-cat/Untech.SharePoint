@@ -6,7 +6,7 @@ namespace Untech.SharePoint.Common.Data
 	internal class SpList<T> : SpLinqQuery<T>, ISpList<T>
 	{
 		public SpList(ISpListItemsProvider listItemsProvider)
-			: base(FakeGetAll(listItemsProvider))
+			: base(MakeFakeFetch(listItemsProvider))
 		{
 			ListItemsProvider = listItemsProvider;
 		}
@@ -23,7 +23,7 @@ namespace Untech.SharePoint.Common.Data
 			ListItemsProvider.Update(item);
 		}
 
-		private static Expression FakeGetAll(ISpListItemsProvider listItemsProvider)
+		private static Expression MakeFakeFetch(ISpListItemsProvider listItemsProvider)
 		{
 			Guard.CheckNotNull("listItemsProvider", listItemsProvider);
 

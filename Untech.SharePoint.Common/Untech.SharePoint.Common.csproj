@@ -82,7 +82,6 @@
     <Compile Include="Data\QueryModels\OrderByModel.cs" />
     <Compile Include="Data\QueryModels\QueryModel.cs" />
     <Compile Include="Data\QueryModels\WhereModel.cs" />
-    <Compile Include="Data\QueryTranslator.cs" />
     <Compile Include="Data\Translators\Predicate\CamlPredicateProcessor.cs" />
     <Compile Include="Data\Translators\Predicate\RedundantConditionRemover.cs" />
     <Compile Include="Data\Translators\Predicate\StringIsNullOrEmptyRewriter.cs" />

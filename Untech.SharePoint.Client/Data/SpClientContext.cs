@@ -6,7 +6,7 @@ namespace Untech.SharePoint.Client.Data
 {
 	public class SpClientCommonService : ICommonService
 	{
-		public IMetaContextProcessor Processor { get; private set; }
+		public IMetaContextProcessor MetaContextProcessor { get; private set; }
 	}
 	
 
