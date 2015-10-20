@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using Untech.SharePoint.Common.Extensions;
 using Untech.SharePoint.Common.MetaModels;
 using Untech.SharePoint.Common.MetaModels.Visitors;
 
@@ -16,7 +15,10 @@ namespace Untech.SharePoint.Server.MetaModels.Visitors
 
 		public void Visit(IMetaModel model)
 		{
-			Steps.Each(n => n.Visit(model));
+			foreach (var step in Steps)
+			{
+				step.Visit(model);
+			}
 		}
 
 		public void VisitContext(MetaContext context)

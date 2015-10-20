@@ -50,6 +50,15 @@ namespace Untech.SharePoint.Common.Test.Data.Translators
 		}
 
 		[TestMethod]
+		public void CanProcessOrderByAndReverse()
+		{
+			TestModel(source => source.OrderBy(n => n.Bool1).ThenBy(n => n.String1).Reverse(),
+				"<Query>" +
+				"<OrderBy><FieldRef Name='Bool1' Ascending='FALSE' /><FieldRef Name='String1' Ascending='FALSE' /></OrderBy>" +
+				"</Query>");
+		}
+
+		[TestMethod]
 		public void CanProcessTake()
 		{
 			TestModel(

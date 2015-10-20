@@ -63,7 +63,6 @@
     <Compile Include="Data\DataMappingException.cs" />
     <Compile Include="Data\GenericMethodDefinitionComparer.cs" />
     <Compile Include="Data\ICommonService.cs" />
-    <Compile Include="Data\IMetaContextProcessor.cs" />
     <Compile Include="Data\SpLinqQuery.cs" />
     <Compile Include="Data\SpLinqQueryProvider.cs" />
     <Compile Include="Data\Translators\CamlQueryTreeProcessor.cs" />

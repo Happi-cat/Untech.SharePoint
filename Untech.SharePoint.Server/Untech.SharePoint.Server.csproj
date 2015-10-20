@@ -49,6 +49,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Configuration\ServerConfig.cs" />
+    <Compile Include="Converters\BuiltIn\ContentTypeIdConverter.cs" />
     <Compile Include="Data\Mapper\FieldMapper.cs" />
     <Compile Include="Data\Mapper\TypeMapper.cs" />
     <Compile Include="Data\SpListItemsProvider.cs" />

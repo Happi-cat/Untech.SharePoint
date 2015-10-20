@@ -82,10 +82,7 @@ namespace Untech.SharePoint.Common.Data.Translators
 					: new XElement(Tags.OrderBy, models.Select(GetOrderBy));
 			}
 			
-			return new XElement(Tags.OrderBy,
-				new XElement(Tags.FieldRef,
-					new XAttribute(Tags.Ascending, (!isOrderReversed).ToString().ToUpper()),
-					new XAttribute(Tags.Name, "ID")));
+			return null;
 		}
 
 		protected XElement GetOrderBy(OrderByModel orderBy)
@@ -130,6 +127,11 @@ namespace Untech.SharePoint.Common.Data.Translators
 
 		private XElement AppendContentTypeFilter(XElement xWhere)
 		{
+			if (ContentType.List.IsExternal)
+			{
+				return xWhere;
+			}
+
 			var xContentType = new XElement(Tags.BeginsWith,
 					new XElement(Tags.FieldRef, new XAttribute(Tags.Name, "ContentTypeId")),
 					new XElement(Tags.Value, ContentType.Id));
