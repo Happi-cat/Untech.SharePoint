@@ -76,9 +76,20 @@ namespace Untech.SharePoint.Server.Data
 				throw new InvalidOperationException();
 			}
 
+			var contentType = List.ContentTypes[typeof(T)];
+			var mapper = contentType.GetMapper();
+			var idField = contentType.Fields.SingleOrDefault<MetaField>(n => n.InternalName == "ID");
+
+			if (idField == null)
+			{
+				throw new InvalidOperationException();
+			}
+
 			var spItem = SpList.AddItem();
-			
-			throw new System.NotImplementedException();
+
+			mapper.Map(item, spItem);
+
+			spItem.Update();
 		}
 
 		public void Update<T>(T item)
@@ -88,7 +99,22 @@ namespace Untech.SharePoint.Server.Data
 				throw new InvalidOperationException();
 			}
 
-			throw new System.NotImplementedException();
+			var contentType = List.ContentTypes[typeof(T)];
+			var mapper = contentType.GetMapper();
+			var idField = contentType.Fields.SingleOrDefault<MetaField>(n => n.InternalName == "ID");
+
+			if (idField == null)
+			{
+				throw new InvalidOperationException();
+			}
+
+			var idValue = (int) idField.GetMapper().MemberGetter(item);
+
+			var spItem = SpList.GetItemById(idValue);
+
+			mapper.Map(item, spItem);
+
+			spItem.Update();
 		}
 
 		private IList<SPListItem> FetchInternal(string caml)
