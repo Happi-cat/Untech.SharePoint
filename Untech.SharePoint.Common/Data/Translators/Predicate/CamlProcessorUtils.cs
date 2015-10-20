@@ -12,6 +12,11 @@ namespace Untech.SharePoint.Common.Data.Translators.Predicate
 			{
 				var memberNode = (MemberExpression)node;
 				var objectNode = memberNode.Expression;
+				if (objectNode != null && (objectNode.NodeType == ExpressionType.Convert || objectNode.NodeType == ExpressionType.ConvertChecked))
+				{
+					var convertNode = (UnaryExpression) objectNode;
+					objectNode = convertNode.Operand;
+				}
 				if (objectNode != null && objectNode.NodeType == ExpressionType.Parameter)
 				{
 					return new FieldRefModel(memberNode.Member);
