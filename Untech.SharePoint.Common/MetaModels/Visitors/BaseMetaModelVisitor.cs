@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using Untech.SharePoint.Common.Extensions;
 
 namespace Untech.SharePoint.Common.MetaModels.Visitors
 {
@@ -35,7 +34,10 @@ namespace Untech.SharePoint.Common.MetaModels.Visitors
 
 		protected void VisitCollection(IEnumerable<IMetaModel> models)
 		{
-			models.Each(Visit);
+			foreach (var model in models)
+			{
+				Visit(model);
+			}
 		}
 	}
 }

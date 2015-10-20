@@ -1,7 +1,8 @@
-﻿using System;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Microsoft.SharePoint;
 using Untech.SharePoint.Common.MetaModels;
+using Untech.SharePoint.Server.MetaModels;
 
 namespace Untech.SharePoint.Server.Data
 {
@@ -16,10 +17,10 @@ namespace Untech.SharePoint.Server.Data
 
 		public void Map(object source, SPListItem dest)
 		{
-			var fields = ContentType.Fields.Where<MetaField>(n => !n.ReadOnly);
+			IEnumerable<MetaField> fields = ContentType.Fields.Where<MetaField>(n => !n.ReadOnly);
 			foreach (var metaField in fields)
 			{
-				var getter = metaField.GetAdditionalProperty<Func<object, object>>("Getter");
+				var getter = metaField.GetMemberGetter();
 
 				var value = getter(source);
 
@@ -29,10 +30,10 @@ namespace Untech.SharePoint.Server.Data
 
 		public void Map(SPListItem source, object dest)
 		{
-			var fields = ContentType.Fields.ToList<MetaField>();
+			IEnumerable<MetaField> fields = ContentType.Fields;
 			foreach (var metaField in fields)
 			{
-				var setter = metaField.GetAdditionalProperty<Action<object, object>>("Setter");
+				var setter = metaField.GetMemberSetter();
 
 				var value = metaField.Converter.FromSpValue(source[metaField.InternalName]);
 

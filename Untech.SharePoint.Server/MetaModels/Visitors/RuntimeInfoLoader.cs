@@ -38,6 +38,8 @@ namespace Untech.SharePoint.Server.MetaModels.Visitors
 
 				contentType.Id = spContentType.Id.ToString();
 				contentType.Name = spContentType.Name;
+
+				base.VisitContentType(contentType);
 			}
 
 			public override void VisitField(MetaField field)

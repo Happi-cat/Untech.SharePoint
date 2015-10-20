@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Xml.Linq;
 using Microsoft.SharePoint;
 using Untech.SharePoint.Common.Data;
+using Untech.SharePoint.Common.Extensions;
 using Untech.SharePoint.Common.MetaModels;
+using Untech.SharePoint.Server.Utils;
 
 namespace Untech.SharePoint.Server.Data
 {
@@ -77,21 +80,16 @@ namespace Untech.SharePoint.Server.Data
 			throw new System.NotImplementedException();
 		}
 
-		private SPQuery CamlToSpQuery(string caml)
-		{
-			throw new NotImplementedException();
-		}
-
 		private IList<SPListItem> FetchInternal(string caml)
 		{
-			return SpList.GetItems(CamlToSpQuery(caml))
+			return SpList.GetItems(CamlUtility.CamlStringToSPQuery(caml))
 				.Cast<SPListItem>()
 				.ToList();
 		}
 
 		private IList<SPListItem> FetchInternal(string caml, uint overrideRowLimit)
 		{
-			var query = CamlToSpQuery(caml);
+			var query = CamlUtility.CamlStringToSPQuery(caml);
 			query.RowLimit = overrideRowLimit;
 
 			return SpList.GetItems(query)

@@ -9,8 +9,8 @@ namespace Untech.SharePoint.Server.MetaModels.Visitors
 	{
 		public override void VisitField(MetaField field)
 		{
-			field.SetAdditionalProperty("Getter", MemberAccessUtility.CreateGetter(field.Member));
-			field.SetAdditionalProperty("Setter", MemberAccessUtility.CreateSetter(field.Member));
+			field.SetMemberGetter(MemberAccessUtility.CreateGetter(field.Member));
+			field.SetMemberSetter(MemberAccessUtility.CreateSetter(field.Member));
 		}
 	}
 
