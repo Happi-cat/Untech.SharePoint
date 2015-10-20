@@ -9,7 +9,7 @@ namespace Untech.SharePoint.Client.Data
 	{
 		public static IEnumerable<Field> GetListFields(this ClientContext context, string listTitle)
 		{
-			List list = context.Web.Lists.GetByTitle(listTitle);
+			var list = context.Web.Lists.GetByTitle(listTitle);
 
 			context.Load(list.Fields);
 			context.ExecuteQuery();
@@ -29,7 +29,7 @@ namespace Untech.SharePoint.Client.Data
 
 		public static string GetListTitle(this ClientContext context, Guid listId)
 		{
-			List list = context.Web.Lists.GetById(listId);
+			var list = context.Web.Lists.GetById(listId);
 
 			context.Load(list, l => l.Title);
 			context.ExecuteQuery();
