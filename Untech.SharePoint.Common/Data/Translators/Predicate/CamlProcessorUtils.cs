@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq.Expressions;
 using Untech.SharePoint.Common.Data.QueryModels;
+using Untech.SharePoint.Common.Extensions;
 
 namespace Untech.SharePoint.Common.Data.Translators.Predicate
 {
@@ -12,7 +13,7 @@ namespace Untech.SharePoint.Common.Data.Translators.Predicate
 			{
 				var memberNode = (MemberExpression)node;
 				var objectNode = memberNode.Expression;
-				if (objectNode != null && (objectNode.NodeType == ExpressionType.Convert || objectNode.NodeType == ExpressionType.ConvertChecked))
+				if (objectNode != null && objectNode.NodeType.In(new [] { ExpressionType.Convert, ExpressionType.ConvertChecked}))
 				{
 					var convertNode = (UnaryExpression) objectNode;
 					objectNode = convertNode.Operand;
