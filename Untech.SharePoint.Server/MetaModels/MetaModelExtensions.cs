@@ -1,32 +1,29 @@
-﻿using System;
-using Untech.SharePoint.Common.MetaModels;
+﻿using Untech.SharePoint.Common.MetaModels;
+using Untech.SharePoint.Server.Data.Mapper;
 
 namespace Untech.SharePoint.Server.MetaModels
 {
-	public static class MetaModelExtensions
+	internal static class MetaModelExtensions
 	{
-		private const string MemberGetterProperty = "MemberGetter";
-		private const string MemberSetterProperty = "MemberSetter";
+		private const string MapperProperty = "Mapper";
 
-		public static Func<object, object> GetMemberGetter(this MetaField field)
+		internal static FieldMapper GetMapper(this MetaField field)
 		{
-			return field.GetAdditionalProperty<Func<object, object>>(MemberGetterProperty);
+			return field.GetAdditionalProperty<FieldMapper>(MapperProperty);
+		}
+		internal static TypeMapper GetMapper(this MetaContentType contentType)
+		{
+			return contentType.GetAdditionalProperty<TypeMapper>(MapperProperty);
 		}
 
-		public static Action<object, object> GetMemberSetter(this MetaField field)
+		internal static void SetMapper(this MetaField field, FieldMapper mapper)
 		{
-			return field.GetAdditionalProperty<Action<object, object>>(MemberSetterProperty);
+			field.SetAdditionalProperty(MapperProperty, mapper);
+		}
+		internal static void SetMapper(this MetaContentType contentType, TypeMapper mapper)
+		{
+			contentType.SetAdditionalProperty(MapperProperty, mapper);
 		}
 
-
-		public static void SetMemberGetter(this MetaField field, Func<object, object> getter)
-		{
-			field.SetAdditionalProperty(MemberGetterProperty, getter);
-		}
-
-		public static void SetMemberSetter(this MetaField field, Action<object, object> setter)
-		{
-			field.SetAdditionalProperty(MemberSetterProperty, setter);
-		}
 	}
 }

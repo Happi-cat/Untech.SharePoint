@@ -1,19 +1,9 @@
 using Untech.SharePoint.Common.Converters;
 using Untech.SharePoint.Common.MetaModels;
 using Untech.SharePoint.Common.MetaModels.Visitors;
-using Untech.SharePoint.Common.Utils.Reflection;
 
 namespace Untech.SharePoint.Server.MetaModels.Visitors
 {
-	internal class FieldAccessorsInitializer : BaseMetaModelVisitor
-	{
-		public override void VisitField(MetaField field)
-		{
-			field.SetMemberGetter(MemberAccessUtility.CreateGetter(field.Member));
-			field.SetMemberSetter(MemberAccessUtility.CreateSetter(field.Member));
-		}
-	}
-
 	internal class FieldConverterInitializer : BaseMetaModelVisitor
 	{
 		public FieldConverterInitializer(IFieldConverterResolver converterResolver)

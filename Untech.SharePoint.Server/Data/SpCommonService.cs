@@ -27,8 +27,7 @@ namespace Untech.SharePoint.Server.Data
 				{
 					new RuntimeInfoLoader(Web),
 					new FieldConverterInitializer(Config.FieldConverters),
-					new FieldAccessorsInitializer(),
-					new ContentTypeCreatorInitializer()
+					new MapperInitializer()
 				});
 			}
 		}

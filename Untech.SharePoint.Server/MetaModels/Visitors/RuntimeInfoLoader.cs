@@ -16,8 +16,11 @@ namespace Untech.SharePoint.Server.MetaModels.Visitors
 
 		public override void VisitList(MetaList list)
 		{
-			new ListInfoLoader(SpWeb.Lists[list.Title])
-				.VisitList(list);
+			var spList = SpWeb.Lists[list.Title];
+
+			list.IsExternal = spList.HasExternalDataSource;
+
+			new ListInfoLoader(spList).VisitList(list);
 		}
 
 		internal class ListInfoLoader : BaseMetaModelVisitor

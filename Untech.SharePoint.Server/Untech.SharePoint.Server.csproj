@@ -49,12 +49,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Configuration\ServerConfig.cs" />
-    <Compile Include="Data\Materiliazer.cs" />
+    <Compile Include="Data\Mapper\FieldMapper.cs" />
+    <Compile Include="Data\Mapper\TypeMapper.cs" />
     <Compile Include="Data\SpListItemsProvider.cs" />
     <Compile Include="Data\SpServerContext.cs" />
     <Compile Include="MetaModels\MetaModelExtensions.cs" />
-    <Compile Include="MetaModels\Visitors\ContentTypeCreatorInitializer.cs" />
     <Compile Include="MetaModels\Visitors\FieldConverterInitializer.cs" />
+    <Compile Include="MetaModels\Visitors\MapperInitializer.cs" />
     <Compile Include="MetaModels\Visitors\MetaModelProcessor.cs" />
     <Compile Include="MetaModels\Visitors\RuntimeInfoLoader.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Xml.Linq;
 using Microsoft.SharePoint;
 using Untech.SharePoint.Common.Data;
-using Untech.SharePoint.Common.Extensions;
 using Untech.SharePoint.Common.MetaModels;
+using Untech.SharePoint.Server.MetaModels;
 using Untech.SharePoint.Server.Utils;
 
 namespace Untech.SharePoint.Server.Data
@@ -72,11 +71,23 @@ namespace Untech.SharePoint.Server.Data
 
 		public void Add<T>(T item)
 		{
+			if (List.IsExternal)
+			{
+				throw new InvalidOperationException();
+			}
+
+			var spItem = SpList.AddItem();
+			
 			throw new System.NotImplementedException();
 		}
 
 		public void Update<T>(T item)
 		{
+			if (List.IsExternal)
+			{
+				throw new InvalidOperationException();
+			}
+
 			throw new System.NotImplementedException();
 		}
 
@@ -100,13 +111,15 @@ namespace Untech.SharePoint.Server.Data
 		private T Materialize<T>(SPListItem item)
 		{
 			var contentType = List.ContentTypes[typeof (T)];
-			var creator = contentType.EntityTypeCreator;
+			var mapper = contentType.GetMapper();
 
-			var materializedItem = (T) creator();
+			var materializedItem = (T) mapper.TypeCreator();
 
-			new Materiliazer(contentType).Map(item, materializedItem);
+			mapper.Map(item, materializedItem);
 
 			return materializedItem;
 		}
+
+
 	}
 }

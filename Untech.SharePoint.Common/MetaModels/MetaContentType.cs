@@ -32,8 +32,6 @@ namespace Untech.SharePoint.Common.MetaModels
 
 		public Type EntityType { get; private set; }
 
-		public Func<object> EntityTypeCreator { get; set; }
-
 		public override void Accept(IMetaModelVisitor visitor)
 		{
 			visitor.VisitContentType(this);

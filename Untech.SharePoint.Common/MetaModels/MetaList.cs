@@ -23,6 +23,8 @@ namespace Untech.SharePoint.Common.MetaModels
 
 		public string Title { get; private set; }
 
+		public bool IsExternal { get; set; }
+
 		public MetaContext Context { get; private set; }
 
 		public MetaContentTypeCollection ContentTypes { get; private set; }

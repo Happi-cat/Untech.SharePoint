@@ -9,5 +9,10 @@ namespace Untech.SharePoint.Common.Data
 		{
 			
 		}
+
+		public DataMappingException(MetaField field, Exception inner)
+		{
+
+		}
 	}
 }

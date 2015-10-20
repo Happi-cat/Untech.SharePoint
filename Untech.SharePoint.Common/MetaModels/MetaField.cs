@@ -43,6 +43,8 @@ namespace Untech.SharePoint.Common.MetaModels
 
 		public string LookupField { get; set; }
 
+		public IFieldConverter Converter { get; set; }
+
 		public Type CustomConverterType { get; set; }
 
 		public MemberInfo Member { get; private set; }
@@ -52,8 +54,6 @@ namespace Untech.SharePoint.Common.MetaModels
 		public Type MemberType { get; private set; }
 
 		public MetaContentType ContentType { get; private set; }
-
-		public IFieldConverter Converter { get; set; }
 
 		public override void Accept(IMetaModelVisitor visitor)
 		{
