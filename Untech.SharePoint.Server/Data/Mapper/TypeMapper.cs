@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using Microsoft.SharePoint;
+using Untech.SharePoint.Common.Extensions;
 using Untech.SharePoint.Common.MetaModels;
 using Untech.SharePoint.Common.Utils;
 using Untech.SharePoint.Common.Utils.Reflection;
@@ -27,10 +28,12 @@ namespace Untech.SharePoint.Server.Data.Mapper
 			Guard.CheckNotNull("source", source);
 			Guard.CheckNotNull("dest", dest);
 
-			ContentType.Fields
-				.Select<MetaField, FieldMapper>(n => n.GetMapper())
-				.ToList()
-				.ForEach(n => n.Map(source, dest));
+			var mappers = ContentType.Fields.Select<MetaField, FieldMapper>(n => n.GetMapper());
+
+			foreach (var mapper in mappers)
+			{
+				mapper.Map(source, dest);
+			}
 		}
 
 		public void Map(SPListItem source, object dest)
@@ -38,10 +41,12 @@ namespace Untech.SharePoint.Server.Data.Mapper
 			Guard.CheckNotNull("source", source);
 			Guard.CheckNotNull("dest", dest);
 
-			ContentType.Fields
-				.Select<MetaField,FieldMapper>(n => n.GetMapper())
-				.ToList()
-				.ForEach(n => n.Map(source, dest));
+			var mappers = ContentType.Fields.Select<MetaField, FieldMapper>(n => n.GetMapper());
+
+			foreach (var mapper in mappers)
+			{
+				mapper.Map(source, dest);
+			}
 		}
 	}
 }
