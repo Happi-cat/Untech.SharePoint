@@ -7,7 +7,8 @@ using Untech.SharePoint.Common.Utils;
 
 namespace Untech.SharePoint.Common.Data
 {
-	public abstract class SpContext<TCommonService> : ISpContext
+	public abstract class SpContext<TContext, TCommonService> : ISpContext
+		where TContext : ISpContext
 		where TCommonService: ICommonService
 	{
 		protected SpContext(Config config, TCommonService commonService)
@@ -21,7 +22,7 @@ namespace Untech.SharePoint.Common.Data
 			MappingSource = Config.Mappings.Resolve(GetType());
 			Model = MappingSource.GetMetaContext();
 
-			CommonService.MetaContextProcessor.Process(Model);
+			CommonService.MetaModelProcessor.Visit(Model);
 		}
 
 		protected Config Config { get; private set; }
@@ -32,7 +33,7 @@ namespace Untech.SharePoint.Common.Data
 
 		protected MetaContext Model { get; private set; }
 
-		protected ISpList<TEntity> GetList<TEntity>(Expression<Func<ISpContext, TEntity>> listAccessor)
+		protected ISpList<TEntity> GetList<TEntity>(Expression<Func<TContext, ISpList<TEntity>>> listAccessor)
 		{
 			var memberExp = (MemberExpression)listAccessor.Body;
 			var listTitle = MappingSource.GetListTitleFromContextMember(memberExp.Member);

@@ -49,8 +49,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Configuration\ServerConfig.cs" />
+    <Compile Include="Data\Materiliazer.cs" />
     <Compile Include="Data\SpListItemsProvider.cs" />
     <Compile Include="Data\SpServerContext.cs" />
+    <Compile Include="MetaModels\Visitors\ContentTypeCreatorInitializer.cs" />
+    <Compile Include="MetaModels\Visitors\FieldConverterInitializer.cs" />
+    <Compile Include="MetaModels\Visitors\MetaModelProcessor.cs" />
+    <Compile Include="MetaModels\Visitors\RuntimeInfoLoader.cs" />
+    <Compile Include="MetaModelExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Data\SpCommonService.cs" />
   </ItemGroup>

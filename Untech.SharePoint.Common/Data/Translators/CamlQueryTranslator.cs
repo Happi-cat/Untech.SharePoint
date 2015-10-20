@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Xml.Linq;
@@ -147,7 +146,7 @@ namespace Untech.SharePoint.Common.Data.Translators
 
 		private IFieldConverter GetConverter(MemberInfo member)
 		{
-			throw new NotImplementedException();
+			return GetMetaField(member).Converter;
 		}
 	}
 }

@@ -7,7 +7,7 @@ using Untech.SharePoint.Common.Utils;
 
 namespace Untech.SharePoint.Common.MetaModels
 {
-	public sealed class MetaContext : IMetaModel
+	public sealed class MetaContext : BaseMetaModel
 	{
 		public MetaContext(IReadOnlyCollection<IMetaListProvider> listProviders)
 		{
@@ -18,7 +18,7 @@ namespace Untech.SharePoint.Common.MetaModels
 
 		public MetaListCollection Lists { get; private set; }
 
-		public void Accept(IMetaModelVisitor visitor)
+		public override void Accept(IMetaModelVisitor visitor)
 		{
 			visitor.VisitContext(this);
 		}

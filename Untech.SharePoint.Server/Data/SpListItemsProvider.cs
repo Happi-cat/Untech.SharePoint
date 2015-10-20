@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.SharePoint;
 using Untech.SharePoint.Common.Data;
-using Untech.SharePoint.Common.Extensions;
 using Untech.SharePoint.Common.MetaModels;
 
 namespace Untech.SharePoint.Server.Data
@@ -102,7 +101,14 @@ namespace Untech.SharePoint.Server.Data
 
 		private T Materialize<T>(SPListItem item)
 		{
-			throw new NotImplementedException();
+			var contentType = List.ContentTypes[typeof (T)];
+			var creator = contentType.EntityTypeCreator;
+
+			var materializedItem = (T) creator();
+
+			new Materiliazer(contentType).Map(item, materializedItem);
+
+			return materializedItem;
 		}
 	}
 }

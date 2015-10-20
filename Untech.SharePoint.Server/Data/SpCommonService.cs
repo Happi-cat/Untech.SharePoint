@@ -1,23 +1,36 @@
-﻿using Microsoft.SharePoint;
+﻿using System.Collections.Generic;
+using Microsoft.SharePoint;
+using Untech.SharePoint.Common.Configuration;
 using Untech.SharePoint.Common.Data;
-using Untech.SharePoint.Common.MetaModels;
+using Untech.SharePoint.Common.MetaModels.Visitors;
+using Untech.SharePoint.Server.MetaModels.Visitors;
 
 namespace Untech.SharePoint.Server.Data
 {
-	public class SpCommonService : ICommonService, IMetaContextProcessor
+	public class SpCommonService : ICommonService
 	{
-		public SpCommonService(SPWeb web)
+		public SpCommonService(SPWeb web, Config config)
 		{
 			Web = web;
+			Config = config;
 		}
 
 		public SPWeb Web { get; private set; }
 
-		public IMetaContextProcessor MetaContextProcessor { get { return this; } }
-		
-		public void Process(MetaContext context)
+		public Config Config { get; private set; }
+
+		public IMetaModelVisitor MetaModelProcessor
 		{
-			throw new System.NotImplementedException();
+			get
+			{
+				return new MetaModelProcessor(new List<IMetaModelVisitor>
+				{
+					new RuntimeInfoLoader(Web),
+					new FieldConverterInitializer(Config.FieldConverters),
+					new FieldAccessorsInitializer(),
+					new ContentTypeCreatorInitializer()
+				});
+			}
 		}
 	}
 }

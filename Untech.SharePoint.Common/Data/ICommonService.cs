@@ -1,7 +1,9 @@
-﻿namespace Untech.SharePoint.Common.Data
+﻿using Untech.SharePoint.Common.MetaModels.Visitors;
+
+namespace Untech.SharePoint.Common.Data
 {
 	public interface ICommonService
 	{
-		IMetaContextProcessor MetaContextProcessor { get; } 
+		IMetaModelVisitor MetaModelProcessor { get; } 
 	}
 }

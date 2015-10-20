@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Reflection;
+using Untech.SharePoint.Common.Converters;
 using Untech.SharePoint.Common.MetaModels.Visitors;
 using Untech.SharePoint.Common.Utils;
 
 namespace Untech.SharePoint.Common.MetaModels
 {
-	public sealed class MetaField : IMetaModel
+	public sealed class MetaField : BaseMetaModel
 	{
 		public MetaField(MetaContentType contentType, MemberInfo member, string internalName)
 		{
@@ -18,7 +19,6 @@ namespace Untech.SharePoint.Common.MetaModels
 			Member = member;
 			MemberName = member.Name;
 			MemberType = TypeSystem.GetMemberType(member);
-			MemberDeclaringType = member.DeclaringType;
 
 			InternalName = internalName;
 		}
@@ -41,7 +41,7 @@ namespace Untech.SharePoint.Common.MetaModels
 
 		public string LookupList { get; set; }
 
-		public string LookupDisplayColumn { get; set; }
+		public string LookupField { get; set; }
 
 		public Type CustomConverterType { get; set; }
 
@@ -51,11 +51,11 @@ namespace Untech.SharePoint.Common.MetaModels
 
 		public Type MemberType { get; private set; }
 
-		public Type MemberDeclaringType { get; private set; }
-
 		public MetaContentType ContentType { get; private set; }
 
-		public void Accept(IMetaModelVisitor visitor)
+		public IFieldConverter Converter { get; set; }
+
+		public override void Accept(IMetaModelVisitor visitor)
 		{
 			visitor.VisitField(this);
 		}

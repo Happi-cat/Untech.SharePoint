@@ -6,10 +6,11 @@ using Untech.SharePoint.Common.Utils;
 
 namespace Untech.SharePoint.Server.Data
 {
-	public abstract class SpServerContext : SpContext<SpCommonService>
+	public abstract class SpServerContext<TContext> : SpContext<TContext, SpCommonService>
+		where TContext : SpServerContext<TContext>
 	{
 		protected SpServerContext(SPWeb web, Config config) 
-			: base(config, new SpCommonService(web))
+			: base(config, new SpCommonService(web, config))
 		{
 			Guard.CheckNotNull("web", web);
 

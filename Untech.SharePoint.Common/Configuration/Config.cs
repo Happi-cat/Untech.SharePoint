@@ -5,8 +5,8 @@ namespace Untech.SharePoint.Common.Configuration
 {
 	public class Config
 	{
-		protected internal virtual IFieldConverterResolver FieldConverters { get; set; }
+		public virtual IFieldConverterResolver FieldConverters { get; set; }
 
-		protected internal virtual IMappingSourceResolver Mappings { get; set; }
+		public virtual IMappingSourceResolver Mappings { get; set; }
 	}
 }

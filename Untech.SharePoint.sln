@@ -1,8 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.21005.1
-MinimumVisualStudioVersion = 10.0.40219.1
+# Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Untech.SharePoint.Core", "Untech.SharePoint.Core\Untech.SharePoint.Core.csproj", "{8D848AAC-F04A-433A-A12D-4A7B6568B9F2}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Untech.SharePoint.Core.Test", "Untech.SharePoint.Core.Test\Untech.SharePoint.Core.Test.csproj", "{35C9A920-374C-4130-B716-931391F3A05C}"
@@ -16,6 +14,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Untech.SharePoint.Common.Test", "Untech.SharePoint.Common.Test\Untech.SharePoint.Common.Test.csproj", "{672ADF77-0D40-4CB1-821E-54DED0E8AAA2}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Untech.SharePoint.Server", "Untech.SharePoint.Server\Untech.SharePoint.Server.csproj", "{9656B27C-2D1C-4403-B691-C456E5D64630}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Untech.SharePoint.Server.Test", "Untech.SharePoint.Server.Test\Untech.SharePoint.Server.Test.csproj", "{E8EBA785-E1EF-4E61-93C3-2FD7A6D8584D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -51,6 +51,10 @@ Global
 		{9656B27C-2D1C-4403-B691-C456E5D64630}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9656B27C-2D1C-4403-B691-C456E5D64630}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9656B27C-2D1C-4403-B691-C456E5D64630}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E8EBA785-E1EF-4E61-93C3-2FD7A6D8584D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E8EBA785-E1EF-4E61-93C3-2FD7A6D8584D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E8EBA785-E1EF-4E61-93C3-2FD7A6D8584D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E8EBA785-E1EF-4E61-93C3-2FD7A6D8584D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -8,7 +8,7 @@ using Untech.SharePoint.Common.Utils;
 
 namespace Untech.SharePoint.Common.MetaModels
 {
-	public sealed class MetaContentType : IMetaModel
+	public sealed class MetaContentType : BaseMetaModel
 	{
 		public MetaContentType(MetaList list, Type entityType, IReadOnlyCollection<IMetaFieldProvider> fieldProviders)
 		{
@@ -32,7 +32,9 @@ namespace Untech.SharePoint.Common.MetaModels
 
 		public Type EntityType { get; private set; }
 
-		public void Accept(IMetaModelVisitor visitor)
+		public Func<object> EntityTypeCreator { get; set; }
+
+		public override void Accept(IMetaModelVisitor visitor)
 		{
 			visitor.VisitContentType(this);
 		}
