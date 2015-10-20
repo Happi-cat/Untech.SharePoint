@@ -1,7 +1,7 @@
 ﻿using System;
 using Newtonsoft.Json;
 
-namespace Untech.SharePoint.Core.Models
+namespace Untech.SharePoint.Common.Models
 {
 	[Serializable]
 	public class GeoInfo

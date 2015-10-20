@@ -1,10 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Untech.SharePoint.Core", "Untech.SharePoint.Core\Untech.SharePoint.Core.csproj", "{8D848AAC-F04A-433A-A12D-4A7B6568B9F2}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Untech.SharePoint.Core.Test", "Untech.SharePoint.Core.Test\Untech.SharePoint.Core.Test.csproj", "{35C9A920-374C-4130-B716-931391F3A05C}"
-EndProject
+# Visual Studio 2013
+VisualStudioVersion = 12.0.21005.1
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Untech.SharePoint.Client", "Untech.SharePoint.Client\Untech.SharePoint.Client.csproj", "{873D0ED4-C941-4320-AECF-5D7F09369A1E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Untech.SharePoint.Client.Test", "Untech.SharePoint.Client.Test\Untech.SharePoint.Client.Test.csproj", "{23E4FE0B-D466-4704-8FFC-D5654221EE6C}"
@@ -23,14 +21,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{8D848AAC-F04A-433A-A12D-4A7B6568B9F2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8D848AAC-F04A-433A-A12D-4A7B6568B9F2}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8D848AAC-F04A-433A-A12D-4A7B6568B9F2}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8D848AAC-F04A-433A-A12D-4A7B6568B9F2}.Release|Any CPU.Build.0 = Release|Any CPU
-		{35C9A920-374C-4130-B716-931391F3A05C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{35C9A920-374C-4130-B716-931391F3A05C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{35C9A920-374C-4130-B716-931391F3A05C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{35C9A920-374C-4130-B716-931391F3A05C}.Release|Any CPU.Build.0 = Release|Any CPU
 		{873D0ED4-C941-4320-AECF-5D7F09369A1E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{873D0ED4-C941-4320-AECF-5D7F09369A1E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{873D0ED4-C941-4320-AECF-5D7F09369A1E}.Release|Any CPU.ActiveCfg = Release|Any CPU
