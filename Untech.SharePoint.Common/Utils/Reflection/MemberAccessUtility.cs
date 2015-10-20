@@ -114,7 +114,7 @@ namespace Untech.SharePoint.Common.Utils.Reflection
 
 			var propertyExpression = Expression.PropertyOrField(Expression.Convert(objectParameter, declaringType), memberName);
 
-			return Expression.Lambda<Getter>(propertyExpression, objectParameter)
+			return Expression.Lambda<Getter>(Expression.Convert(propertyExpression, typeof(object)), objectParameter)
 				.Compile();
 		}
 	}

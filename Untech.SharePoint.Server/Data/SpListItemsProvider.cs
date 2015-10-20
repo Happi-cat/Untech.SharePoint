@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Xml.Linq;
 using Microsoft.SharePoint;
 using Untech.SharePoint.Common.Data;
+using Untech.SharePoint.Common.Extensions;
 using Untech.SharePoint.Common.MetaModels;
 
 namespace Untech.SharePoint.Server.Data
@@ -79,7 +81,12 @@ namespace Untech.SharePoint.Server.Data
 
 		private SPQuery CamlToSpQuery(string caml)
 		{
-			throw new NotImplementedException();
+			var xCaml = XElement.Parse(caml);
+			
+			var spQuery = new SPQuery();
+			spQuery.Query = xCaml.Descendants("Where").JoinToString("");
+
+			return spQuery;
 		}
 
 		private IList<SPListItem> FetchInternal(string caml)
