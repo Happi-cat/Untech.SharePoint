@@ -54,6 +54,7 @@
     <Compile Include="Converters\BuiltIn\CounterFieldConverter.cs" />
     <Compile Include="Converters\BuiltIn\DateTimeFieldConverter.cs" />
     <Compile Include="Converters\BuiltIn\GuidFieldConverter.cs" />
+    <Compile Include="Converters\BuiltIn\IntegerFieldConverter.cs" />
     <Compile Include="Converters\BuiltIn\NumberFieldConverter.cs" />
     <Compile Include="Converters\BuiltIn\TextFieldConverter.cs" />
     <Compile Include="Converters\Custom\EnumFieldConverter.cs" />

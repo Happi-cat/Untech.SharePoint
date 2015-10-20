@@ -5,8 +5,8 @@ using Untech.SharePoint.Common.Utils;
 
 namespace Untech.SharePoint.Common.Converters.BuiltIn
 {
-	[SpFieldConverter("Number")]
-	internal class NumberFieldConverter : IFieldConverter
+	[SpFieldConverter("Integer")]
+	internal class IntegerFieldConverter : IFieldConverter
 	{
 		public MetaField Field { get; set; }
 
@@ -20,14 +20,14 @@ namespace Untech.SharePoint.Common.Converters.BuiltIn
 		public object FromSpValue(object value)
 		{
 			if (Field.MemberType.IsNullableType())
-				return (double?)value;
+				return (int?)value;
 
-			return (double?) value ?? 0;
+			return (int?)value ?? 0;
 		}
 
 		public object ToSpValue(object value)
 		{
-			return (double?)value;
+			return (int?)value;
 		}
 
 		public string ToCamlValue(object value)
