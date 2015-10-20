@@ -69,6 +69,11 @@ namespace Untech.SharePoint.Common.Data.Translators
 
 		protected XElement GetOrderBys(IEnumerable<OrderByModel> orderBys, bool isOrderReversed)
 		{
+			if (orderBys == null)
+			{
+				return null;
+			}
+
 			var models = orderBys.ToList();
 			if (models.Any())
 			{
