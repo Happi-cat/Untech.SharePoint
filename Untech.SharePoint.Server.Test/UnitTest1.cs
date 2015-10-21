@@ -57,7 +57,7 @@ namespace Untech.SharePoint.Server.Test
 		{
 			var cfg = ServerConfig.Begin().RegisterMappings(n => n.Annotated<InvestmenFrameworkContext>()).BuildConfig();
 
-			var ctx = new InvestmenFrameworkContext(new SPSite("jhttp://localhost:8086/sites/investment").OpenWeb(), cfg);
+			var ctx = new InvestmenFrameworkContext(new SPSite("http://localhost:8086/sites/investment").OpenWeb(), cfg);
 
 			var result = ctx.InvestmentProjects.Where(n => n.ProjectUniqueId.StartsWith("TTT") && n.Status == "Approved").ToList();
 		}

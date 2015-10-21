@@ -23,6 +23,11 @@ namespace Untech.SharePoint.Common.Data
 			ListItemsProvider.Update(item);
 		}
 
+		public void Delete(T item)
+		{
+			ListItemsProvider.Delete(item);
+		}
+
 		private static Expression MakeFakeFetch(ISpListItemsProvider listItemsProvider)
 		{
 			Guard.CheckNotNull("listItemsProvider", listItemsProvider);

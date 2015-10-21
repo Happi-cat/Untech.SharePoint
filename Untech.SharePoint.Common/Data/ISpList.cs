@@ -7,5 +7,7 @@ namespace Untech.SharePoint.Common.Data
 		void Add(T item);
 
 		void Update(T item);
+
+		void Delete(T item);
 	}
 }

@@ -20,6 +20,8 @@ namespace Untech.SharePoint.Server.Data.Mapper
 
 		public MetaContentType ContentType { get; private set; }
 
+		public SPContentTypeId ContentTypeId { get { return new SPContentTypeId(ContentType.Id); } }
+
 		public Func<object> TypeCreator { get; private set; }
 
 		public void Map(object source, SPListItem dest)
@@ -32,6 +34,11 @@ namespace Untech.SharePoint.Server.Data.Mapper
 			foreach (var mapper in mappers)
 			{
 				mapper.Map(source, dest);
+			}
+
+			if (!ContentType.List.IsExternal && ContentTypeId != dest.ContentTypeId)
+			{
+				dest["ContentTypeId"] = ContentTypeId;
 			}
 		}
 

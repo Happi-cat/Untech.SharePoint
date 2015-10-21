@@ -34,7 +34,7 @@ namespace Untech.SharePoint.Server.Data.Mapper
 		{
 			try
 			{
-				if (MemberGetter == null || Field.ReadOnly)
+				if (MemberGetter == null || Field.ReadOnly || Field.IsCalculated)
 				{
 					return;
 				}

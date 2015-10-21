@@ -117,6 +117,28 @@ namespace Untech.SharePoint.Server.Data
 			spItem.Update();
 		}
 
+		public void Delete<T>(T item)
+		{
+			if (List.IsExternal)
+			{
+				throw new InvalidOperationException();
+			}
+
+			var contentType = List.ContentTypes[typeof(T)];
+			var idField = contentType.Fields.SingleOrDefault<MetaField>(n => n.InternalName == "ID");
+
+			if (idField == null)
+			{
+				throw new InvalidOperationException();
+			}
+
+			var idValue = (int)idField.GetMapper().MemberGetter(item);
+
+			var spItem = SpList.GetItemById(idValue);
+
+			spItem.Delete();
+		}
+
 		private IList<SPListItem> FetchInternal(string caml)
 		{
 			return SpList.GetItems(CamlUtility.CamlStringToSPQuery(caml))

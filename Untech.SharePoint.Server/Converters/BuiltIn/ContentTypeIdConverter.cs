@@ -5,7 +5,7 @@ using Untech.SharePoint.Common.Utils;
 
 namespace Untech.SharePoint.Server.Converters.BuiltIn
 {
-	[SpFieldConverter("ConverterTypeId")]
+	[SpFieldConverter("ContentTypeId")]
 	internal class ContentTypeIdConverter : IFieldConverter
 	{
 		public MetaField Field { get; set; }
