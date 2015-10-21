@@ -1,6 +1,4 @@
-﻿using System;
-using Microsoft.SharePoint.Client;
-using Untech.SharePoint.Common.Data;
+﻿using Microsoft.SharePoint.Client;
 using Untech.SharePoint.Common.Data.Mapper;
 using Untech.SharePoint.Common.MetaModels;
 

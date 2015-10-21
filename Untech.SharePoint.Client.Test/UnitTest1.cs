@@ -1,5 +1,4 @@
 ﻿using System.Linq;
-using System.Net;
 using Microsoft.SharePoint.Client;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Untech.SharePoint.Client.Configuration;
