@@ -10,7 +10,7 @@ namespace Untech.SharePoint.Client.Utils
 		{
 			return new CamlQuery
 			{
-				ViewXml = caml
+				ViewXml = string.Format("<View>{0}</View>",caml)
 			};
 		}
 

@@ -10,7 +10,7 @@ namespace Untech.SharePoint.Client.Data
 		where TContext: SpClientContext<TContext>
 	{
 		protected SpClientContext(ClientContext context, Config config)
-			: base(config, null)
+			: base(config, new SpCommonService(context, config))
 		{
 			Guard.CheckNotNull("context", context);
 

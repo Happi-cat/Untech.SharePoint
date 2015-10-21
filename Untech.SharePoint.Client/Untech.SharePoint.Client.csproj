@@ -85,7 +85,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Configuration\ClientConfig.cs" />
-    <Compile Include="Data\ClientContextExtensions.cs" />
+    <Compile Include="Converters\BuiltIn\ContentTypeIdConverter.cs" />
+    <Compile Include="Extensions\ClientContextExtensions.cs" />
     <Compile Include="Data\Mapper\FieldMapper.cs" />
     <Compile Include="Data\Mapper\TypeMapper.cs" />
     <Compile Include="Data\SpClientContext.cs" />
@@ -103,9 +104,7 @@
     <None Include="key.snk" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Converters\BuiltIn\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\Untech.SharePoint.Common\Untech.SharePoint.Common.csproj">
       <Project>{8836bb37-fecf-4503-933d-479a3d404900}</Project>

@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Microsoft.SharePoint.Client;
+using Untech.SharePoint.Client.Extensions;
 using Untech.SharePoint.Common.MetaModels;
 using Untech.SharePoint.Common.MetaModels.Visitors;
 
@@ -16,7 +18,7 @@ namespace Untech.SharePoint.Client.MetaModels.Visitors
 
 		public override void VisitList(MetaList list)
 		{
-			var spList = ClientContext.Web.Lists.GetByTitle(list.Title);
+			var spList = ClientContext.GetList(list.Title);
 
 			list.IsExternal = spList.HasExternalDataSource;
 
@@ -25,22 +27,18 @@ namespace Untech.SharePoint.Client.MetaModels.Visitors
 
 		internal class ListInfoLoader : BaseMetaModelVisitor
 		{
-			public ListInfoLoader(List spList, IList<Field> spFields)
+			public ListInfoLoader(List spList)
 			{
 				Common.Utils.Guard.CheckNotNull("spList", spList);
 
 				SpList = spList;
-				SpFields = spFields;
 			}
 
 			public List SpList { get; private set; }
 
-			public IList<Field> SpFields { get; private set; }
-
 			public override void VisitContentType(MetaContentType contentType)
 			{
-				var bestMatch = SpList.ContentTypes.BestMatch(new SPContentTypeId(contentType.Id));
-				var spContentType = SpList.ContentTypes[bestMatch];
+				var spContentType = SpList.ContentTypes.OrderBy(n => n.StringId).First(n => n.StringId.StartsWith(contentType.Id));
 
 				contentType.Id = spContentType.Id.ToString();
 				contentType.Name = spContentType.Name;
@@ -50,31 +48,34 @@ namespace Untech.SharePoint.Client.MetaModels.Visitors
 
 			public override void VisitField(MetaField field)
 			{
-				var spField = SpList.Fields.GetFieldByInternalName(field.InternalName);
+				var spField = SpList.Fields.GetByInternalNameOrTitle(field.InternalName);
+
+				SpList.Context.Load(spField);
+				SpList.Context.ExecuteQuery();
 
 				field.Id = spField.Id;
 				field.Title = spField.Title;
 				field.ReadOnly = spField.ReadOnlyField;
 				field.Required = spField.Required;
 
-				field.IsCalculated = spField.Type == SPFieldType.Computed || spField.Type == SPFieldType.Calculated;
+				field.IsCalculated = spField.FieldTypeKind == FieldType.Computed || spField.FieldTypeKind == FieldType.Calculated;
 				field.TypeAsString = spField.TypeAsString;
 
-				if (spField.Type == SPFieldType.Lookup)
+				if (spField.FieldTypeKind == FieldType.Lookup)
 				{
-					var spLookupField = (SPFieldLookup)spField;
+					var spLookupField = (FieldLookup)spField;
 
 					field.AllowMultipleValues = spLookupField.AllowMultipleValues;
 					field.LookupList = spLookupField.LookupList;
 					field.LookupField = spLookupField.LookupField;
 				}
-				if (spField.Type == SPFieldType.MultiChoice)
+				if (spField.FieldTypeKind == FieldType.MultiChoice)
 				{
 					field.AllowMultipleValues = true;
 				}
-				if (spField.Type == SPFieldType.Calculated)
+				if (spField.FieldTypeKind == FieldType.Calculated)
 				{
-					var spCalculatedField = (SPFieldCalculated) spField;
+					var spCalculatedField = (FieldCalculated) spField;
 					field.TypeAsString = spCalculatedField.OutputType.ToString();
 				}
 			}

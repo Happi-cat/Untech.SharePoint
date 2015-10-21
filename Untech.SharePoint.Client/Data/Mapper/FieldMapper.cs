@@ -31,13 +31,13 @@ namespace Untech.SharePoint.Client.Data.Mapper
 
 		public void Map(object source, ListItem dest)
 		{
+			if (MemberGetter == null || Field.ReadOnly || Field.IsCalculated)
+			{
+				return;
+			}
+
 			try
 			{
-				if (MemberGetter == null || Field.ReadOnly)
-				{
-					return;
-				}
-
 				var clrValue = MemberGetter(source);
 				var clientValue = Converter.ToSpValue(clrValue);
 				dest[Field.InternalName] = clientValue;
@@ -50,13 +50,13 @@ namespace Untech.SharePoint.Client.Data.Mapper
 
 		public void Map(ListItem source, object dest)
 		{
+			if (MemberSetter == null)
+			{
+				return;
+			}
+
 			try
 			{
-				if (MemberSetter == null)
-				{
-					return;
-				}
-
 				var clientValue = source[Field.InternalName];
 				var clrValue = Converter.FromSpValue(clientValue);
 				MemberSetter(dest, clrValue);

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.SharePoint.Client;
+using Untech.SharePoint.Client.Extensions;
 using Untech.SharePoint.Client.MetaModels;
 using Untech.SharePoint.Client.Utils;
 using Untech.SharePoint.Common.Data;
@@ -17,7 +18,7 @@ namespace Untech.SharePoint.Client.Data
 			List = list;
 			CommonService = commonService;
 
-			//SpList = web.Lists[list.Title];
+			SpList = clientContext.GetList(list.Title);
 		}
 
 		public ClientContext ClientContext { get; private set; }
@@ -85,11 +86,8 @@ namespace Untech.SharePoint.Client.Data
 				throw new InvalidOperationException();
 			}
 
-			var spItem = SpList.AddItem();
+			throw new NotImplementedException();
 
-			mapper.Map(item, spItem);
-
-			spItem.Update();
 		}
 
 		public void Update<T>(T item)
@@ -108,27 +106,32 @@ namespace Untech.SharePoint.Client.Data
 				throw new InvalidOperationException();
 			}
 
-			var idValue = (int) idField.GetMapper().MemberGetter(item);
+			throw new NotImplementedException();
+		}
 
-			var spItem = SpList.GetItemById(idValue);
-
-			mapper.Map(item, spItem);
-
-			spItem.Update();
+		public void Delete<T>(T item)
+		{
+			throw new NotImplementedException();
 		}
 
 		private IList<ListItem> FetchInternal(string caml)
 		{
-			return SpList.GetItems(CamlUtility.CamlStringToSPQuery(caml))
-				.Cast<ListItem>()
-				.ToList();
+			var listCollection = SpList.GetItems(CamlUtility.CamlStringToSPQuery(caml));
+
+			ClientContext.Load(listCollection);
+			ClientContext.ExecuteQuery();
+
+			return listCollection.Cast<ListItem>().ToList();
 		}
 
 		private IList<ListItem> FetchInternal(string caml, uint overrideRowLimit)
 		{
-			return SpList.GetItems(CamlUtility.CamlStringToSPQuery(caml, overrideRowLimit))
-				.Cast<ListItem>()
-				.ToList();
+			var listCollection = SpList.GetItems(CamlUtility.CamlStringToSPQuery(caml, overrideRowLimit));
+
+			ClientContext.Load(listCollection);
+			ClientContext.ExecuteQuery();
+
+			return listCollection.Cast<ListItem>().ToList();
 		}
 
 		private T Materialize<T>(ListItem item)
