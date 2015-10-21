@@ -19,16 +19,16 @@ namespace Untech.SharePoint.Server.Data
 
 		public Config Config { get; private set; }
 
-		public IMetaModelVisitor MetaModelProcessor
+		public IReadOnlyCollection<IMetaModelVisitor> MetaModelProcessors
 		{
 			get
 			{
-				return new MetaModelProcessor(new List<IMetaModelVisitor>
+				return new List<IMetaModelVisitor>
 				{
 					new RuntimeInfoLoader(Web),
 					new FieldConverterInitializer(Config.FieldConverters),
 					new MapperInitializer()
-				});
+				};
 			}
 		}
 	}

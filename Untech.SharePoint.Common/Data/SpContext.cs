@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq.Expressions;
 using Untech.SharePoint.Common.Configuration;
+using Untech.SharePoint.Common.Extensions;
 using Untech.SharePoint.Common.Mappings;
 using Untech.SharePoint.Common.MetaModels;
 using Untech.SharePoint.Common.Utils;
@@ -22,7 +23,7 @@ namespace Untech.SharePoint.Common.Data
 			MappingSource = Config.Mappings.Resolve(GetType());
 			Model = MappingSource.GetMetaContext();
 
-			CommonService.MetaModelProcessor.Visit(Model);
+			CommonService.MetaModelProcessors.Each(n => n.Visit(Model));
 		}
 
 		protected Config Config { get; private set; }

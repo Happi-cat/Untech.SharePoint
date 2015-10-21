@@ -13,6 +13,11 @@ namespace Untech.SharePoint.Common.Data
 
 		public ISpListItemsProvider ListItemsProvider { get; private set; }
 
+		public T Get(int id)
+		{
+			return ListItemsProvider.Get<T>(id);
+		}
+
 		public void Add(T item)
 		{
 			ListItemsProvider.Add(item);

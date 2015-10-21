@@ -19,6 +19,8 @@ namespace Untech.SharePoint.Common.Data
 
 		T ElementAtOrDefault<T>(string caml, int index);
 
+		T Get<T>(int id);
+
 		void Add<T>(T item);
 
 		void Update<T>(T item);
