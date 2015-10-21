@@ -34,6 +34,8 @@ namespace Untech.SharePoint.Common.Data
 
 		public static readonly MethodInfo QAsQueryable = GetMethodInfo(() => Queryable.AsQueryable<int>(null));
 
+		public static readonly MethodInfo QSelect = GetMethodInfo(() => Queryable.Select(null, default(Expression<Func<int, int>>)));
+
 		public static readonly MethodInfo QWhere = GetMethodInfo(() => Queryable.Where(null, default(Expression<Func<int, bool>>)));
 
 		public static readonly MethodInfo QAny = GetMethodInfo(() => Queryable.Any<int>(null));
@@ -78,6 +80,8 @@ namespace Untech.SharePoint.Common.Data
 		public static readonly MethodInfo SpqFakeFetch = GetMethodInfo(() => SpQueryable.FakeFetch<int>(null));
 
 		public static readonly MethodInfo SpqFetch = GetMethodInfo(() => SpQueryable.Fetch<int>(null, null));
+
+		public static readonly MethodInfo SpqSelect = GetMethodInfo(() => SpQueryable.Select<int, int>(null, null, null));
 
 		public static readonly MethodInfo SpqTake = GetMethodInfo(() => SpQueryable.Take<int>(null, null));
 		public static readonly MethodInfo SpqSkip = GetMethodInfo(() => SpQueryable.Skip<int>(null, null, 0));

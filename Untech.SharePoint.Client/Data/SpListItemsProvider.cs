@@ -31,8 +31,10 @@ namespace Untech.SharePoint.Client.Data
 
 		public IEnumerable<T> Fetch<T>(string caml)
 		{
+			var viewFields = CamlUtility.GetViewFields(caml);
+
 			return FetchInternal(caml)
-				.Select(Materialize<T>);
+				.Select(n => Materialize<T>(n, viewFields));
 		}
 
 		public bool Any(string caml)
@@ -47,27 +49,42 @@ namespace Untech.SharePoint.Client.Data
 
 		public T SingleOrDefault<T>(string caml)
 		{
+			var viewFields = CamlUtility.GetViewFields(caml);
 			var foundItems = FetchInternal(caml, 2);
 
 			if (foundItems.Count > 1)
 			{
 				throw new InvalidOperationException("Multiple items match");
 			}
-			return foundItems.Count == 1 ? Materialize<T>(foundItems[0]) : default(T);
+			return foundItems.Count == 1 ? Materialize<T>(foundItems[0], viewFields) : default(T);
 		}
 
 		public T FirstOrDefault<T>(string caml)
 		{
+			var viewFields = CamlUtility.GetViewFields(caml);
 			var foundItems = FetchInternal(caml, 1);
 
-			return foundItems.Count == 1 ? Materialize<T>(foundItems[0]) : default(T);
+			return foundItems.Count == 1 ? Materialize<T>(foundItems[0], viewFields) : default(T);
 		}
 
 		public T ElementAtOrDefault<T>(string caml, int index)
 		{
+			var viewFields = CamlUtility.GetViewFields(caml);
 			var foundItem = FetchInternal(caml, (uint) (index + 1)).ElementAtOrDefault(index);
 
-			return foundItem != null ? Materialize<T>(foundItem) : default(T);
+			return foundItem != null ? Materialize<T>(foundItem, viewFields) : default(T);
+		}
+
+		public T Get<T>(int id)
+		{
+			if (List.IsExternal)
+			{
+				throw new InvalidOperationException();
+			}
+
+			// NOTE: check contenttype
+
+			return Materialize<T>(SpList.GetItemById(id));
 		}
 
 		public void Add<T>(T item)
@@ -134,16 +151,16 @@ namespace Untech.SharePoint.Client.Data
 			return listCollection.Cast<ListItem>().ToList();
 		}
 
-		private T Materialize<T>(ListItem item)
+		private T Materialize<T>(ListItem spItem, IReadOnlyCollection<string> fields = null)
 		{
 			var contentType = List.ContentTypes[typeof (T)];
 			var mapper = contentType.GetMapper();
 
-			var materializedItem = (T) mapper.TypeCreator();
+			var item = (T) mapper.TypeCreator();
 
-			mapper.Map(item, materializedItem);
+			mapper.Map(spItem, item, fields);
 
-			return materializedItem;
+			return item;
 		}
 
 

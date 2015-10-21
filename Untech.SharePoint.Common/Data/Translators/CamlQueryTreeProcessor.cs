@@ -16,6 +16,9 @@ namespace Untech.SharePoint.Common.Data.Translators
 			CombineRules = new Dictionary<MethodInfo, ICallCombineRule> (new GenericMethodDefinitionComparer())
 			{
 				{MethodUtils.SpqFakeFetch, new InitContextRule()},
+
+				{MethodUtils.QSelect, new SelectCallCombineRule()},
+
 				{MethodUtils.QWhere, new WhereCallCombineRule()},
 				{MethodUtils.QAny, new AnyCallCombineRule()},
 				{MethodUtils.QAnyP, new AnyCallCombineRule()},
@@ -275,6 +278,31 @@ namespace Untech.SharePoint.Common.Data.Translators
 				var entityType = node.Method.GetGenericArguments()[0];
 				return SpQueryable.MakeAsQueryable(entityType,
 					SpQueryable.MakeFetch(entityType, context.ListItemsProvider, context.Query));
+			}
+		}
+
+		internal class SelectCallCombineRule : ICallCombineRule
+		{
+			public bool OuterCallCombineAllowed
+			{
+				get { return false; }
+			}
+
+			public void UpdateContext(ICallsCombinerContext context, MethodCallExpression node)
+			{
+				var predicate = node.Arguments[1];
+
+				context.Query.MergeSelectableFields(new CamlSelectableFieldsProcessor().Process(predicate));
+			}
+
+			public Expression Combine(ICallsCombinerContext context, MethodCallExpression node)
+			{
+				var genericArgs = node.Method.GetGenericArguments();
+
+				var lambdaNode = (LambdaExpression) node.Arguments[1].StripQuotes();
+
+				return SpQueryable.MakeAsQueryable(genericArgs[1],
+					SpQueryable.MakeSelect(genericArgs[0], genericArgs[1], context.ListItemsProvider, context.Query, lambdaNode));
 			}
 		}
 

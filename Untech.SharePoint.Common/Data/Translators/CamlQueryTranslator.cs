@@ -14,7 +14,7 @@ namespace Untech.SharePoint.Common.Data.Translators
 		public CamlQueryTranslator(MetaContentType contentType)
 		{
 			Guard.CheckNotNull("contentType", contentType);
-			
+
 			ContentType = contentType;
 		}
 
@@ -29,6 +29,7 @@ namespace Untech.SharePoint.Common.Data.Translators
 		{
 			return new XElement(Tags.Query,
 				GetRowLimit(query.RowLimit),
+				GetViewFields(query.SelectableFields),
 				GetWheres(query.Where),
 				GetOrderBys(query.OrderBys, query.IsOrderReversed));
 		}
@@ -77,11 +78,11 @@ namespace Untech.SharePoint.Common.Data.Translators
 			var models = orderBys.ToList();
 			if (models.Any())
 			{
-				return isOrderReversed 
-					? new XElement(Tags.OrderBy, models.Select(n => n.Reverse()).Select(GetOrderBy)) 
+				return isOrderReversed
+					? new XElement(Tags.OrderBy, models.Select(n => n.Reverse()).Select(GetOrderBy))
 					: new XElement(Tags.OrderBy, models.Select(GetOrderBy));
 			}
-			
+
 			return null;
 		}
 
@@ -91,7 +92,23 @@ namespace Untech.SharePoint.Common.Data.Translators
 				new XAttribute(Tags.Ascending, orderBy.Ascending.ToString().ToUpper()),
 				GetFieldRefName(orderBy.Field));
 		}
+		protected XElement GetViewFields(IEnumerable<FieldRefModel> fieldRefs)
+		{
+			if (fieldRefs == null)
+			{
+				return null;
+			}
 
+			var models = fieldRefs.ToList();
+			return models.Any()
+				? new XElement(Tags.ViewFields, models.Select(GetViewField))
+				: null;
+		}
+
+		protected XElement GetViewField(FieldRefModel fieldRef)
+		{
+			return new XElement(Tags.FieldRef, GetFieldRefName(fieldRef));
+		}
 		protected XElement GetLogicalJoin(LogicalJoinModel logicalJoin)
 		{
 			return new XElement(logicalJoin.LogicalOperator.ToString(), 

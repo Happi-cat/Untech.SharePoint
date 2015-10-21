@@ -1,50 +1,33 @@
-using System;
+using System.Collections.Generic;
 using System.Linq;
 using Microsoft.SharePoint.Client;
 using Untech.SharePoint.Client.MetaModels;
+using Untech.SharePoint.Common.Data.Mapper;
+using Untech.SharePoint.Common.Extensions;
 using Untech.SharePoint.Common.MetaModels;
-using Untech.SharePoint.Common.Utils.Reflection;
 
 namespace Untech.SharePoint.Client.Data.Mapper
 {
-	internal sealed class TypeMapper
+	internal sealed class TypeMapper : TypeMapper<ListItem>
 	{
 		public TypeMapper(MetaContentType contentType)
+			: base(contentType)
 		{
-			Common.Utils.Guard.CheckNotNull("contentType", contentType);
 
-			ContentType = contentType;
-			TypeCreator = InstanceCreationUtility.GetCreator<object>(contentType.EntityType);
 		}
 
-		public MetaContentType ContentType { get; private set; }
-
-		public Func<object> TypeCreator { get; private set; }
-
-		public void Map(object source, ListItem dest)
+		
+		protected override IEnumerable<FieldMapper<ListItem>> GetMappers()
 		{
-			Common.Utils.Guard.CheckNotNull("source", source);
-			Common.Utils.Guard.CheckNotNull("dest", dest);
-
-			var mappers = ContentType.Fields.Select<MetaField, FieldMapper>(n => n.GetMapper());
-
-			foreach (var mapper in mappers)
-			{
-				mapper.Map(source, dest);
-			}
+			return ContentType.Fields
+				.Select<MetaField, FieldMapper>(n => n.GetMapper());
 		}
 
-		public void Map(ListItem source, object dest)
+		protected override IEnumerable<FieldMapper<ListItem>> GetMappers(IReadOnlyCollection<string> viewFields)
 		{
-			Common.Utils.Guard.CheckNotNull("source", source);
-			Common.Utils.Guard.CheckNotNull("dest", dest);
-
-			var mappers = ContentType.Fields.Select<MetaField, FieldMapper>(n => n.GetMapper());
-
-			foreach (var mapper in mappers)
-			{
-				mapper.Map(source, dest);
-			}
+			return ContentType.Fields
+				.Where<MetaField>(n => viewFields.IsNullOrEmpty() || n.InternalName.In(viewFields))
+				.Select(n => n.GetMapper());
 		}
 	}
 }

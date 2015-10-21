@@ -144,6 +144,17 @@ namespace Untech.SharePoint.Common.Test.Data.Translators
 		}
 
 		[TestMethod]
+		public void CanProcessSelect()
+		{
+			TestModel(source => source.Where(n => n.Bool1).Select(n => new { Result = n.Int1, Result2 = n.String1 }).Any(),
+				"<Query>" +
+				"<Where><Eq><FieldRef Name='Bool1' /><Value>True</Value></Eq></Where>" +
+				"<ViewFields><FieldRef Name='Int1' /><FieldRef Name='String1' /></ViewFields>" + 
+				"</Query>");
+		}
+
+
+		[TestMethod]
 		public void ThrowForInvalidAll()
 		{
 			CustomAssert.Throw<NotSupportedException>(() =>

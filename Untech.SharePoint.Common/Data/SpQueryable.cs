@@ -136,7 +136,21 @@ namespace Untech.SharePoint.Common.Data
 			return Expression.Call(MethodUtils.SpqCount.MakeGenericMethod(entityType),
 				Expression.Constant(listItemsProvider, typeof(ISpListItemsProvider)),
 				Expression.Constant(queryModel, typeof(QueryModel)));
+		}
 
+		internal static IEnumerable<TResult> Select<TContentType, TResult>(ISpListItemsProvider listItemsProvider,
+			QueryModel queryModel, Func<TContentType, TResult> selector)
+		{
+			return listItemsProvider.Fetch<TContentType>(ConvertToCaml<TContentType>(listItemsProvider, queryModel))
+				.Select(selector);
+		}
+
+		internal static MethodCallExpression MakeSelect(Type contentType, Type resulType,  ISpListItemsProvider listItemsProvider, QueryModel queryModel, LambdaExpression selector)
+		{
+			return Expression.Call(MethodUtils.SpqSelect.MakeGenericMethod(contentType, resulType),
+				Expression.Constant(listItemsProvider, typeof(ISpListItemsProvider)),
+				Expression.Constant(queryModel, typeof(QueryModel)),
+				Expression.Constant(selector.Compile()));
 		}
 
 		private static string ConvertToCaml<T>(ISpListItemsProvider listItemsProvider, QueryModel queryModel)

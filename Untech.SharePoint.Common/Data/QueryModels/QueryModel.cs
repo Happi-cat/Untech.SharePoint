@@ -54,6 +54,20 @@ namespace Untech.SharePoint.Common.Data.QueryModels
 			OrderBys = newOrderBys;
 		}
 
+		public void MergeSelectableFields(IEnumerable<FieldRefModel> selectableFields)
+		{
+			var newSelectableFields = new List<FieldRefModel>();
+			if (SelectableFields != null)
+			{
+				newSelectableFields.AddRange(SelectableFields);
+			}
+			if (selectableFields != null)
+			{
+				newSelectableFields.AddRange(selectableFields);
+			}
+			SelectableFields = newSelectableFields;
+		}
+
 		public void ReverseOrder()
 		{
 			IsOrderReversed = !IsOrderReversed;
@@ -86,6 +100,10 @@ namespace Untech.SharePoint.Common.Data.QueryModels
 			else if (IsOrderReversed)
 			{
 				sb.Append("<OrderBy><FieldRef Name='ID' Ascending='FALSE' /></OrderBy>");
+			}
+			if (SelectableFields != null && SelectableFields.Any())
+			{
+				sb.AppendFormat("<ViewFields>{0}</ViewFields>", SelectableFields.JoinToString(""));
 			}
 			sb.Append("</Query>");
 
