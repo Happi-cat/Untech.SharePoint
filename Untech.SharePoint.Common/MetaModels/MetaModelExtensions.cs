@@ -6,20 +6,20 @@ namespace Untech.SharePoint.Common.MetaModels
 	{
 		private const string MapperProperty = "Mapper";
 
-		public static FieldMapper<TListItem> GetMapper<TListItem>(this MetaField field)
+		public static FieldMapper<TSPItem> GetMapper<TSPItem>(this MetaField field)
 		{
-			return field.GetAdditionalProperty<FieldMapper<TListItem>>(MapperProperty);
+			return field.GetAdditionalProperty<FieldMapper<TSPItem>>(MapperProperty);
 		}
-		public static TypeMapper<TListItem> GetMapper<TListItem>(this MetaContentType contentType)
+		public static TypeMapper<TSPItem> GetMapper<TSPItem>(this MetaContentType contentType)
 		{
-			return contentType.GetAdditionalProperty<TypeMapper<TListItem>>(MapperProperty);
+			return contentType.GetAdditionalProperty<TypeMapper<TSPItem>>(MapperProperty);
 		}
 
-		public static void SetMapper<TListItem>(this MetaField field, FieldMapper<TListItem> mapper)
+		public static void SetMapper<TSPItem>(this MetaField field, FieldMapper<TSPItem> mapper)
 		{
 			field.SetAdditionalProperty(MapperProperty, mapper);
 		}
-		public static void SetMapper<TListItem>(this MetaContentType contentType, TypeMapper<TListItem> mapper)
+		public static void SetMapper<TSPItem>(this MetaContentType contentType, TypeMapper<TSPItem> mapper)
 		{
 			contentType.SetAdditionalProperty(MapperProperty, mapper);
 		}

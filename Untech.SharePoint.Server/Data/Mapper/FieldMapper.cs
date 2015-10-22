@@ -11,14 +11,14 @@ namespace Untech.SharePoint.Server.Data.Mapper
 		{
 		}
 
-		protected override object GetStoreValue(SPListItem item)
+		protected override object GetStoreValue(SPListItem spItem)
 		{
-			return item[Field.InternalName];
+			return spItem[Field.InternalName];
 		}
 
-		protected override void SetStoreValue(SPListItem item, object value)
+		protected override void SetStoreValue(SPListItem spItem, object value)
 		{
-			item[Field.InternalName] = value;
+			spItem[Field.InternalName] = value;
 		}
 	}
 }

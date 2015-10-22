@@ -6,7 +6,7 @@ using Untech.SharePoint.Common.Utils.Reflection;
 
 namespace Untech.SharePoint.Common.Data.Mapper
 {
-	public abstract class FieldMapper<TListItem>
+	public abstract class FieldMapper<TSPItem>
 	{
 		protected FieldMapper(MetaField field)
 		{
@@ -28,7 +28,7 @@ namespace Untech.SharePoint.Common.Data.Mapper
 			get { return Field.Converter; }
 		}
 
-		public void Map(object source, TListItem dest)
+		public void Map(object source, TSPItem dest)
 		{
 			if (MemberGetter == null || Field.ReadOnly || Field.IsCalculated)
 			{
@@ -43,11 +43,11 @@ namespace Untech.SharePoint.Common.Data.Mapper
 			}
 			catch (Exception e)
 			{
-				throw new DataMappingException(Field, e);
+				throw Error.CannotMapField(Field, e);
 			}
 		}
 
-		public void Map(TListItem source, object dest)
+		public void Map(TSPItem source, object dest)
 		{
 			if (MemberSetter == null)
 			{
@@ -62,12 +62,12 @@ namespace Untech.SharePoint.Common.Data.Mapper
 			}
 			catch (Exception e)
 			{
-				throw new DataMappingException(Field, e);
+				throw Error.CannotMapField(Field, e);
 			}
 		}
 
-		protected abstract object GetStoreValue(TListItem item);
+		protected abstract object GetStoreValue(TSPItem spItem);
 
-		protected abstract void SetStoreValue(TListItem item, object value);
+		protected abstract void SetStoreValue(TSPItem spItem, object value);
 	}
 }

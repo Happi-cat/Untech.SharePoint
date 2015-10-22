@@ -8,7 +8,7 @@ using Untech.SharePoint.Common.Utils.Reflection;
 
 namespace Untech.SharePoint.Common.Data.Mapper
 {
-	public abstract class TypeMapper<TListItem>
+	public abstract class TypeMapper<TSPItem>
 	{
 		protected TypeMapper(MetaContentType contentType)
 		{
@@ -22,7 +22,7 @@ namespace Untech.SharePoint.Common.Data.Mapper
 
 		public Func<object> TypeCreator { get; private set; }
 
-		public virtual void Map(object source, TListItem dest)
+		public virtual void Map(object source, TSPItem dest)
 		{
 			Guard.CheckNotNull("source", source);
 			Guard.CheckNotNull("dest", dest);
@@ -33,7 +33,7 @@ namespace Untech.SharePoint.Common.Data.Mapper
 			}
 		}
 
-		public virtual void Map(TListItem source, object dest, IReadOnlyCollection<string> viewFields = null)
+		public virtual void Map(TSPItem source, object dest, IReadOnlyCollection<string> viewFields = null)
 		{
 			Guard.CheckNotNull("source", source);
 			Guard.CheckNotNull("dest", dest);
@@ -44,17 +44,17 @@ namespace Untech.SharePoint.Common.Data.Mapper
 			}
 		}
 
-		protected IEnumerable<FieldMapper<TListItem>> GetMappers()
+		protected IEnumerable<FieldMapper<TSPItem>> GetMappers()
 		{
 			return ContentType.Fields
-				.Select<MetaField, FieldMapper<TListItem>>(n => n.GetMapper<TListItem>());
+				.Select<MetaField, FieldMapper<TSPItem>>(n => n.GetMapper<TSPItem>());
 		}
 
-		protected IEnumerable<FieldMapper<TListItem>> GetMappers(IReadOnlyCollection<string> viewFields)
+		protected IEnumerable<FieldMapper<TSPItem>> GetMappers(IReadOnlyCollection<string> viewFields)
 		{
 			return ContentType.Fields
 				.Where<MetaField>(n => viewFields.IsNullOrEmpty() || n.InternalName.In(viewFields))
-				.Select(n => n.GetMapper<TListItem>());
+				.Select(n => n.GetMapper<TSPItem>());
 		}
 	}
 }
