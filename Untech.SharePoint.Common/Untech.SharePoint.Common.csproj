@@ -126,6 +126,7 @@
     <Compile Include="Extensions\TypeExtensions.cs" />
     <Compile Include="Collections\KeyedFactory.cs" />
     <Compile Include="MetaModels\BaseMetaModel.cs" />
+    <Compile Include="MetaModels\MetaModelExtensions.cs" />
     <Compile Include="Models\GeoInfo.cs" />
     <Compile Include="Models\ObjectReference.cs" />
     <Compile Include="Models\UrlInfo.cs" />

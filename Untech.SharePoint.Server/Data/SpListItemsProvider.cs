@@ -4,7 +4,6 @@ using System.Linq;
 using Microsoft.SharePoint;
 using Untech.SharePoint.Common.Data;
 using Untech.SharePoint.Common.MetaModels;
-using Untech.SharePoint.Server.MetaModels;
 using Untech.SharePoint.Server.Utils;
 
 namespace Untech.SharePoint.Server.Data
@@ -94,7 +93,7 @@ namespace Untech.SharePoint.Server.Data
 			}
 
 			var contentType = List.ContentTypes[typeof(T)];
-			var mapper = contentType.GetMapper();
+			var mapper = contentType.GetMapper<SPListItem>();
 			var idField = contentType.Fields.SingleOrDefault<MetaField>(n => n.InternalName == "ID");
 
 			if (idField == null)
@@ -117,7 +116,7 @@ namespace Untech.SharePoint.Server.Data
 			}
 
 			var contentType = List.ContentTypes[typeof(T)];
-			var mapper = contentType.GetMapper();
+			var mapper = contentType.GetMapper<SPListItem>();
 			var idField = contentType.Fields.SingleOrDefault<MetaField>(n => n.InternalName == "ID");
 
 			if (idField == null)
@@ -125,7 +124,7 @@ namespace Untech.SharePoint.Server.Data
 				throw new InvalidOperationException();
 			}
 
-			var idValue = (int) idField.GetMapper().MemberGetter(item);
+			var idValue = (int) idField.GetMapper<SPListItem>().MemberGetter(item);
 
 			var spItem = SpList.GetItemById(idValue);
 
@@ -149,7 +148,7 @@ namespace Untech.SharePoint.Server.Data
 				throw new InvalidOperationException();
 			}
 
-			var idValue = (int)idField.GetMapper().MemberGetter(item);
+			var idValue = (int)idField.GetMapper<SPListItem>().MemberGetter(item);
 
 			var spItem = SpList.GetItemById(idValue);
 
@@ -177,7 +176,7 @@ namespace Untech.SharePoint.Server.Data
 		private T Materialize<T>(SPListItem spItem, IReadOnlyCollection<string> fields = null)
 		{
 			var contentType = List.ContentTypes[typeof(T)];
-			var mapper = contentType.GetMapper();
+			var mapper = contentType.GetMapper<SPListItem>();
 
 			var item = (T)mapper.TypeCreator();
 

@@ -44,8 +44,17 @@ namespace Untech.SharePoint.Common.Data.Mapper
 			}
 		}
 
-		protected abstract IEnumerable<FieldMapper<TListItem>>  GetMappers();
+		protected IEnumerable<FieldMapper<TListItem>> GetMappers()
+		{
+			return ContentType.Fields
+				.Select<MetaField, FieldMapper<TListItem>>(n => n.GetMapper<TListItem>());
+		}
 
-		protected abstract IEnumerable<FieldMapper<TListItem>> GetMappers(IReadOnlyCollection<string> viewFields);
+		protected IEnumerable<FieldMapper<TListItem>> GetMappers(IReadOnlyCollection<string> viewFields)
+		{
+			return ContentType.Fields
+				.Where<MetaField>(n => viewFields.IsNullOrEmpty() || n.InternalName.In(viewFields))
+				.Select(n => n.GetMapper<TListItem>());
+		}
 	}
 }

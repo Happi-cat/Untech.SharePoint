@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.SharePoint.Client;
 using Untech.SharePoint.Client.Extensions;
-using Untech.SharePoint.Client.MetaModels;
 using Untech.SharePoint.Client.Utils;
 using Untech.SharePoint.Common.Data;
 using Untech.SharePoint.Common.MetaModels;
@@ -95,7 +94,7 @@ namespace Untech.SharePoint.Client.Data
 			}
 
 			var contentType = List.ContentTypes[typeof(T)];
-			var mapper = contentType.GetMapper();
+			var mapper = contentType.GetMapper<ListItem>();
 			var idField = contentType.Fields.SingleOrDefault<MetaField>(n => n.InternalName == "ID");
 
 			if (idField == null)
@@ -115,7 +114,7 @@ namespace Untech.SharePoint.Client.Data
 			}
 
 			var contentType = List.ContentTypes[typeof(T)];
-			var mapper = contentType.GetMapper();
+			var mapper = contentType.GetMapper<ListItem>();
 			var idField = contentType.Fields.SingleOrDefault<MetaField>(n => n.InternalName == "ID");
 
 			if (idField == null)
@@ -154,7 +153,7 @@ namespace Untech.SharePoint.Client.Data
 		private T Materialize<T>(ListItem spItem, IReadOnlyCollection<string> fields = null)
 		{
 			var contentType = List.ContentTypes[typeof (T)];
-			var mapper = contentType.GetMapper();
+			var mapper = contentType.GetMapper<ListItem>();
 
 			var item = (T) mapper.TypeCreator();
 
