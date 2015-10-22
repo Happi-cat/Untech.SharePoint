@@ -130,6 +130,7 @@
     <Compile Include="Models\ObjectReference.cs" />
     <Compile Include="Models\UrlInfo.cs" />
     <Compile Include="Models\UserInfo.cs" />
+    <Compile Include="Utils\Error.cs" />
     <Compile Include="Utils\Guard.cs" />
     <Compile Include="Mappings\MappingSourceContainer.cs" />
     <Compile Include="MetaModels\Collections\MetaContentTypeCollection.cs" />

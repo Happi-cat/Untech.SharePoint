@@ -2,6 +2,7 @@
 using System.Linq.Expressions;
 using Untech.SharePoint.Common.Data.QueryModels;
 using Untech.SharePoint.Common.Extensions;
+using Untech.SharePoint.Common.Utils;
 
 namespace Untech.SharePoint.Common.Data.Translators.Predicate
 {
@@ -23,12 +24,7 @@ namespace Untech.SharePoint.Common.Data.Translators.Predicate
 					return new FieldRefModel(memberNode.Member);
 				}
 			}
-			throw InvalidQuery(node);
-		}
-
-		internal static Exception InvalidQuery(Expression node)
-		{
-			return new NotSupportedException(node.ToString());
+			throw Error.SubqueryNotSupported(node);
 		}
 	}
 }
