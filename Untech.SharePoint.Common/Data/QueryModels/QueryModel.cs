@@ -65,7 +65,7 @@ namespace Untech.SharePoint.Common.Data.QueryModels
 			{
 				newSelectableFields.AddRange(selectableFields);
 			}
-			SelectableFields = newSelectableFields;
+			SelectableFields = newSelectableFields.Distinct(FieldRefModelComparer.Comparer);
 		}
 
 		public void ReverseOrder()
@@ -93,10 +93,10 @@ namespace Untech.SharePoint.Common.Data.QueryModels
 			}
 			if (OrderBys != null && OrderBys.Any())
 			{
-				sb.AppendFormat("<OrderBy>{0}</OrderBy>", IsOrderReversed 
-					? OrderBys.Select(n => n.Reverse()).JoinToString("") 
+				sb.AppendFormat("<OrderBy>{0}</OrderBy>", IsOrderReversed
+					? OrderBys.Select(n => n.Reverse()).JoinToString("")
 					: OrderBys.JoinToString(""));
-			} 
+			}
 			else if (IsOrderReversed)
 			{
 				sb.Append("<OrderBy><FieldRef Name='ID' Ascending='FALSE' /></OrderBy>");

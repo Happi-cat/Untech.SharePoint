@@ -65,6 +65,7 @@
     <Compile Include="Data\ICommonService.cs" />
     <Compile Include="Data\Mapper\FieldMapper.cs" />
     <Compile Include="Data\Mapper\TypeMapper.cs" />
+    <Compile Include="Data\MemberInfoComparer.cs" />
     <Compile Include="Data\SpLinqQuery.cs" />
     <Compile Include="Data\SpLinqQueryProvider.cs" />
     <Compile Include="Data\Translators\CamlQueryTreeProcessor.cs" />
