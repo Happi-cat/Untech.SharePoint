@@ -48,7 +48,13 @@ namespace Untech.SharePoint.Common.Test.Data.Translators.Predicate
 		[TestMethod]
 		public void CanRewriteListContains()
 		{
-			// NOTE: List.Contains not allowed. Fix later
+			var possibleValues = new List<string> { "#1", "#2", "#3" };
+			TestWitEvaluator(n => possibleValues.Contains(n.String1), n => n.String1 == "#1" || n.String1 == "#2" || n.String1 == "#3");
+		}
+
+		[TestMethod]
+		public void CanRewriteEnumerableContains()
+		{
 			IEnumerable<string> possibleValues = new List<string> { "#1", "#2", "#3" };
 			TestWitEvaluator(n => possibleValues.Contains(n.String1), n => n.String1 == "#1" || n.String1 == "#2" || n.String1 == "#3");
 		}
@@ -63,7 +69,13 @@ namespace Untech.SharePoint.Common.Test.Data.Translators.Predicate
 		[TestMethod]
 		public void CanRewriteListNotContains()
 		{
-			// NOTE: List.Contains not allowed. Fix later
+			var possibleValues = new List<string> { "#1", "#2", "#3" };
+			TestWitEvaluator(n => !possibleValues.Contains(n.String1), n => n.String1 != "#1" && n.String1 != "#2" && n.String1 != "#3");
+		}
+
+		[TestMethod]
+		public void CanRewriteEnumerableNotContains()
+		{
 			IEnumerable<string> possibleValues = new List<string> { "#1", "#2", "#3" };
 			TestWitEvaluator(n => !possibleValues.Contains(n.String1), n => n.String1 != "#1" && n.String1 != "#2" && n.String1 != "#3");
 		}

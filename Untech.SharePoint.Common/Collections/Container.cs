@@ -27,7 +27,7 @@ namespace Untech.SharePoint.Common.Collections
 			{
 				return _registeredObjects[key];
 			}
-			throw new KeyNotFoundException(string.Format("Unable to resolve key '{0}'", key));
+			throw Error.KeyNotFound(key);
 		}
 
 		public bool IsRegistered(TKey key)

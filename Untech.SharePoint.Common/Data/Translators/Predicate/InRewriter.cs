@@ -17,6 +17,10 @@ namespace Untech.SharePoint.Common.Data.Translators.Predicate
 			{
 				return RewriteIn((MemberExpression)node.Arguments[1], (ConstantExpression)node.Arguments[0]);
 			}
+			if (IsValidListContainsCall(node))
+			{
+				return RewriteIn((MemberExpression)node.Arguments[0], (ConstantExpression)node.Object);
+			}
 			return base.VisitMethodCall(node);
 		}
 
@@ -32,6 +36,10 @@ namespace Untech.SharePoint.Common.Data.Translators.Predicate
 				if (IsValidEnumerableContainsCall(innerOperand))
 				{
 					return RewriteNotIn((MemberExpression)innerOperand.Arguments[1], (ConstantExpression)innerOperand.Arguments[0]);
+				}
+				if (IsValidListContainsCall(innerOperand))
+				{
+					return RewriteNotIn((MemberExpression)innerOperand.Arguments[0], (ConstantExpression)innerOperand.Object);
 				}
 			}
 
@@ -52,6 +60,13 @@ namespace Untech.SharePoint.Common.Data.Translators.Predicate
 			return MethodUtils.IsOperator(node.Method, MethodUtils.EContains) &&
 			       node.Arguments[0].NodeType == ExpressionType.Constant &&
 			       node.Arguments[1].NodeType == ExpressionType.MemberAccess;
+		}
+
+		private static bool IsValidListContainsCall(MethodCallExpression node)
+		{
+			return MethodUtils.IsOperator(node.Method, MethodUtils.ListContains) &&
+				   node.Object.NodeType == ExpressionType.Constant &&
+				   node.Arguments[0].NodeType == ExpressionType.MemberAccess;
 		}
 
 		private Expression RewriteIn(MemberExpression memberNode, ConstantExpression arrayNode)

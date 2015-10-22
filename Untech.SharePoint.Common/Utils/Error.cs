@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq.Expressions;
 using Untech.SharePoint.Common.Data;
 using Untech.SharePoint.Common.Data.QueryModels;
@@ -8,6 +9,11 @@ namespace Untech.SharePoint.Common.Utils
 {
 	internal static class Error
 	{
+		internal static Exception KeyNotFound(object key)
+		{
+			return new KeyNotFoundException(string.Format("Key not found '{0}'", key));
+		}
+
 		internal static Exception MoreThanOneMatch()
 		{
 			return new InvalidOperationException("More than one match found");
