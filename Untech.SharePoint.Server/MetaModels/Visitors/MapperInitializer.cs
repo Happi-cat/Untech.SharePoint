@@ -10,7 +10,7 @@ namespace Untech.SharePoint.Server.MetaModels.Visitors
 	{
 		public override void VisitContentType(MetaContentType contentType)
 		{
-			contentType.SetMapper(new TypeMapper<SPListItem>(contentType));
+			contentType.SetMapper(new TypeMapper(contentType));
 
 			base.VisitContentType(contentType);
 		}

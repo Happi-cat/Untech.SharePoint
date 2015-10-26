@@ -8,9 +8,9 @@ using Untech.SharePoint.Common.Utils.Reflection;
 
 namespace Untech.SharePoint.Common.Data.Mapper
 {
-	public class TypeMapper<TSPItem>
+	public abstract class TypeMapper<TSPItem>
 	{
-		public TypeMapper(MetaContentType contentType)
+		protected TypeMapper(MetaContentType contentType)
 		{
 			Guard.CheckNotNull("contentType", contentType);
 
@@ -31,6 +31,8 @@ namespace Untech.SharePoint.Common.Data.Mapper
 			{
 				mapper.Map(source, dest);
 			}
+
+			SetContentType(dest);
 		}
 
 		public virtual void Map(TSPItem source, object dest, IReadOnlyCollection<string> viewFields = null)
@@ -43,6 +45,8 @@ namespace Untech.SharePoint.Common.Data.Mapper
 				mapper.Map(source, dest);
 			}
 		}
+
+		protected abstract void SetContentType(TSPItem spItem);
 
 		protected IEnumerable<FieldMapper<TSPItem>> GetMappers()
 		{
