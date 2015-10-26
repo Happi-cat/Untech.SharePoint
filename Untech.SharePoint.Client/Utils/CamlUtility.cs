@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
 using Microsoft.SharePoint.Client;
@@ -18,12 +17,14 @@ namespace Untech.SharePoint.Client.Utils
 
 		internal static CamlQuery CamlStringToSPQuery(string caml, uint overrideRowLimit)
 		{
-			throw new NotImplementedException();
-
-			return new CamlQuery
+			var xCaml = XElement.Parse(caml);
+			var xRowLimit = xCaml.Element("RowLimit");
+			if (xRowLimit != null)
 			{
-				ViewXml = caml
-			};
+				xRowLimit.Value = overrideRowLimit.ToString();
+			}
+
+			return CamlStringToSPQuery(xCaml.ToString());
 		}
 
 		internal static IReadOnlyCollection<string> GetViewFields(string caml)
