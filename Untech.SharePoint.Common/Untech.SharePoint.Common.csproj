@@ -64,6 +64,9 @@
     <Compile Include="Data\GenericMethodDefinitionComparer.cs" />
     <Compile Include="Data\ICommonService.cs" />
     <Compile Include="Data\Mapper\FieldMapper.cs" />
+    <Compile Include="Data\Mapper\IFieldAccessor.cs" />
+    <Compile Include="Data\Mapper\MemberAccessor.cs" />
+    <Compile Include="Data\Mapper\StoreAccessor.cs" />
     <Compile Include="Data\Mapper\TypeMapper.cs" />
     <Compile Include="Data\MemberInfoComparer.cs" />
     <Compile Include="Data\SpLinqQuery.cs" />
@@ -152,6 +155,7 @@
     <Compile Include="Utils\Reflection\InstanceCreationUtility.cs" />
     <Compile Include="Utils\Reflection\MemberAccessUtility.cs" />
     <Compile Include="Collections\Container.cs" />
+    <Compile Include="Utils\Reflection\ReflectionError.cs" />
     <Compile Include="Utils\Singleton.cs" />
     <Compile Include="MetaModels\Visitors\BaseMetaModelVisitor.cs" />
     <Compile Include="MetaModels\Visitors\FieldConverterCreator.cs" />

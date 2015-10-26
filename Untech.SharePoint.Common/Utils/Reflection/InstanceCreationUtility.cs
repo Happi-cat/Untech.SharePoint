@@ -2,7 +2,6 @@
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
-using Untech.SharePoint.Common.Extensions;
 
 namespace Untech.SharePoint.Common.Utils.Reflection
 {
@@ -47,7 +46,7 @@ namespace Untech.SharePoint.Common.Utils.Reflection
 
 			if (constructor == null)
 			{
-				throw CreateCtorNotFoundException(type, argumentTypes);
+				throw ReflectionError.CtorNotFound(type, argumentTypes);
 			}
 
 			var parameterExpressions = argumentTypes.Select(Expression.Parameter).ToList();
@@ -55,11 +54,6 @@ namespace Untech.SharePoint.Common.Utils.Reflection
 			var newExpression = Expression.New(constructor, parameterExpressions);
 
 			return Expression.Lambda<TDelegate>(newExpression, parameterExpressions).Compile();
-		}
-
-		private static Exception CreateCtorNotFoundException(Type type, Type[] argumentTypes)
-		{
-			return new ArgumentException(string.Format("Type '{0}' has no constructor that matches parameters list ({1})", type, argumentTypes.JoinToString()));
 		}
 	}
 }

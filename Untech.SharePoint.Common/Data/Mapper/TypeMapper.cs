@@ -8,9 +8,9 @@ using Untech.SharePoint.Common.Utils.Reflection;
 
 namespace Untech.SharePoint.Common.Data.Mapper
 {
-	public abstract class TypeMapper<TSPItem>
+	public class TypeMapper<TSPItem>
 	{
-		protected TypeMapper(MetaContentType contentType)
+		public TypeMapper(MetaContentType contentType)
 		{
 			Guard.CheckNotNull("contentType", contentType);
 

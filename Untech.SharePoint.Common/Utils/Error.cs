@@ -7,39 +7,39 @@ using Untech.SharePoint.Common.MetaModels;
 
 namespace Untech.SharePoint.Common.Utils
 {
-	internal static class Error
+	public static class Error
 	{
-		internal static Exception KeyNotFound(object key)
+		public static Exception KeyNotFound(object key)
 		{
 			return new KeyNotFoundException(string.Format("Key not found '{0}'", key));
 		}
 
-		internal static Exception MoreThanOneMatch()
+		public static Exception MoreThanOneMatch()
 		{
 			return new InvalidOperationException("More than one match found");
 		}
 
-		internal static Exception NoMatch()
+		public static Exception NoMatch()
 		{
 			return new InvalidOperationException("No match found");
 		}
 
-		internal static Exception SubqueryNotSupported(Expression node)
+		public static Exception SubqueryNotSupported(Expression node)
 		{
 			return new NotSupportedException(string.Format("Subquery '{0}' is not supported", node));
 		}
 
-		internal static Exception CannotMapField(MetaField field)
+		public static Exception CannotMapField(MetaField field)
 		{
 			return new DataMappingException(field);
 		}
 
-		internal static Exception CannotMapField(MetaField field, Exception inner)
+		public static Exception CannotMapField(MetaField field, Exception inner)
 		{
 			return new DataMappingException(field, inner);
 		}
 
-		internal static Exception SubqueryNegateNotSupported(WhereModel whereModel)
+		public static Exception SubqueryNegateNotSupported(WhereModel whereModel)
 		{
 			return new NotSupportedException(string.Format("Subquery '{0}' cannot be negated", whereModel));
 		}

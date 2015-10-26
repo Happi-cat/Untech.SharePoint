@@ -4,6 +4,7 @@ using System.Linq;
 using Microsoft.SharePoint;
 using Untech.SharePoint.Common.Data;
 using Untech.SharePoint.Common.MetaModels;
+using Untech.SharePoint.Common.Utils;
 using Untech.SharePoint.Server.Utils;
 
 namespace Untech.SharePoint.Server.Data
@@ -52,7 +53,7 @@ namespace Untech.SharePoint.Server.Data
 
 			if (foundItems.Count > 1)
 			{
-				throw new InvalidOperationException("Multiple items match");
+				throw Error.MoreThanOneMatch();
 			}
 			return foundItems.Count == 1 ? Materialize<T>(foundItems[0], viewFields) : default(T);
 		}
@@ -77,11 +78,10 @@ namespace Untech.SharePoint.Server.Data
 		{
 			if (List.IsExternal)
 			{
-				throw new InvalidOperationException();
+				throw DataError.OperationNotAllowedForExternalList();
 			}
 
 			// NOTE: check contenttype
-
 			return Materialize<T>(SpList.GetItemById(id));
 		}
 
@@ -89,7 +89,7 @@ namespace Untech.SharePoint.Server.Data
 		{
 			if (List.IsExternal)
 			{
-				throw new InvalidOperationException();
+				throw DataError.OperationNotAllowedForExternalList();
 			}
 
 			var contentType = List.ContentTypes[typeof(T)];
@@ -98,7 +98,7 @@ namespace Untech.SharePoint.Server.Data
 
 			if (idField == null)
 			{
-				throw new InvalidOperationException();
+				throw DataError.OperationRequireIdField();
 			}
 
 			var spItem = SpList.AddItem();
@@ -112,7 +112,7 @@ namespace Untech.SharePoint.Server.Data
 		{
 			if (List.IsExternal)
 			{
-				throw new InvalidOperationException();
+				throw DataError.OperationNotAllowedForExternalList();
 			}
 
 			var contentType = List.ContentTypes[typeof(T)];
@@ -121,10 +121,10 @@ namespace Untech.SharePoint.Server.Data
 
 			if (idField == null)
 			{
-				throw new InvalidOperationException();
+				throw DataError.OperationRequireIdField();
 			}
 
-			var idValue = (int) idField.GetMapper<SPListItem>().MemberGetter(item);
+			var idValue = (int) idField.GetMapper<SPListItem>().MemberAccessor.GetValue(item);
 
 			var spItem = SpList.GetItemById(idValue);
 
@@ -137,7 +137,7 @@ namespace Untech.SharePoint.Server.Data
 		{
 			if (List.IsExternal)
 			{
-				throw new InvalidOperationException();
+				throw DataError.OperationNotAllowedForExternalList();
 			}
 
 			var contentType = List.ContentTypes[typeof(T)];
@@ -145,10 +145,10 @@ namespace Untech.SharePoint.Server.Data
 
 			if (idField == null)
 			{
-				throw new InvalidOperationException();
+				throw DataError.OperationRequireIdField();
 			}
 
-			var idValue = (int)idField.GetMapper<SPListItem>().MemberGetter(item);
+			var idValue = (int)idField.GetMapper<SPListItem>().MemberAccessor.GetValue(item);
 
 			var spItem = SpList.GetItemById(idValue);
 

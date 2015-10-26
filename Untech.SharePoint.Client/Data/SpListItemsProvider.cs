@@ -6,6 +6,7 @@ using Untech.SharePoint.Client.Extensions;
 using Untech.SharePoint.Client.Utils;
 using Untech.SharePoint.Common.Data;
 using Untech.SharePoint.Common.MetaModels;
+using Untech.SharePoint.Common.Utils;
 
 namespace Untech.SharePoint.Client.Data
 {
@@ -53,7 +54,7 @@ namespace Untech.SharePoint.Client.Data
 
 			if (foundItems.Count > 1)
 			{
-				throw new InvalidOperationException("Multiple items match");
+				throw Error.MoreThanOneMatch();
 			}
 			return foundItems.Count == 1 ? Materialize<T>(foundItems[0], viewFields) : default(T);
 		}
@@ -78,19 +79,21 @@ namespace Untech.SharePoint.Client.Data
 		{
 			if (List.IsExternal)
 			{
-				throw new InvalidOperationException();
+				throw DataError.OperationNotAllowedForExternalList();
 			}
 
-			// NOTE: check contenttype
+			var spItem = SpList.GetItemById(id);
+			ClientContext.Load(spItem);
+			ClientContext.ExecuteQuery();
 
-			return Materialize<T>(SpList.GetItemById(id));
+			return Materialize<T>(spItem);
 		}
 
 		public void Add<T>(T item)
 		{
 			if (List.IsExternal)
 			{
-				throw new InvalidOperationException();
+				throw DataError.OperationNotAllowedForExternalList();
 			}
 
 			var contentType = List.ContentTypes[typeof(T)];
@@ -99,10 +102,16 @@ namespace Untech.SharePoint.Client.Data
 
 			if (idField == null)
 			{
-				throw new InvalidOperationException();
+				throw DataError.OperationRequireIdField();
 			}
 
-			throw new NotImplementedException();
+			var info = new ListItemCreationInformation();
+			var spItem = SpList.AddItem(info);
+
+			mapper.Map(item, spItem);
+
+			spItem.Update();
+			ClientContext.ExecuteQuery();
 
 		}
 
@@ -110,7 +119,7 @@ namespace Untech.SharePoint.Client.Data
 		{
 			if (List.IsExternal)
 			{
-				throw new InvalidOperationException();
+				throw DataError.OperationNotAllowedForExternalList();
 			}
 
 			var contentType = List.ContentTypes[typeof(T)];
@@ -119,15 +128,44 @@ namespace Untech.SharePoint.Client.Data
 
 			if (idField == null)
 			{
-				throw new InvalidOperationException();
+				throw DataError.OperationRequireIdField();
 			}
 
-			throw new NotImplementedException();
+			var idValue = (int)idField.GetMapper<ListItem>().MemberAccessor.GetValue(item);
+
+			var spItem = SpList.GetItemById(idValue);
+			ClientContext.Load(spItem);
+			ClientContext.ExecuteQuery();
+
+			mapper.Map(item, spItem);
+
+			spItem.Update();
+			ClientContext.ExecuteQuery();
 		}
 
 		public void Delete<T>(T item)
 		{
-			throw new NotImplementedException();
+			if (List.IsExternal)
+			{
+				throw DataError.OperationNotAllowedForExternalList();
+			}
+
+			var contentType = List.ContentTypes[typeof(T)];
+			var idField = contentType.Fields.SingleOrDefault<MetaField>(n => n.InternalName == "ID");
+
+			if (idField == null)
+			{
+				throw DataError.OperationRequireIdField();
+			}
+
+			var idValue = (int)idField.GetMapper<ListItem>().MemberAccessor.GetValue(item);
+			
+			var spItem = SpList.GetItemById(idValue);
+			ClientContext.Load(spItem);
+			ClientContext.ExecuteQuery();
+			
+			spItem.DeleteObject();
+			ClientContext.ExecuteQuery();
 		}
 
 		private IList<ListItem> FetchInternal(string caml)

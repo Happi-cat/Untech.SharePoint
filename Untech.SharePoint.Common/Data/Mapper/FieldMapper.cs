@@ -2,26 +2,26 @@
 using Untech.SharePoint.Common.Converters;
 using Untech.SharePoint.Common.MetaModels;
 using Untech.SharePoint.Common.Utils;
-using Untech.SharePoint.Common.Utils.Reflection;
 
 namespace Untech.SharePoint.Common.Data.Mapper
 {
-	public abstract class FieldMapper<TSPItem>
+	public class FieldMapper<TSPItem>
 	{
-		protected FieldMapper(MetaField field)
+		public FieldMapper(MetaField field, IFieldAccessor<TSPItem> storeAccessor)
 		{
 			Guard.CheckNotNull("field", field);
+			Guard.CheckNotNull("storeAccessor", storeAccessor);
 
 			Field = field;
-			MemberGetter = MemberAccessUtility.CreateGetter(field.Member);
-			MemberSetter = MemberAccessUtility.CreateSetter(field.Member);
+			MemberAccessor = new MemberAccessor(field.Member);
+			StoreAccessor = storeAccessor;
 		}
 
 		public MetaField Field { get; private set; }
 
-		public Func<object, object> MemberGetter { get; private set; }
+		public IFieldAccessor<object>  MemberAccessor { get; private set; }
 
-		public Action<object, object> MemberSetter { get; private set; }
+		public IFieldAccessor<TSPItem> StoreAccessor { get; private set; }
 
 		public IFieldConverter Converter
 		{
@@ -30,16 +30,16 @@ namespace Untech.SharePoint.Common.Data.Mapper
 
 		public void Map(object source, TSPItem dest)
 		{
-			if (MemberGetter == null || Field.ReadOnly || Field.IsCalculated)
+			if (!MemberAccessor.CanGetValue || !StoreAccessor.CanSetValue)
 			{
 				return;
 			}
 
 			try
 			{
-				var clrValue = MemberGetter(source);
+				var clrValue = MemberAccessor.GetValue(source);
 				var clientValue = Converter.ToSpValue(clrValue);
-				SetStoreValue(dest, clientValue);
+				StoreAccessor.SetValue(dest, clientValue);
 			}
 			catch (Exception e)
 			{
@@ -49,25 +49,21 @@ namespace Untech.SharePoint.Common.Data.Mapper
 
 		public void Map(TSPItem source, object dest)
 		{
-			if (MemberSetter == null)
+			if (!StoreAccessor.CanGetValue || !MemberAccessor.CanSetValue)
 			{
 				return;
 			}
 
 			try
 			{
-				var clientValue = GetStoreValue(source);
+				var clientValue = StoreAccessor.GetValue(source);
 				var clrValue = Converter.FromSpValue(clientValue);
-				MemberSetter(dest, clrValue);
+				MemberAccessor.SetValue(dest, clrValue);
 			}
 			catch (Exception e)
 			{
 				throw Error.CannotMapField(Field, e);
 			}
 		}
-
-		protected abstract object GetStoreValue(TSPItem spItem);
-
-		protected abstract void SetStoreValue(TSPItem spItem, object value);
 	}
 }
