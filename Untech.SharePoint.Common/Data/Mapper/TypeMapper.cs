@@ -46,6 +46,15 @@ namespace Untech.SharePoint.Common.Data.Mapper
 			}
 		}
 
+		public virtual object CreateAndMap(TSPItem source, IReadOnlyCollection<string> viewFields = null)
+		{
+			var item = TypeCreator();
+
+			Map(source, item, viewFields);
+
+			return item;
+		}
+
 		protected abstract void SetContentType(TSPItem spItem);
 
 		protected IEnumerable<FieldMapper<TSPItem>> GetMappers()

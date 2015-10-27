@@ -178,11 +178,7 @@ namespace Untech.SharePoint.Server.Data
 			var contentType = List.ContentTypes[typeof(T)];
 			var mapper = contentType.GetMapper<SPListItem>();
 
-			var item = (T)mapper.TypeCreator();
-
-			mapper.Map(spItem, item, fields);
-
-			return item;
+			return (T) mapper.CreateAndMap(spItem, fields);
 		}
 	}
 }

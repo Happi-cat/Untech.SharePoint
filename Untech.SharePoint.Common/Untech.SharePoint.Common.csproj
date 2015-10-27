@@ -98,6 +98,7 @@
     <Compile Include="Data\Translators\CamlQueryTranslator.cs" />
     <Compile Include="Data\Translators\Tags.cs" />
     <Compile Include="Diagnostics\ILoggingInterceptor.cs" />
+    <Compile Include="Diagnostics\LogLevel.cs" />
     <Compile Include="Mappings\Annotation\AnnotatedContentTypeMapping.cs" />
     <Compile Include="Mappings\Annotation\AnnotatedContextMapping.cs" />
     <Compile Include="Mappings\Annotation\AnnotatedFieldPart.cs" />
