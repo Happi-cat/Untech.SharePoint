@@ -121,7 +121,7 @@ namespace Untech.SharePoint.Common.MetaModels
 		public MetaContentType ContentType { get; private set; }
 
 		/// <summary>
-		/// Accepts <see cref="IMetaModelVisitor"/>.
+		/// Accepts <see cref="IMetaModelVisitor"/> instance.
 		/// </summary>
 		/// <param name="visitor">Visitor to accept.</param>
 		public override void Accept([NotNull]IMetaModelVisitor visitor)

@@ -10,7 +10,7 @@ namespace Untech.SharePoint.Common.Extensions
 	public static class ObjectExtensions
 	{
 		/// <summary>
-		/// Determines whether <paramref name="collection"/> contains current object <see cref="obj"/> or not.
+		/// Determines whether <paramref name="collection"/> contains current object <paramref name="obj"/> or not.
 		/// </summary>
 		/// <typeparam name="T">The object and collection element type.</typeparam>
 		/// <param name="obj">The object to check in <see cref="IEnumerable{T}"/>.</param>

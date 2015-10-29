@@ -2,14 +2,14 @@
 
 namespace Untech.SharePoint.Common.MetaModels.Visitors
 {
-	public class FieldConverterCreator : BaseMetaModelVisitor
+	public sealed class FieldConverterCreator : BaseMetaModelVisitor
 	{
 		public FieldConverterCreator(IFieldConverterResolver resolver)
 		{
 			Resolver = resolver;
 		}
 
-		protected IFieldConverterResolver Resolver { get; private set; }
+		private IFieldConverterResolver Resolver { get; set; }
 
 		public override void VisitField(MetaField field)
 		{
