@@ -15,9 +15,23 @@ namespace Untech.SharePoint.Client.MetaModels.Visitors
 
 		public override void VisitField(MetaField field)
 		{
-			var converter = field.CustomConverterType != null
-				? ConverterResolver.Resolve(field.CustomConverterType)
-				: ConverterResolver.Resolve(field.TypeAsString);
+			IFieldConverter converter;
+			if (field.CustomConverterType != null)
+			{
+				if (!ConverterResolver.CanResolve(field.CustomConverterType))
+				{
+					throw new FieldConverterException("Cannot find converter in Config");
+				}
+				converter = ConverterResolver.Resolve(field.CustomConverterType);
+			}
+			else
+			{
+				if (!ConverterResolver.CanResolve(field.TypeAsString))
+				{
+					throw new FieldConverterException("Cannot find converter in Config");
+				}
+				converter = ConverterResolver.Resolve(field.TypeAsString);
+			}
 
 			InitializeConverter(field, converter);
 		}

@@ -81,8 +81,15 @@ namespace Untech.SharePoint.Server.Data
 				throw DataError.OperationNotAllowedForExternalList();
 			}
 
-			// NOTE: check contenttype
-			return Materialize<T>(SpList.GetItemById(id));
+			var contentType = List.ContentTypes[typeof(T)];
+			var spItem = SpList.GetItemById(id);
+
+			if (spItem.ContentTypeId.ToString() != contentType.Id)
+			{
+				throw new InvalidOperationException("ContentType mismatch");
+			}
+
+			return Materialize<T>(spItem);
 		}
 
 		public void Add<T>(T item)
