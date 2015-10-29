@@ -1,34 +1,64 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using JetBrains.Annotations;
 using Untech.SharePoint.Common.Extensions;
 
 namespace Untech.SharePoint.Common.Utils
 {
+	/// <summary>
+	/// Provides a set of static methods for arguments validation.
+	/// </summary>
 	public static class Guard
 	{
-		public static void CheckNotNull(string paramName, object obj)
+		/// <summary>
+		/// Checks object equality to null.
+		/// </summary>
+		/// <param name="paramName">Parameter name.</param>
+		/// <param name="obj">Object to validate.</param>
+		/// <exception cref="ArgumentNullException"><paramref name="obj"/> is null.</exception>
+		public static void CheckNotNull([CanBeNull]string paramName, [CanBeNull]object obj)
 		{
 			if (obj != null) return;
 
 			throw new ArgumentNullException(paramName);
 		}
 
-		public static void CheckNotNullOrEmpty(string paramName, string value)
+		/// <summary>
+		/// Checks string equality to null or empty string.
+		/// </summary>
+		/// <param name="paramName">Parameter name.</param>
+		/// <param name="value">Object to validate.</param>
+		/// <exception cref="ArgumentException"><paramref name="value"/> is null.</exception>
+		public static void CheckNotNullOrEmpty([CanBeNull]string paramName, [CanBeNull]string value)
 		{
 			if (!string.IsNullOrEmpty(value)) return;
 
 			throw new ArgumentException("String is null or empty", paramName);
 		}
 
-		public static void CheckNotNullOrEmpty<T>(string paramName, IEnumerable<T> enumerable)
+		/// <summary>
+		/// Checks whether <see cref="IEnumerable{T}"/> is equal to null or empty.
+		/// </summary>
+		/// <param name="paramName">Parameter name.</param>
+		/// <param name="enumerable">Collection to validate.</param>
+		/// <exception cref="ArgumentException"><paramref name="enumerable"/> is null or empty.</exception>
+		public static void CheckNotNullOrEmpty<T>([CanBeNull]string paramName, [CanBeNull]IEnumerable<T> enumerable)
 		{
 			if (enumerable != null && enumerable.Any()) return;
 
 			throw new ArgumentException("Collection is null or empty", paramName);
 		}
 
-		public static void CheckTypeIsAssignableTo(string paramName, Type actualType, Type expectedType)
+		/// <summary>
+		/// Checks whether <paramref name="actualType"/> can be assigned to <paramref name="expectedType"/>.
+		/// </summary>
+		/// <param name="paramName">Parameter name.</param>
+		/// <param name="actualType">Actual <see cref="Type"/>.</param>
+		/// <param name="expectedType">Expected type.</param>
+		/// <exception cref="ArgumentNullException"><paramref name="actualType"/> or <paramref name="expectedType"/> is null.</exception>
+		/// <exception cref="ArgumentException"><paramref name="actualType"/> cannot be assinged to <paramref name="expectedType"/>.</exception>
+		public static void CheckIsTypeAssignableTo([CanBeNull]string paramName, [NotNull]Type actualType, [NotNull]Type expectedType)
 		{
 			CheckNotNull("actualType", actualType);
 			CheckNotNull("expectedType", expectedType);
@@ -43,15 +73,30 @@ namespace Untech.SharePoint.Common.Utils
 			throw new ArgumentException(message, paramName);
 		}
 
-		public static void CheckTypeIsAssignableTo<TExpected>(string paramName, Type actualType)
+		/// <summary>
+		/// Checks whether <paramref name="actualType"/> can be assigned to <typeparamref name="TExpected"/>.
+		/// </summary>
+		/// <typeparam name="TExpected">Exected type.</typeparam>
+		/// <param name="paramName">Parameter name.</param>
+		/// <param name="actualType">Actual <see cref="Type"/>.</param>
+		/// <exception cref="ArgumentNullException"><paramref name="actualType"/> is null.</exception>
+		/// <exception cref="ArgumentException"><paramref name="actualType"/> cannot be assinged to <typeparamref name="TExpected"/>.</exception>
+		public static void CheckIsTypeAssignableTo<TExpected>([CanBeNull]string paramName, [NotNull]Type actualType)
 		{
-			CheckTypeIsAssignableTo(paramName, actualType, typeof(TExpected));
+			CheckIsTypeAssignableTo(paramName, actualType, typeof(TExpected));
 		}
 
 
-		public static void CheckType(string paramName, object actualValue, Type expectedType)
+		/// <summary>
+		/// Checks whether <paramref name="actualValue"/> can be assigned to <paramref name="expectedType"/>.
+		/// </summary>
+		/// <param name="paramName">Parameter name.</param>
+		/// <param name="actualValue">Object to check.</param>
+		/// <param name="expectedType">Expected type.</param>
+		/// <exception cref="ArgumentNullException"><paramref name="expectedType"/> is null.</exception>
+		/// <exception cref="ArgumentException"><paramref name="actualValue"/> cannot be assinged to <paramref name="expectedType"/>.</exception>
+		public static void CheckIsObjectAssignableTo([CanBeNull]string paramName, [CanBeNull]object actualValue, [NotNull]Type expectedType)
 		{
-			CheckNotNull("actualType", actualValue);
 			CheckNotNull("expectedType", expectedType);
 
 			if (actualValue == null)
@@ -73,9 +118,16 @@ namespace Untech.SharePoint.Common.Utils
 				paramName, expectedType, actualValue), paramName);
 		}
 
-		public static void CheckType<TExpected>(string paramName, object actualValue)
+		/// <summary>
+		/// Checks whether <paramref name="actualValue"/> can be assigned to <typeparamref name="TExpected"/>.
+		/// </summary>
+		/// <typeparam name="TExpected">Exected type.</typeparam>
+		/// <param name="paramName">Parameter name.</param>
+		/// <param name="actualValue">Object to check.</param>
+		/// <exception cref="ArgumentException"><paramref name="actualValue"/> cannot be assinged to <typeparamref name="TExpected"/>.</exception>
+		public static void CheckIsObjectAssignableTo<TExpected>([CanBeNull]string paramName, [CanBeNull]object actualValue)
 		{
-			CheckType(paramName, actualValue, typeof(TExpected));
+			CheckIsObjectAssignableTo(paramName, actualValue, typeof(TExpected));
 		}
 
 	}

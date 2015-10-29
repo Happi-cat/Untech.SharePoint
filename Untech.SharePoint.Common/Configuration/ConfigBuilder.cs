@@ -76,9 +76,8 @@ namespace Untech.SharePoint.Common.Configuration
 
 				mappings.Register(pair.Key, mappingSource);
 
-				var customConverters = FieldConverterFinder.Find(mappingSource.GetMetaContext());
-
-				customConverters.Each(n => converters.Add(n));
+				FieldConverterFinder.Find(mappingSource.GetMetaContext())
+					.Each(converters.Add);
 			}
 
 			foreach (var action in _converterRegistrators)

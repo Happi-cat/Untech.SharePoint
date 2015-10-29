@@ -2,11 +2,19 @@
 
 namespace Untech.SharePoint.Common.Utils
 {
-	public class Singleton<T> where T: new()
+	/// <summary>
+	/// Represents container for instance singleton
+	/// </summary>
+	/// <typeparam name="T">Type of singleton instance</typeparam>
+	public class Singleton<T> where T : new()
 	{
 		private static readonly object Sync = new object();
 		private static T _object;
 
+		/// <summary>
+		/// Gets signleton instance
+		/// </summary>
+		/// <returns>Intance of type <typeparamref name="T"/></returns>
 		public static T GetInstance()
 		{
 			if (_object == null)
@@ -22,6 +30,12 @@ namespace Untech.SharePoint.Common.Utils
 			return _object;
 		}
 
+		/// <summary>
+		/// Gets signleton instance
+		/// </summary>
+		/// <param name="initializer">Instance initializer, i.e. action that will be called on first object access.</param>
+		/// <returns>Intance of type <typeparamref name="T"/></returns>
+		/// <exception cref="ArgumentNullException"><paramref name="initializer"/> is null.</exception>
 		public static T GetInstance(Action<T> initializer)
 		{
 			Guard.CheckNotNull("initializer", initializer);

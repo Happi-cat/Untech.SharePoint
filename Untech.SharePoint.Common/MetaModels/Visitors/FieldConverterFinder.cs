@@ -1,18 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
+using JetBrains.Annotations;
 
 namespace Untech.SharePoint.Common.MetaModels.Visitors
 {
-	public class FieldConverterFinder : BaseMetaModelVisitor
+	internal sealed class FieldConverterFinder : BaseMetaModelVisitor
 	{
-		public FieldConverterFinder()
+		private FieldConverterFinder()
 		{
 			Converters = new List<Type>();
 		}
 
-		protected List<Type> Converters { get; private set; }
+		private List<Type> Converters { get; set; }
 
-		public static IEnumerable<Type> Find(IMetaModel model)
+		[NotNull]
+		public static IEnumerable<Type> Find([CanBeNull]IMetaModel model)
 		{
 			var finder = new FieldConverterFinder();
 			

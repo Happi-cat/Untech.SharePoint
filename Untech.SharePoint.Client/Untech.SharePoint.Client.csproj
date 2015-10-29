@@ -93,7 +93,6 @@
     <Compile Include="Data\SpClientContext.cs" />
     <Compile Include="Data\SpCommonService.cs" />
     <Compile Include="Data\SpListItemsProvider.cs" />
-    <Compile Include="MetaModels\Visitors\FieldConverterInitializer.cs" />
     <Compile Include="MetaModels\Visitors\MapperInitializer.cs" />
     <Compile Include="MetaModels\Visitors\RuntimeInfoLoader.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

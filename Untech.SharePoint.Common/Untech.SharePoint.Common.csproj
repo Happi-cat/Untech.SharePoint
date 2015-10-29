@@ -134,6 +134,7 @@
     <Compile Include="Collections\KeyedFactory.cs" />
     <Compile Include="MetaModels\BaseMetaModel.cs" />
     <Compile Include="MetaModels\MetaModelExtensions.cs" />
+    <Compile Include="MetaModels\Visitors\FieldConverterFinder.cs" />
     <Compile Include="Models\GeoInfo.cs" />
     <Compile Include="Models\ObjectReference.cs" />
     <Compile Include="Models\UrlInfo.cs" />
@@ -163,7 +164,6 @@
     <Compile Include="Utils\Singleton.cs" />
     <Compile Include="MetaModels\Visitors\BaseMetaModelVisitor.cs" />
     <Compile Include="MetaModels\Visitors\FieldConverterCreator.cs" />
-    <Compile Include="MetaModels\Visitors\FieldConverterFinder.cs" />
     <Compile Include="MetaModels\Visitors\IMetaModelVisitor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

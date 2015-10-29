@@ -7,7 +7,7 @@ using Setter = System.Action<object, object>;
 
 namespace Untech.SharePoint.Common.Utils.Reflection
 {
-	public class MemberAccessUtility
+	internal class MemberAccessUtility
 	{
 		#region [Create Getter]
 

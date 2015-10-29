@@ -50,7 +50,7 @@ namespace Untech.SharePoint.Common.Data
 		private Func<T> RewriteAndCompile<T>(Expression expression)
 		{
 			Guard.CheckNotNull("expression", expression);
-			Guard.CheckTypeIsAssignableTo<T>("expression.Type", expression.Type);
+			Guard.CheckIsTypeAssignableTo<T>("expression.Type", expression.Type);
 
 			return Compile<T>(Rewrite(expression));
 		}
