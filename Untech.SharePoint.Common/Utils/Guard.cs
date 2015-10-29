@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Untech.SharePoint.Common.Extensions;
 
 namespace Untech.SharePoint.Common.Utils
 {
@@ -55,12 +56,12 @@ namespace Untech.SharePoint.Common.Utils
 
 			if (actualValue == null)
 			{
-				//if (expectedType.IsNullableType()) 
-				//{
-				//	return;
-				//}
-				//throw new ArgumentException(string.Format("Parameter '{0}' is null, but '{2}' is not a nullable type.",
-				//	paramName, expectedType), paramName);
+				if (expectedType.IsNullAssignable()) 
+				{
+					return;
+				}
+				throw new ArgumentException(string.Format("Parameter '{0}' is null, but '{1}' is not a System.Nullable<> and is not a class type.",
+					paramName, expectedType), paramName);
 			}
 
 			if (expectedType.IsInstanceOfType(actualValue))

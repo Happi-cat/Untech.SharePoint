@@ -20,7 +20,13 @@ namespace Untech.SharePoint.Common.Data
 			Config = config;
 			CommonService = commonService;
 
-			MappingSource = Config.Mappings.Resolve(GetType());
+			var contextType = GetType();
+			if (!Config.Mappings.CanResolve(contextType))
+			{
+				throw new InvalidOperationException("Cannot find mapping for this context in Config");
+			}
+
+			MappingSource = Config.Mappings.Resolve(contextType);
 			Model = MappingSource.GetMetaContext();
 
 			CommonService.MetaModelProcessors.Each(n => n.Visit(Model));

@@ -36,6 +36,9 @@
     <AssemblyOriginatorKeyFile>key.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="JetBrains.Annotations">
+      <HintPath>..\packages\JetBrains.Annotations.9.2.0\lib\net20\JetBrains.Annotations.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\packages\Newtonsoft.Json.6.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
@@ -163,7 +166,6 @@
     <Compile Include="MetaModels\Visitors\FieldConverterFinder.cs" />
     <Compile Include="MetaModels\Visitors\IMetaModelVisitor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Utils\TypeSystem.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="key.snk" />

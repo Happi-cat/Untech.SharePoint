@@ -1,5 +1,8 @@
 ﻿namespace Untech.SharePoint.Common.MetaModels.Visitors
 {
+	/// <summary>
+	/// Represents meta model visitor interface.
+	/// </summary>
 	public interface IMetaModelVisitor
 	{
 		void Visit(IMetaModel model);

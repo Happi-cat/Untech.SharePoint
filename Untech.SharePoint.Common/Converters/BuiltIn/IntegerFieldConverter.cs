@@ -19,7 +19,7 @@ namespace Untech.SharePoint.Common.Converters.BuiltIn
 
 		public object FromSpValue(object value)
 		{
-			if (Field.MemberType.IsNullableType())
+			if (Field.MemberType.IsNullable())
 				return (int?)value;
 
 			return (int?)value ?? 0;

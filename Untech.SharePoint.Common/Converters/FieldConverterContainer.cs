@@ -38,9 +38,19 @@ namespace Untech.SharePoint.Common.Converters
 			Register(converterType, InstanceCreationUtility.GetCreator<IFieldConverter>(converterType));
 		}
 
+		public bool CanResolve(string typeAsString)
+		{
+			return _fieldTypesMap.IsRegistered(typeAsString);
+		}
+
 		public IFieldConverter Resolve(string typeAsString)
 		{
 			return Resolve(_fieldTypesMap.Resolve(typeAsString));
+		}
+
+		public bool CanResolve(Type converType)
+		{
+			return _fieldConvertersBuilders.IsRegistered(converType);
 		}
 
 		public IFieldConverter Resolve(Type converterType)
