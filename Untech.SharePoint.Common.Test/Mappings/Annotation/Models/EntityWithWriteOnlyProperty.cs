@@ -3,7 +3,7 @@ using Untech.SharePoint.Common.Mappings.Annotation;
 
 namespace Untech.SharePoint.Common.Test.Mappings.Annotation.Models
 {
-	public class EntityWithWriteOnlyProperty : AnnotatedEntity
+	public class EntityWithWriteOnlyProperty : Entity
 	{
 		[SpField]
 		public string WriteonlyProperty

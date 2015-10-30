@@ -1,7 +1,10 @@
+using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Untech.SharePoint.Common.Configuration;
+using Untech.SharePoint.Common.Data;
+using Untech.SharePoint.Common.Mappings;
 using Untech.SharePoint.Common.Mappings.Annotation;
 using Untech.SharePoint.Common.MetaModels;
-using Untech.SharePoint.Common.Test.Mappings.Annotation.Models;
 
 namespace Untech.SharePoint.Common.Test.Mappings.Annotation
 {
@@ -9,56 +12,198 @@ namespace Untech.SharePoint.Common.Test.Mappings.Annotation
 	public class AnnotatedFieldPartTest 
 	{
 		[TestMethod]
+		public void CanRun()
+		{
+			var ct = GetContentType<Entity>();
+
+			Assert.AreEqual(2, ct.Fields.Count);
+			Assert.AreEqual("OriginalName", ct.Fields["Field1"].InternalName);
+			Assert.AreEqual("Field2", ct.Fields["Field2"].InternalName);
+		}
+
+		[TestMethod]
 		public void CanInheritFieldAnnotation()
 		{
-			var model = GetCtx<AnnotatedContext>();
+			var ct = GetContentType<InheritedAnnotation>();
 
-			Assert.AreEqual("OldInternalName", GetField<DerivedAnnotatedEntityWithIheritedAnnotation>(model, "List1", "OverrideProperty").InternalName);
+			Assert.AreEqual(2, ct.Fields.Count);
+			Assert.AreEqual("OriginalName", ct.Fields["Field1"].InternalName);
+			Assert.AreEqual("Field2", ct.Fields["Field2"].InternalName);
 		}
 
 		[TestMethod]
 		public void CanOverwriteFieldAnnotation()
 		{
-			var model = new AnnotatedContextMapping<AnnotatedContext>().GetMetaContext();
+			var ct = GetContentType<OverwrittenAnnotation>();
 
-			Assert.AreEqual("NewInternalName", GetField<DerivedAnnotatedEntityWithOverwrittenAnnotation>(model, "List2", "OverrideProperty").InternalName);
+			Assert.AreEqual(2, ct.Fields.Count);
+			Assert.AreEqual("NewName", ct.Fields["Field1"].InternalName);
+			Assert.AreEqual("Field2", ct.Fields["Field2"].InternalName);
 		}
 
 		[TestMethod]
-		public void ThrowErrorForReadOnlyEntityField()
+		public void CanRemovePreviouslyAddedField()
 		{
-			CustomAssert.Throw<InvalidAnnotationException>(() =>
-			{
-				var model = GetCtx<ContextWithReadOnlyEntityField>();
-			});
+			var ct = GetContentType<RemovedField>();
+
+			Assert.AreEqual(1, ct.Fields.Count);
+			Assert.AreEqual("OriginalName", ct.Fields["Field1"].InternalName);
 		}
 
 		[TestMethod]
-		public void ThrowErrorForEntityIndexer()
+		public void CanRemoveNewlyAddedField()
 		{
-			CustomAssert.Throw<InvalidAnnotationException>(() =>
-			{
-				var model = GetCtx<ContextWithEntityIndexer>();
-			});
+			var ct = GetContentType<AddedAndRemovedField>();
+
+			Assert.AreEqual(2, ct.Fields.Count);
+			Assert.AreEqual("OriginalName", ct.Fields["Field1"].InternalName);
+			Assert.AreEqual("Field2", ct.Fields["Field2"].InternalName);
 		}
 
 		[TestMethod]
-		public void ThrowErrorForReadOnlyEntityProperty()
+		public void CanIgnoreConstantFields()
 		{
-			CustomAssert.Throw<InvalidAnnotationException>(() =>
+			var ct = GetContentType<ConstField>();
+
+			Assert.AreEqual(2, ct.Fields.Count);
+			Assert.AreEqual("OriginalName", ct.Fields["Field1"].InternalName);
+			Assert.AreEqual("Field2", ct.Fields["Field2"].InternalName);
+		}
+
+		[TestMethod]
+		public void CanIgnoreStaticProperties()
+		{
+			var ct = GetContentType<StaticProperty>();
+
+			Assert.AreEqual(2, ct.Fields.Count);
+			Assert.AreEqual("OriginalName", ct.Fields["Field1"].InternalName);
+			Assert.AreEqual("Field2", ct.Fields["Field2"].InternalName);
+		}
+
+		[TestMethod]
+		public void ThrowIfFieldReadonly()
+		{
+			CustomAssert.Throw<InvalidAnnotationException>(() => { GetContentType<ReadonlyField>(); });
+		}
+
+		[TestMethod]
+		public void ThrowIfPropertyReadonly()
+		{
+			CustomAssert.Throw<InvalidAnnotationException>(() => { GetContentType<ReadonlyProperty>(); });
+		}
+
+		[TestMethod]
+		public void ThrowIfPropertyWriteonly()
+		{
+			CustomAssert.Throw<InvalidAnnotationException>(() => { GetContentType<WriteonlyProperty>(); });
+		}
+
+		[TestMethod]
+		public void ThrowIfIndexer()
+		{
+			CustomAssert.Throw<InvalidAnnotationException>(() => { GetContentType<Indexer>(); });
+		}
+
+		private MetaContentType GetContentType<T>()
+		{
+			var metaContext = new AnnotatedContextMapping<Ctx<T>>().GetMetaContext();
+
+			return metaContext.Lists["List"].ContentTypes[typeof (T)];
+		}
+
+		#region [Nested Classes]
+
+		public class Ctx<T> : ISpContext
+		{
+			[SpList]
+			public ISpList<T> List { get; set; }
+
+			public Config Config { get; private set; }
+
+			public IMappingSource MappingSource { get; private set; }
+
+			public MetaContext Model { get; private set; }
+		}
+
+		public class Entity
+		{
+			[SpField(Name = "OriginalName")]
+			public virtual string Field1 { get; set; }
+
+			[SpField]
+			public virtual string Field2 { get; set; }
+		}
+
+		public class InheritedAnnotation : Entity
+		{
+			public override string Field1 { get; set; }
+		}
+
+		public class OverwrittenAnnotation : Entity
+		{
+			[SpField(Name = "NewName")]
+			public override string Field1 { get; set; }
+		}
+
+		public class RemovedField : Entity
+		{
+			[SpFieldRemoved]
+			public override string Field2 { get; set; }
+		}
+
+		public class AddedAndRemovedField : Entity
+		{
+			[SpField]
+			[SpFieldRemoved]
+			public virtual string Field3 { get; set; }
+		}
+
+		public class ReadonlyProperty : Entity
+		{
+			[SpField]
+			public string Field3
 			{
-				var model = GetCtx<ContextWithReadOnlyEntityProperty>();
-			});
+				get { throw new NotImplementedException(); }
+			}
 		}
 
-		private MetaContext GetCtx<T>()
+		public class WriteonlyProperty : Entity
 		{
-			return new AnnotatedContextMapping<T>().GetMetaContext();
+			[SpField]
+			public string Field3
+			{
+				set { throw new NotImplementedException(); }
+			}
 		}
 
-		private MetaField GetField<T>(MetaContext context, string list, string field)
+		public class ReadonlyField : Entity
 		{
-			return context.Lists[list].ContentTypes[typeof(T)].Fields[field];
+			[SpField] public readonly string Field3 = null;
 		}
+
+		public class ConstField : Entity
+		{
+			[SpField] public const string Field3 = null;
+		}
+
+		public class StaticProperty: Entity
+		{
+			[SpField]
+			public static string Field3 { get; set; }
+		}
+
+		public class Indexer : Entity
+		{
+			[SpField]
+			public string this[string key]
+			{
+				get { throw new NotImplementedException(); }
+				set { throw new NotImplementedException(); }
+			}
+		}
+
+		#endregion
+
+		
 	}
 }

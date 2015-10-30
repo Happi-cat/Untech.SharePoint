@@ -5,7 +5,7 @@ namespace Untech.SharePoint.Common.Data
 {
 	internal class FieldRefModelComparer : IEqualityComparer<FieldRefModel>
 	{
-		public static IEqualityComparer<FieldRefModel> Comparer = new FieldRefModelComparer();
+		public static readonly IEqualityComparer<FieldRefModel> Comparer = new FieldRefModelComparer();
 
 		public bool Equals(FieldRefModel x, FieldRefModel y)
 		{

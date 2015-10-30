@@ -3,7 +3,7 @@
 namespace Untech.SharePoint.Common.Test.Mappings.Annotation.Models
 {
 	[SpContentType(Id = "0x0010")]
-	public class AnnotatedEntity
+	public class Entity
 	{
 		[SpField]
 		public string Field = "Test";

@@ -3,9 +3,9 @@ using Untech.SharePoint.Common.Mappings.Annotation;
 
 namespace Untech.SharePoint.Common.Test.Mappings.Annotation.Models
 {
-	public class ContextWithReadOnlyEntityProperty : AnnotatedContext
+	public class CtxWithReadOnlyEntityField : Ctx
 	{
 		[SpList(Title = "Test")]
-		public ISpList<EntityWithReadOnlyProperty> InvalidEntity { get; set; }
+		public ISpList<EntityWithReadOnlyField> InvalidEntity { get; set; }
 	}
 }

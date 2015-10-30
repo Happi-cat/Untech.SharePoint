@@ -17,10 +17,10 @@ namespace Untech.SharePoint.Common.Test.Configuration
 		public void CanRegisterMappings()
 		{
 			var config = new ConfigBuilder()
-				.RegisterMappings(n => n.Annotated<AnnotatedContext>())
+				.RegisterMappings(n => n.Annotated<Ctx>())
 				.BuildConfig();
 
-			Assert.IsNotNull(config.Mappings.Resolve(typeof(AnnotatedContext)));
+			Assert.IsNotNull(config.Mappings.Resolve(typeof(Ctx)));
 		}
 
 		[TestMethod]
@@ -48,12 +48,12 @@ namespace Untech.SharePoint.Common.Test.Configuration
 		public void CanChainCalls()
 		{
 			var config = new ConfigBuilder()
-				.RegisterMappings(n => n.Annotated<AnnotatedContext>())
+				.RegisterMappings(n => n.Annotated<Ctx>())
 				.RegisterConverters(n => n.AddFromAssembly(typeof(ConfigBuilderTest).Assembly))
 				.RegisterConverters(n => n.Add<BuiltInFieldConverter>())
 				.BuildConfig();
 
-			Assert.IsNotNull(config.Mappings.Resolve(typeof (AnnotatedContext)));
+			Assert.IsNotNull(config.Mappings.Resolve(typeof (Ctx)));
 			Assert.IsNotNull(config.FieldConverters.Resolve("BUILT_IN_TEST_CONVERTER"));
 			Assert.IsNotNull(config.FieldConverters.Resolve(typeof(BuiltInFieldConverter)));
 		}

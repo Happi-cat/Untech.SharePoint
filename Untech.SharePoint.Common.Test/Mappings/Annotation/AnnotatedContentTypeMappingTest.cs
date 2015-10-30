@@ -11,28 +11,28 @@ namespace Untech.SharePoint.Common.Test.Mappings.Annotation
 		[TestMethod]
 		public void CanSeeContentTypeId()
 		{
-			var model = GetCtx<AnnotatedContext>();
+			var model = GetCtx<Ctx>();
 
-			Assert.AreEqual("0x0010", GetContenType<AnnotatedEntity>(model, "List1").Id);
-			Assert.AreEqual("0x001020", GetContenType<DerivedAnnotatedEntityWithIheritedAnnotation>(model, "List1").Id);
+			Assert.AreEqual("0x0010", GetContenType<Entity>(model, "List1").Id);
+			Assert.AreEqual("0x001020", GetContenType<DerivedEntityWithIheritedAnnotation>(model, "List1").Id);
 		}
 
 		[TestMethod]
 		public void CanInheritContentTypeAnnotation()
 		{
-			var model = GetCtx<AnnotatedContext>();
+			var model = GetCtx<Ctx>();
 
-			Assert.AreEqual("0x0010", GetContenType<DerivedAnnotatedEntityWithOverwrittenAnnotation>(model, "List2").Id);
+			Assert.AreEqual("0x0010", GetContenType<DerivedEntityWithOverwrittenAnnotation>(model, "List2").Id);
 		}
 
 		[TestMethod]
 		public void CanSeeOnlyAnnotatedEntityProperties()
 		{
-			var model = GetCtx<AnnotatedContext>();
+			var model = GetCtx<Ctx>();
 
-			Assert.AreEqual(4, GetContenType<AnnotatedEntity>(model, "List1").Fields.Count);
-			Assert.AreEqual(5, GetContenType<DerivedAnnotatedEntityWithIheritedAnnotation>(model, "List1").Fields.Count);
-			Assert.AreEqual(5, GetContenType<DerivedAnnotatedEntityWithOverwrittenAnnotation>(model, "List2").Fields.Count);
+			Assert.AreEqual(4, GetContenType<Entity>(model, "List1").Fields.Count);
+			Assert.AreEqual(5, GetContenType<DerivedEntityWithIheritedAnnotation>(model, "List1").Fields.Count);
+			Assert.AreEqual(5, GetContenType<DerivedEntityWithOverwrittenAnnotation>(model, "List2").Fields.Count);
 		}
 
 		private MetaContext GetCtx<T>()

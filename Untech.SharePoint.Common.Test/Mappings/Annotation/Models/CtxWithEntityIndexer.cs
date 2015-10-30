@@ -3,9 +3,9 @@ using Untech.SharePoint.Common.Mappings.Annotation;
 
 namespace Untech.SharePoint.Common.Test.Mappings.Annotation.Models
 {
-	public class ContextWithWriteOnlyEntityProperty : AnnotatedContext
+	public class CtxWithEntityIndexer : Ctx
 	{
 		[SpList(Title = "Test")]
-		public ISpList<EntityWithWriteOnlyProperty> InvalidEntity { get; set; }
+		public ISpList<EntityWithIndexer> InvalidEntity { get; set; }
 	}
 }

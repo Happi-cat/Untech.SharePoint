@@ -2,7 +2,7 @@
 
 namespace Untech.SharePoint.Common.Test.Mappings.Annotation.Models
 {
-	public class ContextWithInvalidContextPropertyType : AnnotatedContext
+	public class CtxWithInvalidContextPropertyType : Ctx
 	{
 		[SpList(Title = "WrongPropertyType")]
 		public bool WrongPropertyType { get; set; }

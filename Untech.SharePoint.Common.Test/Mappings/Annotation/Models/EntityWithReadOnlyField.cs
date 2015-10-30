@@ -2,7 +2,7 @@
 
 namespace Untech.SharePoint.Common.Test.Mappings.Annotation.Models
 {
-	public class EntityWithReadOnlyField : AnnotatedEntity
+	public class EntityWithReadOnlyField : Entity
 	{
 		[SpField]
 		public readonly string ReadonlyField = "Test";

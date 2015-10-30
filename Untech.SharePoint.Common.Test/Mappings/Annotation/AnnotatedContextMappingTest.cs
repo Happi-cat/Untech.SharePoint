@@ -11,7 +11,7 @@ namespace Untech.SharePoint.Common.Test.Mappings.Annotation
 		[TestMethod]
 		public void CanCreateContextAndGetModel()
 		{
-			var model = GetCtx<AnnotatedContext>();
+			var model = GetCtx<Ctx>();
 
 			Assert.IsNotNull(model);
 		}
@@ -19,7 +19,7 @@ namespace Untech.SharePoint.Common.Test.Mappings.Annotation
 		[TestMethod]
 		public void CanSeeOnlyAnnotatedContextProperties()
 		{
-			var model = GetCtx<AnnotatedContext>();
+			var model = GetCtx<Ctx>();
 
 			Assert.AreEqual(2, model.Lists.Count);
 			Assert.AreEqual(2, model.Lists["List1"].ContentTypes.Count);
@@ -29,7 +29,7 @@ namespace Untech.SharePoint.Common.Test.Mappings.Annotation
 		[TestMethod]
 		public void CanSeeDerivedContextProperties()
 		{
-			var model = GetCtx<DerivedAnnotatedContext>();
+			var model = GetCtx<DerivedCtx>();
 
 			Assert.AreEqual(2, model.Lists.Count);
 			Assert.AreEqual(2, model.Lists["List1"].ContentTypes.Count);
@@ -41,7 +41,7 @@ namespace Untech.SharePoint.Common.Test.Mappings.Annotation
 		{
 			CustomAssert.Throw<InvalidAnnotationException>(() =>
 			{
-				var model = GetCtx<ContextWithInvalidContextPropertyType>();
+				var model = GetCtx<CtxWithInvalidContextPropertyType>();
 			});
 		}
 
@@ -50,7 +50,7 @@ namespace Untech.SharePoint.Common.Test.Mappings.Annotation
 		{
 			CustomAssert.Throw<InvalidAnnotationException>(() =>
 			{
-				var model = GetCtx<ContextWithWriteOnlyContextProperty>();
+				var model = GetCtx<CtxWithWriteOnlyContextProperty>();
 			});
 		}
 
@@ -59,7 +59,7 @@ namespace Untech.SharePoint.Common.Test.Mappings.Annotation
 		{
 			CustomAssert.Throw<InvalidAnnotationException>(() =>
 			{
-				var model = GetCtx<ContextWithWriteOnlyEntityProperty>();
+				var model = GetCtx<CtxWithWriteOnlyEntityProperty>();
 			});
 		}
 
