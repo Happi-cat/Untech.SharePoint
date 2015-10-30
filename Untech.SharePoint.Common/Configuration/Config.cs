@@ -6,7 +6,7 @@ using Untech.SharePoint.Common.Mappings;
 namespace Untech.SharePoint.Common.Configuration
 {
 	/// <summary>
-	/// Represents configuration that is required for <see cref="SpContext{TContext,TCommonService}"/>
+	/// Represents configuration that is required by <see cref="SpContext{TContext,TCommonService}"/>.
 	/// </summary>
 	public class Config
 	{

@@ -3,7 +3,7 @@
 namespace Untech.SharePoint.Common.Converters
 {
 	/// <summary>
-	/// Specifies SP field type that can be converted by <see cref="IFieldConverter"/> class.
+	/// Specifies SP field type that can be converted by marked <see cref="IFieldConverter"/> class.
 	/// </summary>
 	[AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
 	public sealed class SpFieldConverterAttribute : Attribute
