@@ -81,19 +81,19 @@ namespace Untech.SharePoint.Common.Test.Mappings.Annotation
 		}
 
 		[TestMethod]
-		public void ThrowIfFieldReadonly()
+		public void ThrowIfFieldIsReadOnly()
 		{
 			CustomAssert.Throw<InvalidAnnotationException>(() => { GetContentType<ReadonlyField>(); });
 		}
 
 		[TestMethod]
-		public void ThrowIfPropertyReadonly()
+		public void ThrowIfPropertyIsReadOnly()
 		{
 			CustomAssert.Throw<InvalidAnnotationException>(() => { GetContentType<ReadonlyProperty>(); });
 		}
 
 		[TestMethod]
-		public void ThrowIfPropertyWriteonly()
+		public void ThrowIfPropertyIsWriteOnly()
 		{
 			CustomAssert.Throw<InvalidAnnotationException>(() => { GetContentType<WriteonlyProperty>(); });
 		}
