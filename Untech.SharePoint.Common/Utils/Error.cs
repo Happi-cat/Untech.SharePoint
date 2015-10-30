@@ -9,7 +9,7 @@ namespace Untech.SharePoint.Common.Utils
 {
 	public static class Error
 	{
-		public static Exception KeyNotFound(object key)
+		internal static Exception KeyNotFound(object key)
 		{
 			return new KeyNotFoundException(string.Format("Key not found '{0}'", key));
 		}
@@ -24,22 +24,22 @@ namespace Untech.SharePoint.Common.Utils
 			return new InvalidOperationException("No match found");
 		}
 
-		public static Exception SubqueryNotSupported(Expression node)
+		internal static Exception SubqueryNotSupported(Expression node)
 		{
 			return new NotSupportedException(string.Format("Subquery '{0}' is not supported", node));
 		}
 
-		public static Exception CannotMapField(MetaField field)
+		internal static Exception CannotMapField(MetaField field)
 		{
 			return new DataMappingException(field);
 		}
 
-		public static Exception CannotMapField(MetaField field, Exception inner)
+		internal static Exception CannotMapField(MetaField field, Exception inner)
 		{
 			return new DataMappingException(field, inner);
 		}
 
-		public static Exception SubqueryNegateNotSupported(WhereModel whereModel)
+		internal static Exception SubqueryNegateNotSupported(WhereModel whereModel)
 		{
 			return new NotSupportedException(string.Format("Subquery '{0}' cannot be negated", whereModel));
 		}

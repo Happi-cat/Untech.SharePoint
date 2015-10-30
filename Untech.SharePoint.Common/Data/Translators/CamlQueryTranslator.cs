@@ -90,7 +90,7 @@ namespace Untech.SharePoint.Common.Data.Translators
 		{
 			return new XElement(Tags.FieldRef,
 				new XAttribute(Tags.Ascending, orderBy.Ascending.ToString().ToUpper()),
-				GetFieldRefName(orderBy.Field));
+				GetFieldRefName(orderBy.FieldRef));
 		}
 		protected XElement GetViewFields(IEnumerable<FieldRefModel> fieldRefs)
 		{

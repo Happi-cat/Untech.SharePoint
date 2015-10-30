@@ -12,13 +12,20 @@ namespace Untech.SharePoint.Common.Data.Mapper
 			MemberSetter = MemberAccessUtility.CreateSetter(member);
 		}
 
-		public Func<object, object> MemberGetter { get; private set; }
+		private Func<object, object> MemberGetter { get; set; }
 
-		public Action<object, object> MemberSetter { get; private set; }
+		private Action<object, object> MemberSetter { get; set; }
 
 
-		public bool CanGetValue { get { return MemberGetter != null; } }
-		public bool CanSetValue { get { return MemberSetter != null; } }
+		public bool CanGetValue
+		{
+			get { return MemberGetter != null; }
+		}
+
+		public bool CanSetValue
+		{
+			get { return MemberSetter != null; }
+		}
 
 		public object GetValue(object instance)
 		{

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Reflection;
+using JetBrains.Annotations;
 using Untech.SharePoint.Common.Collections;
 using Untech.SharePoint.Common.Extensions;
 using Untech.SharePoint.Common.Utils;
@@ -8,12 +9,21 @@ using Untech.SharePoint.Common.Utils.Reflection;
 
 namespace Untech.SharePoint.Common.Converters
 {
+	/// <summary>
+	/// Represents container of <see cref="IFieldConverter"/> types.
+	/// </summary>
 	public class FieldConverterContainer : IFieldConverterResolver
 	{
 		private readonly Container<string, Type> _fieldTypesMap = new Container<string, Type>();
 		private readonly KeyedFactory<Type, IFieldConverter> _fieldConvertersBuilders = new KeyedFactory<Type, IFieldConverter>();
 
-		public void AddFromAssembly(Assembly assembly)
+		/// <summary>
+		/// Adds built-in field converters from the specified <see cref="Assembly"/>.
+		/// Built-in field converter should inherit <see cref="IFieldConverter"/> and should be marked with <see cref="SpFieldConverterAttribute"/>.
+		/// </summary>
+		/// <param name="assembly">Assembly with built-in converters.</param>
+		/// <exception cref="ArgumentNullException"><paramref name="assembly"/> is null.</exception>
+		public void AddFromAssembly([NotNull]Assembly assembly)
 		{
 			Guard.CheckNotNull("assembly", assembly);
 
@@ -23,6 +33,10 @@ namespace Untech.SharePoint.Common.Converters
 				.Each(RegisterBuiltInConverter);
 		}
 
+		/// <summary>
+		/// Adds <typeparamref name="TConverter"/>.
+		/// </summary>
+		/// <typeparam name="TConverter">Type of field converter to add.</typeparam>
 		public void Add<TConverter>()
 			where TConverter : IFieldConverter
 		{
@@ -31,6 +45,10 @@ namespace Untech.SharePoint.Common.Converters
 			Register(converterType, InstanceCreationUtility.GetCreator<IFieldConverter>(converterType));
 		}
 
+		/// <summary>
+		/// Adds the specified <paramref name="converterType"/>.
+		/// </summary>
+		/// <param name="converterType">Type of the field converter to add.</param>
 		public void Add(Type converterType)
 		{
 			Guard.CheckNotNull("converterType", converterType);
@@ -38,23 +56,53 @@ namespace Untech.SharePoint.Common.Converters
 			Register(converterType, InstanceCreationUtility.GetCreator<IFieldConverter>(converterType));
 		}
 
-		public bool CanResolve(string typeAsString)
+		/// <summary>
+		/// Determines whether <paramref name="typeAsString"/> can be resolved by current resolver.
+		/// </summary>
+		/// <param name="typeAsString">SP field type as string.</param>
+		/// <returns>true if can resovle the specified <paramref name="typeAsString"/>.</returns>
+		public bool CanResolve([NotNull] string typeAsString)
 		{
+			Guard.CheckNotNull("typeAsString", typeAsString);
+
 			return _fieldTypesMap.IsRegistered(typeAsString);
 		}
 
-		public IFieldConverter Resolve(string typeAsString)
+		/// <summary>
+		/// Resolves <paramref name="typeAsString"/> and returns new instance of the associated <see cref="IFieldConverter"/>.
+		/// </summary>
+		/// <param name="typeAsString">SP field type as string.</param>
+		/// <returns>New instance of the <see cref="IFieldConverter"/> that matchs to the specified SP field type.</returns>
+		[NotNull]
+		public IFieldConverter Resolve([NotNull] string typeAsString)
 		{
+			Guard.CheckNotNull("typeAsString", typeAsString);
+
 			return Resolve(_fieldTypesMap.Resolve(typeAsString));
 		}
 
-		public bool CanResolve(Type converType)
+		/// <summary>
+		/// Determines whether <paramref name="converterType"/> can be resolved by current resolver.
+		/// </summary>
+		/// <param name="converterType">SP field converter type to check.</param>
+		/// <returns>true if can resovle the specified <paramref name="converterType"/>.</returns>
+		public bool CanResolve([NotNull] Type converterType)
 		{
-			return _fieldConvertersBuilders.IsRegistered(converType);
+			Guard.CheckNotNull("converterType", converterType);
+
+			return _fieldConvertersBuilders.IsRegistered(converterType);
 		}
 
-		public IFieldConverter Resolve(Type converterType)
+		/// <summary>
+		/// Resolves <paramref name="converterType"/> and returns new instance of the associated <see cref="IFieldConverter"/>.
+		/// </summary>
+		/// <param name="converterType">type of the field converter to instantiate.</param>
+		/// <returns>New instance of the <see cref="IFieldConverter"/>.</returns>
+		[NotNull]
+		public IFieldConverter Resolve([NotNull] Type converterType)
 		{
+			Guard.CheckNotNull("converterType", converterType);
+
 			return new FieldConverterWrapper(converterType, _fieldConvertersBuilders.Create(converterType));
 		}
 

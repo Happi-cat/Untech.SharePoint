@@ -1,37 +1,68 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using JetBrains.Annotations;
 
 namespace Untech.SharePoint.Common.Data.QueryModels
 {
+	/// <summary>
+	/// Represents base class for CAML logical and comparison tags.
+	/// </summary>
 	public abstract class WhereModel
 	{
-		public static WhereModel And(WhereModel left, WhereModel right)
+		/// <summary>
+		/// Creates logical 'And' operation between operands.
+		/// </summary>
+		/// <param name="left">Left operand. Can be null.</param>
+		/// <param name="right">Right operand. Can be null.</param>
+		/// <returns>Logical or comparison operator.</returns>
+		[CanBeNull]
+		public static WhereModel And([CanBeNull]WhereModel left, [CanBeNull]WhereModel right)
 		{
 			if (left == null)
 				return right;
-			if (right != null)
-				return new LogicalJoinModel(LogicalJoinOperator.And, left, right);
-			return left;
+			if (right == null)
+				return left;
+			return new LogicalJoinModel(LogicalJoinOperator.And, left, right);
 		}
 
-		public static WhereModel Or(WhereModel left, WhereModel right)
+		/// <summary>
+		/// Creates logical 'Or' operation between operands.
+		/// </summary>
+		/// <param name="left">Left operand. Can be null.</param>
+		/// <param name="right">Right operand. Can be null.</param>
+		/// <returns>Logical or comparison operator.</returns>
+		[CanBeNull]
+		public static WhereModel Or([CanBeNull]WhereModel left, [CanBeNull]WhereModel right)
 		{
 			if (left == null)
 				return right;
-			if (right != null)
-				return new LogicalJoinModel(LogicalJoinOperator.Or, left, right);
-			return left;
+			if (right == null)
+				return left;
+			return new LogicalJoinModel(LogicalJoinOperator.Or, left, right);
 		}
 
-		public static WhereModel In<T>(FieldRefModel field, IEnumerable<T> values)
+		/// <summary>
+		/// Creates 'in' operation for the specified FieldRef.
+		/// </summary>
+		/// <param name="field">FieldRef that should be compared.</param>
+		/// <param name="values">Values to compare with.</param>
+		/// <returns>New comparison or null.</returns>
+		[CanBeNull]
+		public static WhereModel In([NotNull]FieldRefModel field, [CanBeNull]IEnumerable<object> values)
 		{
-			return values.Aggregate<T, WhereModel>(null, (where, value) =>
+			values = values ?? new object [0];
+			return values.Aggregate<object, WhereModel>(null, (where, value) =>
 			{
 				var spDataComparison = new ComparisonModel(ComparisonOperator.Eq, field, value);
 				return Or(@where, spDataComparison);
 			});
 		}
 
+
+		/// <summary>
+		/// Returns inverted comparison.
+		/// </summary>
+		/// <returns>Inverted comparison.</returns>
 		public abstract WhereModel Negate();
 	}
 }

@@ -2,7 +2,7 @@
 
 namespace Untech.SharePoint.Common.Data.Translators
 {
-	public interface IExpressionProcessor<out T>
+	internal interface IExpressionProcessor<out T>
 	{
 		T Process(Expression node);
 	}
