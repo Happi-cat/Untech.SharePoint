@@ -10,6 +10,20 @@ namespace Untech.SharePoint.Common.Data.QueryModels
 	public abstract class WhereModel
 	{
 		/// <summary>
+		/// Initializes a new instance of the <see cref="WhereModel"/> with the specified <see cref="WhereType"/>
+		/// </summary>
+		/// <param name="whereType">Current <see cref="WhereType"/> type.</param>
+		protected WhereModel(WhereType whereType)
+		{
+			Type = whereType;
+		}
+
+		/// <summary>
+		/// Gets 'where' model type.
+		/// </summary>
+		public WhereType Type { get; private set; }
+
+		/// <summary>
 		/// Creates logical 'And' operation between operands.
 		/// </summary>
 		/// <param name="left">Left operand. Can be null.</param>

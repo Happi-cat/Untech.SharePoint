@@ -62,6 +62,23 @@ namespace Untech.SharePoint.Common.Test.Data.Translators
 		}
 
 		[TestMethod]
+		public void CanProcessXorWhere()
+		{
+			Given(source => source.Where(n => n.Bool1 ^ n.Bool2).Where(n => n.String1.StartsWith("TEST")))
+				.ExpectedCaml("<Query>" +
+							  "<Where><And>" +
+							  "<Or><And>" +
+							  "<Eq><FieldRef Name='Bool1' /><Value>True</Value></Eq>" +
+							  "<Eq><FieldRef Name='Bool2' /><Value>False</Value></Eq>" +
+							  "</And><And>" +
+							  "<Eq><FieldRef Name='Bool1' /><Value>False</Value></Eq>" +
+							  "<Eq><FieldRef Name='Bool2' /><Value>True</Value></Eq>" +
+							  "</And></Or>" +
+							  "<BeginsWith><FieldRef Name='String1' /><Value>TEST</Value></BeginsWith></And></Where>" +
+							  "</Query>");
+		}
+
+		[TestMethod]
 		public void CanProcessOrderBy()
 		{
 			Given(source => source.OrderBy(n => n.Bool1).ThenBy(n => n.String1))
@@ -286,6 +303,26 @@ namespace Untech.SharePoint.Common.Test.Data.Translators
 
 		}
 
+		protected TestScenario Given(Func<IQueryable<Entity>, IQueryable<Entity>> originalQuery)
+		{
+			var originalQueryTree = originalQuery(new FakeQueryable<Entity>()).Expression;
+			originalQueryTree = new CamlQueryTreeProcessor().Process(originalQueryTree);
+
+			return new TestScenario(originalQueryTree);
+		}
+
+		protected TestScenario Given(Func<IQueryable<Entity>, object> originalQuery)
+		{
+			Expression originalQueryTree = null;
+			originalQuery(new FakeQueryable<Entity>
+			{
+				ExpressionExecutor = node => { originalQueryTree = node; }
+			});
+			originalQueryTree = new CamlQueryTreeProcessor().Process(originalQueryTree);
+
+			return new TestScenario(originalQueryTree);
+		}
+
 		public class TestScenario
 		{
 			private readonly Expression _given;
@@ -329,26 +366,6 @@ namespace Untech.SharePoint.Common.Test.Data.Translators
 
 				Assert.AreEqual(expectedExpression.ToString(), givenExpression.ToString());
 			}
-		}
-
-		protected TestScenario Given(Func<IQueryable<Entity>, IQueryable<Entity>> originalQuery)
-		{
-			var originalQueryTree = originalQuery(new FakeQueryable<Entity>()).Expression;
-			originalQueryTree = new CamlQueryTreeProcessor().Process(originalQueryTree);
-
-			return new TestScenario(originalQueryTree);
-		}
-
-		protected TestScenario Given(Func<IQueryable<Entity>, object> originalQuery)
-		{
-			Expression originalQueryTree = null;
-			originalQuery(new FakeQueryable<Entity>
-			{
-				ExpressionExecutor = node => { originalQueryTree = node; }
-			});
-			originalQueryTree = new CamlQueryTreeProcessor().Process(originalQueryTree);
-
-			return new TestScenario(originalQueryTree);
 		}
 
 		protected class QueryFinder : ExpressionVisitor

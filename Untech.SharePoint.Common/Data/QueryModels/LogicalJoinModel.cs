@@ -17,6 +17,7 @@ namespace Untech.SharePoint.Common.Data.QueryModels
 		/// <param name="second">Second operand.</param>
 		/// <exception cref="ArgumentNullException"><paramref name="first"/> or <paramref name="second"/> is null.</exception>
 		public LogicalJoinModel(LogicalJoinOperator logicalOperator, [NotNull]WhereModel first, [NotNull]WhereModel second)
+			: base(WhereType.LogicalJoin)
 		{
 			Guard.CheckNotNull("first", first);
 			Guard.CheckNotNull("second", second);

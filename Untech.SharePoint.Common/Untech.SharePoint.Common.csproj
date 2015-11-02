@@ -64,7 +64,7 @@
     <Compile Include="Converters\Custom\EnumFieldConverter.cs" />
     <Compile Include="Converters\Custom\JsonFieldConverter.cs" />
     <Compile Include="Converters\Custom\XmlFieldConverter.cs" />
-    <Compile Include="Data\CamFunctions.cs" />
+    <Compile Include="Data\CamlFunctions.cs" />
     <Compile Include="Data\DataMappingException.cs" />
     <Compile Include="Data\MemberRefModelComparer.cs" />
     <Compile Include="Data\GenericMethodDefinitionComparer.cs" />
@@ -78,9 +78,11 @@
     <Compile Include="Data\QueryModels\FieldRefType.cs" />
     <Compile Include="Data\QueryModels\KeyRefModel.cs" />
     <Compile Include="Data\QueryModels\MemberRefModel.cs" />
+    <Compile Include="Data\QueryModels\WhereType.cs" />
     <Compile Include="Data\SpLinqQuery.cs" />
     <Compile Include="Data\SpLinqQueryProvider.cs" />
     <Compile Include="Data\Translators\CamlQueryTreeProcessor.cs" />
+    <Compile Include="Data\Translators\Fields.cs" />
     <Compile Include="Data\Translators\Predicate\CamlKeySelectorProcessor.cs" />
     <Compile Include="Data\Translators\Predicate\CamlProcessorUtils.cs" />
     <Compile Include="Data\Translators\Predicate\CamlSelectableFieldsProcessor.cs" />

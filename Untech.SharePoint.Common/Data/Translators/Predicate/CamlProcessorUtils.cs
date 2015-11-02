@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq.Expressions;
+﻿using System.Linq.Expressions;
 using Untech.SharePoint.Common.Data.QueryModels;
 using Untech.SharePoint.Common.Extensions;
 using Untech.SharePoint.Common.Utils;
@@ -8,7 +7,7 @@ namespace Untech.SharePoint.Common.Data.Translators.Predicate
 {
 	internal static class CamlProcessorUtils
 	{
-		internal static FieldRefModel GetFieldRef(Expression node)
+		internal static MemberRefModel GetFieldRef(Expression node)
 		{
 			if (node.NodeType == ExpressionType.MemberAccess)
 			{

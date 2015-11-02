@@ -31,6 +31,7 @@ namespace Untech.SharePoint.Common.Data.QueryModels
 		/// <param name="value">Value that is expected. Can be null.</param>
 		/// <exception cref="ArgumentNullException"><paramref name="field"/> is null.</exception>
 		public ComparisonModel(ComparisonOperator comparisonOperator, [NotNull]FieldRefModel field, [CanBeNull]object value)
+			: base (WhereType.Comparison)
 		{
 			Guard.CheckNotNull("field", field);
 			

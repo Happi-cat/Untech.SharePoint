@@ -2,7 +2,7 @@
 
 namespace Untech.SharePoint.Common.Data
 {
-	internal static class CamFunctions
+	internal static class CamlFunctions
 	{
 		public static DateTime Today()
 		{
