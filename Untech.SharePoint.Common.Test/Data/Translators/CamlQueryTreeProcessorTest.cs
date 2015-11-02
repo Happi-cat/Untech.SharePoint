@@ -86,7 +86,8 @@ namespace Untech.SharePoint.Common.Test.Data.Translators
 					"<Query><RowLimit>10</RowLimit>" +
 					"<Where><And><And><Eq><FieldRef Name='Bool1' /><Value>True</Value></Eq><Gt><FieldRef Name='Int1' /><Value>10</Value></Gt></And>" +
 					"<BeginsWith><FieldRef Name='String1' /><Value>TEST</Value></BeginsWith></And></Where>" +
-					"</Query>").ExprectedQueryTree(source => source.Where(n => n.String1 == "SOME"));
+					"</Query>")
+				.ExprectedQueryTree(source => source.Where(n => n.String1 == "SOME"));
 		}
 
 		[TestMethod]
@@ -280,33 +281,30 @@ namespace Untech.SharePoint.Common.Test.Data.Translators
 				return this;
 			}
 
-
 			public TestScenario ExprectedQueryTree(Func<IQueryable<Entity>, IQueryable<Entity>> expectedQuery)
 			{
-				var actualTree = new SpQueryRemover().Visit(_given);
 				var expectedQueryTree = expectedQuery(new FakeQueryable<Entity>()).Expression;
-
-				expectedQueryTree = new SpQueryRemover().Visit(expectedQueryTree);
-
-				Assert.AreEqual(expectedQueryTree.ToString(), actualTree.ToString());
-
+				ExpectedExpression(expectedQueryTree);
 				return this;
 			}
 
 			public TestScenario ExprectedQueryTree(Func<IQueryable<Entity>, object> expectedQuery)
 			{
-				var actualTree = new SpQueryRemover().Visit(_given);
 				Expression expectedQueryTree = null;
 				expectedQuery(new FakeQueryable<Entity>
 				{
 					ExpressionExecutor = node => { expectedQueryTree = node; }
 				});
-
-				expectedQueryTree = new SpQueryRemover().Visit(expectedQueryTree);
-
-				Assert.AreEqual(expectedQueryTree.ToString(), actualTree.ToString());
-
+				ExpectedExpression(expectedQueryTree);
 				return this;
+			}
+
+			private void ExpectedExpression(Expression expectedExpression)
+			{
+				var givenExpression = new SpQueryRemover().Visit(_given);
+				expectedExpression = new SpQueryRemover().Visit(expectedExpression);
+
+				Assert.AreEqual(expectedExpression.ToString(), givenExpression.ToString());
 			}
 		}
 
