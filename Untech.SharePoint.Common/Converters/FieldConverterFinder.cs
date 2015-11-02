@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using JetBrains.Annotations;
+using Untech.SharePoint.Common.MetaModels;
+using Untech.SharePoint.Common.MetaModels.Visitors;
 
-namespace Untech.SharePoint.Common.MetaModels.Visitors
+namespace Untech.SharePoint.Common.Converters
 {
 	internal sealed class FieldConverterFinder : BaseMetaModelVisitor
 	{

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using JetBrains.Annotations;
 using Untech.SharePoint.Common.Data.Mapper;
 using Untech.SharePoint.Common.Utils;
@@ -70,5 +71,19 @@ namespace Untech.SharePoint.Common.MetaModels
 			contentType.SetAdditionalProperty(MapperProperty, mapper);
 		}
 
+		/// <summary>
+		/// Finds key field of the content type.
+		/// </summary>
+		/// <param name="contentType">Content type to get key field.</param>
+		/// <returns>Metadata of the key field or null.</returns>
+		[CanBeNull]
+		public static MetaField GetKeyField([NotNull]this MetaContentType contentType)
+		{
+			Guard.CheckNotNull("contentType", contentType);
+
+			return contentType.List.IsExternal
+				? contentType.Fields.FirstOrDefault<MetaField>(n => n.InternalName == Fields.BdcIdentity)
+				: contentType.Fields.FirstOrDefault<MetaField>(n => n.InternalName == Fields.Id);
+		}
 	}
 }

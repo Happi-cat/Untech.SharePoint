@@ -1,7 +1,8 @@
 ﻿using System.Collections.Generic;
 using Microsoft.SharePoint.Client;
-using Untech.SharePoint.Client.MetaModels.Visitors;
+using Untech.SharePoint.Client.Data.Mapper;
 using Untech.SharePoint.Common.Configuration;
+using Untech.SharePoint.Common.Converters;
 using Untech.SharePoint.Common.Data;
 using Untech.SharePoint.Common.MetaModels.Visitors;
 

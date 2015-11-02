@@ -1,25 +1,26 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq.Expressions;
+using JetBrains.Annotations;
+using Untech.SharePoint.Common.Utils;
 
 namespace Untech.SharePoint.Common.Data.Translators.Predicate
 {
 	internal class Evaluator : ExpressionVisitor
 	{
-		protected Nominator Nominator { get; private set; }
-
 		public Evaluator()
 		{
 			Nominator = new Nominator();
 		}
 
-		public Evaluator(Nominator nominator)
+		public Evaluator([NotNull]Nominator nominator)
 		{
-			if (nominator == null) 
-				throw new ArgumentNullException("nominator");
+			Guard.CheckNotNull("nominator", nominator);
 
 			Nominator = nominator;
 		}
+
+		[NotNull]
+		protected Nominator Nominator { get; private set; }
 
 		public override Expression Visit(Expression node)
 		{
@@ -30,9 +31,10 @@ namespace Untech.SharePoint.Common.Data.Translators.Predicate
 
 		internal class SubtreeEvaluator : ExpressionVisitor
 		{
+			[NotNull]
 			private readonly HashSet<Expression> _candidates;
 
-			internal SubtreeEvaluator(HashSet<Expression> candidates)
+			internal SubtreeEvaluator([NotNull]HashSet<Expression> candidates)
 			{
 				_candidates = candidates;
 			}

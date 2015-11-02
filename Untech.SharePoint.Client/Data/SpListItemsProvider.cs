@@ -98,7 +98,7 @@ namespace Untech.SharePoint.Client.Data
 
 			var contentType = List.ContentTypes[typeof(T)];
 			var mapper = contentType.GetMapper<ListItem>();
-			var idField = contentType.Fields.SingleOrDefault<MetaField>(n => n.InternalName == "ID");
+			var idField = contentType.GetKeyField();
 
 			if (idField == null)
 			{
@@ -124,7 +124,7 @@ namespace Untech.SharePoint.Client.Data
 
 			var contentType = List.ContentTypes[typeof(T)];
 			var mapper = contentType.GetMapper<ListItem>();
-			var idField = contentType.Fields.SingleOrDefault<MetaField>(n => n.InternalName == "ID");
+			var idField = contentType.GetKeyField();
 
 			if (idField == null)
 			{
@@ -151,7 +151,7 @@ namespace Untech.SharePoint.Client.Data
 			}
 
 			var contentType = List.ContentTypes[typeof(T)];
-			var idField = contentType.Fields.SingleOrDefault<MetaField>(n => n.InternalName == "ID");
+			var idField = contentType.GetKeyField();
 
 			if (idField == null)
 			{

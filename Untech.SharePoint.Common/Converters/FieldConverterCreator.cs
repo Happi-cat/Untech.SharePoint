@@ -1,6 +1,7 @@
-﻿using Untech.SharePoint.Common.Converters;
+﻿using Untech.SharePoint.Common.MetaModels;
+using Untech.SharePoint.Common.MetaModels.Visitors;
 
-namespace Untech.SharePoint.Common.MetaModels.Visitors
+namespace Untech.SharePoint.Common.Converters
 {
 	/// <summary>
 	/// Represents class that will instantiate <see cref="MetaField.Converter"/> for all <see cref="MetaField"/>.

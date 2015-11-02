@@ -3,7 +3,7 @@ using Untech.SharePoint.Common.MetaModels;
 using Untech.SharePoint.Common.MetaModels.Visitors;
 using Untech.SharePoint.Common.Utils;
 
-namespace Untech.SharePoint.Server.MetaModels.Visitors
+namespace Untech.SharePoint.Server.Data
 {
 	internal class RuntimeInfoLoader : BaseMetaModelVisitor
 	{
@@ -55,7 +55,10 @@ namespace Untech.SharePoint.Server.MetaModels.Visitors
 				field.Required = spField.Required;
 
 				field.IsCalculated = spField.Type == SPFieldType.Computed || spField.Type == SPFieldType.Calculated;
-				field.TypeAsString = spField.TypeAsString;
+				if (string.IsNullOrEmpty(field.TypeAsString))
+				{
+					field.TypeAsString = spField.TypeAsString;
+				}
 
 				if (spField.Type == SPFieldType.Lookup)
 				{

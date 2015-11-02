@@ -2,9 +2,8 @@ using Microsoft.SharePoint;
 using Untech.SharePoint.Common.Data.Mapper;
 using Untech.SharePoint.Common.MetaModels;
 using Untech.SharePoint.Common.MetaModels.Visitors;
-using Untech.SharePoint.Server.Data.Mapper;
 
-namespace Untech.SharePoint.Server.MetaModels.Visitors
+namespace Untech.SharePoint.Server.Data.Mapper
 {
 	internal class MapperInitializer : BaseMetaModelVisitor
 	{

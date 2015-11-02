@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using JetBrains.Annotations;
 using Untech.SharePoint.Common.Data.QueryModels;
 using Untech.SharePoint.Common.Extensions;
 using Untech.SharePoint.Common.Utils;
@@ -39,9 +40,10 @@ namespace Untech.SharePoint.Common.Data.Translators.Predicate
 			};
 		}
 
-		protected IEnumerable<ExpressionVisitor> PreProcessors { get; set; }
+		[NotNull]
+		protected IEnumerable<ExpressionVisitor> PreProcessors { get; private set; }
 
-		public WhereModel Process(Expression predicate)
+		public WhereModel Process([NotNull]Expression predicate)
 		{
 			predicate = predicate.StripQuotes();
 			if (predicate.NodeType == ExpressionType.Lambda)
@@ -54,7 +56,7 @@ namespace Untech.SharePoint.Common.Data.Translators.Predicate
 			return Translate(predicate);
 		}
 
-		protected WhereModel Translate(Expression node)
+		protected WhereModel Translate([NotNull]Expression node)
 		{
 			switch (node.NodeType)
 			{
@@ -87,7 +89,8 @@ namespace Untech.SharePoint.Common.Data.Translators.Predicate
 
 		#region [Private Methods]
 
-		private WhereModel TranslateConstBoolean(ConstantExpression constNode)
+		[NotNull]
+		private WhereModel TranslateConstBoolean([NotNull]ConstantExpression constNode)
 		{
 			if (constNode.Type != typeof (bool))
 			{
@@ -100,29 +103,34 @@ namespace Untech.SharePoint.Common.Data.Translators.Predicate
 			return new ComparisonModel(tag, new KeyRefModel(), null);
 		}
 
-		private WhereModel TranslateTrueProperty(MemberExpression memberNode)
+		[NotNull]
+		private WhereModel TranslateTrueProperty([NotNull]MemberExpression memberNode)
 		{
 			var fieldRef = CamlProcessorUtils.GetFieldRef(memberNode);
 			return new ComparisonModel(ComparisonOperator.Eq, fieldRef, true);
 		}
 
-		private WhereModel TranslateFalseProperty(UnaryExpression unaryNode)
+		[NotNull]
+		private WhereModel TranslateFalseProperty([NotNull]UnaryExpression unaryNode)
 		{
 			var fieldRef = CamlProcessorUtils.GetFieldRef(unaryNode.Operand);
 			return new ComparisonModel(ComparisonOperator.Eq, fieldRef, false);
 		}
 
-		private WhereModel TranslateAnd(BinaryExpression binaryNode)
+		[CanBeNull]
+		private WhereModel TranslateAnd([NotNull]BinaryExpression binaryNode)
 		{
 			return WhereModel.And(Translate(binaryNode.Left), Translate(binaryNode.Right));
 		}
 
-		private WhereModel TranslateOr(BinaryExpression binaryNode)
+		[CanBeNull]
+		private WhereModel TranslateOr([NotNull]BinaryExpression binaryNode)
 		{
 			return WhereModel.Or(Translate(binaryNode.Left), Translate(binaryNode.Right));
 		}
 
-		private WhereModel TranslateComparison(BinaryExpression binaryNode)
+		[NotNull]
+		private WhereModel TranslateComparison([NotNull]BinaryExpression binaryNode)
 		{
 			if (ComparisonMap.ContainsKey(binaryNode.NodeType))
 			{
@@ -139,7 +147,8 @@ namespace Untech.SharePoint.Common.Data.Translators.Predicate
 			throw Error.SubqueryNotSupported(binaryNode);
 		}
 
-		private WhereModel TranslateComparisonWithNull(BinaryExpression binaryNode)
+		[NotNull]
+		private WhereModel TranslateComparisonWithNull([NotNull]BinaryExpression binaryNode)
 		{
 			var fieldRef = CamlProcessorUtils.GetFieldRef(binaryNode.Left);
 			if (NullComparisonMap.ContainsKey(binaryNode.NodeType))
@@ -149,7 +158,8 @@ namespace Untech.SharePoint.Common.Data.Translators.Predicate
 			throw Error.SubqueryNotSupported(binaryNode);
 		}
 
-		private WhereModel TranslateCall(MethodCallExpression callNode)
+		[NotNull]
+		private WhereModel TranslateCall([NotNull]MethodCallExpression callNode)
 		{
 			if (callNode.Method == MethodUtils.StrContains)
 			{
@@ -162,17 +172,24 @@ namespace Untech.SharePoint.Common.Data.Translators.Predicate
 			throw Error.SubqueryNotSupported(callNode);
 		}
 
-		private WhereModel TranslateContains(MethodCallExpression callNode)
+		[NotNull]
+		private WhereModel TranslateContains([NotNull]MethodCallExpression callNode)
 		{
-			return new ComparisonModel(ComparisonOperator.Contains, CamlProcessorUtils.GetFieldRef(callNode.Object), GetValue(callNode.Arguments[0]));
+			return new ComparisonModel(ComparisonOperator.Contains, 
+				CamlProcessorUtils.GetFieldRef(callNode.Object), 
+				GetValue(callNode.Arguments[0]));
 		}
 
-		private WhereModel TranslateStartsWith(MethodCallExpression callNode)
+		[NotNull]
+		private WhereModel TranslateStartsWith([NotNull]MethodCallExpression callNode)
 		{
-			return new ComparisonModel(ComparisonOperator.BeginsWith, CamlProcessorUtils.GetFieldRef(callNode.Object), GetValue(callNode.Arguments[0]));
+			return new ComparisonModel(ComparisonOperator.BeginsWith, 
+				CamlProcessorUtils.GetFieldRef(callNode.Object), 
+				GetValue(callNode.Arguments[0]));
 		}
 
-		private object GetValue(Expression node)
+		[CanBeNull]
+		private object GetValue([NotNull]Expression node)
 		{
 			if (node.NodeType == ExpressionType.Constant)
 			{

@@ -82,7 +82,7 @@
     <Compile Include="Data\SpLinqQuery.cs" />
     <Compile Include="Data\SpLinqQueryProvider.cs" />
     <Compile Include="Data\Translators\CamlQueryTreeProcessor.cs" />
-    <Compile Include="Data\Translators\Fields.cs" />
+    <Compile Include="Fields.cs" />
     <Compile Include="Data\Translators\Predicate\CamlKeySelectorProcessor.cs" />
     <Compile Include="Data\Translators\Predicate\CamlProcessorUtils.cs" />
     <Compile Include="Data\Translators\Predicate\CamlSelectableFieldsProcessor.cs" />
@@ -108,7 +108,7 @@
     <Compile Include="Data\Translators\Predicate\SwapComparisonVisitor.cs" />
     <Compile Include="Data\Translators\CamlQueryTranslator.cs" />
     <Compile Include="Data\Translators\Predicate\XorRewriter.cs" />
-    <Compile Include="Data\Translators\Tags.cs" />
+    <Compile Include="Tags.cs" />
     <Compile Include="Diagnostics\ILoggingInterceptor.cs" />
     <Compile Include="Diagnostics\LogLevel.cs" />
     <Compile Include="Mappings\Annotation\AnnotatedContentTypeMapping.cs" />
@@ -143,7 +143,7 @@
     <Compile Include="Collections\KeyedFactory.cs" />
     <Compile Include="MetaModels\BaseMetaModel.cs" />
     <Compile Include="MetaModels\MetaModelExtensions.cs" />
-    <Compile Include="MetaModels\Visitors\FieldConverterFinder.cs" />
+    <Compile Include="Converters\FieldConverterFinder.cs" />
     <Compile Include="Models\GeoInfo.cs" />
     <Compile Include="Models\ObjectReference.cs" />
     <Compile Include="Models\UrlInfo.cs" />
@@ -172,7 +172,7 @@
     <Compile Include="Utils\Reflection\ReflectionError.cs" />
     <Compile Include="Utils\Singleton.cs" />
     <Compile Include="MetaModels\Visitors\BaseMetaModelVisitor.cs" />
-    <Compile Include="MetaModels\Visitors\FieldConverterCreator.cs" />
+    <Compile Include="Converters\FieldConverterCreator.cs" />
     <Compile Include="MetaModels\Visitors\IMetaModelVisitor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

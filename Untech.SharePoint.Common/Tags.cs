@@ -1,4 +1,4 @@
-﻿namespace Untech.SharePoint.Common.Data.Translators
+﻿namespace Untech.SharePoint.Common
 {
 	internal static class Tags
 	{

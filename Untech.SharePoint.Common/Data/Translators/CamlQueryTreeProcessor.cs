@@ -1,8 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using JetBrains.Annotations;
 using Untech.SharePoint.Common.Data.QueryModels;
 using Untech.SharePoint.Common.Data.Translators.Predicate;
 using Untech.SharePoint.Common.Extensions;
@@ -10,11 +10,14 @@ using Untech.SharePoint.Common.Utils;
 
 namespace Untech.SharePoint.Common.Data.Translators
 {
-	internal class CamlQueryTreeProcessor : ExpressionVisitor, IExpressionProcessor<Expression>
+	internal sealed class CamlQueryTreeProcessor : ExpressionVisitor, IExpressionProcessor<Expression>
 	{
+		[NotNull]
+		private readonly IReadOnlyDictionary<MethodInfo, ICallCombineRule> _combineRules;
+
 		public CamlQueryTreeProcessor()
 		{
-			CombineRules = new Dictionary<MethodInfo, ICallCombineRule> (new GenericMethodDefinitionComparer())
+			_combineRules = new Dictionary<MethodInfo, ICallCombineRule> (new GenericMethodDefinitionComparer())
 			{
 				{MethodUtils.SpqFakeFetch, new InitContextRule()},
 
@@ -60,12 +63,11 @@ namespace Untech.SharePoint.Common.Data.Translators
 			};
 		}
 
-		protected IReadOnlyDictionary<MethodInfo, ICallCombineRule> CombineRules { get; set; }
-		protected HashSet<Expression> Candidates { get; private set; }
+		private HashSet<Expression> Candidates { get; set; }
 
 		public Expression Process(Expression node)
 		{
-			Candidates = CallCombineNominator.GetCandidates(CombineRules, node);
+			Candidates = CallCombineNominator.GetCandidates(_combineRules, node);
 
 			return Visit(node);
 		}
@@ -74,7 +76,7 @@ namespace Untech.SharePoint.Common.Data.Translators
 		{
 			if (node.NodeType == ExpressionType.Call && Candidates.Contains(node))
 			{
-				return new SubtreeCallsCombiner(CombineRules).Visit(node);
+				return new SubtreeCallsCombiner(_combineRules).Visit(node);
 			}
 			if (node.NodeType == ExpressionType.Call)
 			{
@@ -173,7 +175,7 @@ namespace Untech.SharePoint.Common.Data.Translators
 				return nominator.Candidates;
 			}
 			
-			public HashSet<Expression> Candidates { get; private set; }
+			protected HashSet<Expression> Candidates { get; private set; }
 
 			protected IReadOnlyDictionary<MethodInfo, ICallCombineRule> CombineRules { get; set; }
 			protected bool OuterCallCombineAllowed { get; set; }
@@ -200,7 +202,10 @@ namespace Untech.SharePoint.Common.Data.Translators
 				if (MethodUtils.IsOperator(MethodUtils.SpqFakeFetch, node.Method))
 				{
 					OuterCallCombineAllowed = true;
+					Candidates.Add(node);
+					return node;
 				}
+
 				if (CombineRules.ContainsKey(node.Method))
 				{
 					if (OuterCallCombineAllowed)

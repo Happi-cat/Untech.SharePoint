@@ -1,4 +1,5 @@
 ﻿using System.Linq.Expressions;
+using JetBrains.Annotations;
 using Untech.SharePoint.Common.Data.QueryModels;
 using Untech.SharePoint.Common.Extensions;
 using Untech.SharePoint.Common.Utils;
@@ -7,7 +8,8 @@ namespace Untech.SharePoint.Common.Data.Translators.Predicate
 {
 	internal static class CamlProcessorUtils
 	{
-		internal static MemberRefModel GetFieldRef(Expression node)
+		[NotNull]
+		internal static MemberRefModel GetFieldRef([NotNull]Expression node)
 		{
 			if (node.NodeType == ExpressionType.MemberAccess)
 			{

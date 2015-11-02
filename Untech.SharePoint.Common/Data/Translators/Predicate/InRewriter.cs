@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Linq;
 using System.Linq.Expressions;
+using JetBrains.Annotations;
 using Untech.SharePoint.Common.Extensions;
 
 namespace Untech.SharePoint.Common.Data.Translators.Predicate
@@ -48,30 +49,31 @@ namespace Untech.SharePoint.Common.Data.Translators.Predicate
 
 		#region [Private Methods]
 
-		private static bool IsValidObjectInCall(MethodCallExpression node)
+		private static bool IsValidObjectInCall([NotNull]MethodCallExpression node)
 		{
 			return MethodUtils.IsOperator(node.Method, MethodUtils.ObjIn) &&
-			       node.Arguments[0].NodeType == ExpressionType.MemberAccess &&
-			       node.Arguments[1].NodeType == ExpressionType.Constant;
+				   node.Arguments[0].NodeType == ExpressionType.MemberAccess &&
+				   node.Arguments[1].NodeType == ExpressionType.Constant;
 		}
 
-		private static bool IsValidEnumerableContainsCall(MethodCallExpression node)
+		private static bool IsValidEnumerableContainsCall([NotNull]MethodCallExpression node)
 		{
 			return MethodUtils.IsOperator(node.Method, MethodUtils.EContains) &&
-			       node.Arguments[0].NodeType == ExpressionType.Constant &&
-			       node.Arguments[1].NodeType == ExpressionType.MemberAccess;
+				   node.Arguments[0].NodeType == ExpressionType.Constant &&
+				   node.Arguments[1].NodeType == ExpressionType.MemberAccess;
 		}
 
-		private static bool IsValidListContainsCall(MethodCallExpression node)
+		private static bool IsValidListContainsCall([NotNull]MethodCallExpression node)
 		{
 			return MethodUtils.IsOperator(node.Method, MethodUtils.ListContains) &&
+				   node.Object != null &&
 				   node.Object.NodeType == ExpressionType.Constant &&
 				   node.Arguments[0].NodeType == ExpressionType.MemberAccess;
 		}
 
 		private Expression RewriteIn(MemberExpression memberNode, ConstantExpression arrayNode)
 		{
-			var array = (IEnumerable) arrayNode.Value;
+			var array = (IEnumerable)arrayNode.Value ?? new object[0];
 
 			return array.Cast<object>().Aggregate<object, Expression>(null, (whereNode, value) =>
 			{
@@ -83,7 +85,7 @@ namespace Untech.SharePoint.Common.Data.Translators.Predicate
 
 		private Expression RewriteNotIn(MemberExpression memberNode, ConstantExpression arrayNode)
 		{
-			var array = (IEnumerable) arrayNode.Value;
+			var array = (IEnumerable)arrayNode.Value;
 
 			return array.Cast<object>().Aggregate<object, Expression>(null, (whereNode, value) =>
 			{
