@@ -323,6 +323,8 @@ namespace Untech.SharePoint.Common.Test.Data.Translators
 			return new TestScenario(originalQueryTree);
 		}
 
+		#region [Nested Classes]
+
 		public class TestScenario
 		{
 			private readonly Expression _given;
@@ -368,7 +370,7 @@ namespace Untech.SharePoint.Common.Test.Data.Translators
 			}
 		}
 
-		protected class QueryFinder : ExpressionVisitor
+		public class QueryFinder : ExpressionVisitor
 		{
 			public static QueryModel FindQuery(Expression node)
 			{
@@ -383,11 +385,11 @@ namespace Untech.SharePoint.Common.Test.Data.Translators
 
 			protected override Expression VisitMethodCall(MethodCallExpression node)
 			{
-				if (node.Method.DeclaringType == typeof(SpQueryable))
+				if (node.Method.DeclaringType == typeof (SpQueryable))
 				{
 					if (!MethodUtils.IsOperator(node.Method, MethodUtils.SpqFakeFetch))
 					{
-						Query = (QueryModel)((ConstantExpression)node.Arguments[1].StripQuotes()).Value;
+						Query = (QueryModel) ((ConstantExpression) node.Arguments[1].StripQuotes()).Value;
 					}
 					else
 					{
@@ -398,11 +400,11 @@ namespace Untech.SharePoint.Common.Test.Data.Translators
 			}
 		}
 
-		protected class SpQueryRemover : ExpressionVisitor
+		public class SpQueryRemover : ExpressionVisitor
 		{
 			protected override Expression VisitMethodCall(MethodCallExpression node)
 			{
-				if (node.Method.DeclaringType == typeof(SpQueryable))
+				if (node.Method.DeclaringType == typeof (SpQueryable))
 				{
 					if (node.Type.Is<bool>())
 					{
@@ -419,9 +421,12 @@ namespace Untech.SharePoint.Common.Test.Data.Translators
 				var source = Visit(node.Arguments[0]);
 
 				return source.IsConstant(null)
-					? (Expression)Expression.Constant(null, node.Type)
-					: node.Update(null, new[] { source });
+					? (Expression) Expression.Constant(null, node.Type)
+					: node.Update(null, new[] {source});
 			}
 		}
+
+		#endregion
+
 	}
 }

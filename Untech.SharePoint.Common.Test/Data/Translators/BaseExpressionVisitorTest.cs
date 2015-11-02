@@ -8,6 +8,13 @@ namespace Untech.SharePoint.Common.Test.Data.Translators
 {
 	public abstract class BaseExpressionVisitorTest : BaseExpressionTest
 	{
+		protected abstract ExpressionVisitor Visitor { get; }
+
+		protected TestScenario Given(Expression<Func<Entity, bool>> given)
+		{
+			return new TestScenario(this, given);
+		}
+
 		public class TestScenario
 		{
 			private readonly BaseExpressionVisitorTest _parent;
@@ -56,13 +63,6 @@ namespace Untech.SharePoint.Common.Test.Data.Translators
 
 				CustomAssert.AreEqualAfterVisit(visitors, _given, expected);
 			}
-		}
-
-		protected abstract ExpressionVisitor Visitor { get; }
-
-		protected TestScenario Given(Expression<Func<Entity, bool>> given)
-		{
-			return new TestScenario(this, given);
 		}
 	}
 }
