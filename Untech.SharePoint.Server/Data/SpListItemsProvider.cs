@@ -4,7 +4,7 @@ using System.Linq;
 using Microsoft.SharePoint;
 using Untech.SharePoint.Common.Data;
 using Untech.SharePoint.Common.MetaModels;
-using Untech.SharePoint.Server.MetaModels;
+using Untech.SharePoint.Common.Utils;
 using Untech.SharePoint.Server.Utils;
 
 namespace Untech.SharePoint.Server.Data
@@ -53,7 +53,7 @@ namespace Untech.SharePoint.Server.Data
 
 			if (foundItems.Count > 1)
 			{
-				throw new InvalidOperationException("Multiple items match");
+				throw Error.MoreThanOneMatch();
 			}
 			return foundItems.Count == 1 ? Materialize<T>(foundItems[0], viewFields) : default(T);
 		}
@@ -78,28 +78,34 @@ namespace Untech.SharePoint.Server.Data
 		{
 			if (List.IsExternal)
 			{
-				throw new InvalidOperationException();
+				throw DataError.OperationNotAllowedForExternalList();
 			}
 
-			// NOTE: check contenttype
+			var contentType = List.ContentTypes[typeof(T)];
+			var spItem = SpList.GetItemById(id);
 
-			return Materialize<T>(SpList.GetItemById(id));
+			if (spItem.ContentTypeId.ToString() != contentType.Id)
+			{
+				throw new InvalidOperationException("ContentType mismatch");
+			}
+
+			return Materialize<T>(spItem);
 		}
 
 		public void Add<T>(T item)
 		{
 			if (List.IsExternal)
 			{
-				throw new InvalidOperationException();
+				throw DataError.OperationNotAllowedForExternalList();
 			}
 
 			var contentType = List.ContentTypes[typeof(T)];
-			var mapper = contentType.GetMapper();
+			var mapper = contentType.GetMapper<SPListItem>();
 			var idField = contentType.Fields.SingleOrDefault<MetaField>(n => n.InternalName == "ID");
 
 			if (idField == null)
 			{
-				throw new InvalidOperationException();
+				throw DataError.OperationRequireIdField();
 			}
 
 			var spItem = SpList.AddItem();
@@ -113,19 +119,19 @@ namespace Untech.SharePoint.Server.Data
 		{
 			if (List.IsExternal)
 			{
-				throw new InvalidOperationException();
+				throw DataError.OperationNotAllowedForExternalList();
 			}
 
 			var contentType = List.ContentTypes[typeof(T)];
-			var mapper = contentType.GetMapper();
+			var mapper = contentType.GetMapper<SPListItem>();
 			var idField = contentType.Fields.SingleOrDefault<MetaField>(n => n.InternalName == "ID");
 
 			if (idField == null)
 			{
-				throw new InvalidOperationException();
+				throw DataError.OperationRequireIdField();
 			}
 
-			var idValue = (int) idField.GetMapper().MemberGetter(item);
+			var idValue = (int) idField.GetMapper<SPListItem>().MemberAccessor.GetValue(item);
 
 			var spItem = SpList.GetItemById(idValue);
 
@@ -138,7 +144,7 @@ namespace Untech.SharePoint.Server.Data
 		{
 			if (List.IsExternal)
 			{
-				throw new InvalidOperationException();
+				throw DataError.OperationNotAllowedForExternalList();
 			}
 
 			var contentType = List.ContentTypes[typeof(T)];
@@ -146,10 +152,10 @@ namespace Untech.SharePoint.Server.Data
 
 			if (idField == null)
 			{
-				throw new InvalidOperationException();
+				throw DataError.OperationRequireIdField();
 			}
 
-			var idValue = (int)idField.GetMapper().MemberGetter(item);
+			var idValue = (int)idField.GetMapper<SPListItem>().MemberAccessor.GetValue(item);
 
 			var spItem = SpList.GetItemById(idValue);
 
@@ -177,13 +183,9 @@ namespace Untech.SharePoint.Server.Data
 		private T Materialize<T>(SPListItem spItem, IReadOnlyCollection<string> fields = null)
 		{
 			var contentType = List.ContentTypes[typeof(T)];
-			var mapper = contentType.GetMapper();
+			var mapper = contentType.GetMapper<SPListItem>();
 
-			var item = (T)mapper.TypeCreator();
-
-			mapper.Map(spItem, item, fields);
-
-			return item;
+			return (T) mapper.CreateAndMap(spItem, fields);
 		}
 	}
 }

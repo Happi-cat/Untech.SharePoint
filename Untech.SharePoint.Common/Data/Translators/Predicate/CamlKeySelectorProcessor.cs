@@ -4,9 +4,9 @@ using Untech.SharePoint.Common.Extensions;
 
 namespace Untech.SharePoint.Common.Data.Translators.Predicate
 {
-	internal class CamlKeySelectorProcessor : IExpressionProcessor<FieldRefModel>
+	internal class CamlKeySelectorProcessor : IExpressionProcessor<MemberRefModel>
 	{
-		public FieldRefModel Process(Expression predicate)
+		public MemberRefModel Process(Expression predicate)
 		{
 			predicate = predicate.StripQuotes();
 			if (predicate.NodeType == ExpressionType.Lambda)

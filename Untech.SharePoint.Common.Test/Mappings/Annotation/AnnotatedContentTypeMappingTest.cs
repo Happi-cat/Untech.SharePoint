@@ -1,7 +1,9 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Untech.SharePoint.Common.Configuration;
+using Untech.SharePoint.Common.Data;
+using Untech.SharePoint.Common.Mappings;
 using Untech.SharePoint.Common.Mappings.Annotation;
 using Untech.SharePoint.Common.MetaModels;
-using Untech.SharePoint.Common.Test.Mappings.Annotation.Models;
 
 namespace Untech.SharePoint.Common.Test.Mappings.Annotation
 {
@@ -9,40 +11,83 @@ namespace Untech.SharePoint.Common.Test.Mappings.Annotation
 	public class AnnotatedContentTypeMappingTest
 	{
 		[TestMethod]
+		public void CanSeeNotAnotatedContentType()
+		{
+			var ct = GetContentType<Entity>();
+		}
+
+
+		[TestMethod]
 		public void CanSeeContentTypeId()
 		{
-			var model = GetCtx<AnnotatedContext>();
+			var ct = GetContentType<Item>();
 
-			Assert.AreEqual("0x0010", GetContenType<AnnotatedEntity>(model, "List1").Id);
-			Assert.AreEqual("0x001020", GetContenType<DerivedAnnotatedEntityWithIheritedAnnotation>(model, "List1").Id);
+			Assert.AreEqual("0x01", ct.Id);
+		}
+
+		[TestMethod]
+		public void CanOverwriteContentTypeAnnotation()
+		{
+			var ct = GetContentType<ChildItem1>();
+
+			Assert.AreEqual("0x0101", ct.Id);
 		}
 
 		[TestMethod]
 		public void CanInheritContentTypeAnnotation()
 		{
-			var model = GetCtx<AnnotatedContext>();
+			var ct = GetContentType<ChildItem2>();
 
-			Assert.AreEqual("0x0010", GetContenType<DerivedAnnotatedEntityWithOverwrittenAnnotation>(model, "List2").Id);
+			Assert.AreEqual("0x01", ct.Id);
 		}
 
-		[TestMethod]
-		public void CanSeeOnlyAnnotatedEntityProperties()
+		private MetaContentType GetContentType<T>()
 		{
-			var model = GetCtx<AnnotatedContext>();
+			var metaContext = new AnnotatedContextMapping<Ctx<T>>().GetMetaContext();
 
-			Assert.AreEqual(4, GetContenType<AnnotatedEntity>(model, "List1").Fields.Count);
-			Assert.AreEqual(5, GetContenType<DerivedAnnotatedEntityWithIheritedAnnotation>(model, "List1").Fields.Count);
-			Assert.AreEqual(5, GetContenType<DerivedAnnotatedEntityWithOverwrittenAnnotation>(model, "List2").Fields.Count);
+			return metaContext.Lists["List"].ContentTypes[typeof(T)];
 		}
 
-		private MetaContext GetCtx<T>()
+		#region [Nested Classes]
+
+		public class Ctx<T> : ISpContext
 		{
-			return new AnnotatedContextMapping<T>().GetMetaContext();
+			[SpList]
+			public ISpList<T> List { get; set; }
+
+			public Config Config { get; private set; }
+
+			public IMappingSource MappingSource { get; private set; }
+
+			public MetaContext Model { get; private set; }
 		}
 
-		private MetaContentType GetContenType<T>(MetaContext context, string list)
+		public class Entity
 		{
-			return context.Lists[list].ContentTypes[typeof(T)];
+			[SpField]
+			public virtual string Field1 { get; set; }
+
+			[SpField]
+			public virtual string Field2 { get; set; }
 		}
+
+		[SpContentType(Id = "0x01")]
+		public class Item : Entity
+		{
+
+		}
+
+		[SpContentType(Id = "0x0101")]
+		public class ChildItem1 : Item
+		{
+
+		}
+
+		public class ChildItem2 : Item
+		{
+
+		}
+
+		#endregion
 	}
 }

@@ -3,6 +3,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using Untech.SharePoint.Common.Data.QueryModels;
 using Untech.SharePoint.Common.Extensions;
+using Untech.SharePoint.Common.Utils;
 
 namespace Untech.SharePoint.Common.Data.Translators.Predicate
 {
@@ -30,6 +31,7 @@ namespace Untech.SharePoint.Common.Data.Translators.Predicate
 			{
 				new Evaluator(),
 				new StringIsNullOrEmptyRewriter(),
+				new XorRewriter(),
 				new PushNotDownVisitor(),
 				new InRewriter(),
 				new RedundantConditionRemover(),
@@ -77,11 +79,26 @@ namespace Untech.SharePoint.Common.Data.Translators.Predicate
 					return TranslateTrueProperty((MemberExpression) node);
 				case ExpressionType.Not:
 					return TranslateFalseProperty((UnaryExpression) node);
+				case ExpressionType.Constant:
+					return TranslateConstBoolean((ConstantExpression) node);
 			}
-			throw CamlProcessorUtils.InvalidQuery(node);
+			throw Error.SubqueryNotSupported(node);
 		}
 
 		#region [Private Methods]
+
+		private WhereModel TranslateConstBoolean(ConstantExpression constNode)
+		{
+			if (constNode.Type != typeof (bool))
+			{
+				throw Error.SubqueryNotSupported(constNode);
+			}
+
+			var value = (bool) constNode.Value;
+			var tag = value ? ComparisonOperator.IsNotNull : ComparisonOperator.IsNull;
+
+			return new ComparisonModel(tag, new KeyRefModel(), null);
+		}
 
 		private WhereModel TranslateTrueProperty(MemberExpression memberNode)
 		{
@@ -119,7 +136,7 @@ namespace Untech.SharePoint.Common.Data.Translators.Predicate
 					return new ComparisonModel(ComparisonMap[binaryNode.NodeType], fieldRef, GetValue(binaryNode.Right));
 				}
 			}
-			throw CamlProcessorUtils.InvalidQuery(binaryNode);
+			throw Error.SubqueryNotSupported(binaryNode);
 		}
 
 		private WhereModel TranslateComparisonWithNull(BinaryExpression binaryNode)
@@ -129,7 +146,7 @@ namespace Untech.SharePoint.Common.Data.Translators.Predicate
 			{
 				return new ComparisonModel(NullComparisonMap[binaryNode.NodeType], fieldRef, null);
 			}
-			throw CamlProcessorUtils.InvalidQuery(binaryNode);
+			throw Error.SubqueryNotSupported(binaryNode);
 		}
 
 		private WhereModel TranslateCall(MethodCallExpression callNode)
@@ -142,7 +159,7 @@ namespace Untech.SharePoint.Common.Data.Translators.Predicate
 			{
 				return TranslateStartsWith(callNode);
 			}
-			throw CamlProcessorUtils.InvalidQuery(callNode);
+			throw Error.SubqueryNotSupported(callNode);
 		}
 
 		private WhereModel TranslateContains(MethodCallExpression callNode)
@@ -161,7 +178,7 @@ namespace Untech.SharePoint.Common.Data.Translators.Predicate
 			{
 				return ((ConstantExpression) node).Value;
 			}
-			throw CamlProcessorUtils.InvalidQuery(node);
+			throw Error.SubqueryNotSupported(node);
 		}
 
 		#endregion

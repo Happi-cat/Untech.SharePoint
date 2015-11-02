@@ -14,64 +14,108 @@ namespace Untech.SharePoint.Common.Test.Data.Translators.Predicate
 		public void CanRewriteInArray()
 		{
 			var possibleValues = new[] {"#1", "#2", "#3"};
-			TestWitEvaluator(n => n.String1.In(possibleValues), n => n.String1 == "#1" || n.String1 == "#2" || n.String1 == "#3");
+
+			Given(n => n.String1.In(possibleValues))
+				.PreEvaluate()
+				.Expected(n => n.String1 == "#1" || n.String1 == "#2" || n.String1 == "#3");
 		}
 
 		[TestMethod]
 		public void CanRewriteInList()
 		{
-			var possibleValues = new List<string> { "#1", "#2", "#3" };
-			TestWitEvaluator(n => n.String1.In(possibleValues), n => n.String1 == "#1" || n.String1 == "#2" || n.String1 == "#3");
+			var possibleValues = new List<string> {"#1", "#2", "#3"};
+
+			Given(n => n.String1.In(possibleValues))
+				.PreEvaluate()
+				.Expected(n => n.String1 == "#1" || n.String1 == "#2" || n.String1 == "#3");
 		}
 
 		[TestMethod]
 		public void CanRewriteNotInArray()
 		{
-			var possibleValues = new[] { "#1", "#2", "#3" };
-			TestWitEvaluator(n => !n.String1.In(possibleValues), n => n.String1 != "#1" && n.String1 != "#2" && n.String1 != "#3");
+			var possibleValues = new[] {"#1", "#2", "#3"};
+
+			Given(n => !n.String1.In(possibleValues))
+				.PreEvaluate()
+				.Expected(n => n.String1 != "#1" && n.String1 != "#2" && n.String1 != "#3");
 		}
 
 		[TestMethod]
 		public void CanRewriteNotInList()
 		{
-			var possibleValues = new List<string> { "#1", "#2", "#3" };
-			TestWitEvaluator(n => !n.String1.In(possibleValues), n => n.String1 != "#1" && n.String1 != "#2" && n.String1 != "#3");
+			var possibleValues = new List<string> {"#1", "#2", "#3"};
+
+			Given(n => !n.String1.In(possibleValues))
+				.PreEvaluate()
+				.Expected(n => n.String1 != "#1" && n.String1 != "#2" && n.String1 != "#3");
 		}
 
 		[TestMethod]
 		public void CanRewriteArrayContains()
 		{
-			var possibleValues = new[] { "#1", "#2", "#3" };
-			TestWitEvaluator(n => possibleValues.Contains(n.String1), n => n.String1 == "#1" || n.String1 == "#2" || n.String1 == "#3");
+			var possibleValues = new[] {"#1", "#2", "#3"};
+
+			Given(n => possibleValues.Contains(n.String1))
+				.PreEvaluate()
+				.Expected(n => n.String1 == "#1" || n.String1 == "#2" || n.String1 == "#3");
 		}
 
 		[TestMethod]
 		public void CanRewriteListContains()
 		{
-			// NOTE: List.Contains not allowed. Fix later
-			IEnumerable<string> possibleValues = new List<string> { "#1", "#2", "#3" };
-			TestWitEvaluator(n => possibleValues.Contains(n.String1), n => n.String1 == "#1" || n.String1 == "#2" || n.String1 == "#3");
+			var possibleValues = new List<string> {"#1", "#2", "#3"};
+
+			Given(n => possibleValues.Contains(n.String1))
+				.PreEvaluate()
+				.Expected(n => n.String1 == "#1" || n.String1 == "#2" || n.String1 == "#3");
+		}
+
+		[TestMethod]
+		public void CanRewriteEnumerableContains()
+		{
+			IEnumerable<string> possibleValues = new List<string> {"#1", "#2", "#3"};
+
+			Given(n => possibleValues.Contains(n.String1))
+				.PreEvaluate()
+				.Expected(n => n.String1 == "#1" || n.String1 == "#2" || n.String1 == "#3");
 		}
 
 		[TestMethod]
 		public void CanRewriteArrayNotContains()
 		{
-			var possibleValues = new[] { "#1", "#2", "#3" };
-			TestWitEvaluator(n => !possibleValues.Contains(n.String1), n => n.String1 != "#1" && n.String1 != "#2" && n.String1 != "#3");
+			var possibleValues = new[] {"#1", "#2", "#3"};
+
+			Given(n => !possibleValues.Contains(n.String1))
+				.PreEvaluate()
+				.Expected(n => n.String1 != "#1" && n.String1 != "#2" && n.String1 != "#3");
 		}
 
 		[TestMethod]
 		public void CanRewriteListNotContains()
 		{
-			// NOTE: List.Contains not allowed. Fix later
-			IEnumerable<string> possibleValues = new List<string> { "#1", "#2", "#3" };
-			TestWitEvaluator(n => !possibleValues.Contains(n.String1), n => n.String1 != "#1" && n.String1 != "#2" && n.String1 != "#3");
+			var possibleValues = new List<string> {"#1", "#2", "#3"};
+
+			Given(n => !possibleValues.Contains(n.String1))
+				.PreEvaluate()
+				.Expected(n => n.String1 != "#1" && n.String1 != "#2" && n.String1 != "#3");
+		}
+
+		[TestMethod]
+		public void CanRewriteEnumerableNotContains()
+		{
+			IEnumerable<string> possibleValues = new List<string> {"#1", "#2", "#3"};
+
+			Given(n => !possibleValues.Contains(n.String1))
+				.PreEvaluate()
+				.Expected(n => n.String1 != "#1" && n.String1 != "#2" && n.String1 != "#3");
 		}
 
 		[TestMethod]
 		public void CannotRewriteStringContains()
 		{
-			TestWitEvaluator(n => n.String1.Contains("TEST"), n => n.String1.Contains("TEST"));
+			Given(n => n.String1.Contains("TEST"))
+				.PreEvaluate()
+				.Expected(n => n.String1.Contains("TEST"));
 		}
 
 		protected override ExpressionVisitor Visitor

@@ -50,7 +50,7 @@ namespace Untech.SharePoint.Server.Utils
 					.Select(n => n.Value)
 					.ToList();
 			}
-			return null;
+			return new List<string>();
 		}
 	}
 }

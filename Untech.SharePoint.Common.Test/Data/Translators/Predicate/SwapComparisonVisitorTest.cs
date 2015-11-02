@@ -10,9 +10,9 @@ namespace Untech.SharePoint.Common.Test.Data.Translators.Predicate
 		[TestMethod]
 		public void CanSwap()
 		{
-			Test(n => 1 == n.Int1, n => n.Int1 == 1);
-			Test(n => 10 < n.Int1, n => n.Int1 > 10);
-			Test(n => n.Int1 < 100, n => n.Int1 < 100);
+			Given(n => 1 == n.Int1).Expected(n => n.Int1 == 1);
+			Given(n => 10 < n.Int1).Expected(n => n.Int1 > 10);
+			Given(n => n.Int1 < 100).Expected(n => n.Int1 < 100);
 		}
 
 		protected override ExpressionVisitor Visitor

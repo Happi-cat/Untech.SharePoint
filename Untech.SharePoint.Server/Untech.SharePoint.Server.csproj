@@ -20,6 +20,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Debug\Untech.SharePoint.Server.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -50,12 +51,11 @@
   <ItemGroup>
     <Compile Include="Configuration\ServerConfig.cs" />
     <Compile Include="Converters\BuiltIn\ContentTypeIdConverter.cs" />
-    <Compile Include="Data\Mapper\FieldMapper.cs" />
+    <Compile Include="Data\DataError.cs" />
+    <Compile Include="Data\Mapper\StoreAccessor.cs" />
     <Compile Include="Data\Mapper\TypeMapper.cs" />
     <Compile Include="Data\SpListItemsProvider.cs" />
     <Compile Include="Data\SpServerContext.cs" />
-    <Compile Include="MetaModels\MetaModelExtensions.cs" />
-    <Compile Include="MetaModels\Visitors\FieldConverterInitializer.cs" />
     <Compile Include="MetaModels\Visitors\MapperInitializer.cs" />
     <Compile Include="MetaModels\Visitors\RuntimeInfoLoader.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

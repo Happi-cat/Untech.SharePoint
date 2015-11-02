@@ -2,16 +2,15 @@
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
-using Untech.SharePoint.Common.Extensions;
 
 namespace Untech.SharePoint.Common.Utils.Reflection
 {
-	public static class InstanceCreationUtility
+	internal static class InstanceCreationUtility
 	{
 		public static Func<TResult> GetCreator<TResult>(Type type)
 		{
 			Guard.CheckNotNull("type", type);
-			Guard.CheckTypeIsAssignableTo<TResult>("type", type);
+			Guard.CheckIsTypeAssignableTo<TResult>("type", type);
 
 			return GetCreator<Func<TResult>>(type, new Type[0]);
 		}
@@ -19,7 +18,7 @@ namespace Untech.SharePoint.Common.Utils.Reflection
 		public static Func<TArg, TResult> GetCreator<TArg, TResult>(Type type)
 		{
 			Guard.CheckNotNull("type", type);
-			Guard.CheckTypeIsAssignableTo<TResult>("type", type);
+			Guard.CheckIsTypeAssignableTo<TResult>("type", type);
 
 			return GetCreator<Func<TArg, TResult>>(type, new[] { typeof(TArg) });
 		}
@@ -27,7 +26,7 @@ namespace Untech.SharePoint.Common.Utils.Reflection
 		public static Func<TArg1, TArg2, TResult> GetCreator<TArg1, TArg2, TResult>(Type type)
 		{
 			Guard.CheckNotNull("type", type);
-			Guard.CheckTypeIsAssignableTo<TResult>("type", type);
+			Guard.CheckIsTypeAssignableTo<TResult>("type", type);
 
 			return GetCreator<Func<TArg1, TArg2, TResult>>(type, new[] { typeof(TArg1), typeof(TArg2) });
 		}
@@ -35,7 +34,7 @@ namespace Untech.SharePoint.Common.Utils.Reflection
 		public static Func<TArg1, TArg2, TArg3, TResult> GetCreator<TArg1, TArg2, TArg3, TResult>(Type type)
 		{
 			Guard.CheckNotNull("type", type);
-			Guard.CheckTypeIsAssignableTo<TResult>("type", type);	
+			Guard.CheckIsTypeAssignableTo<TResult>("type", type);	
 
 			return GetCreator<Func<TArg1, TArg2, TArg3, TResult>>(type, new[] { typeof(TArg1), typeof(TArg2), typeof(TArg3) });
 		}
@@ -47,7 +46,7 @@ namespace Untech.SharePoint.Common.Utils.Reflection
 
 			if (constructor == null)
 			{
-				throw CreateCtorNotFoundException(type, argumentTypes);
+				throw ReflectionError.CtorNotFound(type, argumentTypes);
 			}
 
 			var parameterExpressions = argumentTypes.Select(Expression.Parameter).ToList();
@@ -55,11 +54,6 @@ namespace Untech.SharePoint.Common.Utils.Reflection
 			var newExpression = Expression.New(constructor, parameterExpressions);
 
 			return Expression.Lambda<TDelegate>(newExpression, parameterExpressions).Compile();
-		}
-
-		private static Exception CreateCtorNotFoundException(Type type, Type[] argumentTypes)
-		{
-			return new ArgumentException(string.Format("Type '{0}' has no constructor that matches parameters list ({1})", type, argumentTypes.JoinToString()));
 		}
 	}
 }

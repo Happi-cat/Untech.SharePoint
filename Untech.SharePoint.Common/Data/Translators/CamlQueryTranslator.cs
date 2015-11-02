@@ -1,7 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Xml.Linq;
+using JetBrains.Annotations;
 using Untech.SharePoint.Common.Converters;
 using Untech.SharePoint.Common.Data.QueryModels;
 using Untech.SharePoint.Common.MetaModels;
@@ -11,21 +13,26 @@ namespace Untech.SharePoint.Common.Data.Translators
 {
 	internal class CamlQueryTranslator
 	{
-		public CamlQueryTranslator(MetaContentType contentType)
+		public CamlQueryTranslator([NotNull]MetaContentType contentType)
 		{
 			Guard.CheckNotNull("contentType", contentType);
 
 			ContentType = contentType;
 		}
 
+		[NotNull]
 		public MetaContentType ContentType { get; private set; }
 
-		public string Translate(QueryModel query)
+		[NotNull]
+		public string Translate([NotNull]QueryModel query)
 		{
+			Guard.CheckNotNull("query", query);
+
 			return GetQuery(query).ToString();
 		}
 
-		protected XElement GetQuery(QueryModel query)
+		[NotNull]
+		protected XElement GetQuery([NotNull]QueryModel query)
 		{
 			return new XElement(Tags.Query,
 				GetRowLimit(query.RowLimit),
@@ -34,12 +41,14 @@ namespace Untech.SharePoint.Common.Data.Translators
 				GetOrderBys(query.OrderBys, query.IsOrderReversed));
 		}
 
+		[CanBeNull]
 		protected XElement GetRowLimit(int? rowLimit)
 		{
 			return rowLimit != null ? new XElement(Tags.RowLimit, rowLimit) : null;
 		}
 
-		protected XElement GetWheres(WhereModel where)
+		[CanBeNull]
+		protected XElement GetWheres([CanBeNull]WhereModel where)
 		{
 			var xWhere = GetWhere(where);
 
@@ -51,24 +60,27 @@ namespace Untech.SharePoint.Common.Data.Translators
 			return xWhere != null ? new XElement(Tags.Where, xWhere) : null;
 		}
 
-		protected XElement GetWhere(WhereModel @where)
+		[CanBeNull]
+		protected XElement GetWhere([CanBeNull]WhereModel @where)
 		{
 			if (@where == null)
 			{
 				return null;
 			}
 
-			var join = @where as LogicalJoinModel;
-			if (@join != null)
+			switch (@where.Type)
 			{
-				return GetLogicalJoin(@join);
+				case WhereType.LogicalJoin:
+					return GetLogicalJoin((LogicalJoinModel)@where);
+				case WhereType.Comparison:
+					return GetComparison((ComparisonModel)@where);
 			}
 
-			var comparison = @where as ComparisonModel;
-			return comparison != null ? GetComparison(comparison) : null;
+			throw new NotSupportedException(string.Format("'{0}' is not supported", @where));
 		}
 
-		protected XElement GetOrderBys(IEnumerable<OrderByModel> orderBys, bool isOrderReversed)
+		[CanBeNull]
+		protected XElement GetOrderBys([CanBeNull]IEnumerable<OrderByModel> orderBys, bool isOrderReversed)
 		{
 			if (orderBys == null)
 			{
@@ -86,13 +98,16 @@ namespace Untech.SharePoint.Common.Data.Translators
 			return null;
 		}
 
-		protected XElement GetOrderBy(OrderByModel orderBy)
+		[NotNull]
+		protected XElement GetOrderBy([NotNull]OrderByModel orderBy)
 		{
 			return new XElement(Tags.FieldRef,
 				new XAttribute(Tags.Ascending, orderBy.Ascending.ToString().ToUpper()),
-				GetFieldRefName(orderBy.Field));
+				GetFieldRefName(orderBy.FieldRef));
 		}
-		protected XElement GetViewFields(IEnumerable<FieldRefModel> fieldRefs)
+
+		[CanBeNull]
+		protected XElement GetViewFields([CanBeNull]IEnumerable<FieldRefModel> fieldRefs)
 		{
 			if (fieldRefs == null)
 			{
@@ -105,44 +120,70 @@ namespace Untech.SharePoint.Common.Data.Translators
 				: null;
 		}
 
-		protected XElement GetViewField(FieldRefModel fieldRef)
+		[NotNull]
+		protected XElement GetViewField([NotNull]FieldRefModel fieldRef)
 		{
 			return new XElement(Tags.FieldRef, GetFieldRefName(fieldRef));
 		}
-		protected XElement GetLogicalJoin(LogicalJoinModel logicalJoin)
+
+		[NotNull]
+		protected XElement GetLogicalJoin([NotNull]LogicalJoinModel logicalJoin)
 		{
-			return new XElement(logicalJoin.LogicalOperator.ToString(), 
+			return new XElement(logicalJoin.LogicalOperator.ToString(),
 				GetWhere(logicalJoin.First),
 				GetWhere(logicalJoin.Second));
 		}
 
-		protected XElement GetComparison(ComparisonModel comparison)
+		[NotNull]
+		protected XElement GetComparison([NotNull]ComparisonModel comparison)
 		{
 			if (comparison.ComparisonOperator == ComparisonOperator.IsNull ||
-			    comparison.ComparisonOperator == ComparisonOperator.IsNotNull)
+				comparison.ComparisonOperator == ComparisonOperator.IsNotNull)
 			{
-				return new XElement(comparison.ComparisonOperator.ToString(), 
+				return new XElement(comparison.ComparisonOperator.ToString(),
 					new XElement(Tags.FieldRef, GetFieldRefName(comparison.Field)));
 			}
 
 			return new XElement(comparison.ComparisonOperator.ToString(),
 				new XElement(Tags.FieldRef, GetFieldRefName(comparison.Field)),
-				GetValue(comparison.Field, comparison.Value));
+				GetValue(comparison.Field, comparison.Value, comparison.IsValueConverted));
 		}
 
-		protected XAttribute GetFieldRefName(FieldRefModel fieldRef)
+		[NotNull]
+		protected XAttribute GetFieldRefName([NotNull]FieldRefModel fieldRef)
 		{
-			return new XAttribute(Tags.Name, GetMetaField(fieldRef.Member).InternalName);
+			if (fieldRef.Type == FieldRefType.Key)
+			{
+				var key = ContentType.List.IsExternal ? Fields.BdcIdentity : Fields.Id;
+
+				return new XAttribute(Tags.Name, key);
+			}
+			if (fieldRef.Type == FieldRefType.KnownMember)
+			{
+				var memberRef = (MemberRefModel)fieldRef;
+				return new XAttribute(Tags.Name, GetMetaField(memberRef.Member).InternalName);
+			}
+
+			throw new NotSupportedException("Unsupported FieldRefType value");
 		}
 
-		protected XElement GetValue(FieldRefModel fieldRef, object value)
+		[NotNull]
+		protected XElement GetValue([NotNull]FieldRefModel fieldRef, [CanBeNull]object value, bool alreadyConverted = false)
 		{
+			if (fieldRef.Type != FieldRefType.KnownMember)
+			{
+				throw new NotSupportedException("Only FieldRefType.KnownMember supported by GetValue method");
+			}
+
+			var memberRef = (MemberRefModel)fieldRef;
+
 			return new XElement(Tags.Value,
-				new XAttribute(Tags.Type, GetMetaField(fieldRef.Member).TypeAsString),
-				GetConverter(fieldRef.Member).ToCamlValue(value));
+				new XAttribute(Tags.Type, GetMetaField(memberRef.Member).TypeAsString),
+				alreadyConverted ? value : GetConverter(memberRef.Member).ToCamlValue(value));
 		}
 
-		private XElement AppendContentTypeFilter(XElement xWhere)
+		[CanBeNull]
+		private XElement AppendContentTypeFilter([CanBeNull]XElement xWhere)
 		{
 			if (ContentType.List.IsExternal)
 			{
@@ -150,7 +191,7 @@ namespace Untech.SharePoint.Common.Data.Translators
 			}
 
 			var xContentType = new XElement(Tags.BeginsWith,
-					new XElement(Tags.FieldRef, new XAttribute(Tags.Name, "ContentTypeId")),
+					new XElement(Tags.FieldRef, new XAttribute(Tags.Name, Fields.ContentTypeId)),
 					new XElement(Tags.Value, ContentType.Id));
 
 			if (xWhere != null)
@@ -163,14 +204,25 @@ namespace Untech.SharePoint.Common.Data.Translators
 			return xContentType;
 		}
 
-		private MetaField GetMetaField(MemberInfo member)
+		[NotNull]
+		private MetaField GetMetaField([NotNull]MemberInfo member)
 		{
+			if (!ContentType.Fields.ContainsKey(member.Name))
+			{
+				throw new InvalidOperationException(string.Format("'{0}' wasn't mapped and cannot be used in CAML query.", member));
+			}
+
 			return ContentType.Fields[member.Name];
 		}
 
-		private IFieldConverter GetConverter(MemberInfo member)
+		private IFieldConverter GetConverter([NotNull]MemberInfo member)
 		{
-			return GetMetaField(member).Converter;
+			var converter = GetMetaField(member).Converter;
+			if (converter == null)
+			{
+				throw new InvalidOperationException(string.Format("Converter wasn't initialized for '{0}' field", member));
+			}
+			return converter;
 		}
 	}
 }

@@ -6,6 +6,7 @@ using System.Reflection;
 using Untech.SharePoint.Common.Data.QueryModels;
 using Untech.SharePoint.Common.Data.Translators.Predicate;
 using Untech.SharePoint.Common.Extensions;
+using Untech.SharePoint.Common.Utils;
 
 namespace Untech.SharePoint.Common.Data.Translators
 {
@@ -79,7 +80,7 @@ namespace Untech.SharePoint.Common.Data.Translators
 			{
 				return VisitMethodCall((MethodCallExpression)node);
 			}
-			throw InvalidChain(node);
+			throw Error.SubqueryNotSupported(node);
 		}
 
 		protected override Expression VisitMethodCall(MethodCallExpression node)
@@ -96,10 +97,6 @@ namespace Untech.SharePoint.Common.Data.Translators
 			return node;
 		}
 
-		private static Exception InvalidChain(Expression node)
-		{
-			throw new NotSupportedException(string.Format("Expression: '{0}' is not supported", node));
-		}
 
 		#region [Nested Classes]
 
@@ -138,7 +135,7 @@ namespace Untech.SharePoint.Common.Data.Translators
 				{
 					return GetRuleAndUpdateContext((MethodCallExpression)node);
 				}
-				throw InvalidChain(node);
+				throw Error.SubqueryNotSupported(node);
 			}
 
 			protected ICallCombineRule GetRuleAndUpdateContext(MethodCallExpression node)
@@ -150,7 +147,7 @@ namespace Untech.SharePoint.Common.Data.Translators
 
 				if (!CombineRules.ContainsKey(node.Method))
 				{
-					throw InvalidChain(node);
+					throw Error.SubqueryNotSupported(node);
 				}
 
 				var currentRule = CombineRules[node.Method];

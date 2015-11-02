@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Linq.Expressions;
 using Untech.SharePoint.Common.Data.Translators;
+using Untech.SharePoint.Common.Extensions;
 using Untech.SharePoint.Common.Utils;
 
 namespace Untech.SharePoint.Common.Data
@@ -18,7 +19,7 @@ namespace Untech.SharePoint.Common.Data
 			Guard.CheckNotNull("expression", expression);
 
 			Type element;
-			if (!TypeSystem.IsIEnumerable(expression.Type, out element))
+			if (!expression.Type.IsIEnumerable(out element))
 			{
 				throw new ArgumentException("Invalid expression type", "expression");
 			}
@@ -49,7 +50,7 @@ namespace Untech.SharePoint.Common.Data
 		private Func<T> RewriteAndCompile<T>(Expression expression)
 		{
 			Guard.CheckNotNull("expression", expression);
-			Guard.CheckTypeIsAssignableTo<T>("expression.Type", expression.Type);
+			Guard.CheckIsTypeAssignableTo<T>("expression.Type", expression.Type);
 
 			return Compile<T>(Rewrite(expression));
 		}

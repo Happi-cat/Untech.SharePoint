@@ -1,9 +1,14 @@
 using System;
 using System.Collections.Generic;
+using JetBrains.Annotations;
+using Untech.SharePoint.Common.Utils;
 
 namespace Untech.SharePoint.Common.Data.QueryModels
 {
-	public class ComparisonModel : WhereModel
+	/// <summary>
+	/// Represents CAML comparison tags, like Eq, Neq and etc.
+	/// </summary>
+	public sealed class ComparisonModel : WhereModel
 	{
 		private static readonly Dictionary<ComparisonOperator, ComparisonOperator> NegateMap = new Dictionary
 			<ComparisonOperator, ComparisonOperator>
@@ -18,19 +23,51 @@ namespace Untech.SharePoint.Common.Data.QueryModels
 			{ComparisonOperator.IsNull, ComparisonOperator.IsNotNull}
 		};
 
-		public ComparisonModel(ComparisonOperator comparisonOperator, FieldRefModel field, object value)
+		/// <summary>
+		/// Initializes a new instance of the <see cref="ComparisonModel"/>
+		/// </summary>
+		/// <param name="comparisonOperator">Comparison operator.</param>
+		/// <param name="field">Comparable FieldRef model.</param>
+		/// <param name="value">Value that is expected. Can be null.</param>
+		/// <exception cref="ArgumentNullException"><paramref name="field"/> is null.</exception>
+		public ComparisonModel(ComparisonOperator comparisonOperator, [NotNull]FieldRefModel field, [CanBeNull]object value)
+			: base (WhereType.Comparison)
 		{
+			Guard.CheckNotNull("field", field);
+			
 			ComparisonOperator = comparisonOperator;
 			Field = field;
 			Value = value;
 		}
 
-		public ComparisonOperator ComparisonOperator { get; set; }
+		/// <summary>
+		/// Gets the operator type of CAML comparison operation.
+		/// </summary>
+		public ComparisonOperator ComparisonOperator { get; private set; }
 
-		public FieldRefModel Field { get; set; }
+		/// <summary>
+		/// Gets comparable FieldRef.
+		/// </summary>
+		[NotNull]
+		public FieldRefModel Field { get; private set; }
 
-		public object Value { get; set; }
+		/// <summary>
+		/// Determines whether <see cref="Value"/> is already converted to CAML string.
+		/// </summary>
+		public bool IsValueConverted { get; set; }
 
+		/// <summary>
+		/// Gets comparable value.
+		/// </summary>
+		[CanBeNull]
+		public object Value { get; private set; }
+
+		/// <summary>
+		/// Returns inverted comparison.
+		/// </summary>
+		/// <returns>Inverted comparison.</returns>
+		/// <exception cref="NotSupportedException">Cannot invert current comparison.</exception>
+		[NotNull]
 		public override WhereModel Negate()
 		{
 			if (NegateMap.ContainsKey(ComparisonOperator))
@@ -40,6 +77,10 @@ namespace Untech.SharePoint.Common.Data.QueryModels
 			throw new NotSupportedException();
 		}
 
+		/// <summary>
+		/// Returns a <see cref="String"/> which represents the object instance.
+		/// </summary>
+		/// <returns>CAML-like string.</returns>
 		public override string ToString()
 		{
 			var valueString = "";

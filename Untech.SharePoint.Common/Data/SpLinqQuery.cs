@@ -12,7 +12,7 @@ namespace Untech.SharePoint.Common.Data
 		public SpLinqQuery(Expression expression)
 		{
 			Guard.CheckNotNull("expression", expression);
-			Guard.CheckTypeIsAssignableTo<IQueryable<T>>("expression", expression.Type);
+			Guard.CheckIsTypeAssignableTo<IQueryable<T>>("expression", expression.Type);
 
 			Expression = expression;
 		}

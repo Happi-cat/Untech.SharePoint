@@ -1,6 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Untech.SharePoint.Common.Configuration;
-using Untech.SharePoint.Common.Test.Mappings.Annotation.Models;
+using Untech.SharePoint.Common.Test.Mappings.Annotation;
 
 namespace Untech.SharePoint.Common.Test.Configuration
 {
@@ -17,10 +17,10 @@ namespace Untech.SharePoint.Common.Test.Configuration
 		public void CanRegisterMappings()
 		{
 			var config = new ConfigBuilder()
-				.RegisterMappings(n => n.Annotated<AnnotatedContext>())
+				.RegisterMappings(n => n.Annotated<AnnotatedContextMappingTest.Ctx>())
 				.BuildConfig();
 
-			Assert.IsNotNull(config.Mappings.Resolve(typeof(AnnotatedContext)));
+			Assert.IsNotNull(config.Mappings.Resolve(typeof(AnnotatedContextMappingTest.Ctx)));
 		}
 
 		[TestMethod]
@@ -48,12 +48,12 @@ namespace Untech.SharePoint.Common.Test.Configuration
 		public void CanChainCalls()
 		{
 			var config = new ConfigBuilder()
-				.RegisterMappings(n => n.Annotated<AnnotatedContext>())
+				.RegisterMappings(n => n.Annotated<AnnotatedContextMappingTest.Ctx>())
 				.RegisterConverters(n => n.AddFromAssembly(typeof(ConfigBuilderTest).Assembly))
 				.RegisterConverters(n => n.Add<BuiltInFieldConverter>())
 				.BuildConfig();
 
-			Assert.IsNotNull(config.Mappings.Resolve(typeof (AnnotatedContext)));
+			Assert.IsNotNull(config.Mappings.Resolve(typeof (AnnotatedContextMappingTest.Ctx)));
 			Assert.IsNotNull(config.FieldConverters.Resolve("BUILT_IN_TEST_CONVERTER"));
 			Assert.IsNotNull(config.FieldConverters.Resolve(typeof(BuiltInFieldConverter)));
 		}

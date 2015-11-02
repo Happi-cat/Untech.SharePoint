@@ -2,28 +2,15 @@
 
 namespace Untech.SharePoint.Common.MetaModels.Visitors
 {
+	/// <summary>
+	/// Represents base meta models visitor.
+	/// </summary>
 	public abstract class BaseMetaModelVisitor : IMetaModelVisitor
 	{
-		public virtual void VisitContext(MetaContext context)
-		{
-			VisitCollection(context.Lists);
-		}
-
-		public virtual void VisitList(MetaList list)
-		{
-			VisitCollection(list.ContentTypes);
-		}
-
-		public virtual void VisitContentType(MetaContentType contentType)
-		{
-			VisitCollection(contentType.Fields);
-		}
-
-		public virtual void VisitField(MetaField field)
-		{
-			
-		}
-
+		/// <summary>
+		/// Visit <see cref="IMetaModel"/>
+		/// </summary>
+		/// <param name="model">Model to visit.</param>
 		public virtual void Visit(IMetaModel model)
 		{
 			if (model != null)
@@ -32,6 +19,49 @@ namespace Untech.SharePoint.Common.MetaModels.Visitors
 			}
 		}
 
+		/// <summary>
+		/// Visit <see cref="MetaContext"/>
+		/// </summary>
+		/// <param name="context">Context to visit.</param>
+		public virtual void VisitContext(MetaContext context)
+		{
+			if (context == null) return;
+			VisitCollection(context.Lists);
+		}
+
+		/// <summary>
+		/// Visit <see cref="MetaList"/>
+		/// </summary>
+		/// <param name="list">List to visit.</param>
+		public virtual void VisitList(MetaList list)
+		{
+			if (list == null) return;
+			VisitCollection(list.ContentTypes);
+		}
+
+		/// <summary>
+		/// Visit <see cref="MetaContentType"/>
+		/// </summary>
+		/// <param name="contentType">ContentType to visit.</param>
+		public virtual void VisitContentType(MetaContentType contentType)
+		{
+			if (contentType == null) return;
+			VisitCollection(contentType.Fields);
+		}
+
+		/// <summary>
+		/// Visit <see cref="MetaField"/>
+		/// </summary>
+		/// <param name="field">Field to visit.</param>
+		public virtual void VisitField(MetaField field)
+		{
+			
+		}
+
+		/// <summary>
+		/// Visit each <see cref="IMetaModel"/> in the specified collection.
+		/// </summary>
+		/// <param name="models">Collection of <see cref="IMetaModel"/></param>
 		protected void VisitCollection(IEnumerable<IMetaModel> models)
 		{
 			foreach (var model in models)

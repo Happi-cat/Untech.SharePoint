@@ -2,27 +2,54 @@
 
 namespace Untech.SharePoint.Common.MetaModels.Visitors
 {
-	public class FieldConverterCreator : BaseMetaModelVisitor
+	/// <summary>
+	/// Represents class that will instantiate <see cref="MetaField.Converter"/> for all <see cref="MetaField"/>.
+	/// </summary>
+	public sealed class FieldConverterCreator : BaseMetaModelVisitor
 	{
+		/// <summary>
+		/// Initializes a new instance of the <see cref="FieldConverterCreator"/> class with specified resolver.
+		/// </summary>
+		/// <param name="resolver">Field converter resolver.</param>
 		public FieldConverterCreator(IFieldConverterResolver resolver)
 		{
 			Resolver = resolver;
 		}
 
-		protected IFieldConverterResolver Resolver { get; private set; }
+		private IFieldConverterResolver Resolver { get; set; }
 
+		/// <summary>
+		/// Visit <see cref="MetaField"/>
+		/// </summary>
+		/// <param name="field">Field to visit.</param>
 		public override void VisitField(MetaField field)
 		{
-			SetConverter(field,
-				field.CustomConverterType != null
-					? Resolver.Resolve(field.CustomConverterType)
-					: Resolver.Resolve(field.TypeAsString));
+			IFieldConverter converter;
+			if (field.CustomConverterType != null)
+			{
+				if (!Resolver.CanResolve(field.CustomConverterType))
+				{
+					throw new FieldConverterException("Cannot find converter in Config");
+				}
+				converter = Resolver.Resolve(field.CustomConverterType);
+			}
+			else
+			{
+				if (!Resolver.CanResolve(field.TypeAsString))
+				{
+					throw new FieldConverterException("Cannot find converter in Config");
+				}
+				converter = Resolver.Resolve(field.TypeAsString);
+			}
+
+			InitializeConverter(field, converter);
 		}
 
-		private void SetConverter(MetaField field, IFieldConverter converter)
+		private void InitializeConverter(MetaField field, IFieldConverter converter)
 		{
 			converter.Initialize(field);
 
+			field.Converter = converter;
 		}
 	}
 }

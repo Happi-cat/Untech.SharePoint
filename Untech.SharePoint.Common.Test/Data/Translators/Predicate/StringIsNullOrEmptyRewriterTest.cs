@@ -10,7 +10,7 @@ namespace Untech.SharePoint.Common.Test.Data.Translators.Predicate
 		[TestMethod]
 		public void CanRewrite()
 		{
-			Test(n => string.IsNullOrEmpty(n.String1), n => n.String1 == null || n.String1 == "");
+			Given(n => string.IsNullOrEmpty(n.String1)).Expected(n => n.String1 == null || n.String1 == "");
 		}
 
 		protected override ExpressionVisitor Visitor

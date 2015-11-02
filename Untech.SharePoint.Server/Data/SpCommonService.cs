@@ -26,7 +26,7 @@ namespace Untech.SharePoint.Server.Data
 				return new List<IMetaModelVisitor>
 				{
 					new RuntimeInfoLoader(Web),
-					new FieldConverterInitializer(Config.FieldConverters),
+					new FieldConverterCreator(Config.FieldConverters),
 					new MapperInitializer()
 				};
 			}

@@ -1,13 +1,24 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using JetBrains.Annotations;
+using Untech.SharePoint.Common.Utils;
 
 namespace Untech.SharePoint.Common.MetaModels.Collections
 {
+	/// <summary>
+	/// Represents collection of <see cref="MetaList"/> with fast access by <see cref="MetaList.Title"/>.
+	/// </summary>
 	public sealed class MetaListCollection : ReadOnlyDictionary<string, MetaList>, IReadOnlyCollection<MetaList>
 	{
-		public MetaListCollection(IEnumerable<MetaList> enumerable)
-			: base(CreateDictionary(enumerable))
+		/// <summary>
+		/// Initialize a new instance of <see cref="MetaListCollection"/> class around <paramref name="source"/>.
+		/// </summary>
+		/// <param name="source">Collection of <see cref="MetaList"/>.</param>
+		/// <exception cref="ArgumentNullException"><paramref name="source"/> is null.</exception>
+		public MetaListCollection([NotNull]IEnumerable<MetaList> source)
+			: base(CreateDictionary(source))
 		{
 		}
 
@@ -16,9 +27,12 @@ namespace Untech.SharePoint.Common.MetaModels.Collections
 			return Values.GetEnumerator();
 		}
 
-		private static IDictionary<string, MetaList> CreateDictionary(IEnumerable<MetaList> enumerable)
+		[NotNull]
+		private static IDictionary<string, MetaList> CreateDictionary([NotNull]IEnumerable<MetaList> source)
 		{
-			return enumerable.ToDictionary(n => n.Title);
+			Guard.CheckNotNull("source", source);
+
+			return source.ToDictionary(n => n.Title);
 		}
 	}
 }

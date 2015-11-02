@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Linq.Expressions;
@@ -10,6 +11,8 @@ namespace Untech.SharePoint.Common.Data
 	[SuppressMessage("ReSharper", "InvokeAsExtensionMethod")]
 	internal class MethodUtils
 	{
+		public static readonly MethodInfo ListContains = GetMethodInfo(() => new List<int>().Contains(0));
+
 		#region [String Methods Infos]
 
 		public static readonly MethodInfo StrContains = GetMethodInfo(() => string.Empty.Contains(default(string)));

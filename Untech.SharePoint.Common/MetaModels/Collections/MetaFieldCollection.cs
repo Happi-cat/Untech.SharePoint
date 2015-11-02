@@ -1,13 +1,24 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using JetBrains.Annotations;
+using Untech.SharePoint.Common.Utils;
 
 namespace Untech.SharePoint.Common.MetaModels.Collections
 {
+	/// <summary>
+	/// Represents collection of <see cref="MetaField"/> with fast access by <see cref="MetaField.MemberName"/>.
+	/// </summary>
 	public sealed class MetaFieldCollection : ReadOnlyDictionary<string, MetaField>, IReadOnlyCollection<MetaField>
 	{
-		public MetaFieldCollection(IEnumerable<MetaField> enumerable)
-			: base(CreateDictionary(enumerable))
+		/// <summary>
+		/// Initialize a new instance of <see cref="MetaFieldCollection"/> class around <paramref name="source"/>.
+		/// </summary>
+		/// <param name="source">Collection of <see cref="MetaField"/>.</param>
+		/// <exception cref="ArgumentNullException"><paramref name="source"/> is null.</exception>
+		public MetaFieldCollection([NotNull]IEnumerable<MetaField> source)
+			: base(CreateDictionary(source))
 		{
 		}
 
@@ -16,9 +27,12 @@ namespace Untech.SharePoint.Common.MetaModels.Collections
 			return Values.GetEnumerator();
 		}
 
-		private static IDictionary<string, MetaField> CreateDictionary(IEnumerable<MetaField> enumerable)
+		[NotNull]
+		private static IDictionary<string, MetaField> CreateDictionary([NotNull]IEnumerable<MetaField> source)
 		{
-			return enumerable.ToDictionary(n => n.MemberName);
+			Guard.CheckNotNull("source", source);
+
+			return source.ToDictionary(n => n.MemberName);
 		}
 	}
 }

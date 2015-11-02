@@ -1,46 +1,55 @@
-﻿using System.Linq.Expressions;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Linq.Expressions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Untech.SharePoint.Common.Data.Translators.Predicate;
 
 namespace Untech.SharePoint.Common.Test.Data.Translators.Predicate
 {
 	[TestClass]
+	[SuppressMessage("ReSharper", "RedundantLogicalConditionalExpressionOperand")]
 	public class PushNotDownVisitorTest : BaseExpressionVisitorTest
 	{
 		[TestMethod]
 		public void CanRemainSame()
 		{
-			Test(obj => obj.Bool1, obj => obj.Bool1);
-			Test(obj => obj.Bool1 && obj.Bool2, obj => obj.Bool1 && obj.Bool2);
-			Test(obj => obj.Bool1 && obj.Int1 > 1, obj => obj.Bool1 && obj.Int1 > 1);
+			Given(obj => obj.Bool1).Expected(obj => obj.Bool1);
+
+			Given(obj => obj.Bool1 && obj.Bool2).Expected(obj => obj.Bool1 && obj.Bool2);
+
+			Given(obj => obj.Bool1 && obj.Int1 > 1).Expected(obj => obj.Bool1 && obj.Int1 > 1);
 		}
 
 		[TestMethod]
-		public void CanNegateOneNot()
+		public void CanPushOneNot()
 		{
-			Test(obj => !obj.Bool1, obj => !obj.Bool1);
-			Test(obj => !(obj.Bool1 && obj.Bool2), obj => !obj.Bool1 || !obj.Bool2);
-			Test(obj => !(obj.Bool1 && obj.Int1 > 1), obj => !obj.Bool1 || obj.Int1 <= 1);
+			Given(obj => !obj.Bool1).Expected(obj => !obj.Bool1); 
+
+			Given(obj => !(obj.Bool1 && obj.Bool2)).Expected(obj => !obj.Bool1 || !obj.Bool2);
+
+			Given(obj => !(obj.Bool1 && obj.Int1 > 1)).Expected(obj => !obj.Bool1 || obj.Int1 <= 1);
 		}
 
 
 		[TestMethod]
-		public void CanNegateMultipleNot()
+		public void CanPushMultipleNot()
 		{
-			Test(obj => !(obj.Bool1 && !obj.Bool2), obj => !obj.Bool1 || obj.Bool2);
-			Test(obj => !(obj.Bool1 && !(obj.Int1 > 1)), obj => !obj.Bool1 || obj.Int1 > 1);
+			Given(obj => !(obj.Bool1 && !obj.Bool2)).Expected(obj => !obj.Bool1 || obj.Bool2);
+
+			Given(obj => !(obj.Bool1 && !(obj.Int1 > 1))).Expected(obj => !obj.Bool1 || obj.Int1 > 1);
 		}
 
 		[TestMethod]
-		public void CanNegateWithCustomConditions()
+		public void CanPushNotWithCall()
 		{
-			Test(obj => !(obj.Bool1 && obj.String1.Contains("TEST")), obj => !obj.Bool1 || !obj.String1.Contains("TEST"));
+			Given(obj => !(obj.Bool1 && obj.String1.Contains("TEST")))
+				.Expected(obj => !obj.Bool1 || !obj.String1.Contains("TEST"));
 		}
 
 		[TestMethod]
-		public void CanNegateBoolConsts()
+		public void CanPushNotWithBoolConst()
 		{
-			Test(obj => !(obj.Bool1 && true), obj => !obj.Bool1 || false);
+			Given(obj => !(obj.Bool1 && true))
+				.Expected(obj => !obj.Bool1 || false);
 		}
 
 		protected override ExpressionVisitor Visitor
