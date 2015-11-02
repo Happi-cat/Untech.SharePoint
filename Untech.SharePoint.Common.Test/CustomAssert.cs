@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Untech.SharePoint.Common.Test.Data.Translators;
 
 namespace Untech.SharePoint.Common.Test
 {
@@ -23,7 +22,7 @@ namespace Untech.SharePoint.Common.Test
 			Assert.Fail("Exception '{0}' wasn't thrown.", typeof(TException));
 		}
 
-		public static void AreEqualAfterVisit(IEnumerable<ExpressionVisitor> visitors, Expression<Func<VisitorsTestClass, bool>> original, Expression<Func<VisitorsTestClass, bool>> expected)
+		public static void AreEqualAfterVisit<T>(IEnumerable<ExpressionVisitor> visitors, Expression<Func<T, bool>> original, Expression<Func<T, bool>> expected)
 		{
 			var processed = visitors.Aggregate((Expression)original, (expr, visitor) => visitor.Visit(expr));
 			

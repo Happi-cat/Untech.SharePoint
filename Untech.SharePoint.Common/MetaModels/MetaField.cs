@@ -79,11 +79,13 @@ namespace Untech.SharePoint.Common.MetaModels
 		/// <summary>
 		/// Gets or sets List Title if the current field is a Lookup.
 		/// </summary>
+		[CanBeNull]
 		public string LookupList { get; set; }
 
 		/// <summary>
 		/// Gets or sets List Field InternalName if the current field is a Lookup.
 		/// </summary>
+		[CanBeNull]
 		public string LookupField { get; set; }
 
 		/// <summary>
@@ -94,6 +96,7 @@ namespace Untech.SharePoint.Common.MetaModels
 		/// <summary>
 		/// Gets or sets converter type if custom field conversion is required.
 		/// </summary>
+		[CanBeNull]
 		public Type CustomConverterType { get; set; }
 
 		/// <summary>

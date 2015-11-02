@@ -19,13 +19,29 @@ namespace Untech.SharePoint.Common.Data.QueryModels
 		{
 			Guard.CheckNotNull("member", member);
 
+			Type = FieldRefType.KnownMember;
 			Member = member;
 		}
+
+		private FieldRefModel()
+		{
+
+		}
+
+		public static FieldRefModel Key()
+		{
+			return new FieldRefModel
+			{
+				Type = FieldRefType.Key
+			};
+		}
+
+		public FieldRefType Type { get; private set; }
 
 		/// <summary>
 		/// Gets <see cref="MemberInfo"/> that associated with current FieldRef.
 		/// </summary>
-		[NotNull]
+		[CanBeNull]
 		public MemberInfo Member { get; private set; }
 
 		/// <summary>
@@ -34,7 +50,11 @@ namespace Untech.SharePoint.Common.Data.QueryModels
 		/// <returns>CAML-like string.</returns>
 		public override string ToString()
 		{
-			return string.Format("<FieldRef Name='{0}' />", Member.Name);
+			if (Type == FieldRefType.Key)
+			{
+				return "<FieldRef Name='ID' />";
+			}
+			return Member != null ? string.Format("<FieldRef Name='{0}' />", Member.Name) : "<FieldRef Name='' />";
 		}
 	}
 }

@@ -11,7 +11,8 @@ namespace Untech.SharePoint.Common.Test.Data.Translators.Predicate
 		[TestMethod]
 		public void CanEvaluateCall()
 		{
-			Test(n => n.String1 == GetSomeExternalString(), n=> n.String1 == "TEST");
+			Given(n => n.String1 == GetSomeExternalString())
+				.Expected(n => n.String1 == "TEST");
 		}
 
 		[TestMethod]
@@ -20,7 +21,9 @@ namespace Untech.SharePoint.Common.Test.Data.Translators.Predicate
 		{
 			var a = true;
 			var b = false;
-			Test(n => n.Bool1 == (a || b), n => n.Bool1 == true);
+
+			Given(n => n.Bool1 == (a || b))
+				.Expected(n => n.Bool1 == true);
 		}
 
 		private string GetSomeExternalString()

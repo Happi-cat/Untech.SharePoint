@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Xml.Linq;
@@ -65,7 +66,12 @@ namespace Untech.SharePoint.Common.Data.Translators
 			}
 
 			var comparison = @where as ComparisonModel;
-			return comparison != null ? GetComparison(comparison) : null;
+			if (comparison != null)
+			{
+				return GetComparison(comparison);
+			}
+
+			throw new NotSupportedException(string.Format("'{0}' is not supported", @where));
 		}
 
 		protected XElement GetOrderBys(IEnumerable<OrderByModel> orderBys, bool isOrderReversed)
@@ -81,6 +87,14 @@ namespace Untech.SharePoint.Common.Data.Translators
 				return isOrderReversed
 					? new XElement(Tags.OrderBy, models.Select(n => n.Reverse()).Select(GetOrderBy))
 					: new XElement(Tags.OrderBy, models.Select(GetOrderBy));
+			}
+			if (isOrderReversed)
+			{
+				var key = ContentType.List.IsExternal ? Fields.BdcIdentity : Fields.Id;
+				return new XElement(Tags.OrderBy,
+					new XElement(Tags.FieldRef,
+						new XAttribute(Tags.Name, key),
+						new XAttribute(Tags.Ascending, false)));
 			}
 
 			return null;
@@ -111,7 +125,7 @@ namespace Untech.SharePoint.Common.Data.Translators
 		}
 		protected XElement GetLogicalJoin(LogicalJoinModel logicalJoin)
 		{
-			return new XElement(logicalJoin.LogicalOperator.ToString(), 
+			return new XElement(logicalJoin.LogicalOperator.ToString(),
 				GetWhere(logicalJoin.First),
 				GetWhere(logicalJoin.Second));
 		}
@@ -119,27 +133,38 @@ namespace Untech.SharePoint.Common.Data.Translators
 		protected XElement GetComparison(ComparisonModel comparison)
 		{
 			if (comparison.ComparisonOperator == ComparisonOperator.IsNull ||
-			    comparison.ComparisonOperator == ComparisonOperator.IsNotNull)
+				comparison.ComparisonOperator == ComparisonOperator.IsNotNull)
 			{
-				return new XElement(comparison.ComparisonOperator.ToString(), 
+				return new XElement(comparison.ComparisonOperator.ToString(),
 					new XElement(Tags.FieldRef, GetFieldRefName(comparison.Field)));
 			}
 
 			return new XElement(comparison.ComparisonOperator.ToString(),
 				new XElement(Tags.FieldRef, GetFieldRefName(comparison.Field)),
-				GetValue(comparison.Field, comparison.Value));
+				GetValue(comparison.Field, comparison.Value, comparison.IsValueConverted));
 		}
 
 		protected XAttribute GetFieldRefName(FieldRefModel fieldRef)
 		{
+			if (fieldRef.Type == FieldRefType.Key)
+			{
+				var key = ContentType.List.IsExternal ? Fields.BdcIdentity : Fields.Id;
+				
+				return new XAttribute(Tags.Name, key);
+			}
 			return new XAttribute(Tags.Name, GetMetaField(fieldRef.Member).InternalName);
 		}
 
-		protected XElement GetValue(FieldRefModel fieldRef, object value)
+		protected XElement GetValue(FieldRefModel fieldRef, object value, bool alreadyConverted = false)
 		{
+			if (fieldRef.Type != FieldRefType.KnownMember)
+			{
+				throw new NotSupportedException();
+			}
+
 			return new XElement(Tags.Value,
 				new XAttribute(Tags.Type, GetMetaField(fieldRef.Member).TypeAsString),
-				GetConverter(fieldRef.Member).ToCamlValue(value));
+				alreadyConverted ? value : GetConverter(fieldRef.Member).ToCamlValue(value));
 		}
 
 		private XElement AppendContentTypeFilter(XElement xWhere)
@@ -150,7 +175,7 @@ namespace Untech.SharePoint.Common.Data.Translators
 			}
 
 			var xContentType = new XElement(Tags.BeginsWith,
-					new XElement(Tags.FieldRef, new XAttribute(Tags.Name, "ContentTypeId")),
+					new XElement(Tags.FieldRef, new XAttribute(Tags.Name, Fields.ContentTypeId)),
 					new XElement(Tags.Value, ContentType.Id));
 
 			if (xWhere != null)

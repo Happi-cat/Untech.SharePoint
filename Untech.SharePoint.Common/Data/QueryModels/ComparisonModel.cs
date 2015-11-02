@@ -51,6 +51,11 @@ namespace Untech.SharePoint.Common.Data.QueryModels
 		public FieldRefModel Field { get; private set; }
 
 		/// <summary>
+		/// Determines whether <see cref="Value"/> is already converted to CAML string.
+		/// </summary>
+		public bool IsValueConverted { get; set; }
+
+		/// <summary>
 		/// Gets comparable value.
 		/// </summary>
 		[CanBeNull]

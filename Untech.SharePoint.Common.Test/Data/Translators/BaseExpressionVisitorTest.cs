@@ -1,26 +1,68 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using Untech.SharePoint.Common.Data.Translators.Predicate;
 
 namespace Untech.SharePoint.Common.Test.Data.Translators
 {
-	public abstract class BaseExpressionVisitorTest
+	public abstract class BaseExpressionVisitorTest : BaseExpressionTest
 	{
-		protected abstract ExpressionVisitor Visitor { get; }
-
-		protected virtual void Test(Expression<Func<VisitorsTestClass, bool>> original,
-			Expression<Func<VisitorsTestClass, bool>> expected)
+		public class TestScenario
 		{
-			var visitors = new[] {Visitor};
+			private readonly BaseExpressionVisitorTest _parent;
+			private readonly Expression<Func<Entity, bool>> _given;
+			private readonly List<ExpressionVisitor> _preVisitors;
+			private readonly List<ExpressionVisitor> _postVisitors;
 
-			CustomAssert.AreEqualAfterVisit(visitors, original, expected);
+			public TestScenario(BaseExpressionVisitorTest parent, Expression<Func<Entity, bool>> given)
+			{
+				_parent = parent;
+				_given = given;
+				_preVisitors = new List<ExpressionVisitor>();
+				_postVisitors = new List<ExpressionVisitor>();
+			}
+
+			public TestScenario PreEvaluate()
+			{
+				return PreVisit(new Evaluator());
+			}
+
+			public TestScenario PreVisit(ExpressionVisitor visitor)
+			{
+				_preVisitors.Add(visitor);
+
+				return this;
+			}
+
+			public TestScenario PostEvaluate()
+			{
+				return PostVisit(new Evaluator());
+			}
+
+
+			public TestScenario PostVisit(ExpressionVisitor visitor)
+			{
+				_postVisitors.Add(visitor);
+
+				return this;
+			}
+
+			public void Expected(Expression<Func<Entity, bool>> expected)
+			{
+				var visitors = _preVisitors
+					.Concat(new[] { _parent.Visitor })
+					.Concat(_postVisitors);
+
+				CustomAssert.AreEqualAfterVisit(visitors, _given, expected);
+			}
 		}
 
-		protected virtual void TestWitEvaluator(Expression<Func<VisitorsTestClass, bool>> original, Expression<Func<VisitorsTestClass, bool>> expected)
-		{
-			var visitors = new[] { new Evaluator(),  Visitor };
+		protected abstract ExpressionVisitor Visitor { get; }
 
-			CustomAssert.AreEqualAfterVisit(visitors, original, expected);
+		protected TestScenario Given(Expression<Func<Entity, bool>> given)
+		{
+			return new TestScenario(this, given);
 		}
 	}
 }

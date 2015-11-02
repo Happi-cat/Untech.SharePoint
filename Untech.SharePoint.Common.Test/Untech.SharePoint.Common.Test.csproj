@@ -64,6 +64,7 @@
     <Compile Include="Converters\Custom\EnumFieldConverterTest.cs" />
     <Compile Include="Converters\Custom\JsonFieldConverterTest.cs" />
     <Compile Include="Converters\Custom\XmlFieldConverterTest.cs" />
+    <Compile Include="Data\Translators\BaseExpressionTest.cs" />
     <Compile Include="Data\Translators\BaseExpressionVisitorTest.cs" />
     <Compile Include="Data\Translators\Predicate\CamlPredicateProcessorTest.cs" />
     <Compile Include="Data\Translators\Predicate\PushNotDownVisitorTest.cs" />
@@ -73,9 +74,8 @@
     <Compile Include="Data\Translators\Predicate\InRewriterTest.cs" />
     <Compile Include="Data\Translators\Predicate\SwapComparisonVisitorTest.cs" />
     <Compile Include="Data\Translators\FakeQueryable.cs" />
-    <Compile Include="Data\Translators\CamlQueryPredicateProcessorTest.cs" />
-    <Compile Include="Data\Translators\VisitorsTestClass.cs" />
     <Compile Include="Data\Translators\CamlQueryTreeProcessorTest.cs" />
+    <Compile Include="Data\Translators\Predicate\XorRewriterTest.cs" />
     <Compile Include="Mappings\Annotation\AnnotatedContentTypeMappingTest.cs" />
     <Compile Include="Mappings\Annotation\AnnotatedFieldPartTest.cs" />
     <Compile Include="CustomAssert.cs" />

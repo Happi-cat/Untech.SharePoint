@@ -64,6 +64,7 @@
     <Compile Include="Converters\Custom\EnumFieldConverter.cs" />
     <Compile Include="Converters\Custom\JsonFieldConverter.cs" />
     <Compile Include="Converters\Custom\XmlFieldConverter.cs" />
+    <Compile Include="Data\CamFunctions.cs" />
     <Compile Include="Data\DataMappingException.cs" />
     <Compile Include="Data\FieldRefModelComparer.cs" />
     <Compile Include="Data\GenericMethodDefinitionComparer.cs" />
@@ -74,6 +75,7 @@
     <Compile Include="Data\Mapper\StoreAccessor.cs" />
     <Compile Include="Data\Mapper\TypeMapper.cs" />
     <Compile Include="Data\MemberInfoComparer.cs" />
+    <Compile Include="Data\QueryModels\FieldRefType.cs" />
     <Compile Include="Data\SpLinqQuery.cs" />
     <Compile Include="Data\SpLinqQueryProvider.cs" />
     <Compile Include="Data\Translators\CamlQueryTreeProcessor.cs" />
@@ -101,6 +103,7 @@
     <Compile Include="Data\SpQueryable.cs" />
     <Compile Include="Data\Translators\Predicate\SwapComparisonVisitor.cs" />
     <Compile Include="Data\Translators\CamlQueryTranslator.cs" />
+    <Compile Include="Data\Translators\Predicate\XorRewriter.cs" />
     <Compile Include="Data\Translators\Tags.cs" />
     <Compile Include="Diagnostics\ILoggingInterceptor.cs" />
     <Compile Include="Diagnostics\LogLevel.cs" />

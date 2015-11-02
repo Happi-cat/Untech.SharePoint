@@ -31,6 +31,7 @@ namespace Untech.SharePoint.Common.Data.Translators.Predicate
 			{
 				new Evaluator(),
 				new StringIsNullOrEmptyRewriter(),
+				new XorRewriter(),
 				new PushNotDownVisitor(),
 				new InRewriter(),
 				new RedundantConditionRemover(),
@@ -78,11 +79,26 @@ namespace Untech.SharePoint.Common.Data.Translators.Predicate
 					return TranslateTrueProperty((MemberExpression) node);
 				case ExpressionType.Not:
 					return TranslateFalseProperty((UnaryExpression) node);
+				case ExpressionType.Constant:
+					return TranslateConstBoolean((ConstantExpression) node);
 			}
 			throw Error.SubqueryNotSupported(node);
 		}
 
 		#region [Private Methods]
+
+		private WhereModel TranslateConstBoolean(ConstantExpression constNode)
+		{
+			if (constNode.Type != typeof (bool))
+			{
+				throw Error.SubqueryNotSupported(constNode);
+			}
+
+			var value = (bool) constNode.Value;
+			var tag = value ? ComparisonOperator.IsNotNull : ComparisonOperator.IsNull;
+
+			return new ComparisonModel(tag, FieldRefModel.Key(), null);
+		}
 
 		private WhereModel TranslateTrueProperty(MemberExpression memberNode)
 		{

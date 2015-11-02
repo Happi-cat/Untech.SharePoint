@@ -10,13 +10,13 @@ namespace Untech.SharePoint.Common.Test.Data.Translators.Predicate
 	{
 		[TestMethod]
 		[SuppressMessage("ReSharper", "RedundantLogicalConditionalExpressionOperand")]
-		public void CanRemove()
+		public void CanOptimize()
 		{
-			Test(n => n.Bool1 || (n.Bool2 && true), n => n.Bool1 || n.Bool2);
-			Test(n => n.Bool1 || (n.Bool2 && false), n => n.Bool1);
+			Given(n => n.Bool1 || (n.Bool2 && true)).Expected(n => n.Bool1 || n.Bool2);
+			Given(n => n.Bool1 || (n.Bool2 && false)).Expected(n => n.Bool1);
 
-			Test(n => n.Bool1 && (n.Bool2 || true), n => n.Bool1);
-			Test(n => n.Bool1 && (n.Bool2 || false), n => n.Bool1 && n.Bool2);
+			Given(n => n.Bool1 && (n.Bool2 || true)).Expected(n => n.Bool1);
+			Given(n => n.Bool1 && (n.Bool2 || false)).Expected(n => n.Bool1 && n.Bool2);
 		}
 
 		protected override ExpressionVisitor Visitor
