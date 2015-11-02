@@ -97,7 +97,7 @@ namespace Untech.SharePoint.Common.Data.Translators.Predicate
 			var value = (bool) constNode.Value;
 			var tag = value ? ComparisonOperator.IsNotNull : ComparisonOperator.IsNull;
 
-			return new ComparisonModel(tag, FieldRefModel.Key(), null);
+			return new ComparisonModel(tag, new KeyRefModel(), null);
 		}
 
 		private WhereModel TranslateTrueProperty(MemberExpression memberNode)

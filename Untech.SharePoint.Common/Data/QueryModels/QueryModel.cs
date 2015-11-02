@@ -27,7 +27,7 @@ namespace Untech.SharePoint.Common.Data.QueryModels
 		/// Gets collection of specific selectable fields.
 		/// </summary>
 		[CanBeNull]
-		public IEnumerable<FieldRefModel> SelectableFields { get; private set; }
+		public IEnumerable<MemberRefModel> SelectableFields { get; private set; }
 
 		/// <summary>
 		/// Gets collection of orderings for CAML OrderBy tag. Ordering can be direct or reversed. <seealso cref="IsOrderReversed"/>.
@@ -89,9 +89,9 @@ namespace Untech.SharePoint.Common.Data.QueryModels
 		/// Merge current CAML selectable fields with new ones.
 		/// </summary>
 		/// <param name="selectableFields">New selectable fields to merge.</param>
-		public void MergeSelectableFields([CanBeNull]IEnumerable<FieldRefModel> selectableFields)
+		public void MergeSelectableFields([CanBeNull]IEnumerable<MemberRefModel> selectableFields)
 		{
-			var newSelectableFields = new List<FieldRefModel>();
+			var newSelectableFields = new List<MemberRefModel>();
 			if (SelectableFields != null)
 			{
 				newSelectableFields.AddRange(SelectableFields);
@@ -100,7 +100,7 @@ namespace Untech.SharePoint.Common.Data.QueryModels
 			{
 				newSelectableFields.AddRange(selectableFields);
 			}
-			SelectableFields = newSelectableFields.Distinct(FieldRefModelComparer.Comparer);
+			SelectableFields = newSelectableFields.Distinct(MemberRefModelComparer.Comparer);
 		}
 
 		/// <summary>

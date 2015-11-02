@@ -66,7 +66,7 @@
     <Compile Include="Converters\Custom\XmlFieldConverter.cs" />
     <Compile Include="Data\CamFunctions.cs" />
     <Compile Include="Data\DataMappingException.cs" />
-    <Compile Include="Data\FieldRefModelComparer.cs" />
+    <Compile Include="Data\MemberRefModelComparer.cs" />
     <Compile Include="Data\GenericMethodDefinitionComparer.cs" />
     <Compile Include="Data\ICommonService.cs" />
     <Compile Include="Data\Mapper\FieldMapper.cs" />
@@ -76,6 +76,8 @@
     <Compile Include="Data\Mapper\TypeMapper.cs" />
     <Compile Include="Data\MemberInfoComparer.cs" />
     <Compile Include="Data\QueryModels\FieldRefType.cs" />
+    <Compile Include="Data\QueryModels\KeyRefModel.cs" />
+    <Compile Include="Data\QueryModels\MemberRefModel.cs" />
     <Compile Include="Data\SpLinqQuery.cs" />
     <Compile Include="Data\SpLinqQueryProvider.cs" />
     <Compile Include="Data\Translators\CamlQueryTreeProcessor.cs" />

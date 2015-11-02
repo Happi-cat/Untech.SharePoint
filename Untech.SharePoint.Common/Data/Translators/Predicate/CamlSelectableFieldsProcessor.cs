@@ -5,17 +5,17 @@ using Untech.SharePoint.Common.Extensions;
 
 namespace Untech.SharePoint.Common.Data.Translators.Predicate
 {
-	internal class CamlSelectableFieldsProcessor : ExpressionVisitor, IExpressionProcessor<IEnumerable<FieldRefModel>>
+	internal class CamlSelectableFieldsProcessor : ExpressionVisitor, IExpressionProcessor<IEnumerable<MemberRefModel>>
 	{
 
 		public CamlSelectableFieldsProcessor()
 		{
-			SelectableFields = new List<FieldRefModel>();
+			SelectableFields = new List<MemberRefModel>();
 		}
 
-		public List<FieldRefModel> SelectableFields { get; private set; }
+		public List<MemberRefModel> SelectableFields { get; private set; }
 
-		public IEnumerable<FieldRefModel> Process(Expression node)
+		public IEnumerable<MemberRefModel> Process(Expression node)
 		{
 			Visit(node);
 
@@ -26,7 +26,7 @@ namespace Untech.SharePoint.Common.Data.Translators.Predicate
 		{
 			if (node.Expression.NodeType == ExpressionType.Parameter)
 			{
-				SelectableFields.Add(new FieldRefModel(node.Member));
+				SelectableFields.Add(new MemberRefModel(node.Member));
 			}
 			if (node.Expression.NodeType.In(new[] {ExpressionType.Convert, ExpressionType.ConvertChecked}))
 			{
@@ -34,7 +34,7 @@ namespace Untech.SharePoint.Common.Data.Translators.Predicate
 
 				if (unaryNode.Operand.NodeType == ExpressionType.Parameter)
 				{
-					SelectableFields.Add(new FieldRefModel(node.Member));
+					SelectableFields.Add(new MemberRefModel(node.Member));
 				}
 			}
 			return base.VisitMember(node);

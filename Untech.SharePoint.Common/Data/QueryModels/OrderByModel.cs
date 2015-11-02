@@ -48,7 +48,17 @@ namespace Untech.SharePoint.Common.Data.QueryModels
 		/// <returns>CAML-like string.</returns>
 		public override string ToString()
 		{
-			return string.Format("<FieldRef Name='{0}' Ascending='{1}' />", FieldRef.Member.Name, Ascending.ToString().ToUpper());
+			if (FieldRef.Type == FieldRefType.Key)
+			{
+				return string.Format("<FieldRef Name='ID' Ascending='{0}' />", Ascending.ToString().ToUpper());
+			}
+			if (FieldRef.Type == FieldRefType.KnownMember)
+			{
+				var memberRef = (MemberRefModel) FieldRef;
+				return string.Format("<FieldRef Name='{0}' Ascending='{1}' />", memberRef.Member.Name,
+					Ascending.ToString().ToUpper());
+			}
+			return string.Format("<InvalidFieldRef Name='' Ascending='{0}' />", Ascending.ToString().ToUpper());
 		}
 	}
 }

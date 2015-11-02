@@ -21,7 +21,7 @@ namespace Untech.SharePoint.Common.Data.Translators.Predicate
 				}
 				if (objectNode != null && objectNode.NodeType == ExpressionType.Parameter)
 				{
-					return new FieldRefModel(memberNode.Member);
+					return new MemberRefModel(memberNode.Member);
 				}
 			}
 			throw Error.SubqueryNotSupported(node);

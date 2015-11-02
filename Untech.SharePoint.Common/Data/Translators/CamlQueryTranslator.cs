@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Xml.Linq;
+using Microsoft.SqlServer.Server;
 using Untech.SharePoint.Common.Converters;
 using Untech.SharePoint.Common.Data.QueryModels;
 using Untech.SharePoint.Common.MetaModels;
@@ -152,19 +153,27 @@ namespace Untech.SharePoint.Common.Data.Translators
 				
 				return new XAttribute(Tags.Name, key);
 			}
-			return new XAttribute(Tags.Name, GetMetaField(fieldRef.Member).InternalName);
+			if (fieldRef.Type == FieldRefType.KnownMember)
+			{
+				var memberRef = (MemberRefModel) fieldRef;
+				return new XAttribute(Tags.Name, GetMetaField(memberRef.Member).InternalName);
+			}
+
+			throw new NotSupportedException("Unkown FieldRefType value");
 		}
 
 		protected XElement GetValue(FieldRefModel fieldRef, object value, bool alreadyConverted = false)
 		{
 			if (fieldRef.Type != FieldRefType.KnownMember)
 			{
-				throw new NotSupportedException();
+				throw new NotSupportedException("Only FieldRefType.KnownMember supported by GetValue method");
 			}
 
+			var memberRef = (MemberRefModel)fieldRef;
+			
 			return new XElement(Tags.Value,
-				new XAttribute(Tags.Type, GetMetaField(fieldRef.Member).TypeAsString),
-				alreadyConverted ? value : GetConverter(fieldRef.Member).ToCamlValue(value));
+				new XAttribute(Tags.Type, GetMetaField(memberRef.Member).TypeAsString),
+				alreadyConverted ? value : GetConverter(memberRef.Member).ToCamlValue(value));
 		}
 
 		private XElement AppendContentTypeFilter(XElement xWhere)
@@ -190,6 +199,11 @@ namespace Untech.SharePoint.Common.Data.Translators
 
 		private MetaField GetMetaField(MemberInfo member)
 		{
+			if (!ContentType.Fields.ContainsKey(member.Name))
+			{
+				throw new InvalidOperationException(string.Format("'{0}' wasn't mapped and cannot be used in CAML query.", member));
+			}
+
 			return ContentType.Fields[member.Name];
 		}
 
