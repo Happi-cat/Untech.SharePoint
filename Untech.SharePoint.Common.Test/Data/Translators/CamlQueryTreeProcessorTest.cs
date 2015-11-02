@@ -42,6 +42,26 @@ namespace Untech.SharePoint.Common.Test.Data.Translators
 		}
 
 		[TestMethod]
+		public void CanProcessAlwaysTrueWhere()
+		{
+			Given(source => source.Where(n => true).Where(n => n.String1.StartsWith("TEST")))
+				.ExpectedCaml("<Query>" +
+							  "<Where><And><IsNotNull><FieldRef Name='ID' /></IsNotNull>" +
+							  "<BeginsWith><FieldRef Name='String1' /><Value>TEST</Value></BeginsWith></And></Where>" +
+							  "</Query>");
+		}
+
+		[TestMethod]
+		public void CanProcessAlwaysFalseWhere()
+		{
+			Given(source => source.Where(n => false).Where(n => n.String1.StartsWith("TEST")))
+				.ExpectedCaml("<Query>" +
+							  "<Where><And><IsNull><FieldRef Name='ID' /></IsNull>" +
+							  "<BeginsWith><FieldRef Name='String1' /><Value>TEST</Value></BeginsWith></And></Where>" +
+							  "</Query>");
+		}
+
+		[TestMethod]
 		public void CanProcessOrderBy()
 		{
 			Given(source => source.OrderBy(n => n.Bool1).ThenBy(n => n.String1))
@@ -254,8 +274,11 @@ namespace Untech.SharePoint.Common.Test.Data.Translators
 		[TestMethod]
 		public void CanProcessReverseAndOuterCalls()
 		{
-			Given(
-				source => source.OrderBy(n => n.String1).ThenByDescending(n => n.String2).Reverse().Where(n => n.String2 == "TEST"))
+			Given(source => source
+				.OrderBy(n => n.String1)
+				.ThenByDescending(n => n.String2)
+				.Reverse()
+				.Where(n => n.String2 == "TEST"))
 				.ExpectedCaml("<Query>" +
 							  "<Where><Eq><FieldRef Name='String2' /><Value>TEST</Value></Eq></Where>" +
 							  "<OrderBy><FieldRef Name='String1' Ascending='FALSE' /><FieldRef Name='String2' Ascending='TRUE' /></OrderBy>" +
