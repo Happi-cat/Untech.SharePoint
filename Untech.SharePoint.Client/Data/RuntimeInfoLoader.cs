@@ -37,7 +37,10 @@ namespace Untech.SharePoint.Client.Data
 
 			public override void VisitContentType(MetaContentType contentType)
 			{
-				var spContentType = SpList.ContentTypes.OrderBy(n => n.StringId.Length).First(n => n.StringId.StartsWith(contentType.Id ?? "0x01"));
+				var spContentType = SpList.ContentTypes
+					.Where(n => n.StringId.StartsWith(contentType.Id ?? "0x01"))
+					.OrderBy(n => n.StringId.Length)
+					.First();
 
 				contentType.Id = spContentType.Id.ToString();
 				contentType.Name = spContentType.Name;
