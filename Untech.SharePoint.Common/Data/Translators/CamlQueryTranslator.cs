@@ -191,7 +191,7 @@ namespace Untech.SharePoint.Common.Data.Translators
 				return xWhere;
 			}
 
-			var xContentType = new XElement(Tags.BeginsWith,
+			var xContentType = new XElement(Tags.Eq,
 					new XElement(Tags.FieldRef, new XAttribute(Tags.Name, Fields.ContentTypeId)),
 					new XElement(Tags.Value, ContentType.Id));
 
