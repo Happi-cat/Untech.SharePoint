@@ -37,6 +37,9 @@
     <AssemblyOriginatorKeyFile>key.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="JetBrains.Annotations">
+      <HintPath>..\packages\JetBrains.Annotations.9.2.0\lib\net20\JetBrains.Annotations.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.SharePoint">
       <HintPath>..\SP\Microsoft.SharePoint.dll</HintPath>
     </Reference>
@@ -58,6 +61,8 @@
     <Compile Include="Data\DataError.cs" />
     <Compile Include="Data\Mapper\StoreAccessor.cs" />
     <Compile Include="Data\Mapper\TypeMapper.cs" />
+    <Compile Include="Data\MetaFieldWebInitilizer.cs" />
+    <Compile Include="Data\MetaModelExtensions.cs" />
     <Compile Include="Data\SpListItemsProvider.cs" />
     <Compile Include="Data\SpServerContext.cs" />
     <Compile Include="Data\Mapper\MapperInitializer.cs" />
@@ -74,6 +79,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="key.snk" />
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

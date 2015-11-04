@@ -32,7 +32,10 @@ namespace Untech.SharePoint.Server.Utils
 
 			if (xViewFields != null)
 			{
-				spQuery.ViewFields = xViewFields.Elements("FieldRef")
+				spQuery.ViewFieldsOnly = true;
+				
+				spQuery.ViewFields = xViewFields
+					.Elements("FieldRef")
 					.JoinToString(string.Empty);
 			}
 

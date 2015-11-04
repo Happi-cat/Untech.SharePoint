@@ -6,6 +6,7 @@ using Untech.SharePoint.Common.Converters;
 using Untech.SharePoint.Common.MetaModels;
 using Untech.SharePoint.Common.Models;
 using Untech.SharePoint.Common.Utils;
+using Untech.SharePoint.Server.Data;
 
 namespace Untech.SharePoint.Server.Converters.BuiltIn
 {
@@ -38,7 +39,7 @@ namespace Untech.SharePoint.Server.Converters.BuiltIn
 
 			if (!Field.AllowMultipleValues)
 			{
-				var fieldValue = new SPFieldUserValue(Field.GetAdditionalProperty<SPWeb>("SPWeb"), value.ToString());
+				var fieldValue = new SPFieldUserValue(Field.GetSpWeb(), value.ToString());
 
 				return new UserInfo
 				{
@@ -46,7 +47,7 @@ namespace Untech.SharePoint.Server.Converters.BuiltIn
 				};
 			}
 
-			var fieldValues = new SPFieldUserValueCollection(Field.GetAdditionalProperty<SPWeb>("SPWeb"), value.ToString());
+			var fieldValues = new SPFieldUserValueCollection(Field.GetSpWeb(), value.ToString());
 			var users = fieldValues.Select(fieldValue => fieldValue.User).Select(user => new UserInfo
 			{
 				Id = user.ID
@@ -69,7 +70,7 @@ namespace Untech.SharePoint.Server.Converters.BuiltIn
 			{
 				var userInfo = (UserInfo) value;
 
-				return new SPFieldUserValue(Field.GetAdditionalProperty<SPWeb>("SPWeb"), userInfo.Id, userInfo.Login);
+				return new SPFieldUserValue(Field.GetSpWeb(), userInfo.Id, userInfo.Login);
 			}
 
 			var userInfos = (IEnumerable<UserInfo>) value;
@@ -77,7 +78,7 @@ namespace Untech.SharePoint.Server.Converters.BuiltIn
 			var fieldValues = new SPFieldUserValueCollection();
 			fieldValues.AddRange(
 				userInfos.Select(
-					userInfo => new SPFieldUserValue(Field.GetAdditionalProperty<SPWeb>("SPWeb"), userInfo.Id, userInfo.Login)));
+					userInfo => new SPFieldUserValue(Field.GetSpWeb(), userInfo.Id, userInfo.Login)));
 
 			return fieldValues;
 		}
