@@ -11,7 +11,7 @@ namespace Untech.SharePoint.Client.Utils
 		{
 			return new CamlQuery
 			{
-				ViewXml = string.Format("<View>{0}</View>",caml)
+				ViewXml = caml
 			};
 		}
 
@@ -22,6 +22,10 @@ namespace Untech.SharePoint.Client.Utils
 			if (xRowLimit != null)
 			{
 				xRowLimit.Value = overrideRowLimit.ToString();
+			}
+			else
+			{
+				xCaml.Add(new XElement("RowLimit", overrideRowLimit));
 			}
 
 			return CamlStringToSPQuery(xCaml.ToString());

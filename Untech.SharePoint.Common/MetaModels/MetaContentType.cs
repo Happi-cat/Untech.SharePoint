@@ -36,11 +36,13 @@ namespace Untech.SharePoint.Common.MetaModels
 		/// <summary>
 		/// Gets or sets ConetnTypeId
 		/// </summary>
+		[CanBeNull]
 		public string Id { get; set; }
 
 		/// <summary>
 		/// Gets or sets ContentType display name.
 		/// </summary>
+		[CanBeNull]
 		public string Name { get; set; }
 
 		/// <summary>

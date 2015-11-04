@@ -9,20 +9,17 @@ namespace Untech.SharePoint.Server.Utils
 {
 	internal static class CamlUtility
 	{
-		private static readonly XName[] AllowedQueryTags = { "Where", "OrderBy", "GroupBy" };
-
 		internal static SPQuery CamlStringToSPQuery(string caml)
 		{
 			var xCaml = XElement.Parse(caml);
 			var xRowLimit = xCaml.Element("RowLimit");
 			var xViewFields = xCaml.Element("ViewFields");
+			var xQuery = xCaml.Element("Query") ?? new XElement("Query");
 
 			var spQuery = new SPQuery
 			{
 				QueryThrottleMode = SPQueryThrottleOption.Override,
-				Query = xCaml.Elements()
-					.Where(n => n.Name.In(AllowedQueryTags))
-					.JoinToString(string.Empty)
+				Query = xQuery.Elements().JoinToString(string.Empty)
 			};
 
 			if (xRowLimit != null)

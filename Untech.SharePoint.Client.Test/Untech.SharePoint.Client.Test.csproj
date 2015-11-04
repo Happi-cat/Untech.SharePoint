@@ -97,8 +97,11 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="Models\Bootstrap.cs" />
+    <Compile Include="Models\TestListItem.cs" />
+    <Compile Include="Models\WebDataContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="UnitTest1.cs" />
+    <Compile Include="ClientContextTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Untech.SharePoint.Client\Untech.SharePoint.Client.csproj">

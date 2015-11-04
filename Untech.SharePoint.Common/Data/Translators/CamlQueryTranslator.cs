@@ -32,13 +32,14 @@ namespace Untech.SharePoint.Common.Data.Translators
 		}
 
 		[NotNull]
-		protected XElement GetQuery([NotNull]QueryModel query)
+		protected XElement GetQuery([NotNull] QueryModel query)
 		{
-			return new XElement(Tags.Query,
+			return new XElement(Tags.View,
 				GetRowLimit(query.RowLimit),
-				GetViewFields(query.SelectableFields),
-				GetWheres(query.Where),
-				GetOrderBys(query.OrderBys, query.IsOrderReversed));
+				new XElement(Tags.Query,
+					GetWheres(query.Where),
+					GetOrderBys(query.OrderBys, query.IsOrderReversed)),
+				GetViewFields(query.SelectableFields));
 		}
 
 		[CanBeNull]

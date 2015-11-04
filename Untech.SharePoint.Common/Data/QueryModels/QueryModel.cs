@@ -124,14 +124,26 @@ namespace Untech.SharePoint.Common.Data.QueryModels
 		/// Returns a <see cref="string"/> which represents the object instance.
 		/// </summary>
 		/// <returns>CAML-like string.</returns>
+		/// <example>
+		/// <![CDATA[<View>
+		///		<RowLimit></RowLimit>
+		///		<Query>
+		///			<Where></Where>
+		///			<OrderBy></OrderBy>
+		///		</Query>
+		///		<ViewFields></ViewFields>
+		/// </View>]]>
+		/// </example>
 		public override string ToString()
 		{
 			var sb = new StringBuilder();
-			sb.Append("<Query>");
+			sb.Append("<View>");
 			if (RowLimit != null)
 			{
 				sb.AppendFormat("<RowLimit>{0}</RowLimit>", RowLimit);
 			}
+
+			sb.Append("<Query>");
 			if (Where != null)
 			{
 				sb.AppendFormat("<Where>{0}</Where>", Where);
@@ -142,11 +154,13 @@ namespace Untech.SharePoint.Common.Data.QueryModels
 					? OrderBys.Select(n => n.Reverse()).JoinToString("")
 					: OrderBys.JoinToString(""));
 			}
+			sb.Append("</Query>");
+
 			if (SelectableFields != null && SelectableFields.Any())
 			{
 				sb.AppendFormat("<ViewFields>{0}</ViewFields>", SelectableFields.JoinToString(""));
 			}
-			sb.Append("</Query>");
+			sb.Append("</View>");
 
 			return sb.ToString();
 		}

@@ -36,7 +36,7 @@ namespace Untech.SharePoint.Server.Data
 
 			public override void VisitContentType(MetaContentType contentType)
 			{
-				var bestMatch = SpList.ContentTypes.BestMatch(new SPContentTypeId(contentType.Id));
+				var bestMatch = SpList.ContentTypes.BestMatch(new SPContentTypeId(contentType.Id ?? "0x01"));
 				var spContentType = SpList.ContentTypes[bestMatch];
 
 				contentType.Id = spContentType.Id.ToString();
