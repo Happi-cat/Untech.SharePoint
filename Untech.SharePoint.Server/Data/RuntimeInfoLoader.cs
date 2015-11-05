@@ -1,4 +1,6 @@
-﻿using Microsoft.SharePoint;
+﻿using System;
+using System.Linq;
+using Microsoft.SharePoint;
 using Untech.SharePoint.Common.MetaModels;
 using Untech.SharePoint.Common.MetaModels.Visitors;
 using Untech.SharePoint.Common.Utils;
@@ -36,8 +38,18 @@ namespace Untech.SharePoint.Server.Data
 
 			public override void VisitContentType(MetaContentType contentType)
 			{
-				var bestMatch = SpList.ContentTypes.BestMatch(new SPContentTypeId(contentType.Id ?? "0x01"));
-				var spContentType = SpList.ContentTypes[bestMatch];
+				var spContentType = SpList.ContentTypes
+					.Cast<SPContentType>()
+					.Select(n => new { ContentType = n, StringId = n.Id.ToString() })
+					.Where(n => n.StringId.StartsWith(contentType.Id ?? "0x01"))
+					.OrderBy(n => n.StringId.Length)
+					.Select(n => n.ContentType)
+					.FirstOrDefault();
+
+				if (spContentType == null)
+				{
+					throw new Exception(string.Format("Content type {0} wasn't found", contentType.Id));
+				}
 
 				contentType.Id = spContentType.Id.ToString();
 				contentType.Name = spContentType.Name;

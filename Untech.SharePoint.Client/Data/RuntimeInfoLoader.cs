@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Microsoft.SharePoint.Client;
 using Untech.SharePoint.Client.Extensions;
 using Untech.SharePoint.Common.MetaModels;
@@ -40,7 +41,12 @@ namespace Untech.SharePoint.Client.Data
 				var spContentType = SpList.ContentTypes
 					.Where(n => n.StringId.StartsWith(contentType.Id ?? "0x01"))
 					.OrderBy(n => n.StringId.Length)
-					.First();
+					.FirstOrDefault();
+
+				if (spContentType == null)
+				{
+					throw new Exception(string.Format("Content type {0} wasn't found", contentType.Id));
+				}
 
 				contentType.Id = spContentType.Id.ToString();
 				contentType.Name = spContentType.Name;
