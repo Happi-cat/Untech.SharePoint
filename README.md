@@ -10,6 +10,23 @@ Untech.SharePoint - library that will improve your work with Lists in SharePoint
 
 * Untech.SharePoint.Server - contains SSOM specific code (i.e. SPServerContext and etc.)
 
+# How to install 
+
+They can be installed using NuGet in Visual Studio:
+
+* for Client
+
+```
+	Install-Package Untech.SharePoint.Client 
+```
+
+* for Server
+
+```
+	Install-Package Untech.SharePoint.Server
+```
+
+
 
 ## Example
 
