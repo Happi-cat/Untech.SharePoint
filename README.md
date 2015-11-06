@@ -53,3 +53,29 @@ Untech.SharePoint - library that will improve your work with Lists in SharePoint
 		.Where(n => n.Title.Contains("LALA"))
 		.ToList();
 ```
+
+* Models & Context
+
+```cs
+	public class WebDataContext : SpServerContext<WebDataContext>
+	{
+		public WebDataContext(SPWeb web, Config config) 
+			: base(web, config)
+		{
+
+		}
+
+		[SpList(Title = "Test List")]
+		public ISpList<TestListItem> TestList { get { return GetList(x => x.TestList); }}
+	}
+
+	[SpContentType]
+	public class TestListItem : Entity
+	{
+		[SpField]
+		public virtual string SomeField { get;set; }	 
+
+		[SpField]
+		public virtual string SomeField2 { get;set; }
+	}
+```
