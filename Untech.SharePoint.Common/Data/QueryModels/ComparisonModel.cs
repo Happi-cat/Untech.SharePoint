@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using JetBrains.Annotations;
+using Microsoft.SqlServer.Server;
 using Untech.SharePoint.Common.Utils;
 
 namespace Untech.SharePoint.Common.Data.QueryModels
@@ -74,7 +75,7 @@ namespace Untech.SharePoint.Common.Data.QueryModels
 			{
 				return new ComparisonModel(NegateMap[ComparisonOperator], Field, Value);
 			}
-			throw new NotSupportedException();
+			throw new NotSupportedException(string.Format("Unable to negate: {0}", ComparisonOperator));
 		}
 
 		/// <summary>
