@@ -2,8 +2,11 @@
 {
 	internal static class LogCategories
 	{
-		public const string Expression = "Expression";
-		public const string QueryModel = "Query Model";
-		public const string QueryString = "Query String";
+		public const string QueryTreeProcessor = "Query Tree Processor";
+		public const string QueryTranslator = "Query Translator";
+		public const string PredicateProcessor = "Predicate Processor";
+		public const string FieldSelectorProcessor = "Field Selector Processor";
+		public const string SelectableFieldsProcessor = "Selectable Fields Processor";
+		public const string SpList = "ISpList";
 	}
 }

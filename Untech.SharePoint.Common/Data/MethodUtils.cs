@@ -116,7 +116,7 @@ namespace Untech.SharePoint.Common.Data
 
 		public static bool IsOperator(MethodInfo x, MethodInfo y)
 		{
-			return new GenericMethodDefinitionComparer().Equals(x, y);
+			return GenericMethodDefinitionComparer.Default.Equals(x, y);
 		}
 	}
 }

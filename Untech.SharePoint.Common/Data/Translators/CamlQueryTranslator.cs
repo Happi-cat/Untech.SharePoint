@@ -12,7 +12,7 @@ using Untech.SharePoint.Common.Utils;
 
 namespace Untech.SharePoint.Common.Data.Translators
 {
-	internal class CamlQueryTranslator
+	internal class CamlQueryTranslator : IProcessor<QueryModel, string>
 	{
 		public CamlQueryTranslator([NotNull]MetaContentType contentType)
 		{
@@ -25,15 +25,17 @@ namespace Untech.SharePoint.Common.Data.Translators
 		public MetaContentType ContentType { get; private set; }
 
 		[NotNull]
-		public string Translate([NotNull]QueryModel query)
+		public string Process([NotNull]QueryModel query)
 		{
 			Guard.CheckNotNull("query", query);
 
-			Logger.Log(LogLevel.Info, LogCategories.QueryModel, "Query Model before translation to CAML-string:\n{0}", query);
+			Logger.Log(LogLevel.Trace, LogCategories.QueryTranslator, 
+				"Query Model before translation to CAML-string:\n{0}", query);
 
 			var result = GetQuery(query).ToString();
 
-			Logger.Log(LogLevel.Info, LogCategories.QueryModel, "Query Model after translation to CAML-string:\n{0}", result);
+			Logger.Log(LogLevel.Trace, LogCategories.QueryTranslator, 
+				"Query Model after translation to CAML-string:\n{0}", result);
 
 			return result;
 		}

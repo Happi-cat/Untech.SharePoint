@@ -26,7 +26,11 @@ namespace Untech.SharePoint.Common.MetaModels.Visitors
 		public virtual void VisitContext(MetaContext context)
 		{
 			if (context == null) return;
-			VisitCollection(context.Lists);
+
+			foreach (var model in (IEnumerable<IMetaModel>) context.Lists)
+			{
+				Visit(model);
+			}
 		}
 
 		/// <summary>
@@ -36,7 +40,11 @@ namespace Untech.SharePoint.Common.MetaModels.Visitors
 		public virtual void VisitList(MetaList list)
 		{
 			if (list == null) return;
-			VisitCollection(list.ContentTypes);
+
+			foreach (var model in (IEnumerable<IMetaModel>)list.ContentTypes)
+			{
+				Visit(model);
+			}
 		}
 
 		/// <summary>
@@ -46,7 +54,11 @@ namespace Untech.SharePoint.Common.MetaModels.Visitors
 		public virtual void VisitContentType(MetaContentType contentType)
 		{
 			if (contentType == null) return;
-			VisitCollection(contentType.Fields);
+
+			foreach (var model in (IEnumerable<IMetaModel>)contentType.Fields)
+			{
+				Visit(model);
+			}
 		}
 
 		/// <summary>
@@ -56,18 +68,6 @@ namespace Untech.SharePoint.Common.MetaModels.Visitors
 		public virtual void VisitField(MetaField field)
 		{
 			
-		}
-
-		/// <summary>
-		/// Visit each <see cref="IMetaModel"/> in the specified collection.
-		/// </summary>
-		/// <param name="models">Collection of <see cref="IMetaModel"/></param>
-		protected void VisitCollection(IEnumerable<IMetaModel> models)
-		{
-			foreach (var model in models)
-			{
-				Visit(model);
-			}
 		}
 	}
 }

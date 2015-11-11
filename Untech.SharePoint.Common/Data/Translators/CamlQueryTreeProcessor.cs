@@ -11,7 +11,7 @@ using Untech.SharePoint.Common.Utils;
 
 namespace Untech.SharePoint.Common.Data.Translators
 {
-	internal sealed class CamlQueryTreeProcessor : ExpressionVisitor, IExpressionProcessor<Expression>
+	internal sealed class CamlQueryTreeProcessor : ExpressionVisitor, IProcessor<Expression, Expression>
 	{
 		[NotNull]
 		private readonly IReadOnlyDictionary<MethodInfo, ICallCombineRule> _combineRules;
@@ -68,13 +68,15 @@ namespace Untech.SharePoint.Common.Data.Translators
 
 		public Expression Process(Expression node)
 		{
-			Logger.Log(LogLevel.Info, LogCategories.Expression, "Expression before rewrite:\n{0}", node);
+			Logger.Log(LogLevel.Debug, LogCategories.QueryTreeProcessor, 
+				"Expression before rewrite:\n{0}", node);
 
 			Candidates = CallCombineNominator.GetCandidates(_combineRules, node);
 
 			var result = Visit(node);
 
-			Logger.Log(LogLevel.Info, LogCategories.Expression, "Expression after rewrite:\n{0}", result);
+			Logger.Log(LogLevel.Debug, LogCategories.QueryTreeProcessor,
+				"Expression after rewrite:\n{0}", result);
 
 			return result;
 		}
@@ -378,7 +380,7 @@ namespace Untech.SharePoint.Common.Data.Translators
 					context.Query.ResetOrder();
 				}
 
-				context.Query.MergeOrderBys(new OrderByModel(new CamlKeySelectorProcessor().Process(node.Arguments[1]), Ascending));
+				context.Query.MergeOrderBys(new OrderByModel(new CamlFieldSelectorProcessor().Process(node.Arguments[1]), Ascending));
 			}
 
 			public Expression Combine(ICallsCombinerContext context, MethodCallExpression node)

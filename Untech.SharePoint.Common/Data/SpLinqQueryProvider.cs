@@ -58,15 +58,11 @@ namespace Untech.SharePoint.Common.Data
 
 		private static Expression Rewrite(Expression expression)
 		{
-			Logger.Log(LogLevel.Info, LogCategories.Expression, "Expression before rewrite: {0}", expression);
-
 			return new CamlQueryTreeProcessor().Process(expression);
 		}
 
 		private static Func<T> Compile<T>(Expression expression)
 		{
-			Logger.Log(LogLevel.Info, LogCategories.Expression, "Expression before compilation: {0}", expression);
-
 			return Expression.Lambda<Func<T>>(expression).Compile();
 		}
 	}

@@ -79,6 +79,11 @@ namespace Untech.SharePoint.Common.Data
 			var memberExp = (MemberExpression)listAccessor.Body;
 			var listTitle = MappingSource.GetListTitleFromContextMember(memberExp.Member);
 
+			if (!Model.Lists.ContainsKey(listTitle))
+			{
+				throw new InvalidOperationException(string.Format("Can't find meta-list with title '{0}'", listTitle));
+			}
+
 			return GetList<TEntity>(Model.Lists[listTitle]);
 		}
 

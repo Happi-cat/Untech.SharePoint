@@ -3,12 +3,13 @@ using System.Linq;
 using System.Linq.Expressions;
 using JetBrains.Annotations;
 using Untech.SharePoint.Common.Data.QueryModels;
+using Untech.SharePoint.Common.Diagnostics;
 using Untech.SharePoint.Common.Extensions;
 using Untech.SharePoint.Common.Utils;
 
 namespace Untech.SharePoint.Common.Data.Translators.Predicate
 {
-	internal class CamlPredicateProcessor : IExpressionProcessor<WhereModel>
+	internal class CamlPredicateProcessor : IProcessor<Expression, WhereModel>
 	{
 		private static readonly IReadOnlyDictionary<ExpressionType, ComparisonOperator> ComparisonMap = new Dictionary<ExpressionType, ComparisonOperator>
 		{
@@ -45,6 +46,9 @@ namespace Untech.SharePoint.Common.Data.Translators.Predicate
 
 		public WhereModel Process([NotNull]Expression predicate)
 		{
+			Logger.Log(LogLevel.Trace, LogCategories.PredicateProcessor, 
+				"Original predicate:\n{0}", predicate);
+
 			predicate = predicate.StripQuotes();
 			if (predicate.NodeType == ExpressionType.Lambda)
 			{
@@ -53,7 +57,15 @@ namespace Untech.SharePoint.Common.Data.Translators.Predicate
 			
 			predicate = PreProcessors.Aggregate(predicate, (n, v) => v.Visit(n));
 
-			return Translate(predicate);
+			Logger.Log(LogLevel.Trace, LogCategories.PredicateProcessor, 
+				"Pre-processed predicate:\n{0}", predicate);
+
+			var result = Translate(predicate);
+
+			Logger.Log(LogLevel.Trace, LogCategories.PredicateProcessor, 
+				"Result where model from predicate:\n{0}", result);
+
+			return result;
 		}
 
 		protected WhereModel Translate([NotNull]Expression node)

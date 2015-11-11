@@ -1,4 +1,5 @@
 ﻿using System.Linq.Expressions;
+using Untech.SharePoint.Common.Diagnostics;
 using Untech.SharePoint.Common.Utils;
 
 namespace Untech.SharePoint.Common.Data

@@ -4,7 +4,6 @@ using System.Linq;
 using System.Linq.Expressions;
 using Untech.SharePoint.Common.Data.QueryModels;
 using Untech.SharePoint.Common.Data.Translators;
-using Untech.SharePoint.Common.Diagnostics;
 
 namespace Untech.SharePoint.Common.Data
 {
@@ -158,7 +157,7 @@ namespace Untech.SharePoint.Common.Data
 		{
 			var translator = new CamlQueryTranslator(listItemsProvider.List.ContentTypes[typeof (T)]);
 			
-			return  translator.Translate(queryModel);
+			return  translator.Process(queryModel);
 		}
 
 		private static Exception NoMatch()
