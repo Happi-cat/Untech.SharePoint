@@ -56,7 +56,7 @@ namespace Untech.SharePoint.Common.Test.Data.Translators.Predicate
 		}
 
 		[TestMethod]
-		public void NotSupportXorForFunc()
+		public void NotSupportXorForCalls()
 		{
 			CustomAssert.Throw<NotSupportedException>(() => Given(n => n.String1.StartsWith("START") ^ n.Bool2).Expected("UNDEFINED"));
 		}
@@ -83,9 +83,10 @@ namespace Untech.SharePoint.Common.Test.Data.Translators.Predicate
 		[TestMethod]
 		public void SupportEnumerableAndListContains()
 		{
-			var possibleValues = new List<int> { 1, 2, 3 };
+			var possibleValues1 = new List<int> { 1, 2, 3 };
+			var possibleValues2 = (IEnumerable<int>) possibleValues1;
 
-			Given(n => possibleValues.Contains(n.Int1) && !((IEnumerable<int>)possibleValues).Contains(n.Int2))
+			Given(n => possibleValues1.Contains(n.Int1) && !possibleValues2.Contains(n.Int2))
 				.Expected("<And>" +
 						  "<Or>" +
 						  "<Or><Eq><FieldRef Name='Int1' /><Value>1</Value></Eq><Eq><FieldRef Name='Int1' /><Value>2</Value></Eq></Or>" +
@@ -99,7 +100,7 @@ namespace Untech.SharePoint.Common.Test.Data.Translators.Predicate
 		}
 
 		[TestMethod]
-		public void SupportNotAndBoolProperties()
+		public void SupportBoolProperties()
 		{
 			Given(n => n.Bool1 && !n.Bool2)
 				.Expected("<And>" +
@@ -119,7 +120,7 @@ namespace Untech.SharePoint.Common.Test.Data.Translators.Predicate
 		[TestMethod]
 		[SuppressMessage("ReSharper", "RedundantLogicalConditionalExpressionOperand")]
 		[SuppressMessage("ReSharper", "EqualExpressionComparison")]
-		public void SupportOperandOrder()
+		public void CanSwapMemberToLeft()
 		{
 			Given(n => n.Int1 == 1 && 2 == n.Int2)
 				.Expected("<And><Eq><FieldRef Name='Int1' /><Value>1</Value></Eq><Eq><FieldRef Name='Int2' /><Value>2</Value></Eq></And>");

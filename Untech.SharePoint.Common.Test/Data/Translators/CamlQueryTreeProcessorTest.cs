@@ -349,22 +349,31 @@ namespace Untech.SharePoint.Common.Test.Data.Translators
 
 		protected TestScenario Given(Func<IQueryable<Entity>, IQueryable<Entity>> originalQuery)
 		{
-			var originalQueryTree = originalQuery(new FakeQueryable<Entity>()).Expression;
-			originalQueryTree = new CamlQueryTreeProcessor().Process(originalQueryTree);
+			var originalQueryTree = new CamlQueryTreeProcessor().Process(GetExpression(originalQuery));
 
 			return new TestScenario(originalQueryTree);
 		}
 
 		protected TestScenario Given(Func<IQueryable<Entity>, object> originalQuery)
 		{
-			Expression originalQueryTree = null;
-			originalQuery(new FakeQueryable<Entity>
-			{
-				ExpressionExecutor = node => { originalQueryTree = node; }
-			});
-			originalQueryTree = new CamlQueryTreeProcessor().Process(originalQueryTree);
+			var originalQueryTree = new CamlQueryTreeProcessor().Process(GetExpression(originalQuery));
 
 			return new TestScenario(originalQueryTree);
+		}
+
+		private static Expression GetExpression(Func<IQueryable<Entity>, IQueryable<Entity>> query)
+		{
+			return query(new FakeQueryable<Entity>()).Expression;
+		}
+
+		private static Expression GetExpression(Func<IQueryable<Entity>, object> query)
+		{
+			Expression queryTree = null;
+			query(new FakeQueryable<Entity>
+			{
+				ExpressionExecutor = node => { queryTree = node; }
+			});
+			return queryTree;
 		}
 
 		#region [Nested Classes]
@@ -389,18 +398,14 @@ namespace Untech.SharePoint.Common.Test.Data.Translators
 
 			public TestScenario ExprectedQueryTree(Func<IQueryable<Entity>, IQueryable<Entity>> expectedQuery)
 			{
-				var expectedQueryTree = expectedQuery(new FakeQueryable<Entity>()).Expression;
+				var expectedQueryTree = GetExpression(expectedQuery);
 				ExpectedExpression(expectedQueryTree);
 				return this;
 			}
 
 			public TestScenario ExprectedQueryTree(Func<IQueryable<Entity>, object> expectedQuery)
 			{
-				Expression expectedQueryTree = null;
-				expectedQuery(new FakeQueryable<Entity>
-				{
-					ExpressionExecutor = node => { expectedQueryTree = node; }
-				});
+				var expectedQueryTree = GetExpression(expectedQuery);
 				ExpectedExpression(expectedQueryTree);
 				return this;
 			}

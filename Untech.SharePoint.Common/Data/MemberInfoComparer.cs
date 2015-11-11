@@ -5,7 +5,7 @@ namespace Untech.SharePoint.Common.Data
 {
 	internal class MemberInfoComparer : IEqualityComparer<MemberInfo>
 	{
-		public static readonly IEqualityComparer<MemberInfo> Comparer = new MemberInfoComparer();
+		public static readonly IEqualityComparer<MemberInfo> Default = new MemberInfoComparer();
 
 		public bool Equals(MemberInfo x, MemberInfo y)
 		{

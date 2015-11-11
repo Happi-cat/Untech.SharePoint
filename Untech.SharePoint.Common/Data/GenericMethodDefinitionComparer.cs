@@ -5,7 +5,7 @@ namespace Untech.SharePoint.Common.Data
 {
 	internal class GenericMethodDefinitionComparer : IEqualityComparer<MethodInfo>
 	{
-		public static readonly IEqualityComparer<MethodInfo> Comparer = new GenericMethodDefinitionComparer();
+		public static readonly IEqualityComparer<MethodInfo> Default = new GenericMethodDefinitionComparer();
 
 		public bool Equals(MethodInfo x, MethodInfo y)
 		{

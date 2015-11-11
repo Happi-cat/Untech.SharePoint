@@ -39,7 +39,7 @@ namespace Untech.SharePoint.Common.Test.Mappings.Annotation
 		}
 
 		[TestMethod]
-		public void CanSeeMultipleContentTypes()
+		public void CanHaveMultipleContentTypes()
 		{
 			var model = GetCtx<MultipleContentTypesCtx>();
 
@@ -48,22 +48,20 @@ namespace Untech.SharePoint.Common.Test.Mappings.Annotation
 		}
 
 		[TestMethod]
-		public void CanSeeIndexer()
+		public void ThrowIfIndexer()
 		{
-			var model = GetCtx<IndexerPropertyCtx>();
-
-			Assert.AreEqual(2, model.Lists.Count);
+			CustomAssert.Throw<InvalidAnnotationException>(() => { GetCtx<IndexerPropertyCtx>(); });
 		}
 
 
 		[TestMethod]
-		public void ThrowIfListPropertyTypeIsInvalid()
+		public void ThrowIfTypeIsInvalid()
 		{
 			CustomAssert.Throw<InvalidAnnotationException>(() => { GetCtx<InvalidPropertyTypeCtx>(); });
 		}
 
 		[TestMethod]
-		public void ThrowIfListPropertyIsWriteOnly()
+		public void ThrowIfPropertyIsWriteOnly()
 		{
 			CustomAssert.Throw<InvalidAnnotationException>(() => { GetCtx<WriteOnlyPropertyCtx>(); });
 		}

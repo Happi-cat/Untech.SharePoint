@@ -47,7 +47,7 @@ namespace Untech.SharePoint.Common.Extensions
 		/// <typeparam name="T">The type of collection element.</typeparam>
 		/// <param name="enumerable">Collectino that should be checked.</param>
 		/// <returns>true if the <see cref="IEnumerable{T}"/> is null or empty; otherwise, false.</returns>
-		public static bool IsNullOrEmpty<T>(this IEnumerable<T> enumerable)
+		public static bool IsNullOrEmpty<T>([CanBeNull]this IEnumerable<T> enumerable)
 		{
 			return enumerable == null || !enumerable.Any();
 		}

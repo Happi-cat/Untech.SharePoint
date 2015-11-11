@@ -11,7 +11,7 @@ namespace Untech.SharePoint.Common.Data.QueryModels
 		/// Initializes a new instance of the <see cref="FieldRefModel"/> with the specified <see cref="FieldRefType"/>.
 		/// </summary>
 		/// <param name="fieldRefType">FieldRef type</param>
-		protected FieldRefModel(FieldRefType fieldRefType)
+		protected internal FieldRefModel(FieldRefType fieldRefType)
 		{
 			Type = fieldRefType;
 		}

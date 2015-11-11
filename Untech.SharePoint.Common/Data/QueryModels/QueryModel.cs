@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using JetBrains.Annotations;
@@ -11,6 +12,10 @@ namespace Untech.SharePoint.Common.Data.QueryModels
 	/// </summary>
 	public sealed class QueryModel
 	{
+		[CanBeNull] private List<MemberRefModel> _selectableFields;
+		[CanBeNull] private List<OrderByModel> _orderBys;
+		private bool _isOrderReversed;
+
 		/// <summary>
 		/// Gets or sets query row limit value.
 		/// </summary>
@@ -27,18 +32,27 @@ namespace Untech.SharePoint.Common.Data.QueryModels
 		/// Gets collection of specific selectable fields.
 		/// </summary>
 		[CanBeNull]
-		public IEnumerable<MemberRefModel> SelectableFields { get; private set; }
+		public IEnumerable<MemberRefModel> SelectableFields
+		{
+			get
+			{
+				if (_selectableFields == null) return null;
+				return _selectableFields.Distinct(MemberRefModelComparer.Default);
+			}
+		}
 
 		/// <summary>
-		/// Gets collection of orderings for CAML OrderBy tag. Ordering can be direct or reversed. <seealso cref="IsOrderReversed"/>.
+		/// Gets colelction of orderings for CAML OrderBy tag.
 		/// </summary>
 		[CanBeNull]
-		public IEnumerable<OrderByModel> OrderBys { get; private set; }
-
-		/// <summary>
-		/// Determines whether <see cref="OrderBys"/> is in direct ordering or is in reversed.
-		/// </summary>
-		public bool IsOrderReversed { get; private set; }
+		public IEnumerable<OrderByModel> OrderBys
+		{
+			get
+			{
+				if (_orderBys == null) return null;
+				return _isOrderReversed ? _orderBys.Select(n => n.Reverse()) : _orderBys;
+			}
+		}
 
 		/// <summary>
 		/// Merge current CAML where operation with new one.
@@ -55,16 +69,13 @@ namespace Untech.SharePoint.Common.Data.QueryModels
 		/// <param name="orderBy">New OrderBy operation to merge.</param>
 		public void MergeOrderBys([CanBeNull]OrderByModel orderBy)
 		{
-			var newOrderBys = new List<OrderByModel>();
-			if (OrderBys != null)
+			if (orderBy == null) return;
+
+			if (_orderBys == null)
 			{
-				newOrderBys.AddRange(OrderBys);
+				_orderBys = new List<OrderByModel>();
 			}
-			if (orderBy != null)
-			{
-				newOrderBys.Add(IsOrderReversed ? orderBy.Reverse() : orderBy);
-			}
-			OrderBys = newOrderBys;
+			_orderBys.Add(_isOrderReversed ? orderBy.Reverse() : orderBy);
 		}
 
 		/// <summary>
@@ -73,16 +84,13 @@ namespace Untech.SharePoint.Common.Data.QueryModels
 		/// <param name="orderBys">New OrderBy operations to merge.</param>
 		public void MergeOrderBys([CanBeNull]IEnumerable<OrderByModel> orderBys)
 		{
-			var newOrderBys = new List<OrderByModel>();
-			if (OrderBys != null)
+			if (orderBys == null) return;
+
+			if (_orderBys == null)
 			{
-				newOrderBys.AddRange(OrderBys);
+				_orderBys = new List<OrderByModel>();
 			}
-			if (orderBys != null)
-			{
-				newOrderBys.AddRange(IsOrderReversed ? orderBys.Select(n => n.Reverse()) : orderBys);
-			}
-			OrderBys = newOrderBys;
+			_orderBys.AddRange(_isOrderReversed ? orderBys.Select(n => n.Reverse()) : orderBys);
 		}
 
 		/// <summary>
@@ -91,16 +99,13 @@ namespace Untech.SharePoint.Common.Data.QueryModels
 		/// <param name="selectableFields">New selectable fields to merge.</param>
 		public void MergeSelectableFields([CanBeNull]IEnumerable<MemberRefModel> selectableFields)
 		{
-			var newSelectableFields = new List<MemberRefModel>();
-			if (SelectableFields != null)
+			if (selectableFields == null) return;
+			
+			if (_selectableFields == null)
 			{
-				newSelectableFields.AddRange(SelectableFields);
+				_selectableFields = new List<MemberRefModel>();
 			}
-			if (selectableFields != null)
-			{
-				newSelectableFields.AddRange(selectableFields);
-			}
-			SelectableFields = newSelectableFields.Distinct(MemberRefModelComparer.Comparer);
+			_selectableFields.AddRange(selectableFields);
 		}
 
 		/// <summary>
@@ -108,7 +113,7 @@ namespace Untech.SharePoint.Common.Data.QueryModels
 		/// </summary>
 		public void ReverseOrder()
 		{
-			IsOrderReversed = !IsOrderReversed;
+			_isOrderReversed = !_isOrderReversed;
 		}
 
 		/// <summary>
@@ -116,8 +121,8 @@ namespace Untech.SharePoint.Common.Data.QueryModels
 		/// </summary>
 		public void ResetOrder()
 		{
-			IsOrderReversed = false;
-			OrderBys = null;
+			_isOrderReversed = false;
+			_orderBys = null;
 		}
 
 		/// <summary>
@@ -137,32 +142,61 @@ namespace Untech.SharePoint.Common.Data.QueryModels
 		public override string ToString()
 		{
 			var sb = new StringBuilder();
-			sb.Append("<View>");
-			if (RowLimit != null)
+			using (new TagWriter(Tags.View, sb))
 			{
-				sb.AppendFormat("<RowLimit>{0}</RowLimit>", RowLimit);
-			}
+				TagWriter.Write(Tags.RowLimit, sb, RowLimit);
 
-			sb.Append("<Query>");
-			if (Where != null)
-			{
-				sb.AppendFormat("<Where>{0}</Where>", Where);
-			}
-			if (OrderBys != null && OrderBys.Any())
-			{
-				sb.AppendFormat("<OrderBy>{0}</OrderBy>", IsOrderReversed
-					? OrderBys.Select(n => n.Reverse()).JoinToString("")
-					: OrderBys.JoinToString(""));
-			}
-			sb.Append("</Query>");
+				using (new TagWriter(Tags.Query, sb))
+				{
+					TagWriter.Write(Tags.Where, sb, Where);
+					TagWriter.Write(Tags.OrderBy, sb, OrderBys);
+				}
 
-			if (SelectableFields != null && SelectableFields.Any())
-			{
-				sb.AppendFormat("<ViewFields>{0}</ViewFields>", SelectableFields.JoinToString(""));
+				TagWriter.Write(Tags.ViewFields, sb, SelectableFields);
 			}
-			sb.Append("</View>");
-
 			return sb.ToString();
 		}
+
+		#region [Nested Classes]
+
+		private class TagWriter : IDisposable
+		{
+			private readonly string _tag;
+			private readonly StringBuilder _sb;
+
+			public TagWriter(string tag, StringBuilder sb)
+			{
+				_tag = tag;
+				_sb = sb;
+
+				_sb.Append("<" + _tag + ">");
+			}
+
+			public static void Write(string tag, StringBuilder sb, object innerValue)
+			{
+				if (innerValue == null) return;
+
+				sb.AppendFormat("<{0}>{1}</{0}>", tag, innerValue);
+			}
+
+			public static void Write(string tag, StringBuilder sb, IEnumerable<object> innerValues)
+			{
+				if (innerValues == null) return;
+
+				var list = innerValues.ToList();
+
+				if (!list.Any()) return;
+
+				sb.AppendFormat("<{0}>{1}</{0}>", tag, list.JoinToString(""));
+			}
+
+			public void Dispose()
+			{
+				_sb.Append("</" + _tag + ">");
+			}
+		}
+
+		#endregion
+
 	}
 }

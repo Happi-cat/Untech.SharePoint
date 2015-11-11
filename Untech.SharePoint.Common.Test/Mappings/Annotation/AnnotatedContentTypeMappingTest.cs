@@ -11,14 +11,16 @@ namespace Untech.SharePoint.Common.Test.Mappings.Annotation
 	public class AnnotatedContentTypeMappingTest
 	{
 		[TestMethod]
-		public void CanSeeNotAnotatedContentType()
+		public void CanOmitContentTypeAnnotation()
 		{
 			var ct = GetContentType<Entity>();
+			
+			Assert.IsTrue(string.IsNullOrEmpty(ct.Id));
 		}
 
 
 		[TestMethod]
-		public void CanSeeContentTypeId()
+		public void CanDefineContentTypeAnnotation()
 		{
 			var ct = GetContentType<Item>();
 

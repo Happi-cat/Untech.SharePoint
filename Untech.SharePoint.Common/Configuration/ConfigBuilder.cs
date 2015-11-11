@@ -6,7 +6,6 @@ using Untech.SharePoint.Common.Converters;
 using Untech.SharePoint.Common.Data;
 using Untech.SharePoint.Common.Extensions;
 using Untech.SharePoint.Common.Mappings;
-using Untech.SharePoint.Common.MetaModels.Visitors;
 using Untech.SharePoint.Common.Utils;
 
 namespace Untech.SharePoint.Common.Configuration
@@ -85,11 +84,7 @@ namespace Untech.SharePoint.Common.Configuration
 				action(converters);
 			}
 
-			return new Config
-			{
-				FieldConverters = converters,
-				Mappings = mappings
-			};
+			return new Config(converters, mappings);
 		}
 	}
 }

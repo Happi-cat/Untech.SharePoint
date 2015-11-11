@@ -12,7 +12,7 @@ namespace Untech.SharePoint.Common.Test.Mappings.Annotation
 	public class AnnotatedFieldPartTest 
 	{
 		[TestMethod]
-		public void CanRun()
+		public void CanDefineFieldAnnotation()
 		{
 			var ct = GetContentType<Entity>();
 
@@ -42,7 +42,7 @@ namespace Untech.SharePoint.Common.Test.Mappings.Annotation
 		}
 
 		[TestMethod]
-		public void CanRemovePreviouslyAddedField()
+		public void CanRemoveParentField()
 		{
 			var ct = GetContentType<RemovedField>();
 
@@ -51,7 +51,7 @@ namespace Untech.SharePoint.Common.Test.Mappings.Annotation
 		}
 
 		[TestMethod]
-		public void CanRemoveNewlyAddedField()
+		public void CanRemoveThatField()
 		{
 			var ct = GetContentType<AddedAndRemovedField>();
 
@@ -83,19 +83,19 @@ namespace Untech.SharePoint.Common.Test.Mappings.Annotation
 		[TestMethod]
 		public void ThrowIfFieldIsReadOnly()
 		{
-			CustomAssert.Throw<InvalidAnnotationException>(() => { GetContentType<ReadonlyField>(); });
+			CustomAssert.Throw<InvalidAnnotationException>(() => { GetContentType<ReadOnlyField>(); });
 		}
 
 		[TestMethod]
 		public void ThrowIfPropertyIsReadOnly()
 		{
-			CustomAssert.Throw<InvalidAnnotationException>(() => { GetContentType<ReadonlyProperty>(); });
+			CustomAssert.Throw<InvalidAnnotationException>(() => { GetContentType<ReadOnlyProperty>(); });
 		}
 
 		[TestMethod]
 		public void ThrowIfPropertyIsWriteOnly()
 		{
-			CustomAssert.Throw<InvalidAnnotationException>(() => { GetContentType<WriteonlyProperty>(); });
+			CustomAssert.Throw<InvalidAnnotationException>(() => { GetContentType<WriteOnlyProperty>(); });
 		}
 
 		[TestMethod]
@@ -132,6 +132,8 @@ namespace Untech.SharePoint.Common.Test.Mappings.Annotation
 
 			[SpField]
 			public virtual string Field2 { get; set; }
+
+			public string NotAnnotatedField { get; set; }
 		}
 
 		public class InheritedAnnotation : Entity
@@ -158,7 +160,7 @@ namespace Untech.SharePoint.Common.Test.Mappings.Annotation
 			public virtual string Field3 { get; set; }
 		}
 
-		public class ReadonlyProperty : Entity
+		public class ReadOnlyProperty : Entity
 		{
 			[SpField]
 			public string Field3
@@ -167,7 +169,7 @@ namespace Untech.SharePoint.Common.Test.Mappings.Annotation
 			}
 		}
 
-		public class WriteonlyProperty : Entity
+		public class WriteOnlyProperty : Entity
 		{
 			[SpField]
 			public string Field3
@@ -176,7 +178,7 @@ namespace Untech.SharePoint.Common.Test.Mappings.Annotation
 			}
 		}
 
-		public class ReadonlyField : Entity
+		public class ReadOnlyField : Entity
 		{
 			[SpField] public readonly string Field3 = null;
 		}

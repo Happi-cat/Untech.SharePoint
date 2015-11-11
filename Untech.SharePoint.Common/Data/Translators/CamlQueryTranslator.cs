@@ -38,7 +38,7 @@ namespace Untech.SharePoint.Common.Data.Translators
 				GetRowLimit(query.RowLimit),
 				new XElement(Tags.Query,
 					GetWheres(query.Where),
-					GetOrderBys(query.OrderBys, query.IsOrderReversed)),
+					GetOrderBys(query.OrderBys)),
 				GetViewFields(query.SelectableFields));
 		}
 
@@ -81,7 +81,7 @@ namespace Untech.SharePoint.Common.Data.Translators
 		}
 
 		[CanBeNull]
-		protected XElement GetOrderBys([CanBeNull]IEnumerable<OrderByModel> orderBys, bool isOrderReversed)
+		protected XElement GetOrderBys([CanBeNull]IEnumerable<OrderByModel> orderBys)
 		{
 			if (orderBys == null)
 			{
@@ -89,14 +89,7 @@ namespace Untech.SharePoint.Common.Data.Translators
 			}
 
 			var models = orderBys.ToList();
-			if (models.Any())
-			{
-				return isOrderReversed
-					? new XElement(Tags.OrderBy, models.Select(n => n.Reverse()).Select(GetOrderBy))
-					: new XElement(Tags.OrderBy, models.Select(GetOrderBy));
-			}
-
-			return null;
+			return models.Any() ? new XElement(Tags.OrderBy, models.Select(GetOrderBy)) : null;
 		}
 
 		[NotNull]

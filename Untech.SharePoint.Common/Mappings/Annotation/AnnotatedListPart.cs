@@ -64,6 +64,12 @@ namespace Untech.SharePoint.Common.Mappings.Annotation
 					contextProperty.Name, contextProperty.DeclaringType));
 			}
 
+			if (contextProperty.GetIndexParameters().Any())
+			{
+				throw new InvalidAnnotationException(string.Format("Indexer in {0} cannot be annotated",
+					contextProperty.DeclaringType));
+			}
+
 			var entityType = contextProperty.PropertyType.GetGenericArguments()[0];
 
 			RegisterContentType(entityType);

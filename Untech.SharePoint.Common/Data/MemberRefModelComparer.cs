@@ -5,7 +5,7 @@ namespace Untech.SharePoint.Common.Data
 {
 	internal class MemberRefModelComparer : IEqualityComparer<MemberRefModel>
 	{
-		public static readonly IEqualityComparer<MemberRefModel> Comparer = new MemberRefModelComparer();
+		public static readonly IEqualityComparer<MemberRefModel> Default = new MemberRefModelComparer();
 
 		public bool Equals(MemberRefModel x, MemberRefModel y)
 		{
@@ -14,7 +14,7 @@ namespace Untech.SharePoint.Common.Data
 
 		public int GetHashCode(MemberRefModel obj)
 		{
-			return obj == null ? 0 : MemberInfoComparer.Comparer.GetHashCode(obj.Member);
+			return obj == null ? 0 : MemberInfoComparer.Default.GetHashCode(obj.Member);
 		}
 	}
 }
