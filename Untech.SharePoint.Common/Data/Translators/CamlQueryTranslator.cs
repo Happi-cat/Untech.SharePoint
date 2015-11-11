@@ -6,6 +6,7 @@ using System.Xml.Linq;
 using JetBrains.Annotations;
 using Untech.SharePoint.Common.Converters;
 using Untech.SharePoint.Common.Data.QueryModels;
+using Untech.SharePoint.Common.Diagnostics;
 using Untech.SharePoint.Common.MetaModels;
 using Untech.SharePoint.Common.Utils;
 
@@ -28,7 +29,13 @@ namespace Untech.SharePoint.Common.Data.Translators
 		{
 			Guard.CheckNotNull("query", query);
 
-			return GetQuery(query).ToString();
+			Logger.Log(LogLevel.Info, LogCategories.QueryModel, "Query Model before translation to CAML-string:\n{0}", query);
+
+			var result = GetQuery(query).ToString();
+
+			Logger.Log(LogLevel.Info, LogCategories.QueryModel, "Query Model after translation to CAML-string:\n{0}", result);
+
+			return result;
 		}
 
 		[NotNull]

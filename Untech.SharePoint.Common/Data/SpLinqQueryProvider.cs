@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Linq.Expressions;
 using Untech.SharePoint.Common.Data.Translators;
+using Untech.SharePoint.Common.Diagnostics;
 using Untech.SharePoint.Common.Extensions;
 using Untech.SharePoint.Common.Utils;
 
@@ -57,11 +58,15 @@ namespace Untech.SharePoint.Common.Data
 
 		private static Expression Rewrite(Expression expression)
 		{
+			Logger.Log(LogLevel.Info, LogCategories.Expression, "Expression before rewrite: {0}", expression);
+
 			return new CamlQueryTreeProcessor().Process(expression);
 		}
 
 		private static Func<T> Compile<T>(Expression expression)
 		{
+			Logger.Log(LogLevel.Info, LogCategories.Expression, "Expression before compilation: {0}", expression);
+
 			return Expression.Lambda<Func<T>>(expression).Compile();
 		}
 	}

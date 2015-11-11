@@ -5,6 +5,7 @@ using System.Reflection;
 using JetBrains.Annotations;
 using Untech.SharePoint.Common.Data.QueryModels;
 using Untech.SharePoint.Common.Data.Translators.Predicate;
+using Untech.SharePoint.Common.Diagnostics;
 using Untech.SharePoint.Common.Extensions;
 using Untech.SharePoint.Common.Utils;
 
@@ -67,9 +68,15 @@ namespace Untech.SharePoint.Common.Data.Translators
 
 		public Expression Process(Expression node)
 		{
+			Logger.Log(LogLevel.Info, LogCategories.Expression, "Expression before rewrite:\n{0}", node);
+
 			Candidates = CallCombineNominator.GetCandidates(_combineRules, node);
 
-			return Visit(node);
+			var result = Visit(node);
+
+			Logger.Log(LogLevel.Info, LogCategories.Expression, "Expression after rewrite:\n{0}", result);
+
+			return result;
 		}
 
 		public override Expression Visit(Expression node)

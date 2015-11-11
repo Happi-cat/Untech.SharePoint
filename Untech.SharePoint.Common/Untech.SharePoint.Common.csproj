@@ -82,6 +82,9 @@
     <Compile Include="Data\SpLinqQuery.cs" />
     <Compile Include="Data\SpLinqQueryProvider.cs" />
     <Compile Include="Data\Translators\CamlQueryTreeProcessor.cs" />
+    <Compile Include="Diagnostics\DebuggerLoggingEndpoint.cs" />
+    <Compile Include="Diagnostics\LogCategories.cs" />
+    <Compile Include="Diagnostics\Logger.cs" />
     <Compile Include="Fields.cs" />
     <Compile Include="Data\Translators\Predicate\CamlKeySelectorProcessor.cs" />
     <Compile Include="Data\Translators\Predicate\CamlProcessorUtils.cs" />
@@ -109,7 +112,7 @@
     <Compile Include="Data\Translators\CamlQueryTranslator.cs" />
     <Compile Include="Data\Translators\Predicate\XorRewriter.cs" />
     <Compile Include="Tags.cs" />
-    <Compile Include="Diagnostics\ILoggingInterceptor.cs" />
+    <Compile Include="Diagnostics\ILoggingEndpoint.cs" />
     <Compile Include="Diagnostics\LogLevel.cs" />
     <Compile Include="Mappings\Annotation\AnnotatedContentTypeMapping.cs" />
     <Compile Include="Mappings\Annotation\AnnotatedContextMapping.cs" />
