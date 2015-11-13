@@ -30,18 +30,18 @@ namespace Untech.SharePoint.Common.Data.Translators
 			Guard.CheckNotNull("query", query);
 
 			Logger.Log(LogLevel.Trace, LogCategories.QueryTranslator, 
-				"Query Model before translation to CAML-string:\n{0}", query);
+				"Original QueryModel:\n{0}", query);
 
 			var result = GetQuery(query).ToString();
 
 			Logger.Log(LogLevel.Trace, LogCategories.QueryTranslator, 
-				"Query Model after translation to CAML-string:\n{0}", result);
+				"CAML-string that was generated from QueryModel:\n{0}", result);
 
 			return result;
 		}
 
 		[NotNull]
-		protected XElement GetQuery([NotNull] QueryModel query)
+		private XElement GetQuery([NotNull] QueryModel query)
 		{
 			return new XElement(Tags.View,
 				GetRowLimit(query.RowLimit),
@@ -52,13 +52,13 @@ namespace Untech.SharePoint.Common.Data.Translators
 		}
 
 		[CanBeNull]
-		protected XElement GetRowLimit(int? rowLimit)
+		private XElement GetRowLimit(int? rowLimit)
 		{
 			return rowLimit != null ? new XElement(Tags.RowLimit, rowLimit) : null;
 		}
 
 		[CanBeNull]
-		protected XElement GetWheres([CanBeNull]WhereModel where)
+		private XElement GetWheres([CanBeNull]WhereModel where)
 		{
 			var xWhere = GetWhere(where);
 
@@ -71,7 +71,7 @@ namespace Untech.SharePoint.Common.Data.Translators
 		}
 
 		[CanBeNull]
-		protected XElement GetWhere([CanBeNull]WhereModel @where)
+		private XElement GetWhere([CanBeNull]WhereModel @where)
 		{
 			if (@where == null)
 			{
@@ -90,7 +90,7 @@ namespace Untech.SharePoint.Common.Data.Translators
 		}
 
 		[CanBeNull]
-		protected XElement GetOrderBys([CanBeNull]IEnumerable<OrderByModel> orderBys)
+		private XElement GetOrderBys([CanBeNull][ItemNotNull] IEnumerable<OrderByModel> orderBys)
 		{
 			if (orderBys == null)
 			{
@@ -102,7 +102,7 @@ namespace Untech.SharePoint.Common.Data.Translators
 		}
 
 		[NotNull]
-		protected XElement GetOrderBy([NotNull]OrderByModel orderBy)
+		private XElement GetOrderBy([NotNull]OrderByModel orderBy)
 		{
 			return new XElement(Tags.FieldRef,
 				new XAttribute(Tags.Ascending, orderBy.Ascending.ToString().ToUpper()),
@@ -110,7 +110,7 @@ namespace Untech.SharePoint.Common.Data.Translators
 		}
 
 		[CanBeNull]
-		protected XElement GetViewFields([CanBeNull]IEnumerable<FieldRefModel> fieldRefs)
+		private XElement GetViewFields([CanBeNull][ItemNotNull] IEnumerable<FieldRefModel> fieldRefs)
 		{
 			if (fieldRefs == null)
 			{
@@ -124,13 +124,13 @@ namespace Untech.SharePoint.Common.Data.Translators
 		}
 
 		[NotNull]
-		protected XElement GetViewField([NotNull]FieldRefModel fieldRef)
+		private XElement GetViewField([NotNull]FieldRefModel fieldRef)
 		{
 			return new XElement(Tags.FieldRef, GetFieldRefName(fieldRef));
 		}
 
 		[NotNull]
-		protected XElement GetLogicalJoin([NotNull]LogicalJoinModel logicalJoin)
+		private XElement GetLogicalJoin([NotNull]LogicalJoinModel logicalJoin)
 		{
 			return new XElement(logicalJoin.LogicalOperator.ToString(),
 				GetWhere(logicalJoin.First),
@@ -138,7 +138,7 @@ namespace Untech.SharePoint.Common.Data.Translators
 		}
 
 		[NotNull]
-		protected XElement GetComparison([NotNull]ComparisonModel comparison)
+		private XElement GetComparison([NotNull]ComparisonModel comparison)
 		{
 			if (comparison.ComparisonOperator == ComparisonOperator.IsNull ||
 				comparison.ComparisonOperator == ComparisonOperator.IsNotNull)
@@ -153,7 +153,7 @@ namespace Untech.SharePoint.Common.Data.Translators
 		}
 
 		[NotNull]
-		protected XAttribute GetFieldRefName([NotNull]FieldRefModel fieldRef)
+		private XAttribute GetFieldRefName([NotNull]FieldRefModel fieldRef)
 		{
 			if (fieldRef.Type == FieldRefType.Key)
 			{
@@ -171,7 +171,7 @@ namespace Untech.SharePoint.Common.Data.Translators
 		}
 
 		[NotNull]
-		protected XElement GetValue([NotNull]FieldRefModel fieldRef, [CanBeNull]object value, bool alreadyConverted = false)
+		private XElement GetValue([NotNull]FieldRefModel fieldRef, [CanBeNull]object value, bool alreadyConverted = false)
 		{
 			if (fieldRef.Type != FieldRefType.KnownMember)
 			{

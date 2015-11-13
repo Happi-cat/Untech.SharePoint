@@ -69,14 +69,14 @@ namespace Untech.SharePoint.Common.Data.Translators
 		public Expression Process(Expression node)
 		{
 			Logger.Log(LogLevel.Debug, LogCategories.QueryTreeProcessor, 
-				"Expression before rewrite:\n{0}", node);
+				"Original expressions tree:\n{0}", node);
 
 			Candidates = CallCombineNominator.GetCandidates(_combineRules, node);
 
 			var result = Visit(node);
 
 			Logger.Log(LogLevel.Debug, LogCategories.QueryTreeProcessor,
-				"Expression after rewrite:\n{0}", result);
+				"Rewritten expressions tree:\n{0}", result);
 
 			return result;
 		}

@@ -9,7 +9,6 @@ namespace Untech.SharePoint.Common.Data.Translators.Predicate
 {
 	internal class CamlSelectableFieldsProcessor : ExpressionVisitor, IProcessor<Expression, IEnumerable<MemberRefModel>>
 	{
-
 		public CamlSelectableFieldsProcessor()
 		{
 			SelectableFields = new List<MemberRefModel>();
@@ -27,20 +26,21 @@ namespace Untech.SharePoint.Common.Data.Translators.Predicate
 			Visit(node);
 
 			Logger.Log(LogLevel.Trace, LogCategories.SelectableFieldsProcessor, 
-				"Selectable fields:\n{0}", SelectableFields.JoinToString(""));
+				"Selectable fields in predicate:\n{0}", SelectableFields.JoinToString("\n"));
 
 			return SelectableFields;
 		}
 
 		protected override Expression VisitMember(MemberExpression node)
 		{
-			if (node.Expression.NodeType == ExpressionType.Parameter)
+			var objectNode = node.Expression;
+			if (objectNode != null && objectNode.NodeType == ExpressionType.Parameter)
 			{
 				SelectableFields.Add(new MemberRefModel(node.Member));
 			}
-			if (node.Expression.NodeType.In(new[] {ExpressionType.Convert, ExpressionType.ConvertChecked}))
+			if (objectNode != null && objectNode.NodeType.In(new[] { ExpressionType.Convert, ExpressionType.ConvertChecked }))
 			{
-				var unaryNode = (UnaryExpression) node.Expression;
+				var unaryNode = (UnaryExpression) objectNode;
 
 				if (unaryNode.Operand.NodeType == ExpressionType.Parameter)
 				{

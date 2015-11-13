@@ -46,8 +46,10 @@ namespace Untech.SharePoint.Common.Data.Translators.Predicate
 
 		public WhereModel Process([NotNull]Expression predicate)
 		{
+			Guard.CheckNotNull("predicate", predicate);
+
 			Logger.Log(LogLevel.Trace, LogCategories.PredicateProcessor, 
-				"Original predicate:\n{0}", predicate);
+				"Orignal predicate:\n{0}", predicate);
 
 			predicate = predicate.StripQuotes();
 			if (predicate.NodeType == ExpressionType.Lambda)
@@ -63,12 +65,14 @@ namespace Untech.SharePoint.Common.Data.Translators.Predicate
 			var result = Translate(predicate);
 
 			Logger.Log(LogLevel.Trace, LogCategories.PredicateProcessor, 
-				"Result where model from predicate:\n{0}", result);
+				"WhereModel that was generated from predicate:\n{0}", result);
 
 			return result;
 		}
 
-		protected WhereModel Translate([NotNull]Expression node)
+		#region [Private Methods]
+
+		private WhereModel Translate([NotNull]Expression node)
 		{
 			switch (node.NodeType)
 			{
@@ -98,8 +102,6 @@ namespace Untech.SharePoint.Common.Data.Translators.Predicate
 			}
 			throw Error.SubqueryNotSupported(node);
 		}
-
-		#region [Private Methods]
 
 		[NotNull]
 		private WhereModel TranslateConstBoolean([NotNull]ConstantExpression constNode)

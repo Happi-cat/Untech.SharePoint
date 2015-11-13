@@ -3,6 +3,7 @@ using JetBrains.Annotations;
 using Untech.SharePoint.Common.Data.QueryModels;
 using Untech.SharePoint.Common.Diagnostics;
 using Untech.SharePoint.Common.Extensions;
+using Untech.SharePoint.Common.Utils;
 
 namespace Untech.SharePoint.Common.Data.Translators.Predicate
 {
@@ -11,6 +12,8 @@ namespace Untech.SharePoint.Common.Data.Translators.Predicate
 		[NotNull]
 		public MemberRefModel Process([NotNull] Expression predicate)
 		{
+			Guard.CheckNotNull("predicate", predicate);
+
 			Logger.Log(LogLevel.Trace, LogCategories.FieldSelectorProcessor, 
 				"Original predicate:\n{0}", predicate);
 
@@ -20,7 +23,12 @@ namespace Untech.SharePoint.Common.Data.Translators.Predicate
 				predicate = ((LambdaExpression)predicate).Body;
 			}
 
-			return CamlProcessorUtils.GetFieldRef(predicate);
+			var result = CamlProcessorUtils.GetFieldRef(predicate);
+
+			Logger.Log(LogLevel.Trace, LogCategories.FieldSelectorProcessor,
+				"Selectable field in predicate:\n{0}", result);
+
+			return result;
 		}
 	}
 }
