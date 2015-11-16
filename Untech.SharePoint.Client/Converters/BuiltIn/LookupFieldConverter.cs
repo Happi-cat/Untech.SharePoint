@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.SharePoint.Client;
@@ -39,27 +38,15 @@ namespace Untech.SharePoint.Client.Converters.BuiltIn
 
 			if (!Field.AllowMultipleValues)
 			{
-				var fieldValue = (FieldLookupValue) value;
-
-				return new ObjectReference
-				{
-					Id = fieldValue.LookupId,
-					ListId = new Guid(Field.LookupList),
-					Value = fieldValue.LookupValue
-				};
+				return FieldValueToObjectReference((FieldLookupValue) value);
 			}
 			
 			var fieldValues = (IEnumerable<FieldLookupValue>) value;
 
-			return fieldValues.Select(fieldValue => new ObjectReference
-				{
-					Id = fieldValue.LookupId,
-					ListId = new Guid(Field.LookupList),
-					Value = fieldValue.LookupValue
-				})
-				.ToList();
+			return fieldValues.Select(FieldValueToObjectReference).ToList();
 		}
 
+		
 		/// <summary>
 		/// Converts <see cref="MetaField.Member"/> value to SP field value.
 		/// </summary>
@@ -72,24 +59,18 @@ namespace Untech.SharePoint.Client.Converters.BuiltIn
 			
 			if (!Field.AllowMultipleValues)
 			{
-				var reference = (ObjectReference)value;
-
-				return new FieldLookupValue
-				{
-					LookupId = reference.Id
-				};
+				return ObjectReferenceToFieldValue((ObjectReference)value);
 			}
 
 			var references = (IEnumerable<ObjectReference>)value;
 
 			var fieldValues = new List<FieldLookupValue>();
-			fieldValues.AddRange(references.Select(reference => new FieldLookupValue
-			{
-				LookupId = reference.Id
-			}));
+			fieldValues.AddRange(references.Select(ObjectReferenceToFieldValue));
 
 			return fieldValues;
 		}
+
+		
 
 		/// <summary>
 		/// Converts <see cref="MetaField.Member"/> value to SP Caml value.
@@ -99,6 +80,24 @@ namespace Untech.SharePoint.Client.Converters.BuiltIn
 		public string ToCamlValue(object value)
 		{
 			throw new NotImplementedException();
+		}
+
+		private ObjectReference FieldValueToObjectReference(FieldLookupValue fieldValue)
+		{
+			return new ObjectReference
+			{
+				Id = fieldValue.LookupId,
+				ListId = new Guid(Field.LookupList),
+				Value = fieldValue.LookupValue
+			};
+		}
+
+		private static FieldLookupValue ObjectReferenceToFieldValue(ObjectReference reference)
+		{
+			return new FieldLookupValue
+			{
+				LookupId = reference.Id
+			};
 		}
 	}
 }

@@ -38,21 +38,11 @@ namespace Untech.SharePoint.Client.Converters.BuiltIn
 
 			if (!Field.AllowMultipleValues)
 			{
-				var fieldValue = (FieldUserValue) value;
-
-				return new UserInfo
-				{
-					Id = fieldValue.LookupId,
-					Email = fieldValue.Email
-				};
+				return FieldValueToUserInfo((FieldUserValue) value);
 			}
 
 			var fieldValues = (IEnumerable<FieldUserValue>) value;
-			var users = fieldValues.Select(fieldValue => new UserInfo
-			{
-				Id = fieldValue.LookupId,
-				Email = fieldValue.Email
-			});
+			var users = fieldValues.Select(FieldValueToUserInfo);
 
 			return PropertyType == typeof (UserInfo[]) ? (object) users.ToArray() : users.ToList();
 		}
@@ -71,22 +61,13 @@ namespace Untech.SharePoint.Client.Converters.BuiltIn
 			{
 				var userInfo = (UserInfo) value;
 
-				return new FieldUserValue
-				{
-					LookupId = userInfo.Id
-				};
+				return UserInfoToFieldValue(userInfo);
 			} 
 
 			var userInfos = (IEnumerable<UserInfo>) value;
 
 			var fieldValues = new List<FieldUserValue>();
-			fieldValues.AddRange(
-				userInfos.Select(
-					userInfo => new FieldUserValue
-					{
-						LookupId = userInfo.Id
-					}));
-
+			fieldValues.AddRange(userInfos.Select(UserInfoToFieldValue));
 			return fieldValues;
 		}
 
@@ -98,6 +79,23 @@ namespace Untech.SharePoint.Client.Converters.BuiltIn
 		public string ToCamlValue(object value)
 		{
 			throw new NotImplementedException();
+		}
+
+		private static UserInfo FieldValueToUserInfo(FieldUserValue fieldValue)
+		{
+			return new UserInfo
+			{
+				Id = fieldValue.LookupId,
+				Email = fieldValue.Email
+			};
+		}
+
+		private static FieldUserValue UserInfoToFieldValue(UserInfo userInfo)
+		{
+			return new FieldUserValue
+			{
+				LookupId = userInfo.Id
+			};
 		}
 	}
 }

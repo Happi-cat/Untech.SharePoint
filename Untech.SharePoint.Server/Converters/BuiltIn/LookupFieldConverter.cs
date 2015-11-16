@@ -40,22 +40,12 @@ namespace Untech.SharePoint.Server.Converters.BuiltIn
 			{
 				var fieldValue = new SPFieldLookupValue(value.ToString());
 
-				return new ObjectReference
-				{
-					Id = fieldValue.LookupId,
-					ListId = new Guid(Field.LookupList),
-					Value = fieldValue.LookupValue
-				};
+				return FieldValueToObjectReference(fieldValue);
 			}
 
 			var fieldValues = new SPFieldLookupValueCollection(value.ToString());
 
-			return fieldValues.Select(fieldValue => new ObjectReference
-				{
-					Id = fieldValue.LookupId,
-					ListId = new Guid(Field.LookupList),
-					Value = fieldValue.LookupValue
-				})
+			return fieldValues.Select(FieldValueToObjectReference)
 				.ToList();
 		}
 
@@ -73,16 +63,18 @@ namespace Untech.SharePoint.Server.Converters.BuiltIn
 			{
 				var reference = (ObjectReference)value;
 
-				return new SPFieldLookupValue(reference.Id, reference.Value);
+				return ObjectReferenceToFieldValue(reference);
 			}
 
 			var references = (IEnumerable<ObjectReference>)value;
 
 			var fieldValues = new SPFieldLookupValueCollection();
-			fieldValues.AddRange(references.Select(referenceInfo => new SPFieldLookupValue(referenceInfo.Id, referenceInfo.Value)));
+			fieldValues.AddRange(references.Select(ObjectReferenceToFieldValue));
 
 			return fieldValues;
 		}
+
+		
 
 		/// <summary>
 		/// Converts <see cref="MetaField.Member"/> value to SP Caml value.
@@ -92,6 +84,21 @@ namespace Untech.SharePoint.Server.Converters.BuiltIn
 		public string ToCamlValue(object value)
 		{
 			return Convert.ToString(ToSpValue(value));
+		}
+
+		private ObjectReference FieldValueToObjectReference(SPFieldLookupValue fieldValue)
+		{
+			return new ObjectReference
+			{
+				Id = fieldValue.LookupId,
+				ListId = new Guid(Field.LookupList),
+				Value = fieldValue.LookupValue
+			};
+		}
+
+		private static SPFieldLookupValue ObjectReferenceToFieldValue(ObjectReference referenceInfo)
+		{
+			return new SPFieldLookupValue(referenceInfo.Id, referenceInfo.Value);
 		}
 	}
 }

@@ -41,17 +41,11 @@ namespace Untech.SharePoint.Server.Converters.BuiltIn
 			{
 				var fieldValue = new SPFieldUserValue(Field.GetSpWeb(), value.ToString());
 
-				return new UserInfo
-				{
-					Id = fieldValue.User.ID
-				};
+				return UserToUserInfo(fieldValue.User);
 			}
 
 			var fieldValues = new SPFieldUserValueCollection(Field.GetSpWeb(), value.ToString());
-			var users = fieldValues.Select(fieldValue => fieldValue.User).Select(user => new UserInfo
-			{
-				Id = user.ID
-			});
+			var users = fieldValues.Select(fieldValue => fieldValue.User).Select(UserToUserInfo);
 
 			return PropertyType == typeof (UserInfo[]) ? (object) users.ToArray() : users.ToList();
 		}
@@ -68,17 +62,13 @@ namespace Untech.SharePoint.Server.Converters.BuiltIn
 
 			if (!Field.AllowMultipleValues)
 			{
-				var userInfo = (UserInfo) value;
-
-				return new SPFieldUserValue(Field.GetSpWeb(), userInfo.Id, userInfo.Login);
+				return UserInfoToFieldValue((UserInfo) value);
 			}
 
 			var userInfos = (IEnumerable<UserInfo>) value;
 
 			var fieldValues = new SPFieldUserValueCollection();
-			fieldValues.AddRange(
-				userInfos.Select(
-					userInfo => new SPFieldUserValue(Field.GetSpWeb(), userInfo.Id, userInfo.Login)));
+			fieldValues.AddRange(userInfos.Select(UserInfoToFieldValue));
 
 			return fieldValues;
 		}
@@ -91,6 +81,19 @@ namespace Untech.SharePoint.Server.Converters.BuiltIn
 		public string ToCamlValue(object value)
 		{
 			return Convert.ToString(ToSpValue(value));
+		}
+
+		private SPFieldUserValue UserInfoToFieldValue(UserInfo userInfo)
+		{
+			return new SPFieldUserValue(Field.GetSpWeb(), userInfo.Id, userInfo.Login);
+		}
+
+		private static UserInfo UserToUserInfo(SPUser user)
+		{
+			return new UserInfo
+			{
+				Id = user.ID
+			};
 		}
 	}
 }
