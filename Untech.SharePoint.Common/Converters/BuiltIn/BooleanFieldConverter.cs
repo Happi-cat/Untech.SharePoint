@@ -1,34 +1,77 @@
 ﻿using System;
 using Untech.SharePoint.Common.MetaModels;
-using Untech.SharePoint.Common.Utils;
 
 namespace Untech.SharePoint.Common.Converters.BuiltIn
 {
 	[SpFieldConverter("Boolean")]
-	internal class BooleanFieldConverter : IFieldConverter
+	internal class BooleanFieldConverter : MultiTypeFieldConverter
 	{
-		public MetaField Field { get; set; }
-
-		public void Initialize(MetaField field)
+		public override void Initialize(MetaField field)
 		{
-			Guard.CheckNotNull("field", field);
-
-			Field = field;
+			base.Initialize(field);
+			if (field.MemberType == typeof (bool))
+			{
+				Internal = new BoolTypeConverter();
+			}
+			else if (field.MemberType == typeof (bool?))
+			{
+				Internal = new NullableBoolTypeConverter();
+			}
+			else
+			{
+				throw new ArgumentException("MemberType is invalid");
+			}
 		}
 
-		public object FromSpValue(object value)
+		public class BoolTypeConverter : IFieldConverter
 		{
-			return Field.MemberType == typeof (bool?) ? (bool?) value : ((bool?) value ?? false);
+			public void Initialize(MetaField field)
+			{
+				
+			}
+
+			public object FromSpValue(object value)
+			{
+				return (bool) value;
+			}
+
+			public object ToSpValue(object value)
+			{
+				return (bool) value;
+			}
+
+			public string ToCamlValue(object value)
+			{
+				return (bool) value ? "1" : "0";
+			}
 		}
 
-		public object ToSpValue(object value)
+		public class NullableBoolTypeConverter : IFieldConverter
 		{
-			return (bool?)value;
-		}
+			public void Initialize(MetaField field)
+			{
 
-		public string ToCamlValue(object value)
-		{
-			return Convert.ToString(ToSpValue(value));
+			}
+
+			public object FromSpValue(object value)
+			{
+				return (bool?)value;
+			}
+
+			public object ToSpValue(object value)
+			{
+				return (bool?)value;
+			}
+
+			public string ToCamlValue(object value)
+			{
+				var boolValue = (bool?)value ;
+				if (boolValue.HasValue)
+				{
+					return boolValue.Value ? "1" : "0";
+				}
+				return "";
+			}
 		}
 	}
 }

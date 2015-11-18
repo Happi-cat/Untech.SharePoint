@@ -10,7 +10,7 @@ namespace Untech.SharePoint.Common.Configuration
 	/// <summary>
 	/// Represents configuration that is required by <see cref="SpContext{TContext,TCommonService}"/>.
 	/// </summary>
-	public class Config
+	public sealed class Config
 	{
 		/// <summary>
 		/// Intializes a new instance of the <see cref="Config"/> with the specified instances of <see cref="IFieldConverterResolver"/> and <see cref="IMappingSourceResolver"/>.
