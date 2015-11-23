@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using JetBrains.Annotations;
-using Microsoft.SqlServer.Server;
 using Untech.SharePoint.Common.Utils;
 
 namespace Untech.SharePoint.Common.Data.QueryModels
