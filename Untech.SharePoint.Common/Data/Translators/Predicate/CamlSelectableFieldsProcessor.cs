@@ -20,13 +20,12 @@ namespace Untech.SharePoint.Common.Data.Translators.Predicate
 		[NotNull]
 		public IEnumerable<MemberRefModel> Process([CanBeNull]Expression node)
 		{
-			Logger.Log(LogLevel.Trace, LogCategories.SelectableFieldsProcessor, 
-				"Original predicate:\n{0}", node);
+			Logger.Trace(LogCategories.SelectableFieldsProcessor, "Original predicate:\n{0}", node);
 
 			Visit(node);
 
-			Logger.Log(LogLevel.Trace, LogCategories.SelectableFieldsProcessor, 
-				"Selectable fields in predicate:\n{0}", SelectableFields.JoinToString("\n"));
+			Logger.Trace(LogCategories.SelectableFieldsProcessor, "Selectable fields in predicate:\n{0}", 
+				SelectableFields.JoinToString("\n"));
 
 			return SelectableFields;
 		}

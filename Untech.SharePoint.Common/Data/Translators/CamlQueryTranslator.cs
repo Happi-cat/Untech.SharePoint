@@ -29,13 +29,11 @@ namespace Untech.SharePoint.Common.Data.Translators
 		{
 			Guard.CheckNotNull("query", query);
 
-			Logger.Log(LogLevel.Trace, LogCategories.QueryTranslator, 
-				"Original QueryModel:\n{0}", query);
+			Logger.Trace(LogCategories.QueryTranslator, "Original QueryModel:\n{0}", query);
 
 			var result = GetQuery(query).ToString();
 
-			Logger.Log(LogLevel.Trace, LogCategories.QueryTranslator, 
-				"CAML-string that was generated from QueryModel:\n{0}", result);
+			Logger.Trace(LogCategories.QueryTranslator, "CAML-string that was generated from QueryModel:\n{0}", result);
 
 			return result;
 		}

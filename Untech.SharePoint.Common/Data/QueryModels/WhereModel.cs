@@ -29,7 +29,7 @@ namespace Untech.SharePoint.Common.Data.QueryModels
 		/// <param name="left">Left operand. Can be null.</param>
 		/// <param name="right">Right operand. Can be null.</param>
 		/// <returns>Logical or comparison operator.</returns>
-		[CanBeNull]
+		[ContractAnnotation("left:null, right:null => null")]
 		public static WhereModel And([CanBeNull]WhereModel left, [CanBeNull]WhereModel right)
 		{
 			if (left == null)
@@ -45,7 +45,7 @@ namespace Untech.SharePoint.Common.Data.QueryModels
 		/// <param name="left">Left operand. Can be null.</param>
 		/// <param name="right">Right operand. Can be null.</param>
 		/// <returns>Logical or comparison operator.</returns>
-		[CanBeNull]
+		[ContractAnnotation("left:null, right:null => null")]
 		public static WhereModel Or([CanBeNull]WhereModel left, [CanBeNull]WhereModel right)
 		{
 			if (left == null)

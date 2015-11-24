@@ -103,5 +103,17 @@ namespace Untech.SharePoint.Common.Diagnostics
 		{
 			Log(level, category, string.Format(format, args));
 		}
+
+		[StringFormatMethod("format")]
+		internal static void Trace(string category, string format, params object[] args)
+		{
+			Log(LogLevel.Trace, category, string.Format(format, args));
+		}
+
+		[StringFormatMethod("format")]
+		internal static void Debug(string category, string format, params object[] args)
+		{
+			Log(LogLevel.Trace, category, string.Format(format, args));
+		}
 	}
 }

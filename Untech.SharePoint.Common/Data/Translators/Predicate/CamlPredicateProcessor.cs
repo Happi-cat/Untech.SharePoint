@@ -48,8 +48,7 @@ namespace Untech.SharePoint.Common.Data.Translators.Predicate
 		{
 			Guard.CheckNotNull("predicate", predicate);
 
-			Logger.Log(LogLevel.Trace, LogCategories.PredicateProcessor, 
-				"Orignal predicate:\n{0}", predicate);
+			Logger.Trace(LogCategories.PredicateProcessor, "Orignal predicate:\n{0}", predicate);
 
 			predicate = predicate.StripQuotes();
 			if (predicate.NodeType == ExpressionType.Lambda)
@@ -59,19 +58,18 @@ namespace Untech.SharePoint.Common.Data.Translators.Predicate
 			
 			predicate = PreProcessors.Aggregate(predicate, (n, v) => v.Visit(n));
 
-			Logger.Log(LogLevel.Trace, LogCategories.PredicateProcessor, 
-				"Pre-processed predicate:\n{0}", predicate);
+			Logger.Trace(LogCategories.PredicateProcessor, "Pre-processed predicate:\n{0}", predicate);
 
 			var result = Translate(predicate);
 
-			Logger.Log(LogLevel.Trace, LogCategories.PredicateProcessor, 
-				"WhereModel that was generated from predicate:\n{0}", result);
+			Logger.Trace(LogCategories.PredicateProcessor, "WhereModel that was generated from predicate:\n{0}", result);
 
 			return result;
 		}
 
 		#region [Private Methods]
 
+		[NotNull]
 		private WhereModel Translate([NotNull]Expression node)
 		{
 			switch (node.NodeType)
@@ -131,13 +129,13 @@ namespace Untech.SharePoint.Common.Data.Translators.Predicate
 			return new ComparisonModel(ComparisonOperator.Eq, fieldRef, false);
 		}
 
-		[CanBeNull]
+		[NotNull]
 		private WhereModel TranslateAnd([NotNull]BinaryExpression binaryNode)
 		{
 			return WhereModel.And(Translate(binaryNode.Left), Translate(binaryNode.Right));
 		}
 
-		[CanBeNull]
+		[NotNull]
 		private WhereModel TranslateOr([NotNull]BinaryExpression binaryNode)
 		{
 			return WhereModel.Or(Translate(binaryNode.Left), Translate(binaryNode.Right));

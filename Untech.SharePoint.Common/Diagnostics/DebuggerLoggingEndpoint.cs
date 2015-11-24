@@ -16,9 +16,14 @@ namespace Untech.SharePoint.Common.Diagnostics
 		/// <param name="message">Message to print.</param>
 		public void Log(LogLevel level, string category, string message)
 		{
+			if (!Debugger.IsAttached)
+			{
+				return;
+			}
+
 			var logMessage = string.Format("[Thread: {0}, Level: {1}, Category: {2}]\n{3}\n\n", 
 				Thread.CurrentThread.ManagedThreadId, level, category, message);
-
+			
 			Debugger.Log(0, category, logMessage);
 		}
 	}

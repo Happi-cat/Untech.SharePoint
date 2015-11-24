@@ -6,23 +6,40 @@ using Untech.SharePoint.Common.Utils;
 
 namespace Untech.SharePoint.Common.Data
 {
-	public class BaseSpListItemsProvider
+	/// <summary>
+	/// Represents base class for SP list items provider.
+	/// </summary>
+	public abstract class BaseSpListItemsProvider
 	{
-		public BaseSpListItemsProvider([NotNull] MetaList list)
+		/// <summary>
+		/// Initializes a new instance of the <see cref="BaseSpListItemsProvider" />
+		/// </summary>
+		/// <param name="list">Meta models of the SP list.</param>
+		protected BaseSpListItemsProvider([NotNull] MetaList list)
 		{
 			Guard.CheckNotNull("list", list);
 
 			List = list;
 		}
 
+		/// <summary>
+		/// Gets list associated with this instance of the <see cref="BaseSpListItemsProvider"/>.
+		/// </summary>
 		[NotNull]
 		public MetaList List { get; private set; }
 
-		protected string ConvertToCamlString<T>([NotNull]QueryModel queryModel, bool contentTypeFilter = true)
+		/// <summary>
+		/// Converts query model to CAML-string in next format <![CDATA[<View><Query></Query></View>]]>.
+		/// </summary>
+		/// <typeparam name="T">Content Type.</typeparam>
+		/// <param name="queryModel">Query model to convert.</param>
+		/// <param name="filterByContentTypeId"></param>
+		/// <returns>CAML-string in next format <![CDATA[<View><Query></Query></View>]]></returns>
+		protected string ConvertToCamlString<T>([NotNull]QueryModel queryModel, bool filterByContentTypeId = true)
 		{
 			var contentType = List.ContentTypes[typeof (T)];
 
-			if (contentTypeFilter)
+			if (filterByContentTypeId)
 			{
 				AppendContentTypeFilter(contentType, queryModel);
 			}
@@ -30,7 +47,7 @@ namespace Untech.SharePoint.Common.Data
 			return new CamlQueryTranslator(contentType).Process(queryModel);
 		}
 
-		private void AppendContentTypeFilter([NotNull]MetaContentType contentType, [NotNull]QueryModel queryModel)
+		private static void AppendContentTypeFilter([NotNull]MetaContentType contentType, [NotNull]QueryModel queryModel)
 		{
 			if (contentType.List.IsExternal)
 			{

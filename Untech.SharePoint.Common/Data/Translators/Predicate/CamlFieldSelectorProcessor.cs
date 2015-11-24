@@ -14,8 +14,7 @@ namespace Untech.SharePoint.Common.Data.Translators.Predicate
 		{
 			Guard.CheckNotNull("predicate", predicate);
 
-			Logger.Log(LogLevel.Trace, LogCategories.FieldSelectorProcessor, 
-				"Original predicate:\n{0}", predicate);
+			Logger.Trace(LogCategories.FieldSelectorProcessor, "Original predicate:\n{0}", predicate);
 
 			predicate = predicate.StripQuotes();
 			if (predicate.NodeType == ExpressionType.Lambda)
@@ -25,8 +24,7 @@ namespace Untech.SharePoint.Common.Data.Translators.Predicate
 
 			var result = CamlProcessorUtils.GetFieldRef(predicate);
 
-			Logger.Log(LogLevel.Trace, LogCategories.FieldSelectorProcessor,
-				"Selectable field in predicate:\n{0}", result);
+			Logger.Trace(LogCategories.FieldSelectorProcessor, "Selectable field in predicate:\n{0}", result);
 
 			return result;
 		}
