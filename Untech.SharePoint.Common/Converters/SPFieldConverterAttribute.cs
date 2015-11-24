@@ -1,10 +1,12 @@
 ﻿using System;
+using JetBrains.Annotations;
 
 namespace Untech.SharePoint.Common.Converters
 {
 	/// <summary>
 	/// Specifies SP field type that can be converted by marked <see cref="IFieldConverter"/> class.
 	/// </summary>
+	[BaseTypeRequired(typeof(IFieldConverter))]
 	[AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
 	public sealed class SpFieldConverterAttribute : Attribute
 	{

@@ -17,7 +17,7 @@ namespace Untech.SharePoint.Common.Utils
 		/// <param name="paramName">Parameter name.</param>
 		/// <param name="obj">Object to validate.</param>
 		/// <exception cref="ArgumentNullException"><paramref name="obj"/> is null.</exception>
-		public static void CheckNotNull([CanBeNull]string paramName, [CanBeNull]object obj)
+		public static void CheckNotNull([InvokerParameterName][CanBeNull]string paramName, [CanBeNull]object obj)
 		{
 			if (obj != null) return;
 
@@ -30,7 +30,7 @@ namespace Untech.SharePoint.Common.Utils
 		/// <param name="paramName">Parameter name.</param>
 		/// <param name="value">Object to validate.</param>
 		/// <exception cref="ArgumentException"><paramref name="value"/> is null.</exception>
-		public static void CheckNotNullOrEmpty([CanBeNull]string paramName, [CanBeNull]string value)
+		public static void CheckNotNullOrEmpty([InvokerParameterName][CanBeNull]string paramName, [CanBeNull]string value)
 		{
 			if (!string.IsNullOrEmpty(value)) return;
 
@@ -43,7 +43,7 @@ namespace Untech.SharePoint.Common.Utils
 		/// <param name="paramName">Parameter name.</param>
 		/// <param name="enumerable">Collection to validate.</param>
 		/// <exception cref="ArgumentException"><paramref name="enumerable"/> is null or empty.</exception>
-		public static void CheckNotNullOrEmpty<T>([CanBeNull]string paramName, [CanBeNull]IEnumerable<T> enumerable)
+		public static void CheckNotNullOrEmpty<T>([InvokerParameterName][CanBeNull]string paramName, [CanBeNull]IEnumerable<T> enumerable)
 		{
 			if (enumerable != null && enumerable.Any()) return;
 
@@ -58,7 +58,7 @@ namespace Untech.SharePoint.Common.Utils
 		/// <param name="expectedType">Expected type.</param>
 		/// <exception cref="ArgumentNullException"><paramref name="actualType"/> or <paramref name="expectedType"/> is null.</exception>
 		/// <exception cref="ArgumentException"><paramref name="actualType"/> cannot be assinged to <paramref name="expectedType"/>.</exception>
-		public static void CheckIsTypeAssignableTo([CanBeNull]string paramName, [NotNull]Type actualType, [NotNull]Type expectedType)
+		public static void CheckIsTypeAssignableTo([InvokerParameterName][CanBeNull]string paramName, [NotNull]Type actualType, [NotNull]Type expectedType)
 		{
 			CheckNotNull("actualType", actualType);
 			CheckNotNull("expectedType", expectedType);
@@ -81,7 +81,7 @@ namespace Untech.SharePoint.Common.Utils
 		/// <param name="actualType">Actual <see cref="Type"/>.</param>
 		/// <exception cref="ArgumentNullException"><paramref name="actualType"/> is null.</exception>
 		/// <exception cref="ArgumentException"><paramref name="actualType"/> cannot be assinged to <typeparamref name="TExpected"/>.</exception>
-		public static void CheckIsTypeAssignableTo<TExpected>([CanBeNull]string paramName, [NotNull]Type actualType)
+		public static void CheckIsTypeAssignableTo<TExpected>([InvokerParameterName][CanBeNull]string paramName, [NotNull]Type actualType)
 		{
 			CheckIsTypeAssignableTo(paramName, actualType, typeof(TExpected));
 		}
@@ -95,7 +95,7 @@ namespace Untech.SharePoint.Common.Utils
 		/// <param name="expectedType">Expected type.</param>
 		/// <exception cref="ArgumentNullException"><paramref name="expectedType"/> is null.</exception>
 		/// <exception cref="ArgumentException"><paramref name="actualValue"/> cannot be assinged to <paramref name="expectedType"/>.</exception>
-		public static void CheckIsObjectAssignableTo([CanBeNull]string paramName, [CanBeNull]object actualValue, [NotNull]Type expectedType)
+		public static void CheckIsObjectAssignableTo([InvokerParameterName][CanBeNull]string paramName, [CanBeNull]object actualValue, [NotNull]Type expectedType)
 		{
 			CheckNotNull("expectedType", expectedType);
 
@@ -125,7 +125,7 @@ namespace Untech.SharePoint.Common.Utils
 		/// <param name="paramName">Parameter name.</param>
 		/// <param name="actualValue">Object to check.</param>
 		/// <exception cref="ArgumentException"><paramref name="actualValue"/> cannot be assinged to <typeparamref name="TExpected"/>.</exception>
-		public static void CheckIsObjectAssignableTo<TExpected>([CanBeNull]string paramName, [CanBeNull]object actualValue)
+		public static void CheckIsObjectAssignableTo<TExpected>([InvokerParameterName][CanBeNull]string paramName, [CanBeNull]object actualValue)
 		{
 			CheckIsObjectAssignableTo(paramName, actualValue, typeof(TExpected));
 		}
