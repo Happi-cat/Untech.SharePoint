@@ -148,6 +148,38 @@ namespace Untech.SharePoint.Common.Data
 				Expression.Constant(selector.Compile()));
 		}
 
+		internal static TResult Min<TContentType, TResult>(ISpListItemsProvider listItemsProvider,
+			QueryModel queryModel, Func<TContentType, TResult> selector)
+		{
+			return listItemsProvider.Fetch<TContentType>(queryModel)
+				.Select(selector)
+				.Min();
+		}
+
+		internal static MethodCallExpression MakeMin(Type contentType, Type resulType, ISpListItemsProvider listItemsProvider, QueryModel queryModel, LambdaExpression selector)
+		{
+			return Expression.Call(MethodUtils.SpqMin.MakeGenericMethod(contentType, resulType),
+				Expression.Constant(listItemsProvider, typeof(ISpListItemsProvider)),
+				Expression.Constant(queryModel, typeof(QueryModel)),
+				Expression.Constant(selector.Compile()));
+		}
+
+		internal static TResult Max<TContentType, TResult>(ISpListItemsProvider listItemsProvider,
+			QueryModel queryModel, Func<TContentType, TResult> selector)
+		{
+			return listItemsProvider.Fetch<TContentType>(queryModel)
+				.Select(selector)
+				.Max();
+		}
+
+		internal static MethodCallExpression MakeMax(Type contentType, Type resulType, ISpListItemsProvider listItemsProvider, QueryModel queryModel, LambdaExpression selector)
+		{
+			return Expression.Call(MethodUtils.SpqMax.MakeGenericMethod(contentType, resulType),
+				Expression.Constant(listItemsProvider, typeof(ISpListItemsProvider)),
+				Expression.Constant(queryModel, typeof(QueryModel)),
+				Expression.Constant(selector.Compile()));
+		}
+
 		private static Exception NoMatch()
 		{
 			return new InvalidOperationException("No match");
