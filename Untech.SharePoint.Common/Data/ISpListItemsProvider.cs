@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Untech.SharePoint.Common.Data.QueryModels;
 using Untech.SharePoint.Common.MetaModels;
 
 namespace Untech.SharePoint.Common.Data
@@ -17,48 +18,48 @@ namespace Untech.SharePoint.Common.Data
 		/// Fetchs items by the specified CAML query string.
 		/// </summary>
 		/// <typeparam name="T">Type of element to fetch.</typeparam>
-		/// <param name="caml">CAML query string in format: <example><![CDATA[<View><Query><Where></Where></Query></View>]]></example></param>
+		/// <param name="caml">CAML query.</param>
 		/// <returns>Collection of loaded items.</returns>
-		IEnumerable<T> Fetch<T>(string caml);
+		IEnumerable<T> Fetch<T>(QueryModel caml);
 
 		/// <summary>
 		/// Determines whether a sequence returned by CAML query contains any elements.
 		/// </summary>
-		/// <param name="caml">CAML query string in format: <example><![CDATA[<View><Query><Where></Where></Query></View>]]></example></param>
+		/// <param name="caml">CAML query.</param>
 		/// <returns>true if the returned sequence contains any elements; otherwise, false.</returns>
-		bool Any(string caml);
+		bool Any<T>(QueryModel caml);
 
 		/// <summary>
 		/// Returns the number of elements in a sequence return by CAML query.
 		/// </summary>
-		/// <param name="caml">CAML query string in format: <example><![CDATA[<View><Query><Where></Where></Query></View>]]></example></param>
+		/// <param name="caml">CAML query.</param>
 		/// <returns>The number of element in the returned sequence.</returns>
-		int Count(string caml);
+		int Count<T>(QueryModel caml);
 
 		/// <summary>
 		/// Returns the only element of a sequence returned by CAML query, or a default value if the sequence is empty;
 		/// </summary>
 		/// <typeparam name="T">Type of element to fetch.</typeparam>
-		/// <param name="caml">CAML query string in format: <example><![CDATA[<View><Query><Where></Where></Query></View>]]></example></param>
+		/// <param name="caml">CAML query.</param>
 		/// <returns>The single element of the retuned sequence, or default(<typeparamref name="T"/>) if the sequense conatins no elements.</returns>
-		T SingleOrDefault<T>(string caml);
+		T SingleOrDefault<T>(QueryModel caml);
 
 		/// <summary>
 		/// Returns the first element in a sequence returned by CAML query or a default value if the sequence is empty.
 		/// </summary>
 		/// <typeparam name="T">Type of element to fetch.</typeparam>
-		/// <param name="caml">CAML query string in format: <example><![CDATA[<View><Query><Where></Where></Query></View>]]></example></param>
+		/// <param name="caml">CAML query.</param>
 		/// <returns>The first element of the retuned sequence, or default(<typeparamref name="T"/>) if the sequense conatins no elements.</returns>
-		T FirstOrDefault<T>(string caml);
+		T FirstOrDefault<T>(QueryModel caml);
 
 		/// <summary>
 		/// Returns the element at a specified index in a sequence returned by CAML query or a default value if the index is out of range.
 		/// </summary>
 		/// <typeparam name="T">Type of element to fetch.</typeparam>
-		/// <param name="caml">CAML query string in format: <example><![CDATA[<View><Query><Where></Where></Query></View>]]></example></param>
+		/// <param name="caml">CAML query.</param>
 		/// <param name="index"></param>
 		/// <returns>The element at specified index in the retuned sequence, or default(<typeparamref name="T"/>) if the sequense conatins no elements.</returns>
-		T ElementAtOrDefault<T>(string caml, int index);
+		T ElementAtOrDefault<T>(QueryModel caml, int index);
 
 		/// <summary>
 		/// Gets item by id.

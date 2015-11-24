@@ -62,6 +62,7 @@
     <Compile Include="Converters\Custom\EnumFieldConverter.cs" />
     <Compile Include="Converters\Custom\JsonFieldConverter.cs" />
     <Compile Include="Converters\Custom\XmlFieldConverter.cs" />
+    <Compile Include="Data\BaseSpListItemsProvider.cs" />
     <Compile Include="Data\CamlFunctions.cs" />
     <Compile Include="Data\DataMappingException.cs" />
     <Compile Include="Data\MemberRefModelComparer.cs" />
@@ -73,6 +74,7 @@
     <Compile Include="Data\Mapper\StoreAccessor.cs" />
     <Compile Include="Data\Mapper\TypeMapper.cs" />
     <Compile Include="Data\MemberInfoComparer.cs" />
+    <Compile Include="Data\QueryModels\ContentTypeIdRefModel.cs" />
     <Compile Include="Data\QueryModels\FieldRefType.cs" />
     <Compile Include="Data\QueryModels\KeyRefModel.cs" />
     <Compile Include="Data\QueryModels\MemberRefModel.cs" />

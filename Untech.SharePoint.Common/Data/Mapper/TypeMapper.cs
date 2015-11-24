@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using JetBrains.Annotations;
+using Untech.SharePoint.Common.Data.QueryModels;
 using Untech.SharePoint.Common.Extensions;
 using Untech.SharePoint.Common.MetaModels;
 using Untech.SharePoint.Common.Utils;
@@ -66,7 +67,7 @@ namespace Untech.SharePoint.Common.Data.Mapper
 		/// <param name="dest">Destination object.</param>
 		/// <param name="viewFields">Collection of fields internal names that should be mapped.</param>
 		/// <exception cref="ArgumentNullException"><paramref name="source"/> or <paramref name="dest"/> is null.</exception>
-		public virtual void Map([NotNull]TSPItem source, [NotNull]object dest, IReadOnlyCollection<string> viewFields = null)
+		public virtual void Map([NotNull]TSPItem source, [NotNull]object dest, IReadOnlyCollection<MemberRefModel> viewFields = null)
 		{
 			Guard.CheckNotNull("source", source);
 			Guard.CheckNotNull("dest", dest);
@@ -84,7 +85,7 @@ namespace Untech.SharePoint.Common.Data.Mapper
 		/// <param name="viewFields">Collection of fields internal names that should be mapped.</param>
 		/// <returns>New .NET entity.</returns>
 		/// <exception cref="ArgumentNullException"><paramref name="source"/> is null.</exception>
-		public virtual object CreateAndMap([NotNull]TSPItem source, IReadOnlyCollection<string> viewFields = null)
+		public virtual object CreateAndMap([NotNull]TSPItem source, IReadOnlyCollection<MemberRefModel> viewFields = null)
 		{
 			Guard.CheckNotNull("source", source);
 
@@ -117,15 +118,17 @@ namespace Untech.SharePoint.Common.Data.Mapper
 		/// </summary>
 		/// <returns>Collection of field mappers for fields that should be mapped.</returns>
 		[NotNull]
-		protected IEnumerable<FieldMapper<TSPItem>> GetMappers([CanBeNull]IReadOnlyCollection<string> viewFields)
+		protected IEnumerable<FieldMapper<TSPItem>> GetMappers([CanBeNull]IReadOnlyCollection<MemberRefModel> viewFields)
 		{
 			if (viewFields.IsNullOrEmpty())
 			{
 				return GetMappers();
 			}
 
+			var viewMembers = viewFields.Select(n => n.Member).ToList();
+
 			return ContentType.Fields
-				.Where<MetaField>(n => n.InternalName.In(viewFields))
+				.Where<MetaField>(n =>  viewMembers.Contains(n.Member))
 				.Select(n => n.GetMapper<TSPItem>());
 		}
 	}

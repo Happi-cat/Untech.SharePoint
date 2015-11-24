@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using Untech.SharePoint.Common.Data.QueryModels;
-using Untech.SharePoint.Common.Data.Translators;
 
 namespace Untech.SharePoint.Common.Data
 {
@@ -22,7 +21,7 @@ namespace Untech.SharePoint.Common.Data
 
 		internal static IEnumerable<T> Fetch<T>(ISpListItemsProvider listItemsProvider, QueryModel queryModel)
 		{
-			return listItemsProvider.Fetch<T>(ConvertToCaml<T>(listItemsProvider, queryModel));
+			return listItemsProvider.Fetch<T>(queryModel);
 		}
 
 		internal static MethodCallExpression MakeFetch(Type entityType, ISpListItemsProvider listItemsProvider, QueryModel queryModel)
@@ -65,11 +64,9 @@ namespace Untech.SharePoint.Common.Data
 
 		internal static T First<T>(ISpListItemsProvider listItemsProvider, QueryModel queryModel, bool throwIfNothing, bool throwIfMultiple)
 		{
-			var query = ConvertToCaml<T>(listItemsProvider, queryModel);
-
 			var item = throwIfMultiple
-				? listItemsProvider.SingleOrDefault<T>(query)
-				: listItemsProvider.FirstOrDefault<T>(query);
+				? listItemsProvider.SingleOrDefault<T>(queryModel)
+				: listItemsProvider.FirstOrDefault<T>(queryModel);
 
 			if (throwIfNothing && item == null)
 			{
@@ -90,9 +87,7 @@ namespace Untech.SharePoint.Common.Data
 
 		internal static T ElementAt<T>(ISpListItemsProvider listItemsProvider, QueryModel queryModel, int index, bool throwIfNothing)
 		{
-			var query = ConvertToCaml<T>(listItemsProvider, queryModel);
-
-			var item = listItemsProvider.ElementAtOrDefault<T>(query, index);
+			var item = listItemsProvider.ElementAtOrDefault<T>(queryModel, index);
 
 			if (throwIfNothing && item == null)
 			{
@@ -115,7 +110,7 @@ namespace Untech.SharePoint.Common.Data
 		{
 			queryModel.RowLimit = 1;
 
-			return listItemsProvider.Any(ConvertToCaml<T>(listItemsProvider, queryModel));
+			return listItemsProvider.Any<T>(queryModel);
 		}
 
 		internal static MethodCallExpression MakeAny(Type entityType, ISpListItemsProvider listItemsProvider, QueryModel queryModel)
@@ -128,7 +123,7 @@ namespace Untech.SharePoint.Common.Data
 
 		internal static int Count<T>(ISpListItemsProvider listItemsProvider, QueryModel queryModel)
 		{
-			return listItemsProvider.Count(ConvertToCaml<T>(listItemsProvider, queryModel));
+			return listItemsProvider.Count<T>(queryModel);
 		}
 
 		internal static MethodCallExpression MakeCount(Type entityType, ISpListItemsProvider listItemsProvider, QueryModel queryModel)
@@ -141,7 +136,7 @@ namespace Untech.SharePoint.Common.Data
 		internal static IEnumerable<TResult> Select<TContentType, TResult>(ISpListItemsProvider listItemsProvider,
 			QueryModel queryModel, Func<TContentType, TResult> selector)
 		{
-			return listItemsProvider.Fetch<TContentType>(ConvertToCaml<TContentType>(listItemsProvider, queryModel))
+			return listItemsProvider.Fetch<TContentType>(queryModel)
 				.Select(selector);
 		}
 
@@ -151,13 +146,6 @@ namespace Untech.SharePoint.Common.Data
 				Expression.Constant(listItemsProvider, typeof(ISpListItemsProvider)),
 				Expression.Constant(queryModel, typeof(QueryModel)),
 				Expression.Constant(selector.Compile()));
-		}
-
-		private static string ConvertToCaml<T>(ISpListItemsProvider listItemsProvider, QueryModel queryModel)
-		{
-			var translator = new CamlQueryTranslator(listItemsProvider.List.ContentTypes[typeof (T)]);
-			
-			return  translator.Process(queryModel);
 		}
 
 		private static Exception NoMatch()

@@ -62,11 +62,6 @@ namespace Untech.SharePoint.Common.Data.Translators
 		{
 			var xWhere = GetWhere(where);
 
-			if (!string.IsNullOrEmpty(ContentType.Id))
-			{
-				xWhere = AppendContentTypeFilter(xWhere);
-			}
-
 			return xWhere != null ? new XElement(Tags.Where, xWhere) : null;
 		}
 
@@ -155,16 +150,16 @@ namespace Untech.SharePoint.Common.Data.Translators
 		[NotNull]
 		private XAttribute GetFieldRefName([NotNull]FieldRefModel fieldRef)
 		{
-			if (fieldRef.Type == FieldRefType.Key)
+			switch (fieldRef.Type)
 			{
-				var key = ContentType.List.IsExternal ? Fields.BdcIdentity : Fields.Id;
-
-				return new XAttribute(Tags.Name, key);
-			}
-			if (fieldRef.Type == FieldRefType.KnownMember)
-			{
-				var memberRef = (MemberRefModel)fieldRef;
-				return new XAttribute(Tags.Name, GetMetaField(memberRef.Member).InternalName);
+				case FieldRefType.Key:
+					var key = ContentType.List.IsExternal ? Fields.BdcIdentity : Fields.Id;
+					return new XAttribute(Tags.Name, key);
+				case FieldRefType.ContentTypeId:
+					return new XAttribute(Tags.Name, Fields.ContentTypeId);
+				case FieldRefType.KnownMember:
+					var memberRef = (MemberRefModel)fieldRef;
+					return new XAttribute(Tags.Name, GetMetaField(memberRef.Member).InternalName);
 			}
 
 			throw new NotSupportedException("Unsupported FieldRefType value");
@@ -183,28 +178,6 @@ namespace Untech.SharePoint.Common.Data.Translators
 			return new XElement(Tags.Value,
 				new XAttribute(Tags.Type, GetMetaField(memberRef.Member).TypeAsString),
 				alreadyConverted ? value : GetConverter(memberRef.Member).ToCamlValue(value));
-		}
-
-		[CanBeNull]
-		private XElement AppendContentTypeFilter([CanBeNull]XElement xWhere)
-		{
-			if (ContentType.List.IsExternal)
-			{
-				return xWhere;
-			}
-
-			var xContentType = new XElement(Tags.Eq,
-					new XElement(Tags.FieldRef, new XAttribute(Tags.Name, Fields.ContentTypeId)),
-					new XElement(Tags.Value, ContentType.Id));
-
-			if (xWhere != null)
-			{
-				return new XElement(Tags.And,
-					xContentType,
-					xWhere);
-			}
-
-			return xContentType;
 		}
 
 		[NotNull]

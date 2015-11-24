@@ -14,6 +14,10 @@ namespace Untech.SharePoint.Common.Data.QueryModels
 		/// <summary>
 		/// FieldRef associated with key field, i.e. ID or BdcIdentity for external lists.
 		/// </summary>
-		Key
+		Key,
+		/// <summary>
+		/// FieldRef associated with ContentTypeId field.
+		/// </summary>
+		ContentTypeId
 	}
 }

@@ -3,18 +3,20 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.SharePoint;
 using Untech.SharePoint.Common.Data;
+using Untech.SharePoint.Common.Data.QueryModels;
+using Untech.SharePoint.Common.Extensions;
 using Untech.SharePoint.Common.MetaModels;
 using Untech.SharePoint.Common.Utils;
 using Untech.SharePoint.Server.Utils;
 
 namespace Untech.SharePoint.Server.Data
 {
-	internal class SpListItemsProvider : ISpListItemsProvider
+	internal class SpListItemsProvider : BaseSpListItemsProvider, ISpListItemsProvider
 	{
 		public SpListItemsProvider(SPWeb web, SpCommonService commonService, MetaList list)
+			: base(list)
 		{
 			Web = web;
-			List = list;
 			CommonService = commonService;
 
 			SpList = web.Lists[list.Title];
@@ -24,32 +26,33 @@ namespace Untech.SharePoint.Server.Data
 
 		public SpCommonService CommonService { get; private set; }
 
-		public MetaList List { get; private set; }
-
 		public SPList SpList { get; private set; }
 
-		public IEnumerable<T> Fetch<T>(string caml)
+		public IEnumerable<T> Fetch<T>(QueryModel caml)
 		{
-			var viewFields = CamlUtility.GetViewFields(caml);
+			var viewFields = caml.SelectableFields.EmptyIfNull().ToList();
 
-			return FetchInternal(caml)
+			return FetchInternal<T>(caml)
 				.Select(n => Materialize<T>(n, viewFields));
 		}
 
-		public bool Any(string caml)
+		public bool Any<T>(QueryModel caml)
 		{
-			return FetchInternal(caml).Any();
+			return FetchInternal<T>(caml).Any();
 		}
 
-		public int Count(string caml)
+		public int Count<T>(QueryModel caml)
 		{
-			return FetchInternal(caml).Count;
+			return FetchInternal<T>(caml).Count;
 		}
 
-		public T SingleOrDefault<T>(string caml)
+		public T SingleOrDefault<T>(QueryModel caml)
 		{
-			var viewFields = CamlUtility.GetViewFields(caml);
-			var foundItems = FetchInternal(caml, 2);
+			var viewFields = caml.SelectableFields.EmptyIfNull().ToList();
+
+			caml.RowLimit = 2;
+
+			var foundItems = FetchInternal<T>(caml);
 
 			if (foundItems.Count > 1)
 			{
@@ -58,18 +61,24 @@ namespace Untech.SharePoint.Server.Data
 			return foundItems.Count == 1 ? Materialize<T>(foundItems[0], viewFields) : default(T);
 		}
 
-		public T FirstOrDefault<T>(string caml)
+		public T FirstOrDefault<T>(QueryModel caml)
 		{
-			var viewFields = CamlUtility.GetViewFields(caml);
-			var foundItems = FetchInternal(caml, 1);
+			var viewFields = caml.SelectableFields.EmptyIfNull().ToList();
+
+			caml.RowLimit = 1;
+
+			var foundItems = FetchInternal<T>(caml);
 
 			return foundItems.Count == 1 ? Materialize<T>(foundItems[0], viewFields) : default(T);
 		}
 
-		public T ElementAtOrDefault<T>(string caml, int index)
+		public T ElementAtOrDefault<T>(QueryModel caml, int index)
 		{
-			var viewFields = CamlUtility.GetViewFields(caml);
-			var foundItem = FetchInternal(caml, (uint) (index + 1)).ElementAtOrDefault(index);
+			var viewFields = caml.SelectableFields.EmptyIfNull().ToList();
+
+			caml.RowLimit = index + 1;
+
+			var foundItem = FetchInternal<T>(caml).ElementAtOrDefault(index);
 
 			return foundItem != null ? Materialize<T>(foundItem, viewFields) : default(T);
 		}
@@ -162,25 +171,16 @@ namespace Untech.SharePoint.Server.Data
 			spItem.Delete();
 		}
 
-		private IList<SPListItem> FetchInternal(string caml)
+		private IList<SPListItem> FetchInternal<T>(QueryModel caml)
 		{
-			return SpList.GetItems(CamlUtility.CamlStringToSPQuery(caml))
+			var camlString = ConvertToCamlString<T>(caml);
+
+			return SpList.GetItems(CamlUtility.CamlStringToSPQuery(camlString))
 				.Cast<SPListItem>()
 				.ToList();
 		}
 
-		private IList<SPListItem> FetchInternal(string caml, uint overrideRowLimit)
-		{
-			var query = CamlUtility.CamlStringToSPQuery(caml);
-			query.RowLimit = overrideRowLimit;
-
-			return SpList.GetItems(query)
-				.Cast<SPListItem>()
-				.ToList();
-		}
-
-		
-		private T Materialize<T>(SPListItem spItem, IReadOnlyCollection<string> fields = null)
+		private T Materialize<T>(SPListItem spItem, IReadOnlyCollection<MemberRefModel> fields = null)
 		{
 			var contentType = List.ContentTypes[typeof(T)];
 			var mapper = contentType.GetMapper<SPListItem>();
