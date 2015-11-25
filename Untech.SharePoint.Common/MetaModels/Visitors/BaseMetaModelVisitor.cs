@@ -27,9 +27,9 @@ namespace Untech.SharePoint.Common.MetaModels.Visitors
 		{
 			if (context == null) return;
 
-			foreach (var model in (IEnumerable<IMetaModel>) context.Lists)
+			foreach (var model in (IEnumerable<MetaList>) context.Lists)
 			{
-				Visit(model);
+				VisitList(model);
 			}
 		}
 
@@ -41,9 +41,9 @@ namespace Untech.SharePoint.Common.MetaModels.Visitors
 		{
 			if (list == null) return;
 
-			foreach (var model in (IEnumerable<IMetaModel>)list.ContentTypes)
+			foreach (var model in (IEnumerable<MetaContentType>)list.ContentTypes)
 			{
-				Visit(model);
+				VisitContentType(model);
 			}
 		}
 
@@ -55,9 +55,9 @@ namespace Untech.SharePoint.Common.MetaModels.Visitors
 		{
 			if (contentType == null) return;
 
-			foreach (var model in (IEnumerable<IMetaModel>)contentType.Fields)
+			foreach (var model in (IEnumerable<MetaField>)contentType.Fields)
 			{
-				Visit(model);
+				VisitField(model);
 			}
 		}
 
