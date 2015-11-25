@@ -108,6 +108,7 @@
     <Compile Include="Data\Translators\Predicate\SwapComparisonVisitor.cs" />
     <Compile Include="Data\Translators\CamlQueryTranslator.cs" />
     <Compile Include="Data\Translators\Predicate\XorRewriter.cs" />
+    <Compile Include="Mappings\IMappingSource.cs" />
     <Compile Include="Tags.cs" />
     <Compile Include="Diagnostics\ILoggingEndpoint.cs" />
     <Compile Include="Diagnostics\LogLevel.cs" />
@@ -165,7 +166,7 @@
     <Compile Include="MetaModels\Providers\IMetaFieldProvider.cs" />
     <Compile Include="Models\Entity.cs" />
     <Compile Include="Mappings\IListTitleResolver.cs" />
-    <Compile Include="Mappings\IMappingSource.cs" />
+    <Compile Include="Mappings\MappingSource.cs" />
     <Compile Include="Utils\Reflection\InstanceCreationUtility.cs" />
     <Compile Include="Utils\Reflection\MemberAccessUtility.cs" />
     <Compile Include="Collections\Container.cs" />

@@ -28,14 +28,14 @@ namespace Untech.SharePoint.Common.Configuration
 		}
 
 		/// <summary>
-		/// Adds or updates <see cref="IMappingSource{TContext}"/> for <typeparamref name="TContext"/>
+		/// Adds or updates <see cref="MappingSource{TContext}"/> for <typeparamref name="TContext"/>
 		/// </summary>
 		/// <typeparam name="TContext">The type of the context to register.</typeparam>
-		/// <param name="action">Action that will return new instance of <see cref="IMappingSource{TContext}"/>.</param>
+		/// <param name="action">Action that will return new instance of <see cref="MappingSource{TContext}"/>.</param>
 		/// <returns>Current <see cref="ConfigBuilder"/> instance.</returns>
 		/// <exception cref="ArgumentNullException"><paramref name="action"/> is null.</exception>
 		[NotNull]
-		public ConfigBuilder RegisterMappings<TContext>([NotNull]Func<Mappings.Mappings, IMappingSource<TContext>> action)
+		public ConfigBuilder RegisterMappings<TContext>([NotNull]Func<Mappings.Mappings, MappingSource<TContext>> action)
 			where TContext: ISpContext
 		{
 			Guard.CheckNotNull("action", action);
