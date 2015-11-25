@@ -1,10 +1,12 @@
 ﻿using System;
+using Untech.SharePoint.Common.CodeAnnotations;
 using Untech.SharePoint.Common.MetaModels;
 using Untech.SharePoint.Common.Utils;
 
 namespace Untech.SharePoint.Common.Converters
 {
-	internal class MultiTypeFieldConverter : IFieldConverter
+	[PublicAPI]
+	public class MultiTypeFieldConverter : IFieldConverter
 	{
 		protected MetaField Field { get; private set; }
 		protected IFieldConverter Internal { get; set; }

@@ -37,9 +37,6 @@
     <AssemblyOriginatorKeyFile>key.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="JetBrains.Annotations">
-      <HintPath>..\packages\JetBrains.Annotations.9.2.0\lib\net20\JetBrains.Annotations.dll</HintPath>
-    </Reference>
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\packages\Newtonsoft.Json.6.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
@@ -50,6 +47,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CodeAnnotations\Attributes.cs" />
     <Compile Include="Configuration\Config.cs" />
     <Compile Include="Converters\MultiTypeFieldConverter.cs" />
     <Compile Include="Converters\BuiltIn\BooleanFieldConverter.cs" />
@@ -63,7 +61,6 @@
     <Compile Include="Converters\Custom\JsonFieldConverter.cs" />
     <Compile Include="Converters\Custom\XmlFieldConverter.cs" />
     <Compile Include="Data\BaseSpListItemsProvider.cs" />
-    <Compile Include="Data\CamlFunctions.cs" />
     <Compile Include="Data\DataMappingException.cs" />
     <Compile Include="Data\MemberRefModelComparer.cs" />
     <Compile Include="Data\GenericMethodDefinitionComparer.cs" />

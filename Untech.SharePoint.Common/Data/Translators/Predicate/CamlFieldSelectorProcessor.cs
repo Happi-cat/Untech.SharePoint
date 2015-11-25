@@ -1,5 +1,5 @@
 ﻿using System.Linq.Expressions;
-using JetBrains.Annotations;
+using Untech.SharePoint.Common.CodeAnnotations;
 using Untech.SharePoint.Common.Data.QueryModels;
 using Untech.SharePoint.Common.Diagnostics;
 using Untech.SharePoint.Common.Extensions;

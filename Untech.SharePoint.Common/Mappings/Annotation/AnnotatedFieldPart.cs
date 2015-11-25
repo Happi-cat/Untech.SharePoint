@@ -12,7 +12,7 @@ namespace Untech.SharePoint.Common.Mappings.Annotation
 		private readonly MemberInfo _member;
 		private readonly SpFieldAttribute _fieldAttribute;
 
-		protected AnnotatedFieldPart(MemberInfo member)
+		private AnnotatedFieldPart(MemberInfo member)
 		{
 			Guard.CheckNotNull("member", member);
 
@@ -54,18 +54,17 @@ namespace Untech.SharePoint.Common.Mappings.Annotation
 
 		#endregion
 
-
-		public string InternalName
+		private string InternalName
 		{
 			get { return string.IsNullOrEmpty(_fieldAttribute.Name) ? _member.Name : _fieldAttribute.Name; }
 		}
 
-		public string TypeAsString
+		private string TypeAsString
 		{
 			get { return _fieldAttribute.FieldType; }
 		}
 
-		public Type CustomConverterType
+		private Type CustomConverterType
 		{
 			get { return _fieldAttribute.CustomConverterType; }
 		}

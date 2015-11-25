@@ -1,13 +1,15 @@
 using System;
+using Untech.SharePoint.Common.CodeAnnotations;
 using Untech.SharePoint.Common.MetaModels;
 using Untech.SharePoint.Common.Utils;
 
 namespace Untech.SharePoint.Common.Converters.BuiltIn
 {
 	[SpFieldConverter("Guid")]
+	[UsedImplicitly]
 	internal class GuidFieldConverter : IFieldConverter
 	{
-		public MetaField Field { get; set; }
+		private MetaField Field { get; set; }
 
 		public void Initialize(MetaField field)
 		{

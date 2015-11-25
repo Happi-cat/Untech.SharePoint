@@ -1,5 +1,6 @@
 using System;
 using Microsoft.SharePoint;
+using Untech.SharePoint.Common.CodeAnnotations;
 using Untech.SharePoint.Common.Converters;
 using Untech.SharePoint.Common.MetaModels;
 using Untech.SharePoint.Common.Models;
@@ -8,10 +9,9 @@ using Untech.SharePoint.Common.Utils;
 namespace Untech.SharePoint.Server.Converters.BuiltIn
 {
 	[SpFieldConverter("Geolocation")]
+	[UsedImplicitly]
 	internal class GeolocationFieldConverter : IFieldConverter
 	{
-		public MetaField Field { get; set; }
-
 		/// <summary>
 		/// Initialzes current instance with the specified <see cref="MetaField"/>
 		/// </summary>
@@ -19,8 +19,6 @@ namespace Untech.SharePoint.Server.Converters.BuiltIn
 		public void Initialize(MetaField field)
 		{
 			Guard.CheckNotNull("field", field);
-
-			Field = field;
 		}
 
 		/// <summary>

@@ -1,5 +1,6 @@
 using System;
 using Microsoft.SharePoint;
+using Untech.SharePoint.Common.CodeAnnotations;
 using Untech.SharePoint.Common.Converters;
 using Untech.SharePoint.Common.MetaModels;
 using Untech.SharePoint.Common.Models;
@@ -8,9 +9,10 @@ using Untech.SharePoint.Common.Utils;
 namespace Untech.SharePoint.Server.Converters.BuiltIn
 {
 	[SpFieldConverter("URL")]
+	[UsedImplicitly]
 	internal class UrlFieldConverter : IFieldConverter
 	{
-		public MetaField Field { get; set; }
+		private MetaField Field { get; set; }
 
 		/// <summary>
 		/// Initialzes current instance with the specified <see cref="MetaField"/>

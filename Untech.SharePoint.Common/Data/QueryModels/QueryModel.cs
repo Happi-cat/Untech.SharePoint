@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using JetBrains.Annotations;
+using Untech.SharePoint.Common.CodeAnnotations;
 using Untech.SharePoint.Common.Extensions;
 
 namespace Untech.SharePoint.Common.Data.QueryModels
@@ -10,6 +10,7 @@ namespace Untech.SharePoint.Common.Data.QueryModels
 	/// <summary>
 	/// Represents CAML Query tag.
 	/// </summary>
+	[PublicAPI]
 	public sealed class QueryModel
 	{
 		[CanBeNull] private List<MemberRefModel> _selectableFields;
@@ -76,21 +77,6 @@ namespace Untech.SharePoint.Common.Data.QueryModels
 				_orderBys = new List<OrderByModel>();
 			}
 			_orderBys.Add(_isOrderReversed ? orderBy.Reverse() : orderBy);
-		}
-
-		/// <summary>
-		/// Merge current CAML Orderby operations with new ones.
-		/// </summary>
-		/// <param name="orderBys">New OrderBy operations to merge.</param>
-		public void MergeOrderBys([CanBeNull]IEnumerable<OrderByModel> orderBys)
-		{
-			if (orderBys == null) return;
-
-			if (_orderBys == null)
-			{
-				_orderBys = new List<OrderByModel>();
-			}
-			_orderBys.AddRange(_isOrderReversed ? orderBys.Select(n => n.Reverse()) : orderBys);
 		}
 
 		/// <summary>

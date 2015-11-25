@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using Untech.SharePoint.Common.CodeAnnotations;
 using Untech.SharePoint.Common.Data.QueryModels;
 
 namespace Untech.SharePoint.Common.Data
 {
 	internal static class SpQueryable
 	{
+		[UsedImplicitly]
 		internal static IQueryable<T> FakeFetch<T>(ISpListItemsProvider listItemsProvider)
 		{
 			throw new NotImplementedException("If you see that exception it means that expression tree rewrite failed");
@@ -62,6 +64,7 @@ namespace Untech.SharePoint.Common.Data
 				Expression.Constant(count));
 		}
 
+		[UsedImplicitly]
 		internal static T First<T>(ISpListItemsProvider listItemsProvider, QueryModel queryModel, bool throwIfNothing, bool throwIfMultiple)
 		{
 			var item = throwIfMultiple
@@ -85,6 +88,7 @@ namespace Untech.SharePoint.Common.Data
 				Expression.Constant(throwIfMultiple));
 		}
 
+		[UsedImplicitly]
 		internal static T ElementAt<T>(ISpListItemsProvider listItemsProvider, QueryModel queryModel, int index, bool throwIfNothing)
 		{
 			var item = listItemsProvider.ElementAtOrDefault<T>(queryModel, index);

@@ -1,9 +1,11 @@
 ﻿using System;
+using Untech.SharePoint.Common.CodeAnnotations;
 using Untech.SharePoint.Common.MetaModels;
 
 namespace Untech.SharePoint.Common.Converters.BuiltIn
 {
 	[SpFieldConverter("Boolean")]
+	[UsedImplicitly]
 	internal class BooleanFieldConverter : MultiTypeFieldConverter
 	{
 		public override void Initialize(MetaField field)
@@ -23,7 +25,7 @@ namespace Untech.SharePoint.Common.Converters.BuiltIn
 			}
 		}
 
-		public class BoolTypeConverter : IFieldConverter
+		private class BoolTypeConverter : IFieldConverter
 		{
 			public void Initialize(MetaField field)
 			{
@@ -46,7 +48,7 @@ namespace Untech.SharePoint.Common.Converters.BuiltIn
 			}
 		}
 
-		public class NullableBoolTypeConverter : IFieldConverter
+		private class NullableBoolTypeConverter : IFieldConverter
 		{
 			public void Initialize(MetaField field)
 			{

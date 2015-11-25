@@ -14,7 +14,7 @@ namespace Untech.SharePoint.Client.Data
 			ClientContext = clientContext;
 		}
 
-		public ClientContext ClientContext { get; private set; }
+		private ClientContext ClientContext { get; set; }
 
 		public override void VisitList(MetaList list)
 		{
@@ -25,7 +25,7 @@ namespace Untech.SharePoint.Client.Data
 			new ListInfoLoader(spList).VisitList(list);
 		}
 
-		internal class ListInfoLoader : BaseMetaModelVisitor
+		private class ListInfoLoader : BaseMetaModelVisitor
 		{
 			public ListInfoLoader(List spList)
 			{
@@ -34,7 +34,7 @@ namespace Untech.SharePoint.Client.Data
 				SpList = spList;
 			}
 
-			public List SpList { get; private set; }
+			private List SpList { get; set; }
 
 			public override void VisitContentType(MetaContentType contentType)
 			{

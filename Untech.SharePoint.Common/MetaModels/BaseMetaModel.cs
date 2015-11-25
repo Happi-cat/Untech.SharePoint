@@ -1,5 +1,5 @@
 ﻿using System;
-using JetBrains.Annotations;
+using Untech.SharePoint.Common.CodeAnnotations;
 using Untech.SharePoint.Common.Collections;
 using Untech.SharePoint.Common.MetaModels.Visitors;
 using Untech.SharePoint.Common.Utils;
@@ -19,11 +19,8 @@ namespace Untech.SharePoint.Common.MetaModels
 			AdditionalProperties  = new Container<string, object>();
 		}
 
-		/// <summary>
-		/// Gets <see cref="Container{TKey,TObject}"/> of additional properties.
-		/// </summary>
 		[NotNull]
-		protected Container<string, object> AdditionalProperties { get; private set; }
+		private Container<string, object> AdditionalProperties { get; set; }
 
 		/// <summary>
 		/// Accepts <see cref="IMetaModelVisitor"/> instance.

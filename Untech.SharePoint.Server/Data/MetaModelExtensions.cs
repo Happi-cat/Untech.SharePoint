@@ -1,5 +1,5 @@
-﻿using JetBrains.Annotations;
-using Microsoft.SharePoint;
+﻿using Microsoft.SharePoint;
+using Untech.SharePoint.Common.CodeAnnotations;
 using Untech.SharePoint.Common.MetaModels;
 using Untech.SharePoint.Common.Utils;
 

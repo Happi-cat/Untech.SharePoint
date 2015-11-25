@@ -1,4 +1,4 @@
-﻿using JetBrains.Annotations;
+﻿using Untech.SharePoint.Common.CodeAnnotations;
 using Untech.SharePoint.Common.Data.QueryModels;
 using Untech.SharePoint.Common.Data.Translators;
 using Untech.SharePoint.Common.MetaModels;

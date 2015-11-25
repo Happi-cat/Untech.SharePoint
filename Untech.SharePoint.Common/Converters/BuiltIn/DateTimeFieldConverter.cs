@@ -1,14 +1,16 @@
 ﻿using System;
 using System.Text;
+using Untech.SharePoint.Common.CodeAnnotations;
 using Untech.SharePoint.Common.MetaModels;
 using Untech.SharePoint.Common.Utils;
 
 namespace Untech.SharePoint.Common.Converters.BuiltIn
 {
 	[SpFieldConverter("DateTime")]
+	[UsedImplicitly]
 	internal class DateTimeFieldConverter : IFieldConverter
 	{
-		public MetaField Field { get; set; }
+		private MetaField Field { get; set; }
 
 		public void Initialize(MetaField field)
 		{
@@ -52,7 +54,7 @@ namespace Untech.SharePoint.Common.Converters.BuiltIn
 				return null;
 			}
 
-			return CreateISO8601DateTime(dateValue);
+			return CreateIsoDate(dateValue);
 		}
 
 		/// <summary>
@@ -62,7 +64,7 @@ namespace Untech.SharePoint.Common.Converters.BuiltIn
 		/// A string that contains the date and time in ISO8601 DateTime format.
 		/// </returns>
 		/// <param name="dtValue">A System.DateTime object that represents the system DateTime value in the form mm/dd/yyyy hh:mm:ss AM or PM.</param>
-		public static string CreateISO8601DateTime(DateTime dtValue)
+		private static string CreateIsoDate(DateTime dtValue)
 		{
 			var sb = new StringBuilder();
 			sb.Append(dtValue.Year.ToString("0000"));

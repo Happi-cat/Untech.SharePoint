@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Reflection;
-using JetBrains.Annotations;
+using Untech.SharePoint.Common.CodeAnnotations;
 using Untech.SharePoint.Common.Converters;
 using Untech.SharePoint.Common.Extensions;
 using Untech.SharePoint.Common.MetaModels.Visitors;
@@ -11,6 +11,7 @@ namespace Untech.SharePoint.Common.MetaModels
 	/// <summary>
 	/// Represents MetaData for SP Field.
 	/// </summary>
+	[PublicAPI]
 	public sealed class MetaField : BaseMetaModel
 	{
 		/// <summary>

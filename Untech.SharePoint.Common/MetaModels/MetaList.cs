@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using JetBrains.Annotations;
+using Untech.SharePoint.Common.CodeAnnotations;
 using Untech.SharePoint.Common.Data;
 using Untech.SharePoint.Common.MetaModels.Collections;
 using Untech.SharePoint.Common.MetaModels.Providers;
@@ -13,6 +13,7 @@ namespace Untech.SharePoint.Common.MetaModels
 	/// <summary>
 	/// Represents MetaData for SP List
 	/// </summary>
+	[PublicAPI]
 	public sealed class MetaList : BaseMetaModel
 	{
 		/// <summary>

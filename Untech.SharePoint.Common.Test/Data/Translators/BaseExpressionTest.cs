@@ -1,7 +1,10 @@
-﻿namespace Untech.SharePoint.Common.Test.Data.Translators
+﻿using Untech.SharePoint.Common.CodeAnnotations;
+
+namespace Untech.SharePoint.Common.Test.Data.Translators
 {
 	public class BaseExpressionTest
 	{
+		[UsedImplicitly(ImplicitUseTargetFlags.WithMembers)]
 		public class Entity
 		{
 			public bool Bool1 { get; set; }

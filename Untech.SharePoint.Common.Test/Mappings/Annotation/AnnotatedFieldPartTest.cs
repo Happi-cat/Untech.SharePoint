@@ -1,5 +1,6 @@
 using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Untech.SharePoint.Common.CodeAnnotations;
 using Untech.SharePoint.Common.Configuration;
 using Untech.SharePoint.Common.Data;
 using Untech.SharePoint.Common.Mappings;
@@ -125,6 +126,7 @@ namespace Untech.SharePoint.Common.Test.Mappings.Annotation
 			public MetaContext Model { get; private set; }
 		}
 
+		[UsedImplicitly(ImplicitUseTargetFlags.WithMembers)]
 		public class Entity
 		{
 			[SpField(Name = "OriginalName")]

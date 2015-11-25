@@ -1,4 +1,5 @@
 ﻿using System;
+using Untech.SharePoint.Common.CodeAnnotations;
 using Untech.SharePoint.Common.Extensions;
 using Untech.SharePoint.Common.MetaModels;
 using Untech.SharePoint.Common.Utils;
@@ -6,9 +7,10 @@ using Untech.SharePoint.Common.Utils;
 namespace Untech.SharePoint.Common.Converters.BuiltIn
 {
 	[SpFieldConverter("Integer")]
+	[UsedImplicitly]
 	internal class IntegerFieldConverter : IFieldConverter
 	{
-		public MetaField Field { get; set; }
+		private MetaField Field { get; set; }
 
 		public void Initialize(MetaField field)
 		{

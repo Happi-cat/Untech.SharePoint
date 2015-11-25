@@ -1,4 +1,5 @@
-﻿using Untech.SharePoint.Common.Configuration;
+﻿using Untech.SharePoint.Common.CodeAnnotations;
+using Untech.SharePoint.Common.Configuration;
 using Untech.SharePoint.Common.Mappings;
 using Untech.SharePoint.Common.MetaModels;
 
@@ -7,6 +8,7 @@ namespace Untech.SharePoint.Common.Data
 	/// <summary>
 	/// Represents interface for SP data context types.
 	/// </summary>
+	[PublicAPI]
 	public interface ISpContext
 	{
 		/// <summary>

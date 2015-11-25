@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Xml.Linq;
 using Microsoft.SharePoint;
 using Untech.SharePoint.Common.Extensions;

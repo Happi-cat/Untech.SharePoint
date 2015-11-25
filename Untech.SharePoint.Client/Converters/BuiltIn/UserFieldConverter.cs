@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.SharePoint.Client;
+using Untech.SharePoint.Common.CodeAnnotations;
 using Untech.SharePoint.Common.Converters;
 using Untech.SharePoint.Common.MetaModels;
 using Untech.SharePoint.Common.Models;
@@ -10,10 +11,11 @@ using Untech.SharePoint.Common.Utils;
 namespace Untech.SharePoint.Client.Converters.BuiltIn
 {
 	[SpFieldConverter("User")]
+	[UsedImplicitly]
 	internal class UserFieldConverter : IFieldConverter
 	{
-		public MetaField Field { get; set; }
-		public Type PropertyType { get; set; }
+		private MetaField Field { get; set; }
+		private Type MemberType { get; set; }
 
 		/// <summary>
 		/// Initialzes current instance with the specified <see cref="MetaField"/>
@@ -24,6 +26,7 @@ namespace Untech.SharePoint.Client.Converters.BuiltIn
 			Guard.CheckNotNull("field", field);
 
 			Field = field;
+			MemberType = field.MemberType;
 		}
 
 		/// <summary>
@@ -44,7 +47,7 @@ namespace Untech.SharePoint.Client.Converters.BuiltIn
 			var fieldValues = (IEnumerable<FieldUserValue>) value;
 			var users = fieldValues.Select(FieldValueToUserInfo);
 
-			return PropertyType == typeof (UserInfo[]) ? (object) users.ToArray() : users.ToList();
+			return MemberType == typeof (UserInfo[]) ? (object) users.ToArray() : users.ToList();
 		}
 
 		/// <summary>

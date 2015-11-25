@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using JetBrains.Annotations;
+using Untech.SharePoint.Common.CodeAnnotations;
 using Untech.SharePoint.Common.Utils;
 
 namespace Untech.SharePoint.Common.Diagnostics
@@ -9,6 +9,7 @@ namespace Untech.SharePoint.Common.Diagnostics
 	/// <summary>
 	/// Represents class that logs any message to specified endpoints.
 	/// </summary>
+	[PublicAPI]
 	public sealed class Logger
 	{
 		/// <summary>

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Microsoft.SharePoint.Client;
 using Untech.SharePoint.Client.Extensions;
@@ -23,11 +22,11 @@ namespace Untech.SharePoint.Client.Data
 			SpList = clientContext.GetList(list.Title);
 		}
 
-		public ClientContext ClientContext { get; private set; }
+		private ClientContext ClientContext { get; set; }
 
-		public SpCommonService CommonService { get; private set; }
+		private SpCommonService CommonService { get; set; }
 
-		public List SpList { get; private set; }
+		private List SpList { get; set; }
 
 		public IEnumerable<T> Fetch<T>(QueryModel caml)
 		{

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using JetBrains.Annotations;
+using Untech.SharePoint.Common.CodeAnnotations;
 using Untech.SharePoint.Common.Utils;
 
 namespace Untech.SharePoint.Common.Extensions
@@ -10,6 +10,7 @@ namespace Untech.SharePoint.Common.Extensions
 	/// <summary>
 	/// Provides a set of static method that can be used with <see cref="Type"/> and <see cref="System.Reflection"/>
 	/// </summary>
+	[PublicAPI]
 	public static class TypeExtensions
 	{
 		/// <summary>
@@ -105,7 +106,7 @@ namespace Untech.SharePoint.Common.Extensions
 		/// <see cref="EventInfo.EventHandlerType"/> for <see cref="EventInfo"/> member,
 		/// <see cref="MethodInfo.ReturnType"/> for <see cref="MethodInfo"/> member.
 		/// </returns>
-		[CanBeNull]
+		[NotNull]
 		public static Type GetMemberType([CanBeNull]this MemberInfo member)
 		{
 			var fieldInfo = member as FieldInfo;
@@ -120,7 +121,7 @@ namespace Untech.SharePoint.Common.Extensions
 			var methodInfo = member as MethodInfo;
 			if (methodInfo != null) return methodInfo.ReturnType;
 
-			return null;
+			throw new ArgumentException("Invalid memberinfo", "member");
 		}
 
 		#region [Private Methods]

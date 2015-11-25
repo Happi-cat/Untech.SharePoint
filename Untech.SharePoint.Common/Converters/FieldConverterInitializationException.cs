@@ -8,16 +8,6 @@ namespace Untech.SharePoint.Common.Converters
 	public class FieldConverterInitializationException : FieldConverterException
 	{
 		/// <summary>
-		/// Initializes a new instance of the <see cref="FieldConverterInitializationException"/> class with the specified <see cref="IFieldConverter"/> type.
-		/// </summary>
-		/// <param name="converterType">Field converter type that is the cause of this error.</param>
-		public FieldConverterInitializationException(Type converterType)
-			: base(GetMessage(converterType))
-		{
-
-		}
-
-		/// <summary>
 		/// Initializes a new instance of the <see cref="FieldConverterInitializationException"/> class with the specified <see cref="IFieldConverter"/> type
 		/// and a reference to the inner exception that is the cause of this exception.
 		/// </summary>

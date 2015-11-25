@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
-using JetBrains.Annotations;
+using Untech.SharePoint.Common.CodeAnnotations;
 using Untech.SharePoint.Common.Data.QueryModels;
 using Untech.SharePoint.Common.Data.Translators.Predicate;
 using Untech.SharePoint.Common.Diagnostics;
@@ -69,7 +69,7 @@ namespace Untech.SharePoint.Common.Data.Translators
 
 		private HashSet<Expression> Candidates { get; set; }
 
-		public Expression Process(Expression node)
+		public Expression Process([NotNull]Expression node)
 		{
 			Logger.Debug(LogCategories.QueryTreeProcessor, "Original expressions tree:\n{0}", node);
 
@@ -97,22 +97,22 @@ namespace Untech.SharePoint.Common.Data.Translators
 
 		protected override Expression VisitMethodCall(MethodCallExpression node)
 		{
-			if (node.Method.DeclaringType == typeof (Queryable))
+			if (node.Method.DeclaringType != typeof (Queryable))
 			{
-				var newSource = Visit(node.Arguments[0]);
-
-				var args = new []{ newSource }.Concat(node.Arguments.Skip(1));
-
-				return node.Update(null, args);
+				return node;
 			}
 
-			return node;
+			var newSource = Visit(node.Arguments[0]);
+
+			var args = new []{ newSource }.Concat(node.Arguments.Skip(1));
+
+			return node.Update(null, args);
 		}
 
 
 		#region [Nested Classes]
 
-		internal class SubtreeCallsCombiner : ExpressionVisitor, ICallsCombinerContext
+		private class SubtreeCallsCombiner : ExpressionVisitor, ICallsCombinerContext
 		{
 			public ISpListItemsProvider ListItemsProvider { get; set; }
 			public QueryModel Query { get; set; }
@@ -135,7 +135,7 @@ namespace Untech.SharePoint.Common.Data.Translators
 				return rule.Combine(this, node);
 			}
 
-			protected ICallCombineRule GetRuleAndUpdateContext(Expression node)
+			private ICallCombineRule GetRuleAndUpdateContext(Expression node)
 			{
 				if (node.NodeType == ExpressionType.Call)
 				{
@@ -144,7 +144,7 @@ namespace Untech.SharePoint.Common.Data.Translators
 				throw Error.SubqueryNotSupported(node);
 			}
 
-			protected ICallCombineRule GetRuleAndUpdateContext(MethodCallExpression node)
+			private ICallCombineRule GetRuleAndUpdateContext(MethodCallExpression node)
 			{
 				if (node.Method.DeclaringType == typeof(Queryable))
 				{
@@ -164,9 +164,9 @@ namespace Untech.SharePoint.Common.Data.Translators
 			}
 		}
 
-		internal class CallCombineNominator : ExpressionVisitor
+		private class CallCombineNominator : ExpressionVisitor
 		{
-			public CallCombineNominator()
+			private CallCombineNominator()
 			{
 				Candidates = new HashSet<Expression>();
 			}
@@ -177,10 +177,10 @@ namespace Untech.SharePoint.Common.Data.Translators
 				nominator.Visit(node);
 				return nominator.Candidates;
 			}
-			
-			protected HashSet<Expression> Candidates { get; private set; }
 
-			protected bool OuterCallCombineAllowed { get; set; }
+			private HashSet<Expression> Candidates { get; set; }
+
+			private bool OuterCallCombineAllowed { get; set; }
 
 			public override Expression Visit(Expression node)
 			{
@@ -227,14 +227,14 @@ namespace Untech.SharePoint.Common.Data.Translators
 		}
 
 
-		internal interface ICallsCombinerContext
+		private interface ICallsCombinerContext
 		{
 			QueryModel Query { get; set; }
 
 			ISpListItemsProvider ListItemsProvider { get; set; }
 		}
 
-		internal interface ICallCombineRule
+		private interface ICallCombineRule
 		{
 			bool OuterCallCombineAllowed { get; }
 
@@ -243,7 +243,7 @@ namespace Untech.SharePoint.Common.Data.Translators
 			Expression Combine(ICallsCombinerContext context, MethodCallExpression node);
 		}
 
-		internal class InitContextRule : ICallCombineRule
+		private class InitContextRule : ICallCombineRule
 		{
 			public bool OuterCallCombineAllowed
 			{
@@ -264,7 +264,7 @@ namespace Untech.SharePoint.Common.Data.Translators
 			}
 		}
 
-		internal class WhereCallCombineRule : ICallCombineRule
+		private class WhereCallCombineRule : ICallCombineRule
 		{
 			public bool OuterCallCombineAllowed
 			{
@@ -286,7 +286,7 @@ namespace Untech.SharePoint.Common.Data.Translators
 			}
 		}
 
-		internal class SelectCallCombineRule : ICallCombineRule
+		private class SelectCallCombineRule : ICallCombineRule
 		{
 			public bool OuterCallCombineAllowed
 			{
@@ -311,7 +311,7 @@ namespace Untech.SharePoint.Common.Data.Translators
 			}
 		}
 
-		internal class MinPCallCombineRule : ICallCombineRule
+		private class MinPCallCombineRule : ICallCombineRule
 		{
 			public bool OuterCallCombineAllowed
 			{
@@ -335,7 +335,7 @@ namespace Untech.SharePoint.Common.Data.Translators
 			}
 		}
 
-		internal class MaxPCallCombineRule : ICallCombineRule
+		private class MaxPCallCombineRule : ICallCombineRule
 		{
 			public bool OuterCallCombineAllowed
 			{
@@ -359,7 +359,7 @@ namespace Untech.SharePoint.Common.Data.Translators
 			}
 		}
 
-		internal class AnyCallCombineRule : ICallCombineRule
+		private class AnyCallCombineRule : ICallCombineRule
 		{
 			public bool OuterCallCombineAllowed
 			{
@@ -384,7 +384,7 @@ namespace Untech.SharePoint.Common.Data.Translators
 			}
 		}
 
-		internal class AllCallCombineRule : ICallCombineRule
+		private class AllCallCombineRule : ICallCombineRule
 		{
 			public bool OuterCallCombineAllowed
 			{
@@ -404,7 +404,7 @@ namespace Untech.SharePoint.Common.Data.Translators
 			}
 		}
 
-		internal class OrderByCallCombineRule : ICallCombineRule
+		private class OrderByCallCombineRule : ICallCombineRule
 		{
 			public bool Ascending { get; set; }
 
@@ -433,7 +433,7 @@ namespace Untech.SharePoint.Common.Data.Translators
 			}
 		}
 
-		internal class TakeCallCombineRule : ICallCombineRule
+		private class TakeCallCombineRule : ICallCombineRule
 		{
 			public bool OuterCallCombineAllowed
 			{
@@ -453,7 +453,7 @@ namespace Untech.SharePoint.Common.Data.Translators
 			}
 		}
 
-		internal class SkipCallCombineRule : ICallCombineRule
+		private class SkipCallCombineRule : ICallCombineRule
 		{
 			public bool OuterCallCombineAllowed
 			{
@@ -475,7 +475,7 @@ namespace Untech.SharePoint.Common.Data.Translators
 			}
 		}
 
-		internal class FirstCallCombineRule : ICallCombineRule
+		private class FirstCallCombineRule : ICallCombineRule
 		{
 			public bool ThrowIfNothing { get; set; }
 
@@ -505,7 +505,7 @@ namespace Untech.SharePoint.Common.Data.Translators
 			}
 		}
 
-		internal class LastRewriteRule : ICallCombineRule
+		private class LastRewriteRule : ICallCombineRule
 		{
 			public bool ThrowIfNothing { get; set; }
 
@@ -535,7 +535,7 @@ namespace Untech.SharePoint.Common.Data.Translators
 			}
 		}
 
-		internal class ElementAtRewriteRule : ICallCombineRule
+		private class ElementAtRewriteRule : ICallCombineRule
 		{
 			public bool ThrowIfNothing { get; set; }
 
@@ -558,7 +558,7 @@ namespace Untech.SharePoint.Common.Data.Translators
 			}
 		}
 
-		internal class ReverseRewriteRule : ICallCombineRule
+		private class ReverseRewriteRule : ICallCombineRule
 		{
 			public Expression Combine(ICallsCombinerContext context, MethodCallExpression node)
 			{
@@ -578,7 +578,7 @@ namespace Untech.SharePoint.Common.Data.Translators
 			}
 		}
 
-		internal class CountRewriteRule : ICallCombineRule
+		private class CountRewriteRule : ICallCombineRule
 		{
 			public bool OuterCallCombineAllowed
 			{

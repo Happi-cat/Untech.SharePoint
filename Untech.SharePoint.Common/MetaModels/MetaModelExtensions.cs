@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Linq;
-using JetBrains.Annotations;
+using Untech.SharePoint.Common.CodeAnnotations;
 using Untech.SharePoint.Common.Data.Mapper;
 using Untech.SharePoint.Common.Utils;
 

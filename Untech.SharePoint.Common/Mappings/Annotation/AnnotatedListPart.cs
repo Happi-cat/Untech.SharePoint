@@ -15,7 +15,7 @@ namespace Untech.SharePoint.Common.Mappings.Annotation
 		private readonly string _title;
 		private readonly Dictionary<Type, AnnotatedContentTypeMapping> _contentTypeProviders;
 
-		protected AnnotatedListPart(string listTitle)
+		private AnnotatedListPart(string listTitle)
 		{
 			Guard.CheckNotNullOrEmpty("listTitle", listTitle);
 

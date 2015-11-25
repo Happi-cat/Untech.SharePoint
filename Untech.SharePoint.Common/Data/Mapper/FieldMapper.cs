@@ -1,5 +1,5 @@
 ﻿using System;
-using JetBrains.Annotations;
+using Untech.SharePoint.Common.CodeAnnotations;
 using Untech.SharePoint.Common.Converters;
 using Untech.SharePoint.Common.MetaModels;
 using Untech.SharePoint.Common.Utils;
@@ -10,6 +10,7 @@ namespace Untech.SharePoint.Common.Data.Mapper
 	/// Represents class that can map value from SP list field to the specified entity member.
 	/// </summary>
 	/// <typeparam name="TSPItem">Exact type of SP list item, i.e. SPListItem for SSOM, ListItem for CSOM.</typeparam>
+	[PublicAPI]
 	public sealed class FieldMapper<TSPItem>
 	{
 		/// <summary>

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.SharePoint;
+using Untech.SharePoint.Common.CodeAnnotations;
 using Untech.SharePoint.Common.Converters;
 using Untech.SharePoint.Common.MetaModels;
 using Untech.SharePoint.Common.Models;
@@ -11,9 +12,10 @@ namespace Untech.SharePoint.Server.Converters.BuiltIn
 {
 	[SpFieldConverter("Lookup")]
 	[SpFieldConverter("LookupMulti")]
+	[UsedImplicitly]
 	internal class LookupFieldConverter : IFieldConverter
 	{
-		public MetaField Field { get; set; }
+		private MetaField Field { get; set; }
 
 		/// <summary>
 		/// Initialzes current instance with the specified <see cref="MetaField"/>

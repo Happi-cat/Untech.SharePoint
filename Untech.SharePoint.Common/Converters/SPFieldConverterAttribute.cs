@@ -1,5 +1,5 @@
 ﻿using System;
-using JetBrains.Annotations;
+using Untech.SharePoint.Common.CodeAnnotations;
 
 namespace Untech.SharePoint.Common.Converters
 {

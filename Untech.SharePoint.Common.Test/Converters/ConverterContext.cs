@@ -1,4 +1,5 @@
-﻿using Untech.SharePoint.Common.Configuration;
+﻿using Untech.SharePoint.Common.CodeAnnotations;
+using Untech.SharePoint.Common.Configuration;
 using Untech.SharePoint.Common.Data;
 using Untech.SharePoint.Common.Mappings;
 using Untech.SharePoint.Common.Mappings.Annotation;
@@ -6,6 +7,7 @@ using Untech.SharePoint.Common.MetaModels;
 
 namespace Untech.SharePoint.Common.Test.Converters
 {
+	[UsedImplicitly(ImplicitUseTargetFlags.WithMembers)]
 	public enum ExampleEnum
 	{
 		Value1,
@@ -24,6 +26,7 @@ namespace Untech.SharePoint.Common.Test.Converters
 	}
 
 	[SpContentType]
+	[UsedImplicitly(ImplicitUseTargetFlags.WithMembers)]
 	public class ConverterDataEntity
 	{
 		[SpField]

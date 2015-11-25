@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Untech.SharePoint.Common.CodeAnnotations;
 using Untech.SharePoint.Common.Data.QueryModels;
 using Untech.SharePoint.Common.MetaModels;
 
@@ -7,6 +8,7 @@ namespace Untech.SharePoint.Common.Data
 	/// <summary>
 	/// Represents interface of SP list data accessor and items provider.
 	/// </summary>
+	[PublicAPI]
 	public interface ISpListItemsProvider
 	{
 		/// <summary>

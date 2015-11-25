@@ -14,7 +14,7 @@ namespace Untech.SharePoint.Client.Test
 			Context = new ClientContext("http://sp2013");
 		}
 
-		public ClientContext Context { get; set; }
+		private ClientContext Context { get; set; }
 
 		[TestMethod]
 		public void CanRun()

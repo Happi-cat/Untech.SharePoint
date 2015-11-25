@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using JetBrains.Annotations;
+using Untech.SharePoint.Common.CodeAnnotations;
 using Untech.SharePoint.Common.Data.QueryModels;
 using Untech.SharePoint.Common.Extensions;
 using Untech.SharePoint.Common.MetaModels;
@@ -14,6 +14,7 @@ namespace Untech.SharePoint.Common.Data.Mapper
 	/// Represents class that can map SP List item to Entity.
 	/// </summary>
 	/// <typeparam name="TSPItem">Exact type of SP list item, i.e. SPListItem for SSOM, ListItem for CSOM.</typeparam>
+	[PublicAPI]
 	public abstract class TypeMapper<TSPItem>
 	{
 		/// <summary>
@@ -47,7 +48,7 @@ namespace Untech.SharePoint.Common.Data.Mapper
 		/// <param name="source">Source object.</param>
 		/// <param name="dest">Destination SP list item.</param>
 		/// <exception cref="ArgumentNullException"><paramref name="source"/> or <paramref name="dest"/> is null.</exception>
-		public virtual void Map([NotNull]object source, [NotNull]TSPItem dest)
+		public void Map([NotNull]object source, [NotNull]TSPItem dest)
 		{
 			Guard.CheckNotNull("source", source);
 			Guard.CheckNotNull("dest", dest);
@@ -67,7 +68,7 @@ namespace Untech.SharePoint.Common.Data.Mapper
 		/// <param name="dest">Destination object.</param>
 		/// <param name="viewFields">Collection of fields internal names that should be mapped.</param>
 		/// <exception cref="ArgumentNullException"><paramref name="source"/> or <paramref name="dest"/> is null.</exception>
-		public virtual void Map([NotNull]TSPItem source, [NotNull]object dest, IReadOnlyCollection<MemberRefModel> viewFields = null)
+		public void Map([NotNull]TSPItem source, [NotNull]object dest, IReadOnlyCollection<MemberRefModel> viewFields = null)
 		{
 			Guard.CheckNotNull("source", source);
 			Guard.CheckNotNull("dest", dest);
@@ -85,7 +86,7 @@ namespace Untech.SharePoint.Common.Data.Mapper
 		/// <param name="viewFields">Collection of fields internal names that should be mapped.</param>
 		/// <returns>New .NET entity.</returns>
 		/// <exception cref="ArgumentNullException"><paramref name="source"/> is null.</exception>
-		public virtual object CreateAndMap([NotNull]TSPItem source, IReadOnlyCollection<MemberRefModel> viewFields = null)
+		public object CreateAndMap([NotNull]TSPItem source, IReadOnlyCollection<MemberRefModel> viewFields = null)
 		{
 			Guard.CheckNotNull("source", source);
 

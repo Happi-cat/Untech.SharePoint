@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using JetBrains.Annotations;
+using Untech.SharePoint.Common.CodeAnnotations;
 using Untech.SharePoint.Common.Collections;
 using Untech.SharePoint.Common.Converters;
 using Untech.SharePoint.Common.Data;

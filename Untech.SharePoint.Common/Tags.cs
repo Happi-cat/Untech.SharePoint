@@ -1,5 +1,8 @@
-﻿namespace Untech.SharePoint.Common
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace Untech.SharePoint.Common
 {
+	[SuppressMessage("ReSharper", "UnusedMember.Global")]
 	internal static class Tags
 	{
 		public const string Query = "Query";

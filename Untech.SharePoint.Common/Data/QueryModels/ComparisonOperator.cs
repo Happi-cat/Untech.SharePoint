@@ -1,8 +1,11 @@
-﻿namespace Untech.SharePoint.Common.Data.QueryModels
+﻿using Untech.SharePoint.Common.CodeAnnotations;
+
+namespace Untech.SharePoint.Common.Data.QueryModels
 {
 	/// <summary>
 	/// Describes different types of comparison operations allowed in CAML.
 	/// </summary>
+	[PublicAPI]
 	public enum ComparisonOperator
 	{
 		/// <summary>

@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.Reflection;
 using System.Runtime.Serialization;
+using Untech.SharePoint.Common.CodeAnnotations;
 using Untech.SharePoint.Common.MetaModels;
 using Untech.SharePoint.Common.Utils;
 
@@ -10,6 +11,7 @@ namespace Untech.SharePoint.Common.Converters.Custom
 	/// <summary>
 	/// Represents field converter that can convert string to <see cref="Enum"/> and vice versa.
 	/// </summary>
+	[PublicAPI]
 	public sealed class EnumFieldConverter : IFieldConverter
 	{
 		private MetaField Field { get; set; }

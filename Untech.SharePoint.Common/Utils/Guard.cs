@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using JetBrains.Annotations;
+using Untech.SharePoint.Common.CodeAnnotations;
 using Untech.SharePoint.Common.Extensions;
 
 namespace Untech.SharePoint.Common.Utils
@@ -9,6 +9,7 @@ namespace Untech.SharePoint.Common.Utils
 	/// <summary>
 	/// Provides a set of static methods for arguments validation.
 	/// </summary>
+	[PublicAPI]
 	public static class Guard
 	{
 		/// <summary>

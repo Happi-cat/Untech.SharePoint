@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Linq;
 using System.Linq.Expressions;
-using JetBrains.Annotations;
+using Untech.SharePoint.Common.CodeAnnotations;
 using Untech.SharePoint.Common.Extensions;
 
 namespace Untech.SharePoint.Common.Data.Translators.Predicate

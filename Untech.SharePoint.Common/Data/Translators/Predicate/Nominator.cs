@@ -3,7 +3,7 @@ using System.Linq.Expressions;
 
 namespace Untech.SharePoint.Common.Data.Translators.Predicate
 {
-	internal class Nominator : ExpressionVisitor
+	internal sealed class Nominator : ExpressionVisitor
 	{
 		internal Nominator()
 		{
@@ -11,9 +11,9 @@ namespace Untech.SharePoint.Common.Data.Translators.Predicate
 		}
 
 		public HashSet<Expression> Candidates { get; private set; }
-		protected bool CanBeEvaluated { get; set; }
+		private bool CanBeEvaluated { get; set; }
 
-		public virtual void Reset()
+		public void Reset()
 		{
 			Candidates = new HashSet<Expression>();
 		}
@@ -43,7 +43,7 @@ namespace Untech.SharePoint.Common.Data.Translators.Predicate
 			return expression;
 		}
 
-		protected virtual bool CanEvaluate(Expression node)
+		private bool CanEvaluate(Expression node)
 		{
 			return node.NodeType != ExpressionType.Parameter;
 		}

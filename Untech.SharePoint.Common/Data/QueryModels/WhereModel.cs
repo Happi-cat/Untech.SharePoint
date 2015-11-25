@@ -1,12 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using JetBrains.Annotations;
+using Untech.SharePoint.Common.CodeAnnotations;
 
 namespace Untech.SharePoint.Common.Data.QueryModels
 {
 	/// <summary>
 	/// Represents base class for CAML logical and comparison tags.
 	/// </summary>
+	[PublicAPI]
 	public abstract class WhereModel
 	{
 		/// <summary>

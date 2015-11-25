@@ -18,7 +18,7 @@ namespace Untech.SharePoint.Common.Data.Translators.Predicate
 			};
 		}
 
-		protected IReadOnlyCollection<INegateRule> NegateRules { get; set; }
+		private IReadOnlyCollection<INegateRule> NegateRules { get; set; }
 
 		protected override Expression VisitUnary(UnaryExpression node)
 		{
@@ -35,14 +35,14 @@ namespace Untech.SharePoint.Common.Data.Translators.Predicate
 
 		#region [Nested Classes]
 
-		internal interface INegateRule
+		private interface INegateRule
 		{
 			bool CanNegate(Expression node);
 
 			Expression Negate(Expression node);
 		}
 
-		internal class BoolConstNegateRule : INegateRule
+		private class BoolConstNegateRule : INegateRule
 		{
 			public bool CanNegate(Expression node)
 			{
@@ -57,7 +57,7 @@ namespace Untech.SharePoint.Common.Data.Translators.Predicate
 			}
 		}
 
-		internal class ComparisonNegateRule : INegateRule
+		private class ComparisonNegateRule : INegateRule
 		{
 
 			private static readonly IReadOnlyDictionary<ExpressionType, ExpressionType> NegateMap = new Dictionary
@@ -85,7 +85,7 @@ namespace Untech.SharePoint.Common.Data.Translators.Predicate
 			}
 		}
 
-		internal class LogicalJoinNegateRule : INegateRule
+		private class LogicalJoinNegateRule : INegateRule
 		{
 			private static readonly IReadOnlyDictionary<ExpressionType, ExpressionType> NegateMap = new Dictionary
 				<ExpressionType, ExpressionType>
@@ -111,7 +111,7 @@ namespace Untech.SharePoint.Common.Data.Translators.Predicate
 			}
 		}
 
-		internal class NotNegateRule : INegateRule
+		private class NotNegateRule : INegateRule
 		{
 			public bool CanNegate(Expression node)
 			{

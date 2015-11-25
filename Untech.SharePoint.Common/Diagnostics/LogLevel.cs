@@ -1,8 +1,11 @@
-﻿namespace Untech.SharePoint.Common.Diagnostics
+﻿using Untech.SharePoint.Common.CodeAnnotations;
+
+namespace Untech.SharePoint.Common.Diagnostics
 {
 	/// <summary>
 	/// Describes different levels of logging message.
 	/// </summary>
+	[PublicAPI]
 	public enum LogLevel
 	{
 		/// <summary>

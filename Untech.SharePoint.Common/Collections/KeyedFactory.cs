@@ -1,5 +1,5 @@
 ﻿using System;
-using JetBrains.Annotations;
+using Untech.SharePoint.Common.CodeAnnotations;
 
 namespace Untech.SharePoint.Common.Collections
 {
@@ -8,6 +8,7 @@ namespace Untech.SharePoint.Common.Collections
 	/// </summary>
 	/// <typeparam name="TKey">The key of the object to create.</typeparam>
 	/// <typeparam name="TObject">The base type of objects to create.</typeparam>
+	[PublicAPI]
 	public class KeyedFactory<TKey, TObject> : Container<TKey, Func<TObject>>
 	{
 		/// <summary>
@@ -41,6 +42,7 @@ namespace Untech.SharePoint.Common.Collections
 	/// <typeparam name="TKey">The type of key of the object to create.</typeparam>
 	/// <typeparam name="TArg">The type of argument that will be passed into object creator.</typeparam>
 	/// <typeparam name="TObject">The base type of objects to create.</typeparam>
+	[PublicAPI]
 	public class KeyedFactory<TKey, TArg, TObject> : Container<TKey, Func<TArg, TObject>>
 	{
 		/// <summary>

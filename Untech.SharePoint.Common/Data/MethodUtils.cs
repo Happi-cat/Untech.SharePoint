@@ -9,7 +9,7 @@ using Untech.SharePoint.Common.Extensions;
 namespace Untech.SharePoint.Common.Data
 {
 	[SuppressMessage("ReSharper", "InvokeAsExtensionMethod")]
-	internal class MethodUtils
+	internal static class MethodUtils
 	{
 		public static readonly MethodInfo ListContains = GetMethodInfo(() => new List<int>().Contains(0));
 
@@ -24,10 +24,6 @@ namespace Untech.SharePoint.Common.Data
 
 		#region [Enumerable Methods Infos]
 
-		public static readonly MethodInfo EWhere = GetMethodInfo(() => Enumerable.Where(null, default(Func<int, bool>)));
-		public static readonly MethodInfo EAny = GetMethodInfo(() => Enumerable.Any<int>(null));
-		public static readonly MethodInfo EAnyP = GetMethodInfo(() => Enumerable.Any<int>(null, null));
-		public static readonly MethodInfo EAll = GetMethodInfo(() => Enumerable.All<int>(null, null));
 		public static readonly MethodInfo EContains = GetMethodInfo(() => Enumerable.Contains(null, default(int)));
 
 		#endregion
@@ -106,23 +102,18 @@ namespace Untech.SharePoint.Common.Data
 
 
 		public static readonly MethodInfo ObjIn = GetMethodInfo(() => default(object).In(null));
+		
+		public static bool IsOperator(MethodInfo x, MethodInfo y)
+		{
+			return GenericMethodDefinitionComparer.Default.Equals(x, y);
+		}
 
-		public static MethodInfo GetMethodInfo<TResult>(Expression<Func<TResult>> expression)
+		private static MethodInfo GetMethodInfo<TResult>(Expression<Func<TResult>> expression)
 		{
 			var methodCall = (MethodCallExpression)expression.Body;
 			var method = methodCall.Method;
 			return method.IsGenericMethod ? method.GetGenericMethodDefinition() : method;
 		}
 
-		public static PropertyInfo GetPropertyInfo<TResult>(Expression<Func<TResult>> expression)
-		{
-			var memberAccess = (MemberExpression)expression.Body;
-			return (PropertyInfo)memberAccess.Member;
-		}
-
-		public static bool IsOperator(MethodInfo x, MethodInfo y)
-		{
-			return GenericMethodDefinitionComparer.Default.Equals(x, y);
-		}
 	}
 }

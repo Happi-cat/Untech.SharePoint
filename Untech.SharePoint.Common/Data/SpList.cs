@@ -1,5 +1,4 @@
 ﻿using System.Linq.Expressions;
-using Untech.SharePoint.Common.Diagnostics;
 using Untech.SharePoint.Common.Utils;
 
 namespace Untech.SharePoint.Common.Data
@@ -12,7 +11,7 @@ namespace Untech.SharePoint.Common.Data
 			ListItemsProvider = listItemsProvider;
 		}
 
-		public ISpListItemsProvider ListItemsProvider { get; private set; }
+		private ISpListItemsProvider ListItemsProvider { get; set; }
 
 		public T Get(int id)
 		{

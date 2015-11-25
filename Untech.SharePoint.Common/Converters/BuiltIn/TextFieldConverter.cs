@@ -1,4 +1,5 @@
-﻿using Untech.SharePoint.Common.MetaModels;
+﻿using Untech.SharePoint.Common.CodeAnnotations;
+using Untech.SharePoint.Common.MetaModels;
 using Untech.SharePoint.Common.Utils;
 
 namespace Untech.SharePoint.Common.Converters.BuiltIn
@@ -6,9 +7,10 @@ namespace Untech.SharePoint.Common.Converters.BuiltIn
 	[SpFieldConverter("Text")]
 	[SpFieldConverter("Note")]
 	[SpFieldConverter("Choice")]
+	[UsedImplicitly]
 	internal class TextFieldConverter : IFieldConverter
 	{
-		public MetaField Field { get; set; }
+		private MetaField Field { get; set; }
 
 		public void Initialize(MetaField field)
 		{

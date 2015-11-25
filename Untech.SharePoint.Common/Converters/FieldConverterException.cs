@@ -8,14 +8,6 @@ namespace Untech.SharePoint.Common.Converters
 	public class FieldConverterException : Exception
 	{
 		/// <summary>
-		/// Initializes a new instance of the <see cref="FieldConverterException"/>.
-		/// </summary>
-		public FieldConverterException()
-		{
-
-		}
-
-		/// <summary>
 		/// Initializes a new instance of the <see cref="FieldConverterException"/> with specified message.
 		/// </summary>
 		/// <param name="message">Message of the exception.</param>
@@ -30,7 +22,7 @@ namespace Untech.SharePoint.Common.Converters
 		/// </summary>
 		/// <param name="message">Message of the exception.</param>
 		/// <param name="innerException">Inner exception</param>
-		public FieldConverterException(string message, Exception innerException)
+		protected FieldConverterException(string message, Exception innerException)
 			: base(message, innerException)
 		{
 

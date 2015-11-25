@@ -1,10 +1,12 @@
-﻿using Untech.SharePoint.Common.MetaModels.Visitors;
+﻿using Untech.SharePoint.Common.CodeAnnotations;
+using Untech.SharePoint.Common.MetaModels.Visitors;
 
 namespace Untech.SharePoint.Common.MetaModels
 {
 	/// <summary>
 	/// Represents base meta model interface.
 	/// </summary>
+	[PublicAPI]
 	public interface IMetaModel
 	{
 		/// <summary>

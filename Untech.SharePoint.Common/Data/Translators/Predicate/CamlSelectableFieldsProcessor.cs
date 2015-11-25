@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq.Expressions;
-using JetBrains.Annotations;
+using Untech.SharePoint.Common.CodeAnnotations;
 using Untech.SharePoint.Common.Data.QueryModels;
 using Untech.SharePoint.Common.Diagnostics;
 using Untech.SharePoint.Common.Extensions;
@@ -15,7 +15,7 @@ namespace Untech.SharePoint.Common.Data.Translators.Predicate
 		}
 
 		[NotNull]
-		protected List<MemberRefModel> SelectableFields { get; private set; }
+		private List<MemberRefModel> SelectableFields { get; set; }
 
 		[NotNull]
 		public IEnumerable<MemberRefModel> Process([CanBeNull]Expression node)

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.SharePoint;
+using Untech.SharePoint.Common.CodeAnnotations;
 using Untech.SharePoint.Common.Converters;
 using Untech.SharePoint.Common.MetaModels;
 using Untech.SharePoint.Common.Models;
@@ -11,10 +12,11 @@ using Untech.SharePoint.Server.Data;
 namespace Untech.SharePoint.Server.Converters.BuiltIn
 {
 	[SpFieldConverter("User")]
+	[UsedImplicitly]
 	internal class UserFieldConverter : IFieldConverter
 	{
-		public MetaField Field { get; set; }
-		public Type PropertyType { get; set; }
+		private MetaField Field { get; set; }
+		private Type PropertyType { get; set; }
 
 		/// <summary>
 		/// Initialzes current instance with the specified <see cref="MetaField"/>

@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Linq.Expressions;
-using JetBrains.Annotations;
+using Untech.SharePoint.Common.CodeAnnotations;
 using Untech.SharePoint.Common.Configuration;
 using Untech.SharePoint.Common.Extensions;
 using Untech.SharePoint.Common.Mappings;
@@ -14,6 +14,7 @@ namespace Untech.SharePoint.Common.Data
 	/// </summary>
 	/// <typeparam name="TContext">Type of the data context.</typeparam>
 	/// <typeparam name="TCommonService">Type of the services.</typeparam>
+	[PublicAPI]
 	public abstract class SpContext<TContext, TCommonService> : ISpContext
 		where TContext : ISpContext
 		where TCommonService: ICommonService

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Xml.Linq;
-using JetBrains.Annotations;
+using Untech.SharePoint.Common.CodeAnnotations;
 using Untech.SharePoint.Common.Converters;
 using Untech.SharePoint.Common.Data.QueryModels;
 using Untech.SharePoint.Common.Diagnostics;
@@ -22,7 +22,7 @@ namespace Untech.SharePoint.Common.Data.Translators
 		}
 
 		[NotNull]
-		public MetaContentType ContentType { get; private set; }
+		private MetaContentType ContentType { get; set; }
 
 		[NotNull]
 		public string Process([NotNull]QueryModel query)

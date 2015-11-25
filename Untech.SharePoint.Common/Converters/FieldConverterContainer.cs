@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Reflection;
-using JetBrains.Annotations;
+using Untech.SharePoint.Common.CodeAnnotations;
 using Untech.SharePoint.Common.Collections;
 using Untech.SharePoint.Common.Extensions;
 using Untech.SharePoint.Common.Utils;

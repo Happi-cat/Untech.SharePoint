@@ -2,6 +2,7 @@
 using System.Runtime.Serialization;
 using System.Text;
 using System.Xml;
+using Untech.SharePoint.Common.CodeAnnotations;
 using Untech.SharePoint.Common.MetaModels;
 using Untech.SharePoint.Common.Utils;
 
@@ -10,7 +11,8 @@ namespace Untech.SharePoint.Common.Converters.Custom
 	/// <summary>
 	/// Represents field converter that can convert XML to object and vice versa.
 	/// </summary>
-	public class XmlFieldConverter : IFieldConverter
+	[PublicAPI]
+	public sealed class XmlFieldConverter : IFieldConverter
 	{
 		private MetaField Field { get; set; }
 

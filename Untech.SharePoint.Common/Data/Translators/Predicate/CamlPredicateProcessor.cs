@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using JetBrains.Annotations;
+using Untech.SharePoint.Common.CodeAnnotations;
 using Untech.SharePoint.Common.Data.QueryModels;
 using Untech.SharePoint.Common.Diagnostics;
 using Untech.SharePoint.Common.Extensions;
@@ -42,7 +42,7 @@ namespace Untech.SharePoint.Common.Data.Translators.Predicate
 		}
 
 		[NotNull]
-		protected IEnumerable<ExpressionVisitor> PreProcessors { get; private set; }
+		private IEnumerable<ExpressionVisitor> PreProcessors { get; set; }
 
 		public WhereModel Process([NotNull]Expression predicate)
 		{

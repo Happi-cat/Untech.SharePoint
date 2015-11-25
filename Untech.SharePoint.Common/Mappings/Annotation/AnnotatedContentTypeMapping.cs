@@ -24,12 +24,12 @@ namespace Untech.SharePoint.Common.Mappings.Annotation
 			_fieldParts = CreateFieldParts();
 		}
 
-		public string ContentTypeId
+		private string ContentTypeId
 		{
 			get { return _contentTypeAttrbiute.Id; }
 		}
 
-		public string ContentTypeName
+		private string ContentTypeName
 		{
 			get { return _contentTypeAttrbiute.Name; }
 		}

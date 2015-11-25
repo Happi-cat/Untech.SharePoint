@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq.Expressions;
-using JetBrains.Annotations;
-using Untech.SharePoint.Common.Utils;
+using Untech.SharePoint.Common.CodeAnnotations;
 
 namespace Untech.SharePoint.Common.Data.Translators.Predicate
 {
@@ -12,15 +11,8 @@ namespace Untech.SharePoint.Common.Data.Translators.Predicate
 			Nominator = new Nominator();
 		}
 
-		public Evaluator([NotNull]Nominator nominator)
-		{
-			Guard.CheckNotNull("nominator", nominator);
-
-			Nominator = nominator;
-		}
-
 		[NotNull]
-		protected Nominator Nominator { get; private set; }
+		private Nominator Nominator { get; set; }
 
 		public override Expression Visit(Expression node)
 		{
@@ -29,7 +21,7 @@ namespace Untech.SharePoint.Common.Data.Translators.Predicate
 			return new SubtreeEvaluator(Nominator.Candidates).Visit(node);
 		}
 
-		internal class SubtreeEvaluator : ExpressionVisitor
+		private class SubtreeEvaluator : ExpressionVisitor
 		{
 			[NotNull]
 			private readonly HashSet<Expression> _candidates;

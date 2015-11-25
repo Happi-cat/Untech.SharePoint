@@ -1,14 +1,17 @@
-﻿namespace Untech.SharePoint.Common.Data.QueryModels
+﻿using Untech.SharePoint.Common.CodeAnnotations;
+
+namespace Untech.SharePoint.Common.Data.QueryModels
 {
 	/// <summary>
 	/// Describes different types of logical operation allowed in CAML.
 	/// </summary>
+	[PublicAPI]
 	public enum LogicalJoinOperator
 	{
 		/// <summary>
 		/// Not specified.
 		/// </summary>
-		None,
+		None = 0,
 		/// <summary>
 		/// Logical And: <example>Op1 and Op2.</example>
 		/// </summary>
