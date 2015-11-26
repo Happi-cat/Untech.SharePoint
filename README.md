@@ -2,7 +2,7 @@
 
 Untech.SharePoint - library that will improve your work with Lists in SharePoint (can be used with SSOM and CSOM).
 
-**For more information go to project [wiki](https://github.com/Happi-cat/Untech.SharePoint/Wiki)**
+**For more information go to project [wiki](https://github.com/Happi-cat/Untech.SharePoint/wiki)**
 
 ## Project Structure
 
