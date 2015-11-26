@@ -1,4 +1,5 @@
 ﻿using System;
+using Untech.SharePoint.Common.CodeAnnotations;
 using Untech.SharePoint.Common.Converters;
 
 namespace Untech.SharePoint.Common.Mappings.Annotation
@@ -7,6 +8,7 @@ namespace Untech.SharePoint.Common.Mappings.Annotation
 	/// When applied to property or field, specifies member that should be mapped to existing SP Field.
 	/// </summary>
 	[AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
+	[PublicAPI]
 	public sealed class SpFieldAttribute : Attribute
 	{
 		/// <summary>

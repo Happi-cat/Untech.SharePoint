@@ -1,4 +1,5 @@
 ﻿using System;
+using Untech.SharePoint.Common.CodeAnnotations;
 
 namespace Untech.SharePoint.Common.Mappings.Annotation
 {
@@ -6,6 +7,7 @@ namespace Untech.SharePoint.Common.Mappings.Annotation
 	/// When applied to property, specifies member that should be mapped to SP list.
 	/// </summary>
 	[AttributeUsage(AttributeTargets.Property)]
+	[PublicAPI]
 	public sealed class SpListAttribute : Attribute
 	{
 		/// <summary>

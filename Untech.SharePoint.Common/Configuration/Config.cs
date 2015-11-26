@@ -10,6 +10,7 @@ namespace Untech.SharePoint.Common.Configuration
 	/// <summary>
 	/// Represents configuration that is required by <see cref="SpContext{TContext,TCommonService}"/>.
 	/// </summary>
+	[PublicAPI]
 	public sealed class Config
 	{
 		/// <summary>
@@ -18,7 +19,7 @@ namespace Untech.SharePoint.Common.Configuration
 		/// <param name="fieldConverters">Field converters resolver.</param>
 		/// <param name="mappings">Mappings source resolvers.</param>
 		/// <exception cref="ArgumentNullException"><paramref name="fieldConverters"/> or <paramref name="mappings"/> is null.</exception>
-		public Config(IFieldConverterResolver fieldConverters, IMappingSourceResolver mappings)
+		public Config([NotNull] IFieldConverterResolver fieldConverters, [NotNull] IMappingSourceResolver mappings)
 		{
 			Guard.CheckNotNull("fieldConverters", fieldConverters);
 			Guard.CheckNotNull("mappings", mappings);

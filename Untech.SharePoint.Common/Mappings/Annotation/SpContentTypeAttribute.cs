@@ -1,4 +1,5 @@
 ﻿using System;
+using Untech.SharePoint.Common.CodeAnnotations;
 
 namespace Untech.SharePoint.Common.Mappings.Annotation
 {
@@ -6,6 +7,7 @@ namespace Untech.SharePoint.Common.Mappings.Annotation
 	/// Class attribute that used for describing SP ContentType.
 	/// </summary>
 	[AttributeUsage(AttributeTargets.Class)]
+	[PublicAPI]
 	public class SpContentTypeAttribute : Attribute
 	{
 		/// <summary>

@@ -1,6 +1,8 @@
 # Untech.SharePoint
 
-Untech.SharePoint - library that will improve your work with Lists in SharePoint (can be used with SSOM and CSOM)
+Untech.SharePoint - library that will improve your work with Lists in SharePoint (can be used with SSOM and CSOM).
+
+**For more information go to project [wiki](Wiki)**
 
 ## Project Structure
 
@@ -25,7 +27,6 @@ They can be installed using NuGet in Visual Studio:
 ```
 	Install-Package Untech.SharePoint.Server
 ```
-
 
 
 ## Example

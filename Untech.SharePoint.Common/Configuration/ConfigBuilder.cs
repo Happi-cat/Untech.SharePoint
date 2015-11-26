@@ -13,6 +13,7 @@ namespace Untech.SharePoint.Common.Configuration
 	/// <summary>
 	/// Represents class that can build <see cref="Config"/>.
 	/// </summary>
+	[PublicAPI]
 	public sealed class ConfigBuilder
 	{
 		private readonly KeyedFactory<Type, Mappings.Mappings, IMappingSource> _mappingSourceBuilders;

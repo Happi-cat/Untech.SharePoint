@@ -10,6 +10,7 @@ namespace Untech.SharePoint.Common.Collections
 	/// </summary>
 	/// <typeparam name="TKey">The type of the keys.</typeparam>
 	/// <typeparam name="TObject">The type of the values.</typeparam>
+	[PublicAPI]
 	public class Container<TKey, TObject> : IEnumerable<KeyValuePair<TKey, TObject>>
 	{
 		private readonly Dictionary<TKey, TObject> _registeredObjects = new Dictionary<TKey, TObject>();
