@@ -1,4 +1,5 @@
 ﻿using System;
+using Untech.SharePoint.Common.CodeAnnotations;
 
 namespace Untech.SharePoint.Common.Utils
 {
@@ -6,10 +7,12 @@ namespace Untech.SharePoint.Common.Utils
 	/// Represents container for instance singleton
 	/// </summary>
 	/// <typeparam name="T">Type of singleton instance</typeparam>
-	public class Singleton<T> where T : new()
+	[PublicAPI]
+	public static class Singleton<T> where T : new()
 	{
-		private static readonly object Sync = new object();
-		private static T _object;
+		// ReSharper disable once StaticMemberInGenericType
+		[NotNull] private static readonly object Sync = new object();
+		[CanBeNull] private static T _object;
 
 		/// <summary>
 		/// Gets signleton instance

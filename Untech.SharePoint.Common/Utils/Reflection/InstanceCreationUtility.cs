@@ -2,9 +2,11 @@
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using Untech.SharePoint.Common.CodeAnnotations;
 
 namespace Untech.SharePoint.Common.Utils.Reflection
 {
+	[UsedImplicitly(ImplicitUseTargetFlags.WithMembers)]
 	internal static class InstanceCreationUtility
 	{
 		public static Func<TResult> GetCreator<TResult>(Type type)

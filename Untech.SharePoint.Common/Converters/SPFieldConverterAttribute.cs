@@ -15,7 +15,7 @@ namespace Untech.SharePoint.Common.Converters
 		/// Initializes a new instance of the <see cref="SpFieldConverterAttribute"/>.
 		/// </summary>
 		/// <param name="fieldType">SP field type.</param>
-		public SpFieldConverterAttribute(string fieldType)
+		public SpFieldConverterAttribute([NotNull]string fieldType)
 		{
 			FieldTypeAsString = fieldType;
 		}

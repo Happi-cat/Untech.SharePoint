@@ -1,11 +1,13 @@
 ﻿using System;
 using Newtonsoft.Json;
+using Untech.SharePoint.Common.CodeAnnotations;
 
 namespace Untech.SharePoint.Common.Models
 {
 	/// <summary>
 	/// Represents user info
 	/// </summary>
+	[PublicAPI]
 	[Serializable]
 	public class UserInfo
 	{
@@ -14,12 +16,6 @@ namespace Untech.SharePoint.Common.Models
 		/// </summary>
 		[JsonProperty]
 		public int Id { get; set; }
-
-		/// <summary>
-		/// Gets or sets user name.
-		/// </summary>
-		[JsonProperty]
-		public string Name { get; set; }
 
 		/// <summary>
 		/// Gets or sets user login.

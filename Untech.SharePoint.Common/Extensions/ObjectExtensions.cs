@@ -7,6 +7,7 @@ namespace Untech.SharePoint.Common.Extensions
 	/// <summary>
 	/// Provides a set of static methods for work with <see cref="object"/>.
 	/// </summary>
+	[PublicAPI]
 	public static class ObjectExtensions
 	{
 		/// <summary>

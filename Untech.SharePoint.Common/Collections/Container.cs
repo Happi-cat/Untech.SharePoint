@@ -41,6 +41,7 @@ namespace Untech.SharePoint.Common.Collections
 		/// <param name="key">The key of the value to get.</param>
 		/// <returns>The values associated with the specified key.</returns>
 		/// <exception cref="KeyNotFoundException"><paramref name="key"/> was not found.</exception>
+		[NotNull]
 		public TObject Resolve([NotNull]TKey key)
 		{
 			if (IsRegistered(key))

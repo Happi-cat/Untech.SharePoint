@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Linq.Expressions;
 using System.Reflection;
+using Untech.SharePoint.Common.CodeAnnotations;
 using Untech.SharePoint.Common.Extensions;
 using Getter = System.Func<object, object>;
 using Setter = System.Action<object, object>;
 
 namespace Untech.SharePoint.Common.Utils.Reflection
 {
+	[UsedImplicitly(ImplicitUseTargetFlags.WithMembers)]
 	internal static class MemberAccessUtility
 	{
 		#region [Create Getter]

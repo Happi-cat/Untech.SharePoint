@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.Serialization;
+using Untech.SharePoint.Common.CodeAnnotations;
 using Untech.SharePoint.Common.Mappings.Annotation;
 
 namespace Untech.SharePoint.Common.Models
@@ -7,8 +9,10 @@ namespace Untech.SharePoint.Common.Models
 	/// <summary>
 	/// Represents base SP content type entity.
 	/// </summary>
+	[UsedImplicitly(ImplicitUseTargetFlags.WithMembers)]
 	[SpContentType(Id = "0x01")]
 	[DataContract]
+	[SuppressMessage("ReSharper", "VirtualMemberNeverOverriden.Global")]
 	public class Entity
 	{
 		/// <summary>

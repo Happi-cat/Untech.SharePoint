@@ -1,9 +1,11 @@
-﻿using Untech.SharePoint.Common.MetaModels;
+﻿using Untech.SharePoint.Common.CodeAnnotations;
+using Untech.SharePoint.Common.MetaModels;
 namespace Untech.SharePoint.Common.Converters
 {
 	/// <summary>
 	/// Represents field converter interface.
 	/// </summary>
+	[PublicAPI]
 	public interface IFieldConverter
 	{
 		/// <summary>

@@ -9,6 +9,7 @@ namespace Untech.SharePoint.Common.Extensions
 	/// <summary>
 	/// Provide a set of static methods for work with <see cref="IEnumerable{T}"/>.
 	/// </summary>
+	[PublicAPI]
 	public static class EnumerableExtensions
 	{
 		/// <summary>
