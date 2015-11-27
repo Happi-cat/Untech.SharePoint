@@ -69,10 +69,10 @@ namespace Untech.SharePoint.Common.Test.Mappings.Annotation
 		public class Entity
 		{
 			[SpField]
-			public virtual string Field1 { get; set; }
+			public string Field1 { get; set; }
 
 			[SpField]
-			public virtual string Field2 { get; set; }
+			public string Field2 { get; set; }
 		}
 
 		[SpContentType(Id = "0x01")]

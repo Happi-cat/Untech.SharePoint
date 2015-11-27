@@ -159,7 +159,7 @@ namespace Untech.SharePoint.Common.Test.Mappings.Annotation
 		{
 			[SpField]
 			[SpFieldRemoved]
-			public virtual string Field3 { get; set; }
+			public string Field3 { get; set; }
 		}
 
 		public class ReadOnlyProperty : Entity
@@ -182,7 +182,7 @@ namespace Untech.SharePoint.Common.Test.Mappings.Annotation
 
 		public class ReadOnlyField : Entity
 		{
-			[SpField] public readonly string Field3 = null;
+			[SpField] public readonly string Field3;
 		}
 
 		public class ConstField : Entity

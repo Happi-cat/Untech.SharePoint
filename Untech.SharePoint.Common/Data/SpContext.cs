@@ -16,7 +16,7 @@ namespace Untech.SharePoint.Common.Data
 	/// <typeparam name="TCommonService">Type of the services.</typeparam>
 	[PublicAPI]
 	public abstract class SpContext<TContext, TCommonService> : ISpContext
-		where TContext : ISpContext
+		where TContext : SpContext<TContext, TCommonService>
 		where TCommonService: ICommonService
 	{
 		/// <summary>

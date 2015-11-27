@@ -16,9 +16,9 @@ namespace Untech.SharePoint.Client.Data
 			Config = config;
 		}
 
-		public ClientContext ClientContext { get; private set; }
+		private ClientContext ClientContext { get; set; }
 
-		public Config Config { get; private set; }
+		private Config Config { get; set; }
 
 		public IReadOnlyCollection<IMetaModelVisitor> MetaModelProcessors
 		{

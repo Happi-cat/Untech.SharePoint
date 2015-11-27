@@ -17,7 +17,7 @@ namespace Untech.SharePoint.Common.MetaModels.Collections
 		/// </summary>
 		/// <param name="source">Collection of <see cref="MetaList"/>.</param>
 		/// <exception cref="ArgumentNullException"><paramref name="source"/> is null.</exception>
-		public MetaListCollection([NotNull]IEnumerable<MetaList> source)
+		public MetaListCollection([NotNull][ItemNotNull]IEnumerable<MetaList> source)
 			: base(CreateDictionary(source))
 		{
 		}
@@ -28,7 +28,7 @@ namespace Untech.SharePoint.Common.MetaModels.Collections
 		}
 
 		[NotNull]
-		private static IDictionary<string, MetaList> CreateDictionary([NotNull]IEnumerable<MetaList> source)
+		private static IDictionary<string, MetaList> CreateDictionary([NotNull][ItemNotNull]IEnumerable<MetaList> source)
 		{
 			Guard.CheckNotNull("source", source);
 

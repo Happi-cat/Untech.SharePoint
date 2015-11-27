@@ -3,6 +3,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Linq.Expressions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Untech.SharePoint.Common.CodeAnnotations;
 using Untech.SharePoint.Common.Data;
 using Untech.SharePoint.Common.Data.QueryModels;
 using Untech.SharePoint.Common.Data.Translators;
@@ -347,14 +348,14 @@ namespace Untech.SharePoint.Common.Test.Data.Translators
 
 		}
 
-		protected TestScenario Given(Func<IQueryable<Entity>, IQueryable<Entity>> originalQuery)
+		private TestScenario Given(Func<IQueryable<Entity>, IQueryable<Entity>> originalQuery)
 		{
 			var originalQueryTree = new CamlQueryTreeProcessor().Process(GetExpression(originalQuery));
 
 			return new TestScenario(originalQueryTree);
 		}
 
-		protected TestScenario Given(Func<IQueryable<Entity>, object> originalQuery)
+		private TestScenario Given(Func<IQueryable<Entity>, object> originalQuery)
 		{
 			var originalQueryTree = new CamlQueryTreeProcessor().Process(GetExpression(originalQuery));
 
@@ -378,6 +379,7 @@ namespace Untech.SharePoint.Common.Test.Data.Translators
 
 		#region [Nested Classes]
 
+		[PublicAPI]
 		public class TestScenario
 		{
 			private readonly Expression _given;
@@ -419,7 +421,7 @@ namespace Untech.SharePoint.Common.Test.Data.Translators
 			}
 		}
 
-		public class QueryFinder : ExpressionVisitor
+		private class QueryFinder : ExpressionVisitor
 		{
 			public static QueryModel FindQuery(Expression node)
 			{
@@ -430,7 +432,7 @@ namespace Untech.SharePoint.Common.Test.Data.Translators
 				return finder.Query;
 			}
 
-			public QueryModel Query { get; set; }
+			private QueryModel Query { get; set; }
 
 			protected override Expression VisitMethodCall(MethodCallExpression node)
 			{
@@ -449,13 +451,13 @@ namespace Untech.SharePoint.Common.Test.Data.Translators
 			}
 		}
 
-		public class SpQueryRemover : ExpressionVisitor
+		private class SpQueryRemover : ExpressionVisitor
 		{
 			protected override Expression VisitMethodCall(MethodCallExpression node)
 			{
 				if (node.Method.DeclaringType == typeof(SpQueryable))
 				{
-					if (node.Type.Is<bool>())
+					if (node.Type == typeof(bool))
 					{
 						return Expression.Constant(true);
 					}

@@ -14,8 +14,17 @@ namespace Untech.SharePoint.Common.Converters
 	/// </summary>
 	public class FieldConverterContainer : IFieldConverterResolver
 	{
-		private readonly Container<string, Type> _fieldTypesMap = new Container<string, Type>();
-		private readonly KeyedFactory<Type, IFieldConverter> _fieldConvertersBuilders = new KeyedFactory<Type, IFieldConverter>();
+		private readonly Container<string, Type> _fieldTypesMap;
+		private readonly KeyedFactory<Type, IFieldConverter> _fieldConvertersBuilders;
+
+		/// <summary>
+		/// Initializes a new instance of the <see cref="FieldConverterContainer"/> class.
+		/// </summary>
+		public FieldConverterContainer()
+		{
+			_fieldTypesMap = new Container<string, Type>();
+			_fieldConvertersBuilders = new KeyedFactory<Type, IFieldConverter>();
+		}
 
 		/// <summary>
 		/// Adds built-in field converters from the specified <see cref="Assembly"/>.

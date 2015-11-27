@@ -148,14 +148,14 @@ namespace Untech.SharePoint.Common.Test.Data.Translators.Predicate
 			CustomAssert.Throw<NotSupportedException>(() => Given(n => n.Bool1 == n.Bool2).Expected("SHOULD THROW"));
 		}
 
-		protected TestScenario Given(Expression<Func<Entity, bool>> given)
+		private TestScenario Given(Expression<Func<Entity, bool>> given)
 		{
 			return new TestScenario(given);
 		}
 
 		#region [Nested Classes]
 
-		public class TestScenario
+		private class TestScenario
 		{
 			private readonly Expression<Func<Entity, bool>> _given;
 

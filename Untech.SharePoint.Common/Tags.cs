@@ -1,8 +1,8 @@
-﻿using Untech.SharePoint.Common.CodeAnnotations;
+﻿using System.Diagnostics.CodeAnalysis;
 
 namespace Untech.SharePoint.Common
 {
-	[UsedImplicitly(ImplicitUseTargetFlags.WithMembers)]
+	[SuppressMessage("ReSharper", "UnusedMember.Global")]
 	internal static class Tags
 	{
 		public const string Query = "Query";

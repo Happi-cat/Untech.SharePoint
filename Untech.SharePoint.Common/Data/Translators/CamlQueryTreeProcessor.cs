@@ -141,6 +141,10 @@ namespace Untech.SharePoint.Common.Data.Translators
 				{
 					return GetRuleAndUpdateContext((MethodCallExpression)node);
 				}
+				if (node.NodeType == ExpressionType.Quote)
+				{
+					return GetRuleAndUpdateContext(((UnaryExpression)node).Operand);
+				}
 				throw Error.SubqueryNotSupported(node);
 			}
 
@@ -406,9 +410,9 @@ namespace Untech.SharePoint.Common.Data.Translators
 
 		private class OrderByCallCombineRule : ICallCombineRule
 		{
-			public bool Ascending { get; set; }
+			public bool Ascending { private get; set; }
 
-			public bool ResetOrder { get; set; }
+			public bool ResetOrder { private get; set; }
 
 			public bool OuterCallCombineAllowed
 			{
@@ -477,9 +481,9 @@ namespace Untech.SharePoint.Common.Data.Translators
 
 		private class FirstCallCombineRule : ICallCombineRule
 		{
-			public bool ThrowIfNothing { get; set; }
+			public bool ThrowIfNothing { private get; set; }
 
-			public bool ThrowIfMultiple { get; set; }
+			public bool ThrowIfMultiple { private get; set; }
 
 			public bool OuterCallCombineAllowed
 			{
@@ -507,7 +511,7 @@ namespace Untech.SharePoint.Common.Data.Translators
 
 		private class LastRewriteRule : ICallCombineRule
 		{
-			public bool ThrowIfNothing { get; set; }
+			public bool ThrowIfNothing { private get; set; }
 
 			public bool OuterCallCombineAllowed
 			{
@@ -537,7 +541,7 @@ namespace Untech.SharePoint.Common.Data.Translators
 
 		private class ElementAtRewriteRule : ICallCombineRule
 		{
-			public bool ThrowIfNothing { get; set; }
+			public bool ThrowIfNothing { private get; set; }
 
 			public Expression Combine(ICallsCombinerContext context, MethodCallExpression node)
 			{

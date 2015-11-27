@@ -17,7 +17,7 @@ namespace Untech.SharePoint.Common.MetaModels.Collections
 		/// </summary>
 		/// <param name="source">Collection of <see cref="MetaField"/>.</param>
 		/// <exception cref="ArgumentNullException"><paramref name="source"/> is null.</exception>
-		public MetaFieldCollection([NotNull]IEnumerable<MetaField> source)
+		public MetaFieldCollection([NotNull][ItemNotNull]IEnumerable<MetaField> source)
 			: base(CreateDictionary(source))
 		{
 		}
@@ -28,7 +28,7 @@ namespace Untech.SharePoint.Common.MetaModels.Collections
 		}
 
 		[NotNull]
-		private static IDictionary<string, MetaField> CreateDictionary([NotNull]IEnumerable<MetaField> source)
+		private static IDictionary<string, MetaField> CreateDictionary([NotNull][ItemNotNull]IEnumerable<MetaField> source)
 		{
 			Guard.CheckNotNull("source", source);
 

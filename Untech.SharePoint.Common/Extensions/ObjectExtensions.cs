@@ -17,7 +17,7 @@ namespace Untech.SharePoint.Common.Extensions
 		/// <param name="obj">The object to check in <see cref="IEnumerable{T}"/>.</param>
 		/// <param name="collection">The collection which can contain <paramref name="obj"/>.</param>
 		/// <returns>true if <paramref name="obj"/> is in <paramref name="collection"/>; otherwise, false.</returns>
-		public static bool In<T>(this T obj, [CanBeNull]IEnumerable<T> collection)
+		public static bool In<T>([CanBeNull]this T obj, [CanBeNull]IEnumerable<T> collection)
 		{
 			return collection != null && collection.Contains(obj);
 		}

@@ -14,7 +14,7 @@ namespace Untech.SharePoint.Common.Test.Data.Translators
 			Expression = SpQueryable.MakeFakeFetch(typeof(T), null);
 		}
 
-		protected FakeQueryable(Expression node)
+		private FakeQueryable(Expression node)
 		{
 			Expression = node;
 		}
@@ -33,7 +33,7 @@ namespace Untech.SharePoint.Common.Test.Data.Translators
 
 		public Type ElementType { get { return typeof(T); } }
 
-		public Action<Expression>  ExpressionExecutor { get; set; }
+		public Action<Expression>  ExpressionExecutor { private get; set; }
 
 		public IQueryProvider Provider
 		{

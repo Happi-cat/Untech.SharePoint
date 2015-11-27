@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Microsoft.SharePoint;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -7,6 +8,7 @@ using Untech.SharePoint.Server.Test.Models;
 namespace Untech.SharePoint.Server.Test
 {
 	[TestClass]
+	[SuppressMessage("ReSharper", "UnusedVariable")]
 	public class ServerContextTest : IDisposable
 	{
 		public ServerContextTest()
@@ -15,8 +17,8 @@ namespace Untech.SharePoint.Server.Test
 			Web = Site.OpenWeb();
 		}
 
-		public SPSite Site { get; set; }
-		public SPWeb Web { get; set; }
+		private SPSite Site { get; set; }
+		private SPWeb Web { get; set; }
 
 		[TestMethod]
 		public void CanRun()

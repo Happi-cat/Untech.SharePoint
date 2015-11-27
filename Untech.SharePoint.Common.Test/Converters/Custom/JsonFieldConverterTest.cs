@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq.Expressions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Untech.SharePoint.Common.Converters;
@@ -9,6 +10,7 @@ using Untech.SharePoint.Common.Mappings.Annotation;
 namespace Untech.SharePoint.Common.Test.Converters.Custom
 {
 	[TestClass]
+	[SuppressMessage("ReSharper", "UnusedVariable")]
 	public class JsonFieldConverterTest
 	{
 		[TestMethod]

@@ -34,17 +34,6 @@ namespace Untech.SharePoint.Common.Extensions
 		}
 
 		/// <summary>
-		/// Determines whether <see cref="Type"/> is equal to <typeparamref name="T"/>.
-		/// </summary>
-		/// <typeparam name="T">Type that is expected.</typeparam>
-		/// <param name="type">Type to check.</param>
-		/// <returns>true if <paramref name="type"/> is equal to <typeparamref name="T"/>.</returns>
-		public static bool Is<T>([CanBeNull]this Type type)
-		{
-			return type == typeof (T);
-		}
-
-		/// <summary>
 		/// Determines whether <paramref name="source"/> <see cref="Type"/> is <see cref="IEnumerable{T}"/>.
 		/// </summary>
 		/// <param name="source">Type to check.</param>

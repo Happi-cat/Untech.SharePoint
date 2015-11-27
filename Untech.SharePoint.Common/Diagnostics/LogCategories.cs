@@ -7,6 +7,5 @@
 		public const string PredicateProcessor = "Predicate Processor";
 		public const string FieldSelectorProcessor = "Field Selector Processor";
 		public const string SelectableFieldsProcessor = "Selectable Fields Processor";
-		public const string SpList = "ISpList";
 	}
 }

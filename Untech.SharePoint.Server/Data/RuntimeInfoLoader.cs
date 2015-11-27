@@ -14,7 +14,7 @@ namespace Untech.SharePoint.Server.Data
 			SpWeb = spWeb;
 		}
 
-		public SPWeb SpWeb { get; private set; }
+		private SPWeb SpWeb { get; set; }
 
 		public override void VisitList(MetaList list)
 		{
@@ -25,7 +25,7 @@ namespace Untech.SharePoint.Server.Data
 			new ListInfoLoader(spList).VisitList(list);
 		}
 
-		internal class ListInfoLoader : BaseMetaModelVisitor
+		private class ListInfoLoader : BaseMetaModelVisitor
 		{
 			public ListInfoLoader(SPList spList)
 			{
@@ -34,7 +34,7 @@ namespace Untech.SharePoint.Server.Data
 				SpList = spList;
 			}
 
-			public SPList SpList { get; private set; }
+			private SPList SpList { get; set; }
 
 			public override void VisitContentType(MetaContentType contentType)
 			{

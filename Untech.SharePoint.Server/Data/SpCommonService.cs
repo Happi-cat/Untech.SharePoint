@@ -16,9 +16,9 @@ namespace Untech.SharePoint.Server.Data
 			Config = config;
 		}
 
-		public SPWeb Web { get; private set; }
+		private SPWeb Web { get; set; }
 
-		public Config Config { get; private set; }
+		private Config Config { get; set; }
 
 		public IReadOnlyCollection<IMetaModelVisitor> MetaModelProcessors
 		{

@@ -58,6 +58,11 @@ namespace Untech.SharePoint.Common.Data.Mapper
 				mapper.Map(source, dest);
 			}
 
+			if (ContentType.List.IsExternal)
+			{
+				return;
+			}
+
 			SetContentType(dest);
 		}
 

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Microsoft.SharePoint.Client;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -7,6 +8,7 @@ using Untech.SharePoint.Client.Test.Models;
 namespace Untech.SharePoint.Client.Test
 {
 	[TestClass]
+	[SuppressMessage("ReSharper", "UnusedVariable")]
 	public class ClientContextTest : IDisposable
 	{
 		public ClientContextTest()

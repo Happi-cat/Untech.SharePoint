@@ -1,11 +1,13 @@
 ﻿using System;
 using Newtonsoft.Json;
+using Untech.SharePoint.Common.CodeAnnotations;
 
 namespace Untech.SharePoint.Common.Models
 {
 	/// <summary>
 	/// Represents lookup field value
 	/// </summary>
+	[UsedImplicitly(ImplicitUseTargetFlags.WithMembers)]
 	[Serializable]
 	public class ObjectReference
 	{
