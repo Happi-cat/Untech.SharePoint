@@ -11,17 +11,19 @@ namespace Untech.SharePoint.Common.Converters.BuiltIn
 	internal class NumberFieldConverter : IFieldConverter
 	{
 		private MetaField Field { get; set; }
+		private bool IsNullableMemberType { get; set; }
 
 		public void Initialize(MetaField field)
 		{
 			Guard.CheckNotNull("field", field);
 
 			Field = field;
+			IsNullableMemberType = Field.MemberType.IsNullable();
 		}
 
 		public object FromSpValue(object value)
 		{
-			if (Field.MemberType.IsNullable())
+			if (IsNullableMemberType)
 				return (double?)value;
 
 			return (double?) value ?? 0;

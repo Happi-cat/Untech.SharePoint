@@ -8,53 +8,23 @@ namespace Untech.SharePoint.Common.Converters.BuiltIn
 {
 	[SpFieldConverter("DateTime")]
 	[UsedImplicitly]
-	internal class DateTimeFieldConverter : IFieldConverter
+	internal class DateTimeFieldConverter : MultiTypeFieldConverter
 	{
-		private MetaField Field { get; set; }
-
-		public void Initialize(MetaField field)
+		public override void Initialize(MetaField field)
 		{
-			Guard.CheckNotNull("field", field);
-
-			Field = field;
-		}
-
-		public object FromSpValue(object value)
-		{
-			if (Field.MemberType == typeof(DateTime?))
-				return (DateTime?)value;
-
-			return (DateTime?)value ?? new DateTime(1900, 1, 1);
-		}
-
-		public object ToSpValue(object value)
-		{
-			if (value == null)
+			base.Initialize(field);
+			if (field.MemberType == typeof(bool))
 			{
-				return null;
+				Internal = new DateTimeConverter();
 			}
-			var dateValue = (DateTime)value;
-			if (dateValue <= new DateTime(1900, 1, 1))
+			else if (field.MemberType == typeof(bool?))
 			{
-				return null;
+				Internal = new NullableDateTimeConverter();
 			}
-
-			return dateValue;
-		}
-
-		public string ToCamlValue(object value)
-		{
-			if (value == null)
+			else
 			{
-				return null;
+				throw new ArgumentException("MemberType is invalid");
 			}
-			var dateValue = (DateTime)value;
-			if (dateValue <= new DateTime(1900, 1, 1))
-			{
-				return null;
-			}
-
-			return CreateIsoDate(dateValue);
 		}
 
 		/// <summary>
@@ -80,6 +50,57 @@ namespace Untech.SharePoint.Common.Converters.BuiltIn
 			sb.Append(dtValue.Second.ToString("00"));
 			sb.Append("Z");
 			return sb.ToString();
+		}
+
+		private class DateTimeConverter : IFieldConverter
+		{
+			private static readonly DateTime Min = new DateTime(1900, 1, 1);
+
+			public void Initialize(MetaField field)
+			{
+				
+			}
+
+			public object FromSpValue(object value)
+			{
+				return (DateTime?) value ?? Min;
+			}
+
+			public object ToSpValue(object value)
+			{
+				var dateValue = (DateTime)value;
+				return dateValue > Min ? dateValue : (object) null;
+			}
+
+			public string ToCamlValue(object value)
+			{
+				var dateValue = (DateTime)value;
+				return dateValue > Min ? CreateIsoDate(dateValue) : null;
+			}
+		}
+
+		private class NullableDateTimeConverter : IFieldConverter
+		{
+			public void Initialize(MetaField field)
+			{
+
+			}
+
+			public object FromSpValue(object value)
+			{
+				return (DateTime?)value;
+			}
+
+			public object ToSpValue(object value)
+			{
+				return (DateTime?)value;
+			}
+
+			public string ToCamlValue(object value)
+			{
+				var dateValue = (DateTime?)value;
+				return dateValue != null ? CreateIsoDate(dateValue.Value) : null;
+			}
 		}
 	}
 }

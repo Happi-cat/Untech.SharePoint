@@ -64,6 +64,7 @@ namespace Untech.SharePoint.Common.Configuration
 		/// Returns new <see cref="Config"/> instance.
 		/// </summary>
 		/// <returns>New <see cref="Config"/> instance.</returns>
+		[Pure]
 		[NotNull]
 		public Config BuildConfig()
 		{

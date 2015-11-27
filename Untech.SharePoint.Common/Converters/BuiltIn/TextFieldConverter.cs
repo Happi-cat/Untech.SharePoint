@@ -1,4 +1,5 @@
-﻿using Untech.SharePoint.Common.CodeAnnotations;
+﻿using System;
+using Untech.SharePoint.Common.CodeAnnotations;
 using Untech.SharePoint.Common.MetaModels;
 using Untech.SharePoint.Common.Utils;
 
@@ -17,6 +18,11 @@ namespace Untech.SharePoint.Common.Converters.BuiltIn
 			Guard.CheckNotNull("field", field);
 
 			Field = field;
+
+			if (field.MemberType != typeof(string))
+			{
+				throw new ArgumentException("Only string member type allowed");
+			}
 		}
 
 		public object FromSpValue(object value)

@@ -1,43 +1,75 @@
 using System;
 using Untech.SharePoint.Common.CodeAnnotations;
 using Untech.SharePoint.Common.MetaModels;
-using Untech.SharePoint.Common.Utils;
 
 namespace Untech.SharePoint.Common.Converters.BuiltIn
 {
 	[SpFieldConverter("Guid")]
 	[UsedImplicitly]
-	internal class GuidFieldConverter : IFieldConverter
+	internal class GuidFieldConverter : MultiTypeFieldConverter
 	{
-		private MetaField Field { get; set; }
-
-		public void Initialize(MetaField field)
+		public override void Initialize(MetaField field)
 		{
-			Guard.CheckNotNull("field", field);
-
-			Field = field;
+			base.Initialize(field);
+			if (field.MemberType == typeof(Guid))
+			{
+				Internal = new GuidFieldConverter();
+			}
+			else if (field.MemberType == typeof(Guid?))
+			{
+				Internal = new NullableGuidTypeConverter();
+			}
+			else
+			{
+				throw new ArgumentException("MemberType is invalid");
+			}
 		}
 
-		public object FromSpValue(object value)
+		private class GuidTypeConverter : IFieldConverter
 		{
-			return (Guid?)value ?? Guid.Empty;
+			public void Initialize(MetaField field)
+			{
+
+			}
+
+			public object FromSpValue(object value)
+			{
+				return value != null ? new Guid(value.ToString()) : Guid.Empty;
+			}
+
+			public object ToSpValue(object value)
+			{
+				var guidValue = (Guid)value;
+				return guidValue != Guid.Empty ? guidValue : (object)null;
+			}
+
+			public string ToCamlValue(object value)
+			{
+				return Convert.ToString(ToSpValue(value));
+			}
 		}
 
-		public object ToSpValue(object value)
+		private class NullableGuidTypeConverter : IFieldConverter
 		{
-			if (value == null)
-				return null;
+			public void Initialize(MetaField field)
+			{
 
-			var guidValue = (Guid) value;
-			if (guidValue == Guid.Empty)
-				return null;
-			
-			return guidValue;
-		}
+			}
 
-		public string ToCamlValue(object value)
-		{
-			return Convert.ToString(ToSpValue(value));
+			public object FromSpValue(object value)
+			{
+				return value != null ? new Guid(value.ToString()) : (Guid?)null;
+			}
+
+			public object ToSpValue(object value)
+			{
+				return (Guid?) value;
+			}
+
+			public string ToCamlValue(object value)
+			{
+				return Convert.ToString(ToSpValue(value));
+			}
 		}
 	}
 }
