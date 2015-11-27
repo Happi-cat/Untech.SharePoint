@@ -67,7 +67,7 @@ namespace Untech.SharePoint.Common.Converters.BuiltIn
 
 			public string ToCamlValue(object value)
 			{
-				var boolValue = (bool?)value ;
+				var boolValue = (bool?)value;
 				if (boolValue.HasValue)
 				{
 					return boolValue.Value ? "1" : "0";

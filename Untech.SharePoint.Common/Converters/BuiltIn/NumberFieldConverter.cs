@@ -7,9 +7,12 @@ using Untech.SharePoint.Common.Utils;
 namespace Untech.SharePoint.Common.Converters.BuiltIn
 {
 	[SpFieldConverter("Number")]
+	[SpFieldConverter("Currency")]
 	[UsedImplicitly]
 	internal class NumberFieldConverter : IFieldConverter
 	{
+		private static readonly TypeCode[] AllowedTypeCodes = { TypeCode.Double, TypeCode.Decimal };
+
 		private MetaField Field { get; set; }
 		private bool IsNullableMemberType { get; set; }
 
@@ -18,7 +21,16 @@ namespace Untech.SharePoint.Common.Converters.BuiltIn
 			Guard.CheckNotNull("field", field);
 
 			Field = field;
-			IsNullableMemberType = Field.MemberType.IsNullable();
+			var memberType = field.MemberType;
+			if (memberType.IsNullable())
+			{
+				IsNullableMemberType = true;
+				memberType = memberType.GetGenericArguments()[0];
+			}
+			if (!Type.GetTypeCode(memberType).In(AllowedTypeCodes))
+			{
+				throw new ArgumentException("Invalid");
+			}
 		}
 
 		public object FromSpValue(object value)

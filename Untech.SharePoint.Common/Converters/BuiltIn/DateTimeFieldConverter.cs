@@ -99,7 +99,7 @@ namespace Untech.SharePoint.Common.Converters.BuiltIn
 			public string ToCamlValue(object value)
 			{
 				var dateValue = (DateTime?)value;
-				return dateValue != null ? CreateIsoDate(dateValue.Value) : null;
+				return dateValue.HasValue ? CreateIsoDate(dateValue.Value) : null;
 			}
 		}
 	}
