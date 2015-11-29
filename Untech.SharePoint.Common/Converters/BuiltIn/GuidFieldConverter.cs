@@ -13,7 +13,7 @@ namespace Untech.SharePoint.Common.Converters.BuiltIn
 			base.Initialize(field);
 			if (field.MemberType == typeof(Guid))
 			{
-				Internal = new GuidFieldConverter();
+				Internal = new GuidTypeConverter();
 			}
 			else if (field.MemberType == typeof(Guid?))
 			{
@@ -39,8 +39,7 @@ namespace Untech.SharePoint.Common.Converters.BuiltIn
 
 			public object ToSpValue(object value)
 			{
-				var guidValue = (Guid)value;
-				return guidValue != Guid.Empty ? guidValue : (object)null;
+				return  (Guid)value;
 			}
 
 			public string ToCamlValue(object value)
