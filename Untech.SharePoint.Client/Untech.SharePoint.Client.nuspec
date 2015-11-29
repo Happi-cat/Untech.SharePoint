@@ -6,8 +6,9 @@
     <title>$title$</title>
     <authors>$author$</authors>
     <owners>$author$</owners>
-		<licenseUrl>https://github.com/Happi-cat/Untech.SharePoint/blob/master/LICENSE</licenseUrl>
-		<projectUrl>https://github.com/Happi-cat/Untech.SharePoint</projectUrl>
+	<licenseUrl>https://github.com/Happi-cat/Untech.SharePoint/blob/master/LICENSE</licenseUrl>
+	<projectUrl>https://github.com/Happi-cat/Untech.SharePoint</projectUrl>
+    <iconUrl>https://raw.githubusercontent.com/Happi-cat/Untech.SharePoint/master/linq-sharepoint-logo-64.png</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>$description$</description>
     <releaseNotes>Alpha Build</releaseNotes>
