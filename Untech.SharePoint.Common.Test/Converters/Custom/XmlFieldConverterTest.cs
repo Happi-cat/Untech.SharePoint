@@ -14,11 +14,14 @@ namespace Untech.SharePoint.Common.Test.Converters.Custom
 			Given<TestObject>()
 				.CanConvertFromSp(null, null)
 				.CanConvertFromSp("", null)
-				.CanConvertFromSp("<Test xmlns:i=\"http://www.w3.org/2001/XMLSchema-instance\" />", new TestObject())
-				.CanConvertFromSp("<Test xmlns:i=\"http://www.w3.org/2001/XMLSchema-instance\"><Field>value</Field></Test>", new TestObject { Field = "value" })
+				.CanConvertFromSp("<Test />", new TestObject())
+				.CanConvertFromSp("<Test><Inner><Id>2</Id></Inner></Test>", new TestObject {Inner = new InnerObject {Id = 2}})
+				.CanConvertFromSp("<Test ><Field>value</Field></Test>", new TestObject {Field = "value"})
 				.CanConvertToSp(null, null)
-				.CanConvertToSp(new TestObject(), "<Test xmlns:i=\"http://www.w3.org/2001/XMLSchema-instance\" />")
-				.CanConvertToSp(new TestObject { Field = "test" }, "<Test xmlns:i=\"http://www.w3.org/2001/XMLSchema-instance\"><Field>test</Field></Test>");
+				.CanConvertToSp(new TestObject(), 
+					"<Test xmlns:i=\"http://www.w3.org/2001/XMLSchema-instance\" />")
+				.CanConvertToSp(new TestObject {Field = "test"},
+					"<Test xmlns:i=\"http://www.w3.org/2001/XMLSchema-instance\"><Field>test</Field></Test>");
 		}
 
 		protected override IFieldConverter GetConverter()
@@ -32,6 +35,10 @@ namespace Untech.SharePoint.Common.Test.Converters.Custom
 			[DataMember(Name = "Field", EmitDefaultValue = false)]
 			public string Field { get; set; }
 
+			[DataMember(Name = "Inner", EmitDefaultValue = false)]
+			public InnerObject Inner{ get; set; }
+
+
 			public override bool Equals(object obj)
 			{
 				if (obj == null) return false;
@@ -41,10 +48,16 @@ namespace Untech.SharePoint.Common.Test.Converters.Custom
 
 			public override int GetHashCode()
 			{
-				return Field != null ? Field.GetHashCode() : 0;
+				var innerHash = Inner != null ? Inner.Id.GetHashCode() : 0;
+				return (Field != null ? Field.GetHashCode() : 0) ^ innerHash;
 			}
 		}
 
-		
+		[DataContract(Name = "Inner", Namespace = "")]
+		public class InnerObject 
+		{
+			[DataMember(Name = "Id")]
+			public int Id { get; set; }
+		}
 	}
 }
