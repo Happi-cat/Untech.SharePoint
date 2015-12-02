@@ -51,7 +51,6 @@
     <Compile Include="Configuration\Config.cs" />
     <Compile Include="Converters\MultiTypeFieldConverter.cs" />
     <Compile Include="Converters\BuiltIn\BooleanFieldConverter.cs" />
-    <Compile Include="Converters\BuiltIn\CounterFieldConverter.cs" />
     <Compile Include="Converters\BuiltIn\DateTimeFieldConverter.cs" />
     <Compile Include="Converters\BuiltIn\GuidFieldConverter.cs" />
     <Compile Include="Converters\BuiltIn\IntegerFieldConverter.cs" />

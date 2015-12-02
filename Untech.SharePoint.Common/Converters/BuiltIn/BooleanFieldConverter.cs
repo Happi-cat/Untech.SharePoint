@@ -1,79 +1,56 @@
 ﻿using System;
 using Untech.SharePoint.Common.CodeAnnotations;
+using Untech.SharePoint.Common.Extensions;
 using Untech.SharePoint.Common.MetaModels;
+using Untech.SharePoint.Common.Utils;
 
 namespace Untech.SharePoint.Common.Converters.BuiltIn
 {
 	[SpFieldConverter("Boolean")]
 	[UsedImplicitly]
-	internal class BooleanFieldConverter : MultiTypeFieldConverter
+	internal class BooleanFieldConverter : IFieldConverter
 	{
-		public override void Initialize(MetaField field)
+		private MetaField Field { get; set; }
+		private bool IsNullableMemberType { get; set; }
+
+		public void Initialize(MetaField field)
 		{
-			base.Initialize(field);
-			if (field.MemberType == typeof (bool))
+			Guard.CheckNotNull("field", field);
+
+			Field = field;
+			var memberType = field.MemberType;
+			if (memberType.IsNullable())
 			{
-				Internal = new BoolTypeConverter();
+				IsNullableMemberType = true;
+				memberType = memberType.GetGenericArguments()[0];
 			}
-			else if (field.MemberType == typeof (bool?))
+			if (memberType != typeof(bool))
 			{
-				Internal = new NullableBoolTypeConverter();
-			}
-			else
-			{
-				throw new ArgumentException("MemberType is invalid");
+				throw new ArgumentException("Invalid");
 			}
 		}
 
-		private class BoolTypeConverter : IFieldConverter
+		public object FromSpValue(object value)
 		{
-			public void Initialize(MetaField field)
-			{
-				
-			}
+			if (IsNullableMemberType)
+				return (bool?)value;
 
-			public object FromSpValue(object value)
-			{
-				return (bool) value;
-			}
-
-			public object ToSpValue(object value)
-			{
-				return (bool) value;
-			}
-
-			public string ToCamlValue(object value)
-			{
-				return (bool) value ? "1" : "0";
-			}
+			return (bool?)value ?? false;
 		}
 
-		private class NullableBoolTypeConverter : IFieldConverter
+		public object ToSpValue(object value)
 		{
-			public void Initialize(MetaField field)
-			{
+			return (bool?)value;
+		}
 
-			}
-
-			public object FromSpValue(object value)
+		public string ToCamlValue(object value)
+		{
+			var boolValue = (bool?)value;
+			if (boolValue.HasValue)
 			{
-				return (bool?)value;
+				return boolValue.Value ? "1" : "0";
 			}
-
-			public object ToSpValue(object value)
-			{
-				return (bool?)value;
-			}
-
-			public string ToCamlValue(object value)
-			{
-				var boolValue = (bool?)value;
-				if (boolValue.HasValue)
-				{
-					return boolValue.Value ? "1" : "0";
-				}
-				return "";
-			}
+			return "";
 		}
 	}
 }

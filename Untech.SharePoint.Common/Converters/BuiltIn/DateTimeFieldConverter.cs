@@ -2,7 +2,6 @@
 using System.Text;
 using Untech.SharePoint.Common.CodeAnnotations;
 using Untech.SharePoint.Common.MetaModels;
-using Untech.SharePoint.Common.Utils;
 
 namespace Untech.SharePoint.Common.Converters.BuiltIn
 {
@@ -13,11 +12,11 @@ namespace Untech.SharePoint.Common.Converters.BuiltIn
 		public override void Initialize(MetaField field)
 		{
 			base.Initialize(field);
-			if (field.MemberType == typeof(bool))
+			if (field.MemberType == typeof(DateTime))
 			{
 				Internal = new DateTimeConverter();
 			}
-			else if (field.MemberType == typeof(bool?))
+			else if (field.MemberType == typeof(DateTime?))
 			{
 				Internal = new NullableDateTimeConverter();
 			}
@@ -75,7 +74,7 @@ namespace Untech.SharePoint.Common.Converters.BuiltIn
 			public string ToCamlValue(object value)
 			{
 				var dateValue = (DateTime)value;
-				return dateValue > Min ? CreateIsoDate(dateValue) : null;
+				return dateValue > Min ? CreateIsoDate(dateValue) : "";
 			}
 		}
 
@@ -99,7 +98,7 @@ namespace Untech.SharePoint.Common.Converters.BuiltIn
 			public string ToCamlValue(object value)
 			{
 				var dateValue = (DateTime?)value;
-				return dateValue.HasValue ? CreateIsoDate(dateValue.Value) : null;
+				return dateValue.HasValue ? CreateIsoDate(dateValue.Value) : "";
 			}
 		}
 	}

@@ -60,10 +60,15 @@
   <ItemGroup>
     <Compile Include="Configuration\BuiltInFieldConverter.cs" />
     <Compile Include="Configuration\ConfigBuilderTest.cs" />
+    <Compile Include="Converters\BaseConverterTest.cs" />
+    <Compile Include="Converters\BuiltIn\BoolConverterTest.cs" />
+    <Compile Include="Converters\BuiltIn\DateTimeConverterTest.cs" />
+    <Compile Include="Converters\BuiltIn\IntegerConverterTest.cs" />
     <Compile Include="Converters\ConverterContext.cs" />
     <Compile Include="Converters\Custom\EnumFieldConverterTest.cs" />
     <Compile Include="Converters\Custom\JsonFieldConverterTest.cs" />
     <Compile Include="Converters\Custom\XmlFieldConverterTest.cs" />
+    <Compile Include="Converters\BuiltIn\NumberConverterTest.cs" />
     <Compile Include="Data\Translators\BaseExpressionTest.cs" />
     <Compile Include="Data\Translators\BaseExpressionVisitorTest.cs" />
     <Compile Include="Data\Translators\Predicate\CamlPredicateProcessorTest.cs" />
@@ -91,9 +96,7 @@
   <ItemGroup>
     <None Include="key.snk" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Converters\BuiltIn\" />
-  </ItemGroup>
+  <ItemGroup />
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>
