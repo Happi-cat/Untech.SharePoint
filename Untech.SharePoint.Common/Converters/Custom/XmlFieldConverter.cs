@@ -34,11 +34,15 @@ namespace Untech.SharePoint.Common.Converters.Custom
 		/// <returns>Member value.</returns>
 		public object FromSpValue(object value)
 		{
-			if (value == null) return null;
+			var stringValue = (string) value;
+			if (string.IsNullOrEmpty(stringValue))
+			{
+				return null;
+			}
 
 			var serializer = new DataContractSerializer(Field.MemberType);
 			
-			using (var stream = new MemoryStream(Encoding.UTF8.GetBytes((string) value)))
+			using (var stream = new MemoryStream(Encoding.UTF8.GetBytes(stringValue)))
 			{
 				return serializer.ReadObject(stream);
 			}
@@ -51,7 +55,10 @@ namespace Untech.SharePoint.Common.Converters.Custom
 		/// <returns>SP field value.</returns>
 		public object ToSpValue(object value)
 		{
-			if (value == null) return null;
+			if (value == null)
+			{
+				return null;
+			}
 
 			var serializer = new DataContractSerializer(Field.MemberType);
 			var sb = new StringBuilder();

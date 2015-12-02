@@ -39,7 +39,7 @@ namespace Untech.SharePoint.Common.Converters.Custom
 		/// <returns>SP field value.</returns>
 		public object ToSpValue(object value)
 		{
-			return value == null ? null : JsonConvert.SerializeObject(value);
+			return value != null ? JsonConvert.SerializeObject(value) : null;
 		}
 
 		/// <summary>

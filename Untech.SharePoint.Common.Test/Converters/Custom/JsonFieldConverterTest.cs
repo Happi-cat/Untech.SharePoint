@@ -1,42 +1,49 @@
-﻿using System;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq.Expressions;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Runtime.Serialization;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Untech.SharePoint.Common.Converters;
 using Untech.SharePoint.Common.Converters.Custom;
-using Untech.SharePoint.Common.Data;
-using Untech.SharePoint.Common.Mappings.Annotation;
 
 namespace Untech.SharePoint.Common.Test.Converters.Custom
 {
 	[TestClass]
-	[SuppressMessage("ReSharper", "UnusedVariable")]
-	public class JsonFieldConverterTest
+	public class JsonFieldConverterTest : BaseConverterTest
 	{
 		[TestMethod]
-		public void TestMethod1()
+		public void CanConvertTestObject()
 		{
-			var converter = GetFieldConverter<ConverterDataContext, ConverterDataEntity, string>(n => n.Test, m => m.String);
+			Given<TestObject>()
+				.CanConvertFromSp(null, null)
+				.CanConvertFromSp("", null)
+				.CanConvertFromSp("{}", new TestObject())
+				.CanConvertFromSp("{ \"Field\": \"value\" }", new TestObject { Field = "value"})
+				.CanConvertToSp(null, null)
+				.CanConvertToSp(new TestObject(), "{\"Field\":null}")
+				.CanConvertToSp(new TestObject { Field = "test" }, "{\"Field\":\"test\"}");
 
 		}
 
-		private IFieldConverter GetFieldConverter<TContext, TEntity, TProp>(Expression<Func<TContext, ISpList<TEntity>>> listAccessor, Expression<Func<TEntity, TProp>> fieldAccessor)
+		protected override IFieldConverter GetConverter()
 		{
-			var contextMapping = new AnnotatedContextMapping<TContext>();
-			var listTitle = contextMapping.GetListTitleFromContextMember(((MemberExpression)listAccessor.Body).Member);
+			return new JsonFieldConverter();
+		}
 
-			var context = contextMapping.GetMetaContext();
+		public class TestObject
+		{
+			[DataMember]
+			public string Field { get; set; }
 
-			var converter = new JsonFieldConverter();
+			public override bool Equals(object obj)
+			{
+				if (obj == null) return false;
+				if (ReferenceEquals(this, obj)) return true;
+				return obj.GetHashCode() == GetHashCode();
+			}
 
-			converter.Initialize(context
-				.Lists[listTitle]
-				.ContentTypes[typeof(TEntity)]
-				.Fields[((MemberExpression)fieldAccessor.Body)
-				.Member
-				.Name]);
-
-			return converter;
+			public override int GetHashCode()
+			{
+				return Field != null ? Field.GetHashCode() : 0;
+			}
 		}
 	}
 }

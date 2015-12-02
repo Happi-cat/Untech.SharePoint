@@ -40,9 +40,14 @@ namespace Untech.SharePoint.Common.Converters.Custom
 		/// <returns>Member value.</returns>
 		public object FromSpValue(object value)
 		{
+			return ConvertToEnum(value);
+		}
+
+		private object ConvertToEnum(object value)
+		{
 			if (value == null)
 			{
-				return 0;
+				return Enum.ToObject(Field.MemberType, 0);
 			}
 
 			var enumString = value.ToString();
@@ -51,7 +56,8 @@ namespace Untech.SharePoint.Common.Converters.Custom
 			{
 				var enumMemberAttribute = Field.MemberType.GetField(enumName).GetCustomAttribute<EnumMemberAttribute>();
 
-				if (enumMemberAttribute != null && string.Compare(enumMemberAttribute.Value, enumString, StringComparison.InvariantCultureIgnoreCase) == 0)
+				if (enumMemberAttribute != null &&
+				    string.Compare(enumMemberAttribute.Value, enumString, StringComparison.InvariantCultureIgnoreCase) == 0)
 				{
 					return Enum.Parse(Field.MemberType, enumName);
 				}

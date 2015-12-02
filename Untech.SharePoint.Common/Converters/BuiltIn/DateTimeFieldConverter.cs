@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Text;
 using Untech.SharePoint.Common.CodeAnnotations;
 using Untech.SharePoint.Common.MetaModels;
@@ -9,16 +10,18 @@ namespace Untech.SharePoint.Common.Converters.BuiltIn
 	[UsedImplicitly]
 	internal class DateTimeFieldConverter : MultiTypeFieldConverter
 	{
+		private static readonly IReadOnlyDictionary<Type, Func<IFieldConverter>> TypeConverters = new Dictionary<Type, Func<IFieldConverter>>
+		{
+			{typeof(DateTime), () => new DateTimeTypeConverter()},
+			{typeof(DateTime?), () => new NullableDateTimeTypeConverter()}
+		};
+
 		public override void Initialize(MetaField field)
 		{
 			base.Initialize(field);
-			if (field.MemberType == typeof(DateTime))
+			if (TypeConverters.ContainsKey(field.MemberType))
 			{
-				Internal = new DateTimeConverter();
-			}
-			else if (field.MemberType == typeof(DateTime?))
-			{
-				Internal = new NullableDateTimeConverter();
+				Internal = TypeConverters[field.MemberType]();
 			}
 			else
 			{
@@ -51,7 +54,7 @@ namespace Untech.SharePoint.Common.Converters.BuiltIn
 			return sb.ToString();
 		}
 
-		private class DateTimeConverter : IFieldConverter
+		private class DateTimeTypeConverter : IFieldConverter
 		{
 			private static readonly DateTime Min = new DateTime(1900, 1, 1);
 
@@ -78,7 +81,7 @@ namespace Untech.SharePoint.Common.Converters.BuiltIn
 			}
 		}
 
-		private class NullableDateTimeConverter : IFieldConverter
+		private class NullableDateTimeTypeConverter : IFieldConverter
 		{
 			public void Initialize(MetaField field)
 			{
