@@ -2,6 +2,7 @@
 using System.Runtime.Serialization;
 using System.Text;
 using System.Xml;
+using System.Xml.Serialization;
 using Untech.SharePoint.Common.CodeAnnotations;
 using Untech.SharePoint.Common.MetaModels;
 using Untech.SharePoint.Common.Utils;
@@ -40,11 +41,11 @@ namespace Untech.SharePoint.Common.Converters.Custom
 				return null;
 			}
 
-			var serializer = new DataContractSerializer(Field.MemberType);
+			var serializer = new XmlSerializer(Field.MemberType);
 			
-			using (var stream = new MemoryStream(Encoding.UTF8.GetBytes(stringValue)))
+			using (var reader = XmlReader.Create(new StringReader(stringValue)))
 			{
-				return serializer.ReadObject(stream);
+				return serializer.Deserialize(reader);
 			}
 		}
 
@@ -60,13 +61,19 @@ namespace Untech.SharePoint.Common.Converters.Custom
 				return null;
 			}
 
-			var serializer = new DataContractSerializer(Field.MemberType);
 			var sb = new StringBuilder();
-
-			using (var textWriter = new StringWriter(sb))
-			using (var xmlWriter = new XmlTextWriter(textWriter))
+			var serializer = new XmlSerializer(Field.MemberType);
+			var settings = new XmlWriterSettings
 			{
-				serializer.WriteObject(xmlWriter, value);
+				OmitXmlDeclaration = true
+			};
+			var ns = new XmlSerializerNamespaces();
+			//ns.Add("xsi", "http://www.w3.org/2001/XMLSchema-instance");
+			//ns.Add("xsd", "http://www.w3.org/2001/XMLSchema");
+			//xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+			using (var xmlWriter = XmlWriter.Create(sb, settings))
+			{
+				serializer.Serialize(xmlWriter, value, ns);
 			}
 
 			return sb.ToString();

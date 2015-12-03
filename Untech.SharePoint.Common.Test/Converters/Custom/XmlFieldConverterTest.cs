@@ -1,4 +1,4 @@
-﻿using System.Runtime.Serialization;
+﻿using System.Xml.Serialization;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Untech.SharePoint.Common.Converters;
 using Untech.SharePoint.Common.Converters.Custom;
@@ -16,12 +16,29 @@ namespace Untech.SharePoint.Common.Test.Converters.Custom
 				.CanConvertFromSp("", null)
 				.CanConvertFromSp("<Test />", new TestObject())
 				.CanConvertFromSp("<Test><Inner><Id>2</Id></Inner></Test>", new TestObject {Inner = new InnerObject {Id = 2}})
-				.CanConvertFromSp("<Test ><Field>value</Field></Test>", new TestObject {Field = "value"})
+				.CanConvertFromSp("<Test Field='value'></Test>", new TestObject {Field = "value"})
 				.CanConvertToSp(null, null)
-				.CanConvertToSp(new TestObject(), 
-					"<Test xmlns:i=\"http://www.w3.org/2001/XMLSchema-instance\" />")
+				.CanConvertToSp(new TestObject(),
+					"<Test xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" />")
 				.CanConvertToSp(new TestObject {Field = "test"},
-					"<Test xmlns:i=\"http://www.w3.org/2001/XMLSchema-instance\"><Field>test</Field></Test>");
+					"<Test xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" Field=\"test\" />")
+				.CanConvertToSp(new TestObject { Field = "test", Inner = new InnerObject { Id=3 }},
+					"<Test xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" Field=\"test\"><Inner><Id>3</Id></Inner></Test>");
+		}
+
+		[TestMethod]
+		public void CanConvertNamespacedObject()
+		{
+			Given<NamespacedObject>()
+				.CanConvertFromSp(null, null)
+				.CanConvertFromSp("", null)
+				.CanConvertFromSp("<Obj xmlns=\"http://namespace.my\" />", new NamespacedObject())
+				.CanConvertFromSp("<Obj xmlns=\"http://namespace.my\" Field1='value'></Obj>", new NamespacedObject { Field1 = "value" })
+				.CanConvertToSp(null, null)
+				.CanConvertToSp(new NamespacedObject(),
+					"<Obj xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns=\"http://namespace.my\" />")
+				.CanConvertToSp(new NamespacedObject {Field1 = "test", Field2 = "value"},
+					"<Obj xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" Field1=\"test\" Field2=\"value\" xmlns=\"http://namespace.my\" />");
 		}
 
 		protected override IFieldConverter GetConverter()
@@ -29,13 +46,13 @@ namespace Untech.SharePoint.Common.Test.Converters.Custom
 			return new XmlFieldConverter();
 		}
 
-		[DataContract(Name = "Test", Namespace = "")]
+		[XmlRoot("Test", Namespace = "", DataType = "")]
 		public class TestObject
 		{
-			[DataMember(Name = "Field", EmitDefaultValue = false)]
+			[XmlAttribute]
 			public string Field { get; set; }
 
-			[DataMember(Name = "Inner", EmitDefaultValue = false)]
+			[XmlElement]
 			public InnerObject Inner{ get; set; }
 
 
@@ -53,11 +70,33 @@ namespace Untech.SharePoint.Common.Test.Converters.Custom
 			}
 		}
 
-		[DataContract(Name = "Inner", Namespace = "")]
+		[XmlType(Namespace = "")]
 		public class InnerObject 
 		{
-			[DataMember(Name = "Id")]
+			[XmlElement]
 			public int Id { get; set; }
+		}
+
+		[XmlRoot("Obj", Namespace = "http://namespace.my", DataType = "")]
+		public class NamespacedObject
+		{
+			[XmlAttribute(Namespace = "http://namespace.my")]
+			public string Field1 { get; set; }
+
+			[XmlAttribute]
+			public string Field2 { get; set; }
+
+			public override bool Equals(object obj)
+			{
+				if (obj == null) return false;
+				if (ReferenceEquals(this, obj)) return true;
+				return obj.GetHashCode() == GetHashCode();
+			}
+
+			public override int GetHashCode()
+			{
+				return (Field1 != null ? Field1.GetHashCode() : 0) ^ (Field2 != null ? Field2.GetHashCode() : 0);
+			}
 		}
 	}
 }
