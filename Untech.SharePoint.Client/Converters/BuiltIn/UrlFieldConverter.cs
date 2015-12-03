@@ -1,85 +1,102 @@
+using System;
+using System.Collections.Generic;
 using Microsoft.SharePoint.Client;
 using Untech.SharePoint.Common.CodeAnnotations;
 using Untech.SharePoint.Common.Converters;
 using Untech.SharePoint.Common.MetaModels;
 using Untech.SharePoint.Common.Models;
-using Untech.SharePoint.Common.Utils;
 
 namespace Untech.SharePoint.Client.Converters.BuiltIn
 {
 	[SpFieldConverter("URL")]
 	[UsedImplicitly]
-	internal class UrlFieldConverter : IFieldConverter
+	internal class UrlFieldConverter : MultiTypeFieldConverter
 	{
-		private MetaField Field { get; set; }
-
-		/// <summary>
-		/// Initialzes current instance with the specified <see cref="MetaField"/>
-		/// </summary>
-		/// <param name="field"></param>
-		public void Initialize(MetaField field)
+		private static readonly IReadOnlyDictionary<Type, Func<IFieldConverter>> TypeConverters = new Dictionary<Type, Func<IFieldConverter>>
 		{
-			Guard.CheckNotNull("field", field);
+			{typeof(string), () => new StringTypeConverter()},
+			{typeof(UrlInfo), () => new UrlInfoTypeConverter()},
+		};
 
-			Field = field;
+		public override void Initialize(MetaField field)
+		{
+			base.Initialize(field);
+			if (TypeConverters.ContainsKey(field.MemberType))
+			{
+				Internal = TypeConverters[field.MemberType]();
+			}
+			else
+			{
+				throw new ArgumentException("MemberType is invalid");
+			}
 		}
 
-
-		public object FromSpValue(object value)
+		private class StringTypeConverter : IFieldConverter
 		{
-			if (value == null)
-				return null;
-
-			var spValue = (FieldUrlValue) value;
-
-			if (Field.MemberType == typeof (string))
+			public void Initialize(MetaField field)
 			{
-				return spValue.Url;
+
 			}
 
-			return new UrlInfo
+			public object FromSpValue(object value)
 			{
-				Url = spValue.Url,
-				Description = spValue.Description
-			};
+				return value != null ? ((FieldUrlValue) value).Url : null;
+			}
+
+			public object ToSpValue(object value)
+			{
+				if (value == null)
+					return null;
+
+				return new FieldUrlValue {Url = value.ToString()};
+			}
+
+			public string ToCamlValue(object value)
+			{
+				return (string)value;
+			}
 		}
 
-		public object ToSpValue(object value)
+		private class UrlInfoTypeConverter : IFieldConverter
 		{
-			if (value == null)
-				return null;
-
-			if (Field.MemberType == typeof(string))
+			public void Initialize(MetaField field)
 			{
-				return new FieldUrlValue
+
+			}
+
+			public object FromSpValue(object value)
+			{
+				if (value == null)
+					return null;
+
+				var spValue = (FieldUrlValue) value;
+
+				return new UrlInfo
 				{
-					Url = value.ToString()
+					Url = spValue.Url,
+					Description = spValue.Description
 				};
 			}
 
-			var urlInfo = (UrlInfo) value;
-
-			return new FieldUrlValue
+			public object ToSpValue(object value)
 			{
-				Url = urlInfo.Url,
-				Description = urlInfo.Description
-			};
-		}
+				if (value == null)
+					return null;
 
-		/// <summary>
-		/// Converts <see cref="MetaField.Member"/> value to SP Caml value.
-		/// </summary>
-		/// <param name="value"></param>
-		/// <returns>Caml value.</returns>
-		public string ToCamlValue(object value)
-		{
-			var urlInfo = (FieldUrlValue)ToSpValue(value);
-			if (urlInfo != null)
-			{
-				return string.Format("{0};#{1}", urlInfo.Url, urlInfo.Description);
+				var urlInfo = (UrlInfo)value;
+
+				return new FieldUrlValue {Url = urlInfo.Url, Description = urlInfo.Description};
 			}
 
-			return "";
+			public string ToCamlValue(object value)
+			{
+				if (value == null)
+					return null;
+
+				var urlInfo = (UrlInfo)value;
+
+				return string.Format("{0};#{1}", urlInfo.Url, urlInfo.Description);
+			}
 		}
 	}
 }

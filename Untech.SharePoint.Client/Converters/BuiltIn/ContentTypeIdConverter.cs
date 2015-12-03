@@ -1,5 +1,4 @@
-﻿using System;
-using Untech.SharePoint.Common.CodeAnnotations;
+﻿using Untech.SharePoint.Common.CodeAnnotations;
 using Untech.SharePoint.Common.Converters;
 using Untech.SharePoint.Common.MetaModels;
 using Untech.SharePoint.Common.Utils;
@@ -22,12 +21,12 @@ namespace Untech.SharePoint.Client.Converters.BuiltIn
 
 		public object ToSpValue(object value)
 		{
-			throw new NotImplementedException();
+			return (string) value;
 		}
 
 		public string ToCamlValue(object value)
 		{
-			return value != null ? value.ToString() : null;
+			return (string)value;
 		}
 	}
 }

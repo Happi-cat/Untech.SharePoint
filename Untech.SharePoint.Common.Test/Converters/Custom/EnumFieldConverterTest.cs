@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Runtime.Serialization;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Untech.SharePoint.Common.CodeAnnotations;
 using Untech.SharePoint.Common.Converters;
 using Untech.SharePoint.Common.Converters.Custom;
 
@@ -59,6 +60,7 @@ namespace Untech.SharePoint.Common.Test.Converters.Custom
 			return new EnumFieldConverter();
 		}
 
+		[UsedImplicitly(ImplicitUseTargetFlags.WithMembers)]
 		public enum TestEnum
 		{
 			Default = 0,
@@ -67,6 +69,7 @@ namespace Untech.SharePoint.Common.Test.Converters.Custom
 			Option2
 		}
 
+		[UsedImplicitly(ImplicitUseTargetFlags.WithMembers)]
 		public enum NoDefaultEnum
 		{
 			Default = 1,

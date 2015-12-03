@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using Microsoft.SharePoint.Client;
 using Untech.SharePoint.Common.CodeAnnotations;
 using Untech.SharePoint.Common.Converters;
@@ -14,90 +12,50 @@ namespace Untech.SharePoint.Client.Converters.BuiltIn
 	[UsedImplicitly]
 	internal class UserFieldConverter : IFieldConverter
 	{
-		private MetaField Field { get; set; }
-		private Type MemberType { get; set; }
-
-		/// <summary>
-		/// Initialzes current instance with the specified <see cref="MetaField"/>
-		/// </summary>
-		/// <param name="field"></param>
 		public void Initialize(MetaField field)
 		{
 			Guard.CheckNotNull("field", field);
 
-			Field = field;
-			MemberType = field.MemberType;
+			if (field.MemberType != typeof(UserInfo))
+			{
+				throw new ArgumentException("Only UserInfo can be used as a member type.");
+			}
 		}
 
-		/// <summary>
-		/// Converts SP field value to <see cref="MetaField.MemberType"/>.
-		/// </summary>
-		/// <param name="value">SP value to convert.</param>
-		/// <returns>Member value.</returns>
 		public object FromSpValue(object value)
 		{
-			if (value == null)
-				return null;
+			if (value == null) return null;
 
-			if (!Field.AllowMultipleValues)
-			{
-				return FieldValueToUserInfo((FieldUserValue) value);
-			}
+			var fieldValue = (FieldUserValue) value;
 
-			var fieldValues = (IEnumerable<FieldUserValue>) value;
-			var users = fieldValues.Select(FieldValueToUserInfo);
-
-			return MemberType == typeof (UserInfo[]) ? (object) users.ToArray() : users.ToList();
+			return ConvertToUserInfo(fieldValue);
 		}
 
-		/// <summary>
-		/// Converts <see cref="MetaField.Member"/> value to SP field value.
-		/// </summary>
-		/// <param name="value">Member value to convert.</param>
-		/// <returns>SP field value.</returns>
 		public object ToSpValue(object value)
 		{
-			if (value == null)
-				return null;
+			if (value == null) return null;
 
-			if (!Field.AllowMultipleValues)
-			{
-				var userInfo = (UserInfo) value;
+			var userValue = (UserInfo)value;
 
-				return UserInfoToFieldValue(userInfo);
-			} 
-
-			var userInfos = (IEnumerable<UserInfo>) value;
-
-			var fieldValues = new List<FieldUserValue>();
-			fieldValues.AddRange(userInfos.Select(UserInfoToFieldValue));
-			return fieldValues;
+			return new FieldUserValue{ LookupId = userValue.Id };
 		}
 
-		/// <summary>
-		/// Converts <see cref="MetaField.Member"/> value to SP Caml value.
-		/// </summary>
-		/// <param name="value"></param>
-		/// <returns>Caml value.</returns>
 		public string ToCamlValue(object value)
 		{
-			throw new NotImplementedException();
+			if (value == null) return null;
+
+			var userValue = (UserInfo)value;
+
+			return string.Format("{0};#{1}", userValue.Id, userValue.Login);
 		}
 
-		private static UserInfo FieldValueToUserInfo(FieldUserValue fieldValue)
+
+		private UserInfo ConvertToUserInfo(FieldUserValue user)
 		{
 			return new UserInfo
 			{
-				Id = fieldValue.LookupId,
-				Email = fieldValue.Email
-			};
-		}
-
-		private static FieldUserValue UserInfoToFieldValue(UserInfo userInfo)
-		{
-			return new FieldUserValue
-			{
-				LookupId = userInfo.Id
+				Id = user.LookupId,
+				Login = user.LookupValue
 			};
 		}
 	}

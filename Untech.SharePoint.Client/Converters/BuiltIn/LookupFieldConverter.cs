@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using Microsoft.SharePoint.Client;
 using Untech.SharePoint.Common.CodeAnnotations;
 using Untech.SharePoint.Common.Converters;
@@ -11,94 +9,54 @@ using Untech.SharePoint.Common.Utils;
 namespace Untech.SharePoint.Client.Converters.BuiltIn
 {
 	[SpFieldConverter("Lookup")]
-	[SpFieldConverter("LookupMulti")]
 	[UsedImplicitly]
 	internal class LookupFieldConverter : IFieldConverter
 	{
 		private MetaField Field { get; set; }
 
-		/// <summary>
-		/// Initialzes current instance with the specified <see cref="MetaField"/>
-		/// </summary>
-		/// <param name="field"></param>
 		public void Initialize(MetaField field)
 		{
 			Guard.CheckNotNull("field", field);
 
+			if (field.MemberType != typeof(ObjectReference))
+			{
+				throw new ArgumentException("Only ObjectReference can be used as a member type.");
+			}
 			Field = field;
 		}
 
-		/// <summary>
-		/// Converts SP field value to <see cref="MetaField.MemberType"/>.
-		/// </summary>
-		/// <param name="value">SP value to convert.</param>
-		/// <returns>Member value.</returns>
 		public object FromSpValue(object value)
 		{
-			if (value == null || string.IsNullOrEmpty(Field.LookupList))
-				return null;
+			if (value == null) return null;
 
-			if (!Field.AllowMultipleValues)
-			{
-				return FieldValueToObjectReference((FieldLookupValue) value);
-			}
-			
-			var fieldValues = (IEnumerable<FieldLookupValue>) value;
-
-			return fieldValues.Select(FieldValueToObjectReference).ToList();
+			return ConvertToObjRef((FieldLookupValue) value);
 		}
 
-		
-		/// <summary>
-		/// Converts <see cref="MetaField.Member"/> value to SP field value.
-		/// </summary>
-		/// <param name="value">Member value to convert.</param>
-		/// <returns>SP field value.</returns>
 		public object ToSpValue(object value)
 		{
-			if (value == null)
-				return null;
-			
-			if (!Field.AllowMultipleValues)
-			{
-				return ObjectReferenceToFieldValue((ObjectReference)value);
-			}
+			if (value == null) return null;
 
-			var references = (IEnumerable<ObjectReference>)value;
+			var lookupValue = (ObjectReference)value;
 
-			var fieldValues = new List<FieldLookupValue>();
-			fieldValues.AddRange(references.Select(ObjectReferenceToFieldValue));
-
-			return fieldValues;
+			return new FieldLookupValue{ LookupId = lookupValue.Id };
 		}
 
-		
-
-		/// <summary>
-		/// Converts <see cref="MetaField.Member"/> value to SP Caml value.
-		/// </summary>
-		/// <param name="value"></param>
-		/// <returns>Caml value.</returns>
 		public string ToCamlValue(object value)
 		{
-			throw new NotImplementedException();
+			if (value == null) return null;
+
+			var lookupValue = (ObjectReference)value;
+
+			return string.Format("{0};#{1}", lookupValue.Id, lookupValue.Value);
 		}
 
-		private ObjectReference FieldValueToObjectReference(FieldLookupValue fieldValue)
+		private ObjectReference ConvertToObjRef(FieldLookupValue lookupValue)
 		{
 			return new ObjectReference
 			{
-				Id = fieldValue.LookupId,
+				Id = lookupValue.LookupId,
 				ListId = new Guid(Field.LookupList),
-				Value = fieldValue.LookupValue
-			};
-		}
-
-		private static FieldLookupValue ObjectReferenceToFieldValue(ObjectReference reference)
-		{
-			return new FieldLookupValue
-			{
-				LookupId = reference.Id
+				Value = lookupValue.LookupValue
 			};
 		}
 	}
