@@ -1,4 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using System.Collections.Generic;
 using System.Runtime.Serialization;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Untech.SharePoint.Common.Converters;
@@ -15,8 +15,8 @@ namespace Untech.SharePoint.Common.Test.Converters.Custom
 			Given<TestObject>()
 				.CanConvertFromSp(null, null)
 				.CanConvertFromSp("", null)
-				.CanConvertFromSp("{}", new TestObject())
-				.CanConvertFromSp("{ \"Field\": \"value\" }", new TestObject { Field = "value"})
+				.CanConvertFromSp("{}", new TestObject(), new TestObjectComparer())
+				.CanConvertFromSp("{ \"Field\": \"value\" }", new TestObject { Field = "value"}, new TestObjectComparer())
 				.CanConvertToSp(null, null)
 				.CanConvertToSp(new TestObject(), "{\"Field\":null}")
 				.CanConvertToSp(new TestObject { Field = "test" }, "{\"Field\":\"test\"}");
@@ -32,17 +32,20 @@ namespace Untech.SharePoint.Common.Test.Converters.Custom
 		{
 			[DataMember]
 			public string Field { get; set; }
+		}
 
-			public override bool Equals(object obj)
+		public class TestObjectComparer : EqualityComparer<TestObject>
+		{
+			public override bool Equals(TestObject x, TestObject y)
 			{
-				if (obj == null) return false;
-				if (ReferenceEquals(this, obj)) return true;
-				return obj.GetHashCode() == GetHashCode();
+				return x.Field == y.Field;
 			}
 
-			public override int GetHashCode()
+			public override int GetHashCode(TestObject obj)
 			{
-				return Field != null ? Field.GetHashCode() : 0;
+				if (obj == null) return 0;
+				var hash1 = (obj.Field ?? "").GetHashCode();
+				return hash1;
 			}
 		}
 	}
