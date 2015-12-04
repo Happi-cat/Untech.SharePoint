@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 // General Information about an assembly is controlled through the following 
@@ -34,3 +35,10 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyVersion("0.9.1.0")]
 [assembly: AssemblyFileVersion("0.9.1.0")]
 [assembly: AssemblyInformationalVersion("Alpha Build")]
+
+[assembly: InternalsVisibleTo("Untech.SharePoint.Server.Test, PublicKey=" + 
+	"00240000048000009400000006020000002400005253413100040000010001006500e6071a7718" +
+	"9da67e8abdc5a102fda903ee8ac7908629ca0aced75cf866f25a39e9aeee2ae5d40776bed05daf" +
+	"a34452066303bbbfbffbbd682b4979cdb34929ae433d03e4aba0f7a7898debf9ba23335ce3414a" +
+	"1ed753c7a8c95472409589aeafa9a01e07db40c8cdec3c87fb9a4d7864faf4adecbe833013ad02" +
+	"f1d37bc2")]

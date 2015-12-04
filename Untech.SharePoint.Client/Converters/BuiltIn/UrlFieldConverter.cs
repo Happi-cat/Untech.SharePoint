@@ -53,7 +53,7 @@ namespace Untech.SharePoint.Client.Converters.BuiltIn
 
 			public string ToCamlValue(object value)
 			{
-				return (string)value;
+				return (string)value ?? "";
 			}
 		}
 
@@ -91,7 +91,7 @@ namespace Untech.SharePoint.Client.Converters.BuiltIn
 			public string ToCamlValue(object value)
 			{
 				if (value == null)
-					return null;
+					return "";
 
 				var urlInfo = (UrlInfo)value;
 

@@ -34,6 +34,12 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>key.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.SharePoint">
       <HintPath>..\SP\Microsoft.SharePoint.dll</HintPath>
@@ -53,6 +59,10 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="Converters\BuiltIn\ContentTypeIdFieldConverterTest.cs" />
+    <Compile Include="Converters\BuiltIn\LookupMultiFieldConverterTest.cs" />
+    <Compile Include="Converters\BuiltIn\UrlFieldConverterTest.cs" />
+    <Compile Include="Converters\BuiltIn\UserMultiFieldConverterTest.cs" />
     <Compile Include="Models\Bootstrap.cs" />
     <Compile Include="Models\TestListItem.cs" />
     <Compile Include="Models\WebDataContext.cs" />
@@ -74,7 +84,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Converters\BuiltIn\" />
+    <None Include="key.snk" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

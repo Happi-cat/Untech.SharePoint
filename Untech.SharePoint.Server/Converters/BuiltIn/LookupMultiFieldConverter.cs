@@ -15,6 +15,7 @@ namespace Untech.SharePoint.Server.Converters.BuiltIn
 	internal class LookupMultiFieldConverter : IFieldConverter
 	{
 		private MetaField Field { get; set; }
+		private bool IsArray { get; set; }
 
 		public void Initialize(MetaField field)
 		{
@@ -26,6 +27,7 @@ namespace Untech.SharePoint.Server.Converters.BuiltIn
 					"Only ObjectReference[] or any class assignable from List<ObjectReference> can be used as a member type.");
 			}
 			Field = field;
+			IsArray = field.MemberType.IsArray;
 		}
 
 		public object FromSpValue(object value)
@@ -35,9 +37,8 @@ namespace Untech.SharePoint.Server.Converters.BuiltIn
 
 			var fieldValues = new SPFieldLookupValueCollection(value.ToString());
 
-			return fieldValues
-				.Select(ConvertToObjRef)
-				.ToList();
+			var lookups = fieldValues.Select(ConvertToObjRef);
+			return IsArray? (object)lookups.ToArray() : lookups.ToList();
 		}
 
 		public object ToSpValue(object value)

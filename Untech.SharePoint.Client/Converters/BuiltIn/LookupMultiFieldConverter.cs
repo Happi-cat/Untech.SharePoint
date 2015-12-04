@@ -16,6 +16,7 @@ namespace Untech.SharePoint.Client.Converters.BuiltIn
 	internal class LookupMultiFieldConverter : IFieldConverter
 	{
 		private MetaField Field { get; set; }
+		private bool IsArray { get; set; }
 
 		public void Initialize(MetaField field)
 		{
@@ -28,6 +29,7 @@ namespace Untech.SharePoint.Client.Converters.BuiltIn
 					"Only ObjectReference[] or any class assignable from List<ObjectReference> can be used as a member type.");
 			}
 			Field = field;
+			IsArray = field.MemberType.IsArray;
 		}
 
 		public object FromSpValue(object value)
@@ -36,10 +38,9 @@ namespace Untech.SharePoint.Client.Converters.BuiltIn
 				return null;
 
 			var fieldValues = (IEnumerable<FieldLookupValue>) value;
+			var lookups = fieldValues.Select(ConvertToObjRef);
 
-			return fieldValues
-				.Select(ConvertToObjRef)
-				.ToList();
+			return IsArray ? (object)lookups.ToArray() : lookups.ToList();
 		}
 
 		public object ToSpValue(object value)
@@ -56,7 +57,7 @@ namespace Untech.SharePoint.Client.Converters.BuiltIn
 
 		public string ToCamlValue(object value)
 		{
-			if (value == null) return null;
+			if (value == null) return "";
 
 			var userInfos = (IEnumerable<ObjectReference>)value;
 

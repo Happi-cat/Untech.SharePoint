@@ -15,8 +15,9 @@ namespace Untech.SharePoint.Server.Converters.BuiltIn
 	[UsedImplicitly]
 	internal class UserMultiFieldConverter : IFieldConverter
 	{
-		private Type MemberType { get; set; }
+		private MetaField Field { get; set; }
 		private SPWeb Web { get; set; }
+		private bool IsArray { get; set; }
 
 		public void Initialize(MetaField field)
 		{
@@ -27,8 +28,9 @@ namespace Untech.SharePoint.Server.Converters.BuiltIn
 				throw new ArgumentException(
 					"Only UserInfo[] or any class assignable from List<UserInfo> can be used as a member type.");
 			}
+			Field = field;
 			Web = field.GetSpWeb();
-			MemberType = field.MemberType;
+			IsArray = field.MemberType.IsArray;
 		}
 
 
@@ -42,7 +44,7 @@ namespace Untech.SharePoint.Server.Converters.BuiltIn
 			var fieldValues = new SPFieldUserValueCollection(Web, value.ToString());
 			var users = fieldValues.Select(ConvertToUserInfo);
 
-			return MemberType == typeof (UserInfo[]) ? (object) users.ToArray() : users.ToList();
+			return IsArray ? (object) users.ToArray() : users.ToList();
 		}
 
 		public object ToSpValue(object value)
@@ -70,7 +72,8 @@ namespace Untech.SharePoint.Server.Converters.BuiltIn
 			return new UserInfo
 			{
 				Id = user.LookupId,
-				Login = user.LookupValue
+				Login = user.LookupValue,
+				Email = user.User.Email
 			};
 		}
 	}

@@ -56,7 +56,8 @@ namespace Untech.SharePoint.Server.Converters.BuiltIn
 			return new UserInfo
 			{
 				Id = user.LookupId,
-				Login = user.LookupValue
+				Login = user.LookupValue,
+				Email = user.User.Email
 			};
 		}
 	}

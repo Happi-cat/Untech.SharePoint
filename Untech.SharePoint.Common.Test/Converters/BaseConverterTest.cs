@@ -1,4 +1,5 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using System.Collections;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Untech.SharePoint.Common.CodeAnnotations;
 using Untech.SharePoint.Common.Configuration;
 using Untech.SharePoint.Common.Converters;
@@ -50,11 +51,30 @@ namespace Untech.SharePoint.Common.Test.Converters
 				return this;
 			}
 
+
+			public TestScenario CanConvertFromSp(object original, object expected, IEqualityComparer comparer)
+			{
+				var actual = _fieldConverter.FromSpValue(original);
+
+				Assert.IsTrue(comparer.Equals(actual, expected));
+
+				return this;
+			}
+
 			public TestScenario CanConvertToSp(object original, object expected)
 			{
 				var actual = _fieldConverter.ToSpValue(original);
 
 				Assert.AreEqual(expected, actual);
+
+				return this;
+			}
+
+			public TestScenario CanConvertToSp(object original, object expected, IEqualityComparer comparer)
+			{
+				var actual = _fieldConverter.ToSpValue(original);
+
+				Assert.IsTrue(comparer.Equals(actual, expected));
 
 				return this;
 			}
