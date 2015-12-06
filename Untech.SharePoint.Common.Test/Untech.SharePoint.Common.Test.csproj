@@ -69,6 +69,7 @@
     <Compile Include="Converters\ConverterContext.cs" />
     <Compile Include="Converters\Custom\EnumFieldConverterTest.cs" />
     <Compile Include="Converters\Custom\JsonFieldConverterTest.cs" />
+    <Compile Include="Converters\Custom\KeyValueFieldConverterTest.cs" />
     <Compile Include="Converters\Custom\XmlFieldConverterTest.cs" />
     <Compile Include="Converters\BuiltIn\NumberConverterTest.cs" />
     <Compile Include="Data\Translators\BaseExpressionTest.cs" />
