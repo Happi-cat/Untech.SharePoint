@@ -1,8 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Text;
 using Untech.SharePoint.Common.CodeAnnotations;
 using Untech.SharePoint.Common.MetaModels;
-using Untech.SharePoint.Common.Utils;
 
 namespace Untech.SharePoint.Common.Converters.BuiltIn
 {
@@ -10,16 +10,18 @@ namespace Untech.SharePoint.Common.Converters.BuiltIn
 	[UsedImplicitly]
 	internal class DateTimeFieldConverter : MultiTypeFieldConverter
 	{
+		private static readonly IReadOnlyDictionary<Type, Func<IFieldConverter>> TypeConverters = new Dictionary<Type, Func<IFieldConverter>>
+		{
+			{typeof(DateTime), () => new DateTimeTypeConverter()},
+			{typeof(DateTime?), () => new NullableDateTimeTypeConverter()}
+		};
+
 		public override void Initialize(MetaField field)
 		{
 			base.Initialize(field);
-			if (field.MemberType == typeof(bool))
+			if (TypeConverters.ContainsKey(field.MemberType))
 			{
-				Internal = new DateTimeConverter();
-			}
-			else if (field.MemberType == typeof(bool?))
-			{
-				Internal = new NullableDateTimeConverter();
+				Internal = TypeConverters[field.MemberType]();
 			}
 			else
 			{
@@ -52,7 +54,7 @@ namespace Untech.SharePoint.Common.Converters.BuiltIn
 			return sb.ToString();
 		}
 
-		private class DateTimeConverter : IFieldConverter
+		private class DateTimeTypeConverter : IFieldConverter
 		{
 			private static readonly DateTime Min = new DateTime(1900, 1, 1);
 
@@ -75,11 +77,11 @@ namespace Untech.SharePoint.Common.Converters.BuiltIn
 			public string ToCamlValue(object value)
 			{
 				var dateValue = (DateTime)value;
-				return dateValue > Min ? CreateIsoDate(dateValue) : null;
+				return dateValue > Min ? CreateIsoDate(dateValue) : "";
 			}
 		}
 
-		private class NullableDateTimeConverter : IFieldConverter
+		private class NullableDateTimeTypeConverter : IFieldConverter
 		{
 			public void Initialize(MetaField field)
 			{
@@ -99,7 +101,7 @@ namespace Untech.SharePoint.Common.Converters.BuiltIn
 			public string ToCamlValue(object value)
 			{
 				var dateValue = (DateTime?)value;
-				return dateValue.HasValue ? CreateIsoDate(dateValue.Value) : null;
+				return dateValue.HasValue ? CreateIsoDate(dateValue.Value) : "";
 			}
 		}
 	}

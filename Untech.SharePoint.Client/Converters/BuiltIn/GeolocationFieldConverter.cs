@@ -1,4 +1,4 @@
-using System;
+using System.Globalization;
 using Microsoft.SharePoint.Client;
 using Untech.SharePoint.Common.CodeAnnotations;
 using Untech.SharePoint.Common.Converters;
@@ -74,8 +74,15 @@ namespace Untech.SharePoint.Client.Converters.BuiltIn
 		/// <returns>Caml value.</returns>
 		public string ToCamlValue(object value)
 		{
-			// TODO: .ToString() will return type
-			throw new NotImplementedException();
+			if (value == null)
+			{
+				return "";
+			}
+
+			var geoInfo = (GeoInfo)value;
+
+			return string.Format(CultureInfo.InvariantCulture, "Point ({0} {1} {2} {3})", geoInfo.Longitude, geoInfo.Latitude,
+				geoInfo.Altitude, geoInfo.Measure);
 		}
 	}
 }

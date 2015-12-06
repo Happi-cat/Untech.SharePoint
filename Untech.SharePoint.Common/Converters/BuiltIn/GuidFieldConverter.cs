@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Untech.SharePoint.Common.CodeAnnotations;
 using Untech.SharePoint.Common.MetaModels;
 
@@ -8,16 +9,18 @@ namespace Untech.SharePoint.Common.Converters.BuiltIn
 	[UsedImplicitly]
 	internal class GuidFieldConverter : MultiTypeFieldConverter
 	{
+		private static readonly IReadOnlyDictionary<Type, Func<IFieldConverter>> TypeConverters = new Dictionary<Type, Func<IFieldConverter>>
+		{
+			{typeof (Guid), () => new GuidTypeConverter()},
+			{typeof (Guid?), () => new NullableGuidTypeConverter()}
+		};
+
 		public override void Initialize(MetaField field)
 		{
 			base.Initialize(field);
-			if (field.MemberType == typeof(Guid))
+			if (TypeConverters.ContainsKey(field.MemberType))
 			{
-				Internal = new GuidTypeConverter();
-			}
-			else if (field.MemberType == typeof(Guid?))
-			{
-				Internal = new NullableGuidTypeConverter();
+				Internal = TypeConverters[field.MemberType]();
 			}
 			else
 			{
@@ -39,12 +42,13 @@ namespace Untech.SharePoint.Common.Converters.BuiltIn
 
 			public object ToSpValue(object value)
 			{
-				return  (Guid)value;
+				return (Guid)value;
 			}
 
 			public string ToCamlValue(object value)
 			{
-				return Convert.ToString(ToSpValue(value));
+				var guidValue = (Guid) value;
+				return guidValue.ToString("D");
 			}
 		}
 
@@ -67,7 +71,8 @@ namespace Untech.SharePoint.Common.Converters.BuiltIn
 
 			public string ToCamlValue(object value)
 			{
-				return Convert.ToString(ToSpValue(value));
+				var guidValue = (Guid?)value;
+				return guidValue.HasValue ? guidValue.Value.ToString("D") : "";
 			}
 		}
 	}

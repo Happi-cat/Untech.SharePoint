@@ -34,6 +34,12 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>key.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.SharePoint">
       <HintPath>..\SP\Microsoft.SharePoint.dll</HintPath>
@@ -53,6 +59,10 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="Converters\BuiltIn\ContentTypeIdFieldConverterTest.cs" />
+    <Compile Include="Converters\BuiltIn\LookupMultiFieldConverterTest.cs" />
+    <Compile Include="Converters\BuiltIn\UrlFieldConverterTest.cs" />
+    <Compile Include="Converters\BuiltIn\UserMultiFieldConverterTest.cs" />
     <Compile Include="Models\Bootstrap.cs" />
     <Compile Include="Models\TestListItem.cs" />
     <Compile Include="Models\WebDataContext.cs" />
@@ -60,6 +70,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Untech.SharePoint.Common.Test\Untech.SharePoint.Common.Test.csproj">
+      <Project>{672adf77-0d40-4cb1-821e-54ded0e8aaa2}</Project>
+      <Name>Untech.SharePoint.Common.Test</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Untech.SharePoint.Common\Untech.SharePoint.Common.csproj">
       <Project>{8836BB37-FECF-4503-933D-479A3D404900}</Project>
       <Name>Untech.SharePoint.Common</Name>
@@ -68,6 +82,9 @@
       <Project>{9656B27C-2D1C-4403-B691-C456E5D64630}</Project>
       <Name>Untech.SharePoint.Server</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="key.snk" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

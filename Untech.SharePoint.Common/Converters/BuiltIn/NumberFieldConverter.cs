@@ -11,8 +11,6 @@ namespace Untech.SharePoint.Common.Converters.BuiltIn
 	[UsedImplicitly]
 	internal class NumberFieldConverter : IFieldConverter
 	{
-		private static readonly TypeCode[] AllowedTypeCodes = { TypeCode.Double, TypeCode.Decimal };
-
 		private MetaField Field { get; set; }
 		private bool IsNullableMemberType { get; set; }
 
@@ -27,7 +25,7 @@ namespace Untech.SharePoint.Common.Converters.BuiltIn
 				IsNullableMemberType = true;
 				memberType = memberType.GetGenericArguments()[0];
 			}
-			if (!Type.GetTypeCode(memberType).In(AllowedTypeCodes))
+			if (memberType != typeof(double))
 			{
 				throw new ArgumentException("Invalid");
 			}

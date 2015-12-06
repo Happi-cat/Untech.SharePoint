@@ -2,6 +2,7 @@
 using System.Runtime.Serialization;
 using System.Text;
 using System.Xml;
+using System.Xml.Serialization;
 using Untech.SharePoint.Common.CodeAnnotations;
 using Untech.SharePoint.Common.MetaModels;
 using Untech.SharePoint.Common.Utils;
@@ -34,13 +35,17 @@ namespace Untech.SharePoint.Common.Converters.Custom
 		/// <returns>Member value.</returns>
 		public object FromSpValue(object value)
 		{
-			if (value == null) return null;
-
-			var serializer = new DataContractSerializer(Field.MemberType);
-			
-			using (var stream = new MemoryStream(Encoding.UTF8.GetBytes((string) value)))
+			var stringValue = (string) value;
+			if (string.IsNullOrEmpty(stringValue))
 			{
-				return serializer.ReadObject(stream);
+				return null;
+			}
+
+			var serializer = new XmlSerializer(Field.MemberType);
+			
+			using (var reader = XmlReader.Create(new StringReader(stringValue)))
+			{
+				return serializer.Deserialize(reader);
 			}
 		}
 
@@ -51,15 +56,24 @@ namespace Untech.SharePoint.Common.Converters.Custom
 		/// <returns>SP field value.</returns>
 		public object ToSpValue(object value)
 		{
-			if (value == null) return null;
-
-			var serializer = new DataContractSerializer(Field.MemberType);
-			var sb = new StringBuilder();
-
-			using (var textWriter = new StringWriter(sb))
-			using (var xmlWriter = new XmlTextWriter(textWriter))
+			if (value == null)
 			{
-				serializer.WriteObject(xmlWriter, value);
+				return null;
+			}
+
+			var sb = new StringBuilder();
+			var serializer = new XmlSerializer(Field.MemberType);
+			var settings = new XmlWriterSettings
+			{
+				OmitXmlDeclaration = true
+			};
+			var ns = new XmlSerializerNamespaces();
+			//ns.Add("xsi", "http://www.w3.org/2001/XMLSchema-instance");
+			//ns.Add("xsd", "http://www.w3.org/2001/XMLSchema");
+			//xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+			using (var xmlWriter = XmlWriter.Create(sb, settings))
+			{
+				serializer.Serialize(xmlWriter, value, ns);
 			}
 
 			return sb.ToString();

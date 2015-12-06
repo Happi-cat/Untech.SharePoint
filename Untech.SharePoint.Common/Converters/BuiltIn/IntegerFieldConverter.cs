@@ -7,11 +7,10 @@ using Untech.SharePoint.Common.Utils;
 namespace Untech.SharePoint.Common.Converters.BuiltIn
 {
 	[SpFieldConverter("Integer")]
+	[SpFieldConverter("Counter")]
 	[UsedImplicitly]
 	internal class IntegerFieldConverter : IFieldConverter
 	{
-		private static readonly TypeCode[] AllowedTypeCodes = {TypeCode.Int16, TypeCode.Int32, TypeCode.Int64, TypeCode.UInt16, TypeCode.UInt32, TypeCode.UInt64};
-
 		private MetaField Field { get; set; }
 		private bool IsNullableMemberType { get; set; }
 
@@ -20,14 +19,13 @@ namespace Untech.SharePoint.Common.Converters.BuiltIn
 			Guard.CheckNotNull("field", field);
 
 			Field = field;
-
 			var memberType = field.MemberType;
 			if (memberType.IsNullable())
 			{
 				IsNullableMemberType = true;
 				memberType = memberType.GetGenericArguments()[0];
 			}
-			if (!Type.GetTypeCode(memberType).In(AllowedTypeCodes))
+			if (memberType != typeof(int))
 			{
 				throw new ArgumentException("Invalid");
 			}

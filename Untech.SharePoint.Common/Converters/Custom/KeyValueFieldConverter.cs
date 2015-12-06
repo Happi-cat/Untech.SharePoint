@@ -1,14 +1,17 @@
-﻿using Newtonsoft.Json;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using Untech.SharePoint.Common.Extensions;
 using Untech.SharePoint.Common.MetaModels;
 using Untech.SharePoint.Common.Utils;
 
 namespace Untech.SharePoint.Common.Converters.Custom
 {
-	/// <summary>
-	/// Represents field converter that can convert JSON string to object and vice versa.
-	/// </summary>
-	public sealed class JsonFieldConverter : IFieldConverter
+	public class KeyValueFieldConverter : IFieldConverter
 	{
+		private const string PairDelimiter = ";";
+		private const string KeyValueDelimiter = ":";
+
 		private MetaField Field { get; set; }
 
 		/// <summary>
@@ -29,7 +32,23 @@ namespace Untech.SharePoint.Common.Converters.Custom
 		/// <returns>Member value.</returns>
 		public object FromSpValue(object value)
 		{
-			return string.IsNullOrEmpty((string) value) ? null : JsonConvert.DeserializeObject((string)value, Field.MemberType);
+			if (value == null) return null;
+			var collection = new Dictionary<string, string>();
+
+			((string) value)
+				.Split(new[] {PairDelimiter}, StringSplitOptions.RemoveEmptyEntries)
+				.Select(SplitKeyValue)
+				.Where(n => n.Length > 0)
+				.Each(n => collection.Add(n[0], n.ElementAtOrDefault(1)));
+
+			return collection;
+		}
+
+		private static string[] SplitKeyValue(string str)
+		{
+			return str.Split(new[] {KeyValueDelimiter}, StringSplitOptions.RemoveEmptyEntries)
+				.Select(n => n.Trim())
+				.ToArray();
 		}
 
 		/// <summary>
@@ -39,7 +58,12 @@ namespace Untech.SharePoint.Common.Converters.Custom
 		/// <returns>SP field value.</returns>
 		public object ToSpValue(object value)
 		{
-			return value != null ? JsonConvert.SerializeObject(value) : null;
+			if (value == null) return null;
+			var collection = (IEnumerable<KeyValuePair<string, string>>) value;
+
+			return collection
+				.Select(n => string.Format("{0}{1}{2}", n.Key, KeyValueDelimiter, n.Value))
+				.JoinToString(PairDelimiter);
 		}
 
 		/// <summary>
@@ -49,7 +73,9 @@ namespace Untech.SharePoint.Common.Converters.Custom
 		/// <returns>Caml value.</returns>
 		public string ToCamlValue(object value)
 		{
-			return (string) ToSpValue(value);
+			return (string) ToSpValue(value) ?? "";
 		}
+
+		
 	}
 }

@@ -19,6 +19,11 @@ namespace Untech.SharePoint.Server.Converters.BuiltIn
 		public void Initialize(MetaField field)
 		{
 			Guard.CheckNotNull("field", field);
+
+			if (field.MemberType != typeof (GeoInfo))
+			{
+				throw new ArgumentException("Only GeoInfo member type is allowed.");
+			}
 		}
 
 		/// <summary>
