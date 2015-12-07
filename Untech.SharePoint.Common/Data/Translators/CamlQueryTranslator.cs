@@ -177,7 +177,7 @@ namespace Untech.SharePoint.Common.Data.Translators
 
 			if (!alreadyConverted)
 			{
-				throw new NotSupportedException("Only already converter values allowed with non FieldRefType.KnownMember field refs");
+				throw new NotSupportedException("Only already converted values allowed with non FieldRefType.KnownMember field refs");
 			}
 
 			return new XElement(Tags.Value, value);
