@@ -54,7 +54,10 @@ namespace Untech.SharePoint.Common.Data
 				return;
 			}
 
-			queryModel.MergeWheres(new ComparisonModel(ComparisonOperator.Eq, new ContentTypeIdRefModel(), contentType.Id));
+			queryModel.MergeWheres(new ComparisonModel(ComparisonOperator.Eq, new ContentTypeIdRefModel(), contentType.Id)
+			{
+				IsValueConverted = true
+			});
 		}
 	}
 }

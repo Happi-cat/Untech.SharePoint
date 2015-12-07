@@ -166,16 +166,21 @@ namespace Untech.SharePoint.Common.Data.Translators
 		[NotNull]
 		private XElement GetValue([NotNull]FieldRefModel fieldRef, [CanBeNull]object value, bool alreadyConverted = false)
 		{
-			if (fieldRef.Type != FieldRefType.KnownMember)
+			if (fieldRef.Type == FieldRefType.KnownMember)
 			{
-				throw new NotSupportedException("Only FieldRefType.KnownMember supported by GetValue method");
+				var memberRef = (MemberRefModel) fieldRef;
+
+				return new XElement(Tags.Value,
+					new XAttribute(Tags.Type, GetMetaField(memberRef.Member).TypeAsString),
+					alreadyConverted ? value : GetConverter(memberRef.Member).ToCamlValue(value));
 			}
 
-			var memberRef = (MemberRefModel)fieldRef;
+			if (!alreadyConverted)
+			{
+				throw new NotSupportedException("Only already converter values allowed with non FieldRefType.KnownMember field refs");
+			}
 
-			return new XElement(Tags.Value,
-				new XAttribute(Tags.Type, GetMetaField(memberRef.Member).TypeAsString),
-				alreadyConverted ? value : GetConverter(memberRef.Member).ToCamlValue(value));
+			return new XElement(Tags.Value, value);
 		}
 
 		[NotNull]
