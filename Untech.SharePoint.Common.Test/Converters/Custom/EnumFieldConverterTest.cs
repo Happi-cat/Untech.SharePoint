@@ -21,6 +21,7 @@ namespace Untech.SharePoint.Common.Test.Converters.Custom
 				.CanConvertFromSp(null, TestEnum.Default)
 				.CanConvertToSp(TestEnum.Default, "Default")
 				.CanConvertToSp(TestEnum.Option2, "Option 2")
+				.CanConvertToSp(1, "Option1")
 				.CanConvertToCaml(TestEnum.Option1, "Option1")
 				.CanConvertToCaml(TestEnum.Option2, "Option 2");
 		}
@@ -36,6 +37,7 @@ namespace Untech.SharePoint.Common.Test.Converters.Custom
 				.CanConvertFromSp(null, null)
 				.CanConvertToSp(TestEnum.Default, "Default")
 				.CanConvertToSp(TestEnum.Option2, "Option 2")
+				.CanConvertToSp(1, "Option1")
 				.CanConvertToSp(null, null)
 				.CanConvertToCaml(TestEnum.Option1, "Option1")
 				.CanConvertToCaml(TestEnum.Option2, "Option 2")

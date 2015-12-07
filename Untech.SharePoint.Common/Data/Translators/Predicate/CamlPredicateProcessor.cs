@@ -150,11 +150,8 @@ namespace Untech.SharePoint.Common.Data.Translators.Predicate
 				{
 					return TranslateComparisonWithNull(binaryNode);
 				}
-				if (binaryNode.Left.NodeType == ExpressionType.MemberAccess)
-				{
-					var fieldRef = CamlProcessorUtils.GetFieldRef(binaryNode.Left);
-					return new ComparisonModel(ComparisonMap[binaryNode.NodeType], fieldRef, GetValue(binaryNode.Right));
-				}
+				var fieldRef = CamlProcessorUtils.GetFieldRef(binaryNode.Left);
+				return new ComparisonModel(ComparisonMap[binaryNode.NodeType], fieldRef, GetValue(binaryNode.Right));
 			}
 			throw Error.SubqueryNotSupported(binaryNode);
 		}
