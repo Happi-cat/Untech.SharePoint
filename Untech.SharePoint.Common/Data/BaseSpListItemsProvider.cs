@@ -1,6 +1,9 @@
-﻿using Untech.SharePoint.Common.CodeAnnotations;
+﻿using System.Collections.Generic;
+using System.Linq;
+using Untech.SharePoint.Common.CodeAnnotations;
 using Untech.SharePoint.Common.Data.QueryModels;
 using Untech.SharePoint.Common.Data.Translators;
+using Untech.SharePoint.Common.Extensions;
 using Untech.SharePoint.Common.MetaModels;
 using Untech.SharePoint.Common.Utils;
 
@@ -45,6 +48,19 @@ namespace Untech.SharePoint.Common.Data
 			}
 
 			return new CamlQueryTranslator(contentType).Process(queryModel);
+		}
+
+		[NotNull]
+		protected List<MemberRefModel> GetAndRewriteViewFields<T>([NotNull]QueryModel caml)
+		{
+			var viewFields = caml.SelectableFields.EmptyIfNull().ToList();
+			if (viewFields.Count == 0)
+			{
+				var contentType = List.ContentTypes[typeof(T)];
+				viewFields = ((IEnumerable<MetaField>)contentType.Fields).Select(n => new MemberRefModel(n.Member)).ToList();
+				caml.MergeSelectableFields(viewFields);
+			}
+			return viewFields;
 		}
 
 		private static void AppendContentTypeFilter([NotNull]MetaContentType contentType, [NotNull]QueryModel queryModel)

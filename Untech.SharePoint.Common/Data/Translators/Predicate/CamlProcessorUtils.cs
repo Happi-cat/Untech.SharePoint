@@ -11,6 +11,10 @@ namespace Untech.SharePoint.Common.Data.Translators.Predicate
 		[NotNull]
 		internal static MemberRefModel GetFieldRef([NotNull]Expression node)
 		{
+			if (node.NodeType.In(new[] { ExpressionType.Convert, ExpressionType.ConvertChecked }))
+			{
+				node = ((UnaryExpression) node).Operand;
+			}
 			if (node.NodeType == ExpressionType.MemberAccess)
 			{
 				var memberNode = (MemberExpression)node;

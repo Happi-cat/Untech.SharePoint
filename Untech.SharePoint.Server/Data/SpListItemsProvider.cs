@@ -30,7 +30,7 @@ namespace Untech.SharePoint.Server.Data
 
 		public IEnumerable<T> Fetch<T>(QueryModel caml)
 		{
-			var viewFields = caml.SelectableFields.EmptyIfNull().ToList();
+			var viewFields = GetAndRewriteViewFields<T>(caml);
 
 			return FetchInternal<T>(caml)
 				.Select(n => Materialize<T>(n, viewFields));
@@ -48,7 +48,7 @@ namespace Untech.SharePoint.Server.Data
 
 		public T SingleOrDefault<T>(QueryModel caml)
 		{
-			var viewFields = caml.SelectableFields.EmptyIfNull().ToList();
+			var viewFields = GetAndRewriteViewFields<T>(caml);
 
 			caml.RowLimit = 2;
 
@@ -63,7 +63,7 @@ namespace Untech.SharePoint.Server.Data
 
 		public T FirstOrDefault<T>(QueryModel caml)
 		{
-			var viewFields = caml.SelectableFields.EmptyIfNull().ToList();
+			var viewFields = GetAndRewriteViewFields<T>(caml);
 
 			caml.RowLimit = 1;
 
@@ -74,7 +74,7 @@ namespace Untech.SharePoint.Server.Data
 
 		public T ElementAtOrDefault<T>(QueryModel caml, int index)
 		{
-			var viewFields = caml.SelectableFields.EmptyIfNull().ToList();
+			var viewFields = GetAndRewriteViewFields<T>(caml);
 
 			caml.RowLimit = index + 1;
 
