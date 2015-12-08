@@ -20,7 +20,9 @@ namespace Untech.SharePoint.Common.Data.QueryModels
 			{ComparisonOperator.Lt, ComparisonOperator.Geq},
 			{ComparisonOperator.Neq, ComparisonOperator.Eq},
 			{ComparisonOperator.IsNotNull, ComparisonOperator.IsNull},
-			{ComparisonOperator.IsNull, ComparisonOperator.IsNotNull}
+			{ComparisonOperator.IsNull, ComparisonOperator.IsNotNull},
+			{ComparisonOperator.Includes, ComparisonOperator.NotIncludes},
+			{ComparisonOperator.NotIncludes, ComparisonOperator.Includes},
 		};
 
 		/// <summary>

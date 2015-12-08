@@ -139,9 +139,9 @@ namespace Untech.SharePoint.Common.Data.Translators
 				return new XElement(comparison.ComparisonOperator.ToString(),
 					new XElement(Tags.FieldRef, GetFieldRefName(comparison.Field)));
 			}
-
+			
 			return new XElement(comparison.ComparisonOperator.ToString(),
-				new XElement(Tags.FieldRef, GetFieldRefName(comparison.Field)),
+				new XElement(Tags.FieldRef, GetFieldRefName(comparison.Field), GetLookupId(comparison.Field)),
 				GetValue(comparison.Field, comparison.Value, comparison.IsValueConverted));
 		}
 
@@ -161,6 +161,22 @@ namespace Untech.SharePoint.Common.Data.Translators
 			}
 
 			throw new NotSupportedException("Unsupported FieldRefType value");
+		}
+
+		[CanBeNull]
+		private XAttribute GetLookupId([NotNull] FieldRefModel fieldRef)
+		{
+			if (fieldRef.Type == FieldRefType.KnownMember)
+			{
+				var memberRef = (MemberRefModel) fieldRef;
+				var metaField = GetMetaField(memberRef.Member);
+				if (metaField.TypeAsString.StartsWith("User") || metaField.TypeAsString.StartsWith("Lookup"))
+				{
+					return new XAttribute("LookupId", "TRUE");	
+				}
+			}
+
+			return null;
 		}
 
 		[NotNull]

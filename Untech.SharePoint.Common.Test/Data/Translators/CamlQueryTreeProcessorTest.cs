@@ -79,12 +79,31 @@ namespace Untech.SharePoint.Common.Test.Data.Translators
 							  "<Where><And>" +
 							  "<Or><And>" +
 							  "<Eq><FieldRef Name='Bool1' /><Value>True</Value></Eq>" +
-							  "<Eq><FieldRef Name='Bool2' /><Value>False</Value></Eq>" +
+							  "<Neq><FieldRef Name='Bool2' /><Value>True</Value></Neq>" +
 							  "</And><And>" +
-							  "<Eq><FieldRef Name='Bool1' /><Value>False</Value></Eq>" +
+							  "<Neq><FieldRef Name='Bool1' /><Value>True</Value></Neq>" +
 							  "<Eq><FieldRef Name='Bool2' /><Value>True</Value></Eq>" +
 							  "</And></Or>" +
 							  "<BeginsWith><FieldRef Name='String1' /><Value>TEST</Value></BeginsWith></And></Where>" +
+							  "</Query>" +
+							  "</View>");
+		}
+
+		[TestMethod]
+		public void CanProcessIncludesAndNotIncludes()
+		{
+			// TODO: support for ICollection<T>.Contains()
+			Given(source => source.Where(n => !n.StringCollection1.Contains("Value 1") && n.StringCollection2.Contains("Value 2") && !n.StringCollection4.Contains("Value 4")))
+				.ExpectedCaml("<View>" +
+							  "<Query>" +
+							  "<Where><And>" +
+							  "<And>" +
+							  "<NotIncludes><FieldRef Name='StringCollection1' /><Value>Value 1</Value></NotIncludes>" +
+							  "<Includes><FieldRef Name='StringCollection2' /><Value>Value 2</Value></Includes>" +
+							  "</And>" +
+							  "<NotIncludes><FieldRef Name='StringCollection4' /><Value>Value 4</Value></NotIncludes>" +
+							  "</And>" +
+							  "</Where>" +
 							  "</Query>" +
 							  "</View>");
 		}

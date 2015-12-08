@@ -52,5 +52,7 @@ namespace Untech.SharePoint.Common.Data.QueryModels
 		/// Equals to null.
 		/// </summary>
 		IsNull,
+		Includes,
+		NotIncludes
 	}
 }

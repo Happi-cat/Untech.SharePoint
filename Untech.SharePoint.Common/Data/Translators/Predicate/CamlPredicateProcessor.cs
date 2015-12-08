@@ -94,7 +94,7 @@ namespace Untech.SharePoint.Common.Data.Translators.Predicate
 				case ExpressionType.MemberAccess:
 					return TranslateTrueProperty((MemberExpression) node);
 				case ExpressionType.Not:
-					return TranslateFalseProperty((UnaryExpression) node);
+					return Translate(((UnaryExpression) node).Operand).Negate();
 				case ExpressionType.Constant:
 					return TranslateConstBoolean((ConstantExpression) node);
 			}
@@ -170,19 +170,31 @@ namespace Untech.SharePoint.Common.Data.Translators.Predicate
 		[NotNull]
 		private WhereModel TranslateCall([NotNull]MethodCallExpression callNode)
 		{
+			if (MethodUtils.IsOperator(callNode.Method, MethodUtils.EContains))
+			{
+				return new ComparisonModel(ComparisonOperator.Includes,
+					CamlProcessorUtils.GetFieldRef(callNode.Arguments[0]),
+					GetValue(callNode.Arguments[1]));
+			}
+			if (MethodUtils.IsOperator(callNode.Method, MethodUtils.ListContains))
+			{
+				return new ComparisonModel(ComparisonOperator.Includes,
+					CamlProcessorUtils.GetFieldRef(callNode.Object),
+					GetValue(callNode.Arguments[0]));
+			}
 			if (callNode.Method == MethodUtils.StrContains)
 			{
-				return TranslateContains(callNode);
+				return TranslateStrContains(callNode);
 			}
 			if (callNode.Method == MethodUtils.StrStartsWith)
 			{
-				return TranslateStartsWith(callNode);
+				return TranslateStrStartsWith(callNode);
 			}
 			throw Error.SubqueryNotSupported(callNode);
 		}
 
 		[NotNull]
-		private WhereModel TranslateContains([NotNull]MethodCallExpression callNode)
+		private WhereModel TranslateStrContains([NotNull]MethodCallExpression callNode)
 		{
 			return new ComparisonModel(ComparisonOperator.Contains, 
 				CamlProcessorUtils.GetFieldRef(callNode.Object), 
@@ -190,7 +202,7 @@ namespace Untech.SharePoint.Common.Data.Translators.Predicate
 		}
 
 		[NotNull]
-		private WhereModel TranslateStartsWith([NotNull]MethodCallExpression callNode)
+		private WhereModel TranslateStrStartsWith([NotNull]MethodCallExpression callNode)
 		{
 			return new ComparisonModel(ComparisonOperator.BeginsWith, 
 				CamlProcessorUtils.GetFieldRef(callNode.Object), 

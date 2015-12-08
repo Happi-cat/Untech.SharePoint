@@ -118,6 +118,39 @@ namespace Untech.SharePoint.Common.Test.Data.Translators.Predicate
 				.Expected(n => n.String1.Contains("TEST"));
 		}
 
+
+		[TestMethod]
+		public void CannotRewriteArrayPropertyContains()
+		{
+			Given(n => n.StringCollection1.Contains("TEST"))
+				.PreEvaluate()
+				.Expected(n => n.StringCollection1.Contains("TEST"));
+		}
+
+		[TestMethod]
+		public void CannotRewriteEnumerablePropertyContains()
+		{
+			Given(n => n.StringCollection2.Contains("TEST"))
+				.PreEvaluate()
+				.Expected(n => n.StringCollection2.Contains("TEST"));
+		}
+
+		[TestMethod]
+		public void CannotRewriteCollectionPropertyContains()
+		{
+			Given(n => n.StringCollection3.Contains("TEST"))
+				.PreEvaluate()
+				.Expected(n => n.StringCollection3.Contains("TEST"));
+		}
+
+		[TestMethod]
+		public void CannotRewriteListPropertyContains()
+		{
+			Given(n => n.StringCollection4.Contains("TEST"))
+				.PreEvaluate()
+				.Expected(n => n.StringCollection4.Contains("TEST"));
+		}
+
 		protected override ExpressionVisitor Visitor
 		{
 			get { return new InRewriter(); }
