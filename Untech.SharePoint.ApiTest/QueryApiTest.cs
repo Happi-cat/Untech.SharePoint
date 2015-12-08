@@ -45,6 +45,22 @@ namespace Untech.SharePoint.ApiTest
 		}
 
 		[TestMethod]
+		public void WhereWithDateTimeQuery()
+		{
+			Test(x => x.DevelopmentProjects, x => x.DevelopmentProjects,
+				x => x.Where(n => n.Created > DateTime.Now.AddMonths(-1)), new DevelopmentProjectComparer());
+		}
+
+		[TestMethod]
+		public void WhereWithUserQuery()
+		{
+			// TODO: wrong result
+			var me = new UserInfo { Id = 9 };
+			Test(x => x.DevelopmentProjects, x => x.DevelopmentProjects,
+				x => x.Where(n => n.Approver == me), new DevelopmentProjectComparer());
+		}
+
+		[TestMethod]
 		public void TakeQuery()
 		{
 			Test(x => x.DevelopmentProjects, x => x.DevelopmentProjects,
