@@ -1,7 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using Microsoft.SharePoint.Client;
 using Untech.SharePoint.Common.CodeAnnotations;
 using Untech.SharePoint.Common.Converters;
+using Untech.SharePoint.Common.Extensions;
 using Untech.SharePoint.Common.MetaModels;
 using Untech.SharePoint.Common.Models;
 using Untech.SharePoint.Common.Utils;
@@ -9,16 +12,39 @@ using Untech.SharePoint.Common.Utils;
 namespace Untech.SharePoint.Client.Converters.BuiltIn
 {
 	[SpFieldConverter("User")]
+	[SpFieldConverter("UserMulti")]
 	[UsedImplicitly]
 	internal class UserFieldConverter : IFieldConverter
 	{
+		private MetaField Field { get; set; }
+		private bool IsMulti { get; set; }
+		private bool IsArray { get; set; }
+
 		public void Initialize(MetaField field)
 		{
 			Guard.CheckNotNull("field", field);
 
-			if (field.MemberType != typeof(UserInfo))
+			Field = field;
+
+			if (field.AllowMultipleValues)
 			{
-				throw new ArgumentException("Only UserInfo can be used as a member type.");
+				if (field.MemberType != typeof (UserInfo[]) &&
+				    !field.MemberType.IsAssignableFrom(typeof (List<UserInfo>)))
+				{
+					throw new ArgumentException(
+						"Only UserInfo[] or any class assignable from List<UserInfo> can be used as a member type.");
+				}
+
+				IsMulti = true;
+				IsArray = field.MemberType.IsArray;
+			}
+			else
+			{
+				if (field.MemberType != typeof (UserInfo))
+				{
+					throw new ArgumentException(
+						"Only UserInfo can be used as a member type.");
+				}
 			}
 		}
 
@@ -26,37 +52,58 @@ namespace Untech.SharePoint.Client.Converters.BuiltIn
 		{
 			if (value == null) return null;
 
-			var fieldValue = (FieldUserValue) value;
+			if (!IsMulti)
+			{
+				return ConvertToUserInfo((FieldUserValue) value);
+			}
 
-			return ConvertToUserInfo(fieldValue);
+			var fieldValues = (IEnumerable<FieldUserValue>) value;
+			var userValues = fieldValues.Select(ConvertToUserInfo);
+
+			return IsArray ? (object) userValues.ToArray() : userValues.ToList();
 		}
 
 		public object ToSpValue(object value)
 		{
 			if (value == null) return null;
 
-			var userValue = (UserInfo)value;
+			if (!IsMulti)
+			{
+				var userValue = (UserInfo)value;
 
-			return new FieldUserValue{ LookupId = userValue.Id };
+				return new FieldUserValue { LookupId = userValue.Id };
+			}
+
+			var userValues = (IEnumerable<UserInfo>)value;
+
+			return userValues
+				.Select(n => new FieldUserValue { LookupId = n.Id })
+				.ToList();
 		}
 
 		public string ToCamlValue(object value)
 		{
 			if (value == null) return null;
 
-			var userValue = (UserInfo)value;
+			var singleValue = value as UserInfo;
+			if (singleValue != null)
+			{
+				return singleValue.Id.ToString();
+			}
 
-			return string.Format("{0};#{1}", userValue.Id, userValue.Login);
+			var multiValue = (IEnumerable<UserInfo>) value;
+			return multiValue
+				.Select(n => string.Format("{0};#{1}", n.Id, n.Login))
+				.JoinToString(";#");
 		}
 
-
-		private UserInfo ConvertToUserInfo(FieldUserValue user)
+		private UserInfo ConvertToUserInfo(FieldUserValue userValue)
 		{
 			return new UserInfo
 			{
-				Id = user.LookupId,
-				Login = user.LookupValue,
-				Email = user.Email
+				Id = userValue.LookupId,
+				Login = userValue.LookupValue,
+				Email = userValue.Email
 			};
 		}
 	}

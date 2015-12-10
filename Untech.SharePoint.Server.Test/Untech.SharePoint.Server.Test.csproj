@@ -60,9 +60,7 @@
   </Choose>
   <ItemGroup>
     <Compile Include="Converters\BuiltIn\ContentTypeIdFieldConverterTest.cs" />
-    <Compile Include="Converters\BuiltIn\LookupMultiFieldConverterTest.cs" />
     <Compile Include="Converters\BuiltIn\UrlFieldConverterTest.cs" />
-    <Compile Include="Converters\BuiltIn\UserMultiFieldConverterTest.cs" />
     <Compile Include="Models\Bootstrap.cs" />
     <Compile Include="Models\TestListItem.cs" />
     <Compile Include="Models\WebDataContext.cs" />
