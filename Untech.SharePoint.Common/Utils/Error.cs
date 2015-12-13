@@ -43,5 +43,15 @@ namespace Untech.SharePoint.Common.Utils
 		{
 			return new NotSupportedException(string.Format("Subquery '{0}' cannot be negated", whereModel));
 		}
+
+        internal static Exception OperationNotAllowedForExternalList()
+        {
+            return new InvalidOperationException("This operation cannot be used with external list");
+        }
+
+        internal static Exception OperationRequireIdField()
+        {
+            return new InvalidOperationException("This operation require ID field");
+        }
 	}
 }

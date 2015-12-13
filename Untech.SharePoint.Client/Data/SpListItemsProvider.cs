@@ -1,17 +1,15 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Microsoft.SharePoint.Client;
 using Untech.SharePoint.Client.Extensions;
 using Untech.SharePoint.Client.Utils;
 using Untech.SharePoint.Common.Data;
-using Untech.SharePoint.Common.Data.QueryModels;
-using Untech.SharePoint.Common.Extensions;
 using Untech.SharePoint.Common.MetaModels;
-using Untech.SharePoint.Common.Utils;
 
 namespace Untech.SharePoint.Client.Data
 {
-	internal class SpListItemsProvider : BaseSpListItemsProvider, ISpListItemsProvider
+	internal class SpListItemsProvider : BaseSpListItemsProvider<ListItem>
 	{
 		public SpListItemsProvider(ClientContext clientContext, SpCommonService commonService, MetaList list)
 			: base(list)
@@ -28,171 +26,65 @@ namespace Untech.SharePoint.Client.Data
 
 		private List SpList { get; set; }
 
-		public IEnumerable<T> Fetch<T>(QueryModel caml)
-		{
-			var viewFields = GetAndRewriteViewFields<T>(caml);
-			
-			return FetchInternal<T>(caml)
-				.Select(n => Materialize<T>(n, viewFields));
-		}
+	    protected override IList<ListItem> FetchInternal(string caml)
+	    {
+            var listCollection = SpList.GetItems(CamlUtility.CamlStringToSPQuery(caml));
 
-		public bool Any<T>(QueryModel caml)
-		{
-			return FetchInternal<T>(caml).Any();
-		}
+            ClientContext.Load(listCollection);
+            ClientContext.ExecuteQuery();
 
-		public int Count<T>(QueryModel caml)
-		{
-			return FetchInternal<T>(caml).Count;
-		}
+            return listCollection.Cast<ListItem>().ToList();
+	    }
 
-		public T SingleOrDefault<T>(QueryModel caml)
-		{
-			var viewFields = GetAndRewriteViewFields<T>(caml);
+	    protected override ListItem GetInternal(int id, MetaContentType contentType)
+	    {
+            var spItem = SpList.GetItemById(id);
+            ClientContext.Load(spItem);
+            ClientContext.ExecuteQuery();
 
-			caml.RowLimit = 2;
+            if (spItem.ContentType.ToString() != contentType.Id)
+            {
+                throw new InvalidOperationException("ContentType mismatch");
+            }
 
-			var foundItems = FetchInternal<T>(caml);
+            return spItem;
+	    }
 
-			if (foundItems.Count > 1)
-			{
-				throw Error.MoreThanOneMatch();
-			}
-			return foundItems.Count == 1 ? Materialize<T>(foundItems[0], viewFields) : default(T);
-		}
+	    protected override void AddInternal(object item, MetaContentType contentType)
+	    {
+            var mapper = contentType.GetMapper<ListItem>();
 
-		public T FirstOrDefault<T>(QueryModel caml)
-		{
-			var viewFields = GetAndRewriteViewFields<T>(caml);
+            var info = new ListItemCreationInformation();
+            var spItem = SpList.AddItem(info);
 
-			caml.RowLimit = 1;
+            mapper.Map(item, spItem);
 
-			var foundItems = FetchInternal<T>(caml);
+            spItem.Update();
+            ClientContext.ExecuteQuery();
+	    }
 
-			return foundItems.Count == 1 ? Materialize<T>(foundItems[0], viewFields) : default(T);
-		}
+	    protected override void UpdateInternal(int id, object item, MetaContentType contentType)
+	    {
+            var mapper = contentType.GetMapper<ListItem>();
 
-		public T ElementAtOrDefault<T>(QueryModel caml, int index)
-		{
-			var viewFields = GetAndRewriteViewFields<T>(caml);
+            var spItem = SpList.GetItemById(id);
+            ClientContext.Load(spItem);
+            ClientContext.ExecuteQuery();
 
-			caml.RowLimit = index + 1;
+            mapper.Map(item, spItem);
 
-			var foundItem = FetchInternal<T>(caml).ElementAtOrDefault(index);
+            spItem.Update();
+            ClientContext.ExecuteQuery();
+	    }
 
-			return foundItem != null ? Materialize<T>(foundItem, viewFields) : default(T);
-		}
+	    protected override void DeleteInternal(int id, MetaContentType contentType)
+	    {
+            var spItem = SpList.GetItemById(id);
+            ClientContext.Load(spItem);
+            ClientContext.ExecuteQuery();
 
-		public T Get<T>(int id)
-		{
-			if (List.IsExternal)
-			{
-				throw DataError.OperationNotAllowedForExternalList();
-			}
-
-			var spItem = SpList.GetItemById(id);
-			ClientContext.Load(spItem);
-			ClientContext.ExecuteQuery();
-
-			return Materialize<T>(spItem);
-		}
-
-		public void Add<T>(T item)
-		{
-			if (List.IsExternal)
-			{
-				throw DataError.OperationNotAllowedForExternalList();
-			}
-
-			var contentType = List.ContentTypes[typeof(T)];
-			var mapper = contentType.GetMapper<ListItem>();
-			var idField = contentType.GetKeyField();
-
-			if (idField == null)
-			{
-				throw DataError.OperationRequireIdField();
-			}
-
-			var info = new ListItemCreationInformation();
-			var spItem = SpList.AddItem(info);
-
-			mapper.Map(item, spItem);
-
-			spItem.Update();
-			ClientContext.ExecuteQuery();
-
-		}
-
-		public void Update<T>(T item)
-		{
-			if (List.IsExternal)
-			{
-				throw DataError.OperationNotAllowedForExternalList();
-			}
-
-			var contentType = List.ContentTypes[typeof(T)];
-			var mapper = contentType.GetMapper<ListItem>();
-			var idField = contentType.GetKeyField();
-
-			if (idField == null)
-			{
-				throw DataError.OperationRequireIdField();
-			}
-
-			var idValue = (int)idField.GetMapper<ListItem>().MemberAccessor.GetValue(item);
-
-			var spItem = SpList.GetItemById(idValue);
-			ClientContext.Load(spItem);
-			ClientContext.ExecuteQuery();
-
-			mapper.Map(item, spItem);
-
-			spItem.Update();
-			ClientContext.ExecuteQuery();
-		}
-
-		public void Delete<T>(T item)
-		{
-			if (List.IsExternal)
-			{
-				throw DataError.OperationNotAllowedForExternalList();
-			}
-
-			var contentType = List.ContentTypes[typeof(T)];
-			var idField = contentType.GetKeyField();
-
-			if (idField == null)
-			{
-				throw DataError.OperationRequireIdField();
-			}
-
-			var idValue = (int)idField.GetMapper<ListItem>().MemberAccessor.GetValue(item);
-			
-			var spItem = SpList.GetItemById(idValue);
-			ClientContext.Load(spItem);
-			ClientContext.ExecuteQuery();
-			
-			spItem.DeleteObject();
-			ClientContext.ExecuteQuery();
-		}
-
-		private IList<ListItem> FetchInternal<T>(QueryModel caml)
-		{
-			var camlString = ConvertToCamlString<T>(caml);
-			var listCollection = SpList.GetItems(CamlUtility.CamlStringToSPQuery(camlString));
-
-			ClientContext.Load(listCollection);
-			ClientContext.ExecuteQuery();
-
-			return listCollection.Cast<ListItem>().ToList();
-		}
-
-		private T Materialize<T>(ListItem spItem, IReadOnlyCollection<MemberRefModel> fields = null)
-		{
-			var contentType = List.ContentTypes[typeof (T)];
-			var mapper = contentType.GetMapper<ListItem>();
-
-			return (T)mapper.CreateAndMap(spItem, fields);
-		}
+            spItem.DeleteObject();
+            ClientContext.ExecuteQuery();
+	    }
 	}
 }
