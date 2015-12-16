@@ -39,13 +39,13 @@ namespace Untech.SharePoint.Client.Data
 	    protected override ListItem GetInternal(int id, MetaContentType contentType)
 	    {
             var spItem = SpList.GetItemById(id);
-            ClientContext.Load(spItem);
-            ClientContext.ExecuteQuery();
+			ClientContext.Load(spItem, n => n, n => n.ContentType.StringId);
+			ClientContext.ExecuteQuery();
 
-            if (spItem.ContentType.ToString() != contentType.Id)
-            {
-                throw new InvalidOperationException("ContentType mismatch");
-            }
+			if (spItem.ContentType.StringId != contentType.Id)
+			{
+				throw new InvalidOperationException("ContentType mismatch");
+			}
 
             return spItem;
 	    }

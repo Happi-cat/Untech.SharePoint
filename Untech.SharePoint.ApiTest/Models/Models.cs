@@ -50,17 +50,33 @@ namespace Untech.SharePoint.ApiTest.Models
 	[JsonConverter(typeof(StringEnumConverter))]
 	public enum ProjectStatus
 	{
-		Invalid = 0,
-		Draft,
+		Invalid = 0x0,
+		Draft = 0x1,
 		[EnumMember(Value = "Pending Decision")]
-		Pending,
-		Approved,
-		Rejected,
-		Rework,
-		Cancelled,
-		Completed,
+		Pending = 0x2,
+		Approved = 0x4,
+		Rejected = 0x8,
+		Rework = 0x10,
+		Cancelled = 0x20,
+		Completed = 0x40,
 		[EnumMember(Value = "On Hold")]
-		OnHold
+		OnHold = 0x80,
+		[EnumMember(Value = "Change Request")]
+		ChangeRequest = 0x100,
+		[EnumMember(Value = "CR - Draft")]
+		CRDraft = Draft | ChangeRequest,
+		[EnumMember(Value = "CR - Pending Decision")]
+		CRPending = Pending | ChangeRequest,
+		[EnumMember(Value = "CR - Approved")]
+		CRApproved = Approved | ChangeRequest,
+		[EnumMember(Value = "CR - Rejected")]
+		CRRejected = Rejected | ChangeRequest,
+		[EnumMember(Value = "CR - Rework")]
+		CRRework = Rework | ChangeRequest,
+		[EnumMember(Value = "CR - Cancelled")]
+		CRCancelled = Cancelled | ChangeRequest,
+		[EnumMember(Value = "CR - On Hold")]
+		CROnHold = OnHold | ChangeRequest
 	}
 
 	[JsonConverter(typeof(StringEnumConverter))]
