@@ -44,6 +44,11 @@ namespace Untech.SharePoint.Common.Test.Converters
 
 			public TestScenario CanConvertFromSp(object original, object expected)
 			{
+				return CanConvertFromSp<object, object>(original, expected);
+			}
+
+			public TestScenario CanConvertFromSp<T1, T2>(T1 original, T2 expected)
+			{
 				var actual = _fieldConverter.FromSpValue(original);
 
 				Assert.AreEqual(expected, actual);
@@ -51,8 +56,7 @@ namespace Untech.SharePoint.Common.Test.Converters
 				return this;
 			}
 
-
-			public TestScenario CanConvertFromSp(object original, object expected, IEqualityComparer comparer)
+			public TestScenario CanConvertFromSp<T1, T2>(T1 original, T2 expected, IEqualityComparer comparer)
 			{
 				var actual = _fieldConverter.FromSpValue(original);
 
@@ -63,6 +67,11 @@ namespace Untech.SharePoint.Common.Test.Converters
 
 			public TestScenario CanConvertToSp(object original, object expected)
 			{
+				return CanConvertToSp<object, object>(original, expected);
+			}
+
+			public TestScenario CanConvertToSp<T1, T2>(T1 original, T2 expected)
+			{
 				var actual = _fieldConverter.ToSpValue(original);
 
 				Assert.AreEqual(expected, actual);
@@ -70,7 +79,7 @@ namespace Untech.SharePoint.Common.Test.Converters
 				return this;
 			}
 
-			public TestScenario CanConvertToSp(object original, object expected, IEqualityComparer comparer)
+			public TestScenario CanConvertToSp<T1, T2>(T1 original, T2 expected, IEqualityComparer comparer)
 			{
 				var actual = _fieldConverter.ToSpValue(original);
 
@@ -79,7 +88,13 @@ namespace Untech.SharePoint.Common.Test.Converters
 				return this;
 			}
 
+
 			public TestScenario CanConvertToCaml(object original, string expected)
+			{
+				return CanConvertToCaml<object>(original, expected);
+			}
+
+			public TestScenario CanConvertToCaml<T1>(T1 original, string expected)
 			{
 				var actual = _fieldConverter.ToCamlValue(original);
 
