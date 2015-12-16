@@ -190,6 +190,15 @@ namespace Untech.SharePoint.Common.Data.Translators.Predicate
 			{
 				return TranslateStrStartsWith(callNode);
 			}
+			if (callNode.Method.Name == "Contains" && 
+				callNode.Object != null && 
+				(callNode.Object.Type.IsArray || callNode.Object.Type.IsIEnumerable()) && 
+				callNode.Arguments.Count == 1)
+			{
+				return new ComparisonModel(ComparisonOperator.Includes,
+					CamlProcessorUtils.GetFieldRef(callNode.Object),
+					GetValue(callNode.Arguments[0]));
+			}
 			throw Error.SubqueryNotSupported(callNode);
 		}
 
