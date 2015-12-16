@@ -37,8 +37,9 @@ namespace Untech.SharePoint.Common.Data.QueryModels
 		{
 			get
 			{
-				if (_selectableFields == null) return null;
-				return _selectableFields.Distinct(MemberRefModelComparer.Default);
+				return _selectableFields
+					.EmptyIfNull()
+					.Distinct(MemberRefModelComparer.Default);
 			}
 		}
 
@@ -80,7 +81,7 @@ namespace Untech.SharePoint.Common.Data.QueryModels
 		}
 
 		/// <summary>
-		/// Merge current CAML selectable fields with new ones.
+		/// Merges current CAML selectable fields with new ones.
 		/// </summary>
 		/// <param name="selectableFields">New selectable fields to merge.</param>
 		public void MergeSelectableFields([CanBeNull]IEnumerable<MemberRefModel> selectableFields)
@@ -92,6 +93,17 @@ namespace Untech.SharePoint.Common.Data.QueryModels
 				_selectableFields = new List<MemberRefModel>();
 			}
 			_selectableFields.AddRange(selectableFields);
+		}
+
+		/// <summary>
+		/// Replaces current CAML selectable fields with new ones.
+		/// </summary>
+		/// <param name="selectableFields">New selectable fields to replace.</param>
+		public void ReplaceSelectableFields([CanBeNull]IEnumerable<MemberRefModel> selectableFields)
+		{
+			_selectableFields = selectableFields
+				.EmptyIfNull()
+				.ToList();
 		}
 
 		/// <summary>

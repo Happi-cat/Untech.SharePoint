@@ -9,7 +9,9 @@ namespace Untech.SharePoint.Common.Data
 
 		public bool Equals(MemberRefModel x, MemberRefModel y)
 		{
-			return GetHashCode(x) == GetHashCode(y);
+			if (x == y) return true;
+			if (x == null || y == null) return false;
+			return MemberInfoComparer.Default.Equals(x.Member, y.Member);
 		}
 
 		public int GetHashCode(MemberRefModel obj)

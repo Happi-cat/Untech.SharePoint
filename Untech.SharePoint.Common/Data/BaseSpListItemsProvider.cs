@@ -148,7 +148,6 @@ namespace Untech.SharePoint.Common.Data
             }
 
             var contentType = List.ContentTypes[typeof(T)];
-            var mapper = contentType.GetMapper<TSPListItem>();
             var idField = contentType.GetKeyField();
 
             if (idField == null)

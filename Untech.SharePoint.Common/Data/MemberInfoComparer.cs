@@ -9,16 +9,15 @@ namespace Untech.SharePoint.Common.Data
 
 		public bool Equals(MemberInfo x, MemberInfo y)
 		{
-			return GetHashCode(x) == GetHashCode(y);
+			if (x == y) return true;
+			if (x == null || y == null) return false;
+			return x.MetadataToken == y.MetadataToken &&
+				x.Module == y.Module;
 		}
 
 		public int GetHashCode(MemberInfo obj)
 		{
-			if (obj == null)
-			{
-				return 0;
-			}
-			return obj.MetadataToken ^ obj.Module.GetHashCode();
+			return obj == null ? 0 : obj.MetadataToken ^ obj.Module.GetHashCode();
 		}
 	}
 }
