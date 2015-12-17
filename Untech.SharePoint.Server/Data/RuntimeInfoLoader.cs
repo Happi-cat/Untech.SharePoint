@@ -84,6 +84,12 @@ namespace Untech.SharePoint.Server.Data
 				{
 					field.AllowMultipleValues = true;
 				}
+				if (spField.Type == SPFieldType.User)
+				{
+					var spuserField = (SPFieldUser)spField;
+
+					field.AllowMultipleValues = spuserField.AllowMultipleValues;
+				}
 				if (spField.Type == SPFieldType.Calculated)
 				{
 					var spCalculatedField = (SPFieldCalculated) spField;

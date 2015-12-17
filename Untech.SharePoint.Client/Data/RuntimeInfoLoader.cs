@@ -80,6 +80,12 @@ namespace Untech.SharePoint.Client.Data
 					field.LookupList = spLookupField.LookupList;
 					field.LookupField = spLookupField.LookupField;
 				}
+				if (spField.FieldTypeKind == FieldType.User)
+				{
+					var spUserField = (FieldUser)spField;
+
+					field.AllowMultipleValues = spUserField.AllowMultipleValues;
+				}
 				if (spField.FieldTypeKind == FieldType.MultiChoice)
 				{
 					field.AllowMultipleValues = true;

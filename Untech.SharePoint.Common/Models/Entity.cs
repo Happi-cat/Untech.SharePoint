@@ -36,12 +36,18 @@ namespace Untech.SharePoint.Common.Models
 		[DataMember]
 		public virtual DateTime Created { get; set; }
 
+		[SpField(FieldType = "User")]
+		public virtual UserInfo Author { get; set; }
+
 		/// <summary>
 		/// Gets or sets item modification date.
 		/// </summary>
 		[SpField(FieldType = "DateTime")]
 		[DataMember]
 		public virtual DateTime Modified { get; set; }
+
+		[SpField(FieldType = "User")]
+		public virtual UserInfo Editor { get; set; }
 
 		/// <summary>
 		/// Gets or sets item content type id.
