@@ -26,19 +26,19 @@ namespace Untech.SharePoint.Client.Data
 
 		private List SpList { get; set; }
 
-	    protected override IList<ListItem> FetchInternal(string caml)
-	    {
-            var listCollection = SpList.GetItems(CamlUtility.CamlStringToSPQuery(caml));
+		protected override IList<ListItem> FetchInternal(string caml)
+		{
+			var listCollection = SpList.GetItems(CamlUtility.CamlStringToSPQuery(caml));
 
-            ClientContext.Load(listCollection);
-            ClientContext.ExecuteQuery();
+			ClientContext.Load(listCollection);
+			ClientContext.ExecuteQuery();
 
-            return listCollection.Cast<ListItem>().ToList();
-	    }
+			return listCollection.Cast<ListItem>().ToList();
+		}
 
-	    protected override ListItem GetInternal(int id, MetaContentType contentType)
-	    {
-            var spItem = SpList.GetItemById(id);
+		protected override ListItem GetInternal(int id, MetaContentType contentType)
+		{
+			var spItem = SpList.GetItemById(id);
 			ClientContext.Load(spItem, n => n, n => n.ContentType.StringId);
 			ClientContext.ExecuteQuery();
 
@@ -47,44 +47,44 @@ namespace Untech.SharePoint.Client.Data
 				throw new InvalidOperationException("ContentType mismatch");
 			}
 
-            return spItem;
-	    }
+			return spItem;
+		}
 
-	    protected override void AddInternal(object item, MetaContentType contentType)
-	    {
-            var mapper = contentType.GetMapper<ListItem>();
+		protected override void AddInternal(object item, MetaContentType contentType)
+		{
+			var mapper = contentType.GetMapper<ListItem>();
 
-            var info = new ListItemCreationInformation();
-            var spItem = SpList.AddItem(info);
+			var info = new ListItemCreationInformation();
+			var spItem = SpList.AddItem(info);
 
-            mapper.Map(item, spItem);
+			mapper.Map(item, spItem);
 
-            spItem.Update();
-            ClientContext.ExecuteQuery();
-	    }
+			spItem.Update();
+			ClientContext.ExecuteQuery();
+		}
 
-	    protected override void UpdateInternal(int id, object item, MetaContentType contentType)
-	    {
-            var mapper = contentType.GetMapper<ListItem>();
+		protected override void UpdateInternal(int id, object item, MetaContentType contentType)
+		{
+			var mapper = contentType.GetMapper<ListItem>();
 
-            var spItem = SpList.GetItemById(id);
-            ClientContext.Load(spItem);
-            ClientContext.ExecuteQuery();
+			var spItem = SpList.GetItemById(id);
+			ClientContext.Load(spItem);
+			ClientContext.ExecuteQuery();
 
-            mapper.Map(item, spItem);
+			mapper.Map(item, spItem);
 
-            spItem.Update();
-            ClientContext.ExecuteQuery();
-	    }
+			spItem.Update();
+			ClientContext.ExecuteQuery();
+		}
 
-	    protected override void DeleteInternal(int id, MetaContentType contentType)
-	    {
-            var spItem = SpList.GetItemById(id);
-            ClientContext.Load(spItem);
-            ClientContext.ExecuteQuery();
+		protected override void DeleteInternal(int id, MetaContentType contentType)
+		{
+			var spItem = SpList.GetItemById(id);
+			ClientContext.Load(spItem);
+			ClientContext.ExecuteQuery();
 
-            spItem.DeleteObject();
-            ClientContext.ExecuteQuery();
-	    }
+			spItem.DeleteObject();
+			ClientContext.ExecuteQuery();
+		}
 	}
 }
