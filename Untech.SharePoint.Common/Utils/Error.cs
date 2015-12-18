@@ -58,24 +58,23 @@ namespace Untech.SharePoint.Common.Utils
 
 		internal static Exception NotSupportAfterProjection(MethodCallExpression node)
 		{
-			var args = new[]
-			{
-				"source",
-				node.Arguments.Skip(1).JoinToString(", ")
-			};
-
-			throw new InvalidOperationException(string.Format("Method '.{0}({1})' cannot be applied after projection (e.g. Select)", node.Method.Name, args.JoinToString(", ")));
+			throw new InvalidOperationException(string.Format("Method '.{0}({1})' cannot be applied after projection (e.g. Select)", node.Method.Name, GetArgs(node.Arguments)));
 		}
 
 		internal static Exception NotSupportAfterRowLimit(MethodCallExpression node)
 		{
-			var args = new[]
+			throw new InvalidOperationException(string.Format("Method '.{0}({1})' cannot be applied after projection (e.g. Select)", node.Method.Name, GetArgs(node.Arguments)));
+		}
+
+		private static string GetArgs(IEnumerable<Expression> arguments)
+		{
+			var args = new []
 			{
 				"source",
-				node.Arguments.Skip(1).JoinToString(", ")
+				arguments.Skip(1).JoinToString(", ")
 			};
-
-			throw new InvalidOperationException(string.Format("Method '.{0}({1})' cannot be applied after projection (e.g. Select)", node.Method.Name, args.JoinToString(", ")));
+				
+			return args.JoinToString(", ");
 		}
 	}
 }
