@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using Untech.SharePoint.Common.Data;
 using Untech.SharePoint.Common.Data.QueryModels;
+using Untech.SharePoint.Common.Extensions;
 using Untech.SharePoint.Common.MetaModels;
 
 namespace Untech.SharePoint.Common.Utils
@@ -44,14 +46,36 @@ namespace Untech.SharePoint.Common.Utils
 			return new NotSupportedException(string.Format("Subquery '{0}' cannot be negated", whereModel));
 		}
 
-        internal static Exception OperationNotAllowedForExternalList()
-        {
-            return new InvalidOperationException("This operation cannot be used with external list");
-        }
+		internal static Exception OperationNotAllowedForExternalList()
+		{
+			return new InvalidOperationException("This operation cannot be used with external list");
+		}
 
-        internal static Exception OperationRequireIdField()
-        {
-            return new InvalidOperationException("This operation require ID field");
-        }
+		internal static Exception OperationRequireIdField()
+		{
+			return new InvalidOperationException("This operation require ID field");
+		}
+
+		internal static Exception NotSupportAfterProjection(MethodCallExpression node)
+		{
+			var args = new[]
+			{
+				"source",
+				node.Arguments.Skip(1).JoinToString(", ")
+			};
+
+			throw new InvalidOperationException(string.Format("Method '.{0}({1})' cannot be applied after projection (e.g. Select)", node.Method.Name, args.JoinToString(", ")));
+		}
+
+		internal static Exception NotSupportAfterRowLimit(MethodCallExpression node)
+		{
+			var args = new[]
+			{
+				"source",
+				node.Arguments.Skip(1).JoinToString(", ")
+			};
+
+			throw new InvalidOperationException(string.Format("Method '.{0}({1})' cannot be applied after projection (e.g. Select)", node.Method.Name, args.JoinToString(", ")));
+		}
 	}
 }

@@ -140,12 +140,7 @@ namespace Untech.SharePoint.Common.Data.Translators
 				if (!_context.ProjectionApplied) return;
 				if (rule.CanApplyAfterProjection(node)) return;
 
-				var args = new List<string> { "source" };
-				args.AddRange(node.Arguments
-					.Skip(1)
-					.Select(n => n.ToString()));
-
-				throw new InvalidOperationException(string.Format("Method .{0}({1}) cannot be applied after projection (e.g. Select)", node.Method.Name, args.JoinToString(", ")));
+				throw  Error.NotSupportAfterProjection(node);
 			}
 
 			private void ThrowIfCannotApplyAfterRowLimit(ICombineRule rule, MethodCallExpression node)
@@ -153,12 +148,7 @@ namespace Untech.SharePoint.Common.Data.Translators
 				if (!_context.RowLimitApplied) return;
 				if (rule.CanApplyAfterRowLimit(node)) return;
 
-				var args = new List<string>{ "source" };
-				args.AddRange(node.Arguments
-					.Skip(1)
-					.Select(n => n.ToString()));
-				
-				throw new InvalidOperationException(string.Format("Method .{0}({1}) cannot be applied after row limit (e.g. Take)", node.Method.Name, args.JoinToString(", ")));
+				throw Error.NotSupportAfterRowLimit(node);
 			}
 		}
 
