@@ -1,5 +1,6 @@
 ﻿using System;
 using Untech.SharePoint.Common.MetaModels;
+using Untech.SharePoint.Common.Utils;
 
 namespace Untech.SharePoint.Common.Converters
 {
@@ -22,7 +23,7 @@ namespace Untech.SharePoint.Common.Converters
 			}
 			catch (Exception e)
 			{
-				throw new FieldConverterInitializationException(ConverterType, e);
+				throw new FieldConverterInitializationException(ConverterType, field, e);
 			}
 		}
 
@@ -34,7 +35,7 @@ namespace Untech.SharePoint.Common.Converters
 			}
 			catch (Exception e)
 			{
-				throw new FieldConverterException(ConverterType, e);
+				throw Error.CannotConvertFromSpValue(ConverterType, value, e);
 			}
 		}
 
@@ -46,7 +47,7 @@ namespace Untech.SharePoint.Common.Converters
 			}
 			catch (Exception e)
 			{
-				throw new FieldConverterException(ConverterType, e);
+				throw Error.CannotConvertToSpValue(ConverterType, value, e);
 			}
 		}
 
@@ -58,7 +59,7 @@ namespace Untech.SharePoint.Common.Converters
 			}
 			catch (Exception e)
 			{
-				throw new FieldConverterException(ConverterType, e);
+				throw Error.CannotConvertToCamlValue(ConverterType, value, e);
 			}
 		}
 

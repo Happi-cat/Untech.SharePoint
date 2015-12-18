@@ -151,12 +151,12 @@ namespace Untech.SharePoint.Common.Test.Data.Translators
 				.Where(n => n.String1.StartsWith("TEST"))
 				.Take(10))
 				.ExpectedCaml("<View>" +
-							  "<RowLimit>10</RowLimit>" +
-							  "<Query>" +
-							  "<Where><And><And><Eq><FieldRef Name='Bool1' /><Value>True</Value></Eq><Gt><FieldRef Name='Int1' /><Value>10</Value></Gt></And>" +
-							  "<BeginsWith><FieldRef Name='String1' /><Value>TEST</Value></BeginsWith></And></Where>" +
-							  "</Query>" +
-							  "</View>");
+				              "<RowLimit>10</RowLimit>" +
+				              "<Query>" +
+				              "<Where><And><And><Eq><FieldRef Name='Bool1' /><Value>True</Value></Eq><Gt><FieldRef Name='Int1' /><Value>10</Value></Gt></And>" +
+				              "<BeginsWith><FieldRef Name='String1' /><Value>TEST</Value></BeginsWith></And></Where>" +
+				              "</Query>" +
+				              "</View>");
 		}
 
 		#endregion
@@ -184,10 +184,10 @@ namespace Untech.SharePoint.Common.Test.Data.Translators
 				.OrderByDescending(n => n.Bool1)
 				.ThenByDescending(n => n.String1))
 				.ExpectedCaml("<View>" +
-							  "<Query>" +
-							  "<OrderBy><FieldRef Name='Bool1' Ascending='FALSE' /><FieldRef Name='String1' Ascending='FALSE' /></OrderBy>" +
-							  "</Query>" +
-							  "</View>");
+				              "<Query>" +
+				              "<OrderBy><FieldRef Name='Bool1' Ascending='FALSE' /><FieldRef Name='String1' Ascending='FALSE' /></OrderBy>" +
+				              "</Query>" +
+				              "</View>");
 		}
 
 		[TestMethod]
@@ -297,11 +297,11 @@ namespace Untech.SharePoint.Common.Test.Data.Translators
 				.Select(n => n.String1)
 				.Any())
 				.ExpectedCaml("<View>" +
-							  "<Query>" +
-							  "<Where><And><Eq><FieldRef Name='Bool1' /><Value>True</Value></Eq><Gt><FieldRef Name='Int1' /><Value>10</Value></Gt></And></Where>" +
-							  "</Query>" +
-							  "<ViewFields><FieldRef Name='String1' /></ViewFields>" +
-							  "</View>");
+				              "<Query>" +
+				              "<Where><And><Eq><FieldRef Name='Bool1' /><Value>True</Value></Eq><Gt><FieldRef Name='Int1' /><Value>10</Value></Gt></And></Where>" +
+				              "</Query>" +
+				              "<ViewFields><FieldRef Name='String1' /></ViewFields>" +
+				              "</View>");
 		}
 
 		[TestMethod]
@@ -323,26 +323,37 @@ namespace Untech.SharePoint.Common.Test.Data.Translators
 		[TestMethod]
 		public void NotSupportSelectSelect()
 		{
-			CustomAssert.Throw<InvalidOperationException>(
+			CustomAssert.Throw<NotSupportedException>(
 				() => Given(source => source
-					.Select(n => new { Value = n.Int1 })
+					.Select(n => new {Value = n.Int1})
 					.Select(n => n.Value)));
 		}
 
 		[TestMethod]
 		public void NotSupportSelectAnyP()
 		{
-			CustomAssert.Throw<InvalidOperationException>(
+			CustomAssert.Throw<NotSupportedException>(
 				() => Given(source => source
 					.Select(n => n.Int1)
 					.Any(n => n > 10)));
 		}
 
+		[TestMethod]
+		public void NotSupportSelectMin()
+		{
+			CustomAssert.Throw<NotSupportedException>(() => Given(source => source.Select(n => n.Int1).Min(n => n)));
+		}
+
+		[TestMethod]
+		public void NotSupportSelectMax()
+		{
+			CustomAssert.Throw<NotSupportedException>(() => Given(source => source.Select(n => n.Int1).Min(n => n)));
+		}
 
 		[TestMethod]
 		public void NotSupportSelectAll()
 		{
-			CustomAssert.Throw<InvalidOperationException>(
+			CustomAssert.Throw<NotSupportedException>(
 				() => Given(source => source
 					.Select(n => n.String1)
 					.All(n => n == "TEST")));
@@ -368,7 +379,7 @@ namespace Untech.SharePoint.Common.Test.Data.Translators
 		[TestMethod]
 		public void NotSupportSelectFirstP()
 		{
-			CustomAssert.Throw<InvalidOperationException>(() =>
+			CustomAssert.Throw<NotSupportedException>(() =>
 				Given(source => source
 					.Select(n => new {Result = n.Int1})
 					.First(n => n.Result > 10)));
@@ -393,7 +404,7 @@ namespace Untech.SharePoint.Common.Test.Data.Translators
 		[TestMethod]
 		public void NotSupportSelectFirstOrDefaultP()
 		{
-			CustomAssert.Throw<InvalidOperationException>(() =>
+			CustomAssert.Throw<NotSupportedException>(() =>
 				Given(source => source
 					.Select(n => new {Result = n.Int1})
 					.FirstOrDefault(n => n.Result > 10)));
@@ -419,7 +430,7 @@ namespace Untech.SharePoint.Common.Test.Data.Translators
 		[TestMethod]
 		public void NotSupportSelectLastP()
 		{
-			CustomAssert.Throw<InvalidOperationException>(() =>
+			CustomAssert.Throw<NotSupportedException>(() =>
 				Given(source => source
 					.Select(n => new {Result = n.Int1})
 					.Last(n => n.Result > 10)));
@@ -429,9 +440,9 @@ namespace Untech.SharePoint.Common.Test.Data.Translators
 		[TestMethod]
 		public void NotSupportSelectWhere()
 		{
-			CustomAssert.Throw<InvalidOperationException>(() =>
+			CustomAssert.Throw<NotSupportedException>(() =>
 				Given(source => source
-					.Select(n => new { Result = n.Int1 })
+					.Select(n => new {Result = n.Int1})
 					.Where(n => n.Result > 10)));
 		}
 
@@ -454,7 +465,7 @@ namespace Untech.SharePoint.Common.Test.Data.Translators
 		[TestMethod]
 		public void NotSupportSelectLastOrDefaultP()
 		{
-			CustomAssert.Throw<InvalidOperationException>(() =>
+			CustomAssert.Throw<NotSupportedException>(() =>
 				Given(source => source
 					.Select(n => new {Result = n.Int1})
 					.LastOrDefault(n => n.Result > 10)));
@@ -515,25 +526,25 @@ namespace Untech.SharePoint.Common.Test.Data.Translators
 		[TestMethod]
 		public void NotSupportTakeLast()
 		{
-			CustomAssert.Throw<InvalidOperationException>(() => Given(source => source.Take(10).Last()));
+			CustomAssert.Throw<NotSupportedException>(() => Given(source => source.Take(10).Last()));
 		}
 
 		[TestMethod]
 		public void NotSupportTakeWhere()
 		{
-			CustomAssert.Throw<InvalidOperationException>(() => Given(source => source.Take(10).Where(n => n.Bool1)));
+			CustomAssert.Throw<NotSupportedException>(() => Given(source => source.Take(10).Where(n => n.Bool1)));
 		}
 
 		[TestMethod]
 		public void NotSupportTakeOrderBy()
 		{
-			CustomAssert.Throw<InvalidOperationException>(() => Given(source => source.Take(10).OrderBy(n => n.Bool1)));
+			CustomAssert.Throw<NotSupportedException>(() => Given(source => source.Take(10).OrderBy(n => n.Bool1)));
 		}
 
 		[TestMethod]
 		public void NotSupportTakeAll()
 		{
-			CustomAssert.Throw<InvalidOperationException>(() => Given(source => source.Take(10).All(n => n.String1 == "TEST")));
+			CustomAssert.Throw<NotSupportedException>(() => Given(source => source.Take(10).All(n => n.String1 == "TEST")));
 		}
 
 		#endregion
@@ -580,6 +591,27 @@ namespace Untech.SharePoint.Common.Test.Data.Translators
 
 		#region [Other]
 
+
+		[TestMethod]
+		public void SupportMin()
+		{
+			Given(source => source.Min(n => n.Int1))
+				.ExpectedCaml("<View>" +
+				              "<Query></Query>" +
+				              "<ViewFields><FieldRef Name='Int1' /></ViewFields>" +
+				              "</View>");
+		}
+
+		[TestMethod]
+		public void SupportMax()
+		{
+			Given(source => source.Max(n => n.Int1))
+				.ExpectedCaml("<View>" +
+				              "<Query></Query>" +
+				              "<ViewFields><FieldRef Name='Int1' /></ViewFields>" +
+				              "</View>");
+		}
+
 		[TestMethod]
 		public void NotSupportSkip()
 		{
@@ -597,7 +629,7 @@ namespace Untech.SharePoint.Common.Test.Data.Translators
 		}
 
 		#endregion
-		
+
 
 		#region [Private Methods]
 
@@ -631,7 +663,7 @@ namespace Untech.SharePoint.Common.Test.Data.Translators
 		}
 
 		#endregion
-		
+
 
 		#region [Nested Classes]
 

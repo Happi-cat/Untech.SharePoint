@@ -76,7 +76,7 @@ namespace Untech.SharePoint.Common.Data.Mapper
 			}
 			catch (Exception e)
 			{
-				throw Error.CannotMapField(Field, e);
+				throw Error.CannotMapFieldToSP(Field, e);
 			}
 		}
 
@@ -101,7 +101,7 @@ namespace Untech.SharePoint.Common.Data.Mapper
 			}
 			catch (Exception e)
 			{
-				throw Error.CannotMapField(Field, e);
+				throw Error.CannotMapFieldFromSP(Field, e);
 			}
 		}
 	}

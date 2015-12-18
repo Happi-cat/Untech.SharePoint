@@ -1,4 +1,5 @@
 ﻿using System;
+using Untech.SharePoint.Common.MetaModels;
 
 namespace Untech.SharePoint.Common.Converters
 {
@@ -13,15 +14,16 @@ namespace Untech.SharePoint.Common.Converters
 		/// </summary>
 		/// <param name="converterType">Field converter type that is the cause of this error.</param>
 		/// <param name="innerException">The exception that is the casue of this exception.</param>
-		public FieldConverterInitializationException(Type converterType, Exception innerException)
-			: base(GetMessage(converterType), innerException)
+		public FieldConverterInitializationException(Type converterType, MetaField field, Exception innerException)
+			: base(GetMessage(converterType, field), innerException)
 		{
 
 		}
 
-		private static string GetMessage(Type converterType)
+		private static string GetMessage(Type converterType, MetaField field)
 		{
-			return string.Format("Field converter '{0}' cannot be initialized", converterType);
+			var fieldMember = field != null ? field.Member : null;
+			return string.Format("Field converter '{0}' cannot be initialized for field '{1}'", converterType, fieldMember);
 		}
 	}
 }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using Untech.SharePoint.Common.Converters;
 using Untech.SharePoint.Common.Data;
 using Untech.SharePoint.Common.Data.QueryModels;
 using Untech.SharePoint.Common.Extensions;
@@ -9,7 +10,7 @@ using Untech.SharePoint.Common.MetaModels;
 
 namespace Untech.SharePoint.Common.Utils
 {
-	public static class Error
+	internal static class Error
 	{
 		internal static Exception KeyNotFound(object key)
 		{
@@ -31,19 +32,18 @@ namespace Untech.SharePoint.Common.Utils
 			return new NotSupportedException(string.Format("Subquery '{0}' is not supported", node));
 		}
 
-		internal static Exception CannotMapField(MetaField field)
+		internal static Exception CannotMapFieldToSP(MetaField field, Exception inner)
 		{
-			return new DataMappingException(field);
+			var msg = string.Format("Cannot map member '{0}' of type '{1}' to SP field {2}.",
+				field.Member, field.MemberType, field.InternalName);
+			return new DataMappingException(msg, inner);
 		}
 
-		internal static Exception CannotMapField(MetaField field, Exception inner)
+		internal static Exception CannotMapFieldFromSP(MetaField field, Exception inner)
 		{
-			return new DataMappingException(field, inner);
-		}
-
-		internal static Exception SubqueryNegateNotSupported(WhereModel whereModel)
-		{
-			return new NotSupportedException(string.Format("Subquery '{0}' cannot be negated", whereModel));
+			var msg = string.Format("Cannot map member '{0}' of type '{1}' from SP field {2}.",
+				field.Member, field.MemberType, field.InternalName);
+			return new DataMappingException(msg, inner);
 		}
 
 		internal static Exception OperationNotAllowedForExternalList()
@@ -56,25 +56,47 @@ namespace Untech.SharePoint.Common.Utils
 			return new InvalidOperationException("This operation require ID field");
 		}
 
-		internal static Exception NotSupportAfterProjection(MethodCallExpression node)
+		internal static Exception CannotConvertFromSpValue(Type converterType, object spValue, Exception inner)
 		{
-			throw new InvalidOperationException(string.Format("Method '.{0}({1})' cannot be applied after projection (e.g. Select)", node.Method.Name, GetArgs(node.Arguments)));
+			var msg = string.Format("SP value '{0}' cannot be converted by '{1}' field converter", spValue, converterType);
+			return new FieldConverterException(msg, inner);
 		}
 
-		internal static Exception NotSupportAfterRowLimit(MethodCallExpression node)
+		internal static Exception CannotConvertToSpValue(Type converterType, object value, Exception inner)
 		{
-			throw new InvalidOperationException(string.Format("Method '.{0}({1})' cannot be applied after projection (e.g. Select)", node.Method.Name, GetArgs(node.Arguments)));
+			var msg = string.Format("Field converter '{0}' cannot convert value '{1}' to SP value", converterType, value);
+			return new FieldConverterException(msg, inner);
+		}
+
+		internal static Exception CannotConvertToCamlValue(Type converterType, object value, Exception inner)
+		{
+			var msg = string.Format("Field converter '{0}' cannot convert value '{1}' to CAML value", converterType, value);
+			return new FieldConverterException(msg, inner);
+		}
+
+		internal static Exception SubqueryNotSupportedAfterProjection(MethodCallExpression node)
+		{
+			var msg = string.Format("Method '.{0}({1})' cannot be applied after any projection method like '.Select'", 
+				node.Method.Name,
+				GetArgs(node.Arguments));
+
+			throw new NotSupportedException(msg);
+		}
+
+		internal static Exception SubqueryNotSupportedAfterRowLimit(MethodCallExpression node)
+		{
+			var msg = string.Format("Method '.{0}({1})' cannot be applied after any row limit method like '.Take'",
+				node.Method.Name, 
+				GetArgs(node.Arguments));
+
+			throw new NotSupportedException(msg);
 		}
 
 		private static string GetArgs(IEnumerable<Expression> arguments)
 		{
-			var args = new []
-			{
-				"source",
-				arguments.Skip(1).JoinToString(", ")
-			};
-				
-			return args.JoinToString(", ");
+			var args = arguments.Skip(1).JoinToString(", ");
+
+			return string.IsNullOrEmpty(args) ? "source" : "source, " + args;
 		}
 	}
 }

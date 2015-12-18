@@ -8,7 +8,6 @@ using Untech.SharePoint.Common.Data.QueryModels;
 using Untech.SharePoint.Common.Data.Translators.Predicate;
 using Untech.SharePoint.Common.Diagnostics;
 using Untech.SharePoint.Common.Extensions;
-using Untech.SharePoint.Common.MetaModels;
 using Untech.SharePoint.Common.Utils;
 
 namespace Untech.SharePoint.Common.Data.Translators
@@ -102,13 +101,12 @@ namespace Untech.SharePoint.Common.Data.Translators
 
 			private ICombineRule GetRuleAndUpdateContext(Expression node)
 			{
-				if (node.NodeType == ExpressionType.Call)
+				switch (node.NodeType)
 				{
-					return GetRuleAndUpdateContext((MethodCallExpression)node);
-				}
-				if (node.NodeType == ExpressionType.Quote)
-				{
-					return GetRuleAndUpdateContext(((UnaryExpression)node).Operand);
+					case ExpressionType.Call:
+						return GetRuleAndUpdateContext((MethodCallExpression)node);
+					case ExpressionType.Quote:
+						return GetRuleAndUpdateContext(((UnaryExpression)node).Operand);
 				}
 				throw Error.SubqueryNotSupported(node);
 			}
@@ -140,7 +138,7 @@ namespace Untech.SharePoint.Common.Data.Translators
 				if (!_context.ProjectionApplied) return;
 				if (rule.CanApplyAfterProjection(node)) return;
 
-				throw  Error.NotSupportAfterProjection(node);
+				throw  Error.SubqueryNotSupportedAfterProjection(node);
 			}
 
 			private void ThrowIfCannotApplyAfterRowLimit(ICombineRule rule, MethodCallExpression node)
@@ -148,7 +146,7 @@ namespace Untech.SharePoint.Common.Data.Translators
 				if (!_context.RowLimitApplied) return;
 				if (rule.CanApplyAfterRowLimit(node)) return;
 
-				throw Error.NotSupportAfterRowLimit(node);
+				throw Error.SubqueryNotSupportedAfterRowLimit(node);
 			}
 		}
 
@@ -158,11 +156,11 @@ namespace Untech.SharePoint.Common.Data.Translators
 
 			public ISpListItemsProvider ListItemsProvider { get; set; }
 
-			public Type EntityType { get; set; }
+			public Type EntityType { get; private set; }
 
 			public LambdaExpression Projection { get; private set; }
 
-			public Type ProjectedType { get; set; }
+			public Type ProjectedType { get; private set; }
 
 			public bool ProjectionApplied { get; private set; }
 			
@@ -587,8 +585,7 @@ namespace Untech.SharePoint.Common.Data.Translators
 			public Expression Get(RuleContext context, MethodCallExpression node)
 			{
 				var entityType = node.Method.GetGenericArguments()[0];
-				return SpQueryable.MakeAsQueryable(entityType,
-					SpQueryable.MakeFetch(entityType, context.ListItemsProvider, context.Query));
+				return SpQueryable.MakeFetch(entityType, context.ListItemsProvider, context.Query);
 			}
 
 			public bool CanApplyAfterProjection(MethodCallExpression node)
@@ -630,7 +627,6 @@ namespace Untech.SharePoint.Common.Data.Translators
 			}
 		}
 
-		
 		#endregion
 	}
 
