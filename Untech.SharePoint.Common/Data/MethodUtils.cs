@@ -89,11 +89,13 @@ namespace Untech.SharePoint.Common.Data
 		public static readonly MethodInfo SpqMax = GetMethodInfo(() => SpQueryable.Max<int, int>(null, null, null));
 
 		public static readonly MethodInfo SpqTake = GetMethodInfo(() => SpQueryable.Take<int>(null, null));
-		public static readonly MethodInfo SpqSkip = GetMethodInfo(() => SpQueryable.Skip<int>(null, null, 0));
+		public static readonly MethodInfo SpqTakeP = GetMethodInfo(() => SpQueryable.Take<int, int>(null, null, null));
 
 		public static readonly MethodInfo SpqFirst = GetMethodInfo(() => SpQueryable.First<int>(null, null, false, false));
+		public static readonly MethodInfo SpqFirstP = GetMethodInfo(() => SpQueryable.First<int, int>(null, null, false, false, null));
 
 		public static readonly MethodInfo SpqElementAt = GetMethodInfo(() => SpQueryable.ElementAt<int>(null, null, 0, false));
+		public static readonly MethodInfo SpqElementAtP = GetMethodInfo(() => SpQueryable.ElementAt<int, int>(null, null, 0, false, null));
 
 		public static readonly MethodInfo SpqAny = GetMethodInfo(() => SpQueryable.Any<int>(null, null));
 		public static readonly MethodInfo SpqCount = GetMethodInfo(() => SpQueryable.Count<int>(null, null));

@@ -44,6 +44,11 @@ namespace Untech.SharePoint.Common.Data
 			return Fetch<T>(listItemsProvider, queryModel);
 		}
 
+		internal static IEnumerable<TResult> Take<TSoure, TResult>(ISpListItemsProvider listItemsProvider, QueryModel queryModel, Func<TSoure, TResult> selector)
+		{
+			return Fetch<TSoure>(listItemsProvider, queryModel).Select(selector);
+		}
+
 		internal static MethodCallExpression MakeTake(Type entityType, ISpListItemsProvider listItemsProvider, QueryModel queryModel)
 		{
 			return Expression.Call(MethodUtils.SpqTake.MakeGenericMethod(entityType),
@@ -51,17 +56,12 @@ namespace Untech.SharePoint.Common.Data
 				Expression.Constant(queryModel, typeof(QueryModel)));
 		}
 
-		internal static IEnumerable<T> Skip<T>(ISpListItemsProvider listItemsProvider, QueryModel queryModel, int count)
+		internal static MethodCallExpression MakeTake(Type entityType, Type resulType, ISpListItemsProvider listItemsProvider, QueryModel queryModel, LambdaExpression projection)
 		{
-			return Fetch<T>(listItemsProvider, queryModel).Skip(count);
-		}
-
-		internal static MethodCallExpression MakeSkip(Type entityType, ISpListItemsProvider listItemsProvider, QueryModel queryModel, int count)
-		{
-			return Expression.Call(MethodUtils.SpqSkip.MakeGenericMethod(entityType),
+			return Expression.Call(MethodUtils.SpqTakeP.MakeGenericMethod(entityType, resulType),
 				Expression.Constant(listItemsProvider, typeof(ISpListItemsProvider)),
 				Expression.Constant(queryModel, typeof(QueryModel)),
-				Expression.Constant(count));
+				Expression.Constant(projection.Compile()));
 		}
 
 		[UsedImplicitly]
@@ -79,6 +79,18 @@ namespace Untech.SharePoint.Common.Data
 			return item;
 		}
 
+		[UsedImplicitly]
+		internal static TResult First<TSource, TResult>(ISpListItemsProvider listItemsProvider, QueryModel queryModel, bool throwIfNothing, bool throwIfMultiple, Func<TSource, TResult> selector)
+		{
+			var item = First<TSource>(listItemsProvider, queryModel, throwIfNothing, throwIfMultiple);
+			if (item == null)
+			{
+				return default(TResult);
+			}
+
+			return selector(item);
+		}
+
 		internal static MethodCallExpression MakeFirst(Type entityType, ISpListItemsProvider listItemsProvider, QueryModel queryModel, bool throwIfNothing, bool throwIfMultiple)
 		{
 			return Expression.Call(MethodUtils.SpqFirst.MakeGenericMethod(entityType),
@@ -86,6 +98,16 @@ namespace Untech.SharePoint.Common.Data
 				Expression.Constant(queryModel, typeof(QueryModel)),
 				Expression.Constant(throwIfNothing),
 				Expression.Constant(throwIfMultiple));
+		}
+
+		internal static MethodCallExpression MakeFirst(Type entityType, Type projectedType, ISpListItemsProvider listItemsProvider, QueryModel queryModel, bool throwIfNothing, bool throwIfMultiple, LambdaExpression projection)
+		{
+			return Expression.Call(MethodUtils.SpqFirstP.MakeGenericMethod(entityType, projectedType),
+				Expression.Constant(listItemsProvider, typeof(ISpListItemsProvider)),
+				Expression.Constant(queryModel, typeof(QueryModel)),
+				Expression.Constant(throwIfNothing),
+				Expression.Constant(throwIfMultiple),
+				Expression.Constant(projection.Compile()));
 		}
 
 		[UsedImplicitly]
@@ -101,6 +123,20 @@ namespace Untech.SharePoint.Common.Data
 			return item;
 		}
 
+		[UsedImplicitly]
+		internal static TResult ElementAt<TSource, TResult>(ISpListItemsProvider listItemsProvider, QueryModel queryModel, int index, bool throwIfNothing, Func<TSource, TResult> projection)
+		{
+			var item = ElementAt<TSource>(listItemsProvider, queryModel, index, throwIfNothing);
+
+			if (item == null)
+			{
+				return default(TResult);
+			}
+
+			return projection(item);
+		}
+
+
 		internal static MethodCallExpression MakeElementAt(Type entityType, ISpListItemsProvider listItemsProvider, QueryModel queryModel, int index, bool throwIfNothing)
 		{
 			return Expression.Call(MethodUtils.SpqElementAt.MakeGenericMethod(entityType),
@@ -108,6 +144,16 @@ namespace Untech.SharePoint.Common.Data
 				Expression.Constant(queryModel, typeof(QueryModel)),
 				Expression.Constant(index),
 				Expression.Constant(throwIfNothing));
+		}
+
+		internal static MethodCallExpression MakeElementAt(Type entityType, Type projectionType, ISpListItemsProvider listItemsProvider, QueryModel queryModel, int index, bool throwIfNothing, LambdaExpression projection)
+		{
+			return Expression.Call(MethodUtils.SpqElementAtP.MakeGenericMethod(entityType, projectionType),
+				Expression.Constant(listItemsProvider, typeof(ISpListItemsProvider)),
+				Expression.Constant(queryModel, typeof(QueryModel)),
+				Expression.Constant(index),
+				Expression.Constant(throwIfNothing),
+				Expression.Constant(projection.Compile()));
 		}
 
 		internal static bool Any<T>(ISpListItemsProvider listItemsProvider, QueryModel queryModel)
