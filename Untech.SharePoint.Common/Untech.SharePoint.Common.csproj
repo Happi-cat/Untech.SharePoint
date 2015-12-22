@@ -50,6 +50,7 @@
     <Compile Include="CodeAnnotations\Attributes.cs" />
     <Compile Include="Configuration\Config.cs" />
     <Compile Include="Converters\Custom\KeyValueFieldConverter.cs" />
+    <Compile Include="Converters\Custom\NumericRangeFieldConverter.cs" />
     <Compile Include="Converters\MultiTypeFieldConverter.cs" />
     <Compile Include="Converters\BuiltIn\BooleanFieldConverter.cs" />
     <Compile Include="Converters\BuiltIn\DateTimeFieldConverter.cs" />

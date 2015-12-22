@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Untech.SharePoint.Common.Converters;
 using Untech.SharePoint.Common.Converters.Custom;
@@ -40,6 +41,20 @@ namespace Untech.SharePoint.Common.Test.Converters.Custom
 					{"Last", "End"}
 				}, "Key:Value;NoValue:;Last:End");
 		}
+
+		[TestMethod]
+		public void CanConvertEnumerable()
+		{
+			Given<IEnumerable<KeyValuePair<string, string>>>();
+		}
+
+		[TestMethod]
+		public void CannotConvertList()
+		{
+			CustomAssert.Throw<ArgumentException>(() => Given<List<KeyValuePair<string, string>>>());
+		}
+
+
 
 		protected override IFieldConverter GetConverter()
 		{

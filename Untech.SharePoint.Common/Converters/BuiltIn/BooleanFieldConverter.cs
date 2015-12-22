@@ -26,7 +26,7 @@ namespace Untech.SharePoint.Common.Converters.BuiltIn
 			}
 			if (memberType != typeof(bool))
 			{
-				throw new ArgumentException("Invalid");
+				throw new ArgumentException("Member type should be bool or Syste.Nullable<bool>.");
 			}
 		}
 

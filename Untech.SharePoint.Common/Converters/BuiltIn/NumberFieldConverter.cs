@@ -27,7 +27,7 @@ namespace Untech.SharePoint.Common.Converters.BuiltIn
 			}
 			if (memberType != typeof(double))
 			{
-				throw new ArgumentException("Invalid");
+				throw new ArgumentException("Member type should be double or System.Nullable<double>.");
 			}
 		}
 

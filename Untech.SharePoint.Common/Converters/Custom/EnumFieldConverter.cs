@@ -34,7 +34,7 @@ namespace Untech.SharePoint.Common.Converters.Custom
 				memberType = memberType.GetGenericArguments()[0];
 			}
 			if (!memberType.IsEnum)
-				throw new ArgumentException("This converter can be used only with Enum property types");
+				throw new ArgumentException("This converter can be used only with Enum member types");
 
 			if (!Enum.IsDefined(memberType, 0))
 				throw new ArgumentException(string.Format("Enum {0} should have default value (i.e. 0)", field.MemberType));

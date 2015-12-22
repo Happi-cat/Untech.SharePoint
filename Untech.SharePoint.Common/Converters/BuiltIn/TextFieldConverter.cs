@@ -21,7 +21,7 @@ namespace Untech.SharePoint.Common.Converters.BuiltIn
 
 			if (field.MemberType != typeof(string))
 			{
-				throw new ArgumentException("Only string member type allowed");
+				throw new ArgumentException("Only string member type allowed.");
 			}
 		}
 

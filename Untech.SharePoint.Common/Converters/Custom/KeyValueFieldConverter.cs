@@ -23,6 +23,11 @@ namespace Untech.SharePoint.Common.Converters.Custom
 			Guard.CheckNotNull("field", field);
 
 			Field = field;
+
+			if (!field.MemberType.IsAssignableFrom(typeof(Dictionary<string, string>)))
+			{
+				throw new ArgumentException("Member type should be assignable from System.Dictionary<string, string>.");
+			}
 		}
 
 		/// <summary>

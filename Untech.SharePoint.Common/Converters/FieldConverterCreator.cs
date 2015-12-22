@@ -1,5 +1,7 @@
-﻿using Untech.SharePoint.Common.MetaModels;
+﻿using Untech.SharePoint.Common.CodeAnnotations;
+using Untech.SharePoint.Common.MetaModels;
 using Untech.SharePoint.Common.MetaModels.Visitors;
+using Untech.SharePoint.Common.Utils;
 
 namespace Untech.SharePoint.Common.Converters
 {
@@ -25,32 +27,29 @@ namespace Untech.SharePoint.Common.Converters
 		/// <param name="field">Field to visit.</param>
 		public override void VisitField(MetaField field)
 		{
-			IFieldConverter converter;
+			var converter = CreateConverter(field);
+			converter.Initialize(field);
+			field.Converter = converter;
+		}
+
+		[NotNull]
+		private IFieldConverter CreateConverter(MetaField field)
+		{
 			if (field.CustomConverterType != null)
 			{
 				if (!Resolver.CanResolve(field.CustomConverterType))
 				{
-					throw new FieldConverterException("Cannot find converter in Config");
+					throw Error.ConverterNotFound(field.CustomConverterType);
 				}
-				converter = Resolver.Resolve(field.CustomConverterType);
+				return Resolver.Resolve(field.CustomConverterType);
 			}
-			else
+
+			if (!Resolver.CanResolve(field.TypeAsString))
 			{
-				if (!Resolver.CanResolve(field.TypeAsString))
-				{
-					throw new FieldConverterException("Cannot find converter in Config");
-				}
-				converter = Resolver.Resolve(field.TypeAsString);
+				throw Error.ConverterNotFound(field.TypeAsString);
 			}
 
-			InitializeConverter(field, converter);
-		}
-
-		private void InitializeConverter(MetaField field, IFieldConverter converter)
-		{
-			converter.Initialize(field);
-
-			field.Converter = converter;
+			return Resolver.Resolve(field.TypeAsString);
 		}
 	}
 }

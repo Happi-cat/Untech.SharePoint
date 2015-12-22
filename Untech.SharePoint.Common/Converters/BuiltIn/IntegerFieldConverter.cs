@@ -27,7 +27,7 @@ namespace Untech.SharePoint.Common.Converters.BuiltIn
 			}
 			if (memberType != typeof(int))
 			{
-				throw new ArgumentException("Invalid");
+				throw new ArgumentException("Member type should be int or System.Nullable<int>.");
 			}
 		}
 

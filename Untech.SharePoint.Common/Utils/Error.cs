@@ -92,6 +92,16 @@ namespace Untech.SharePoint.Common.Utils
 			throw new NotSupportedException(msg);
 		}
 
+		internal static Exception ConverterNotFound(string typeAsString)
+		{
+			return new FieldConverterException(string.Format("Cannot find converter '{0}' in Config",typeAsString));
+		}
+
+		internal static Exception ConverterNotFound(Type converterType)
+		{
+			return new FieldConverterException(string.Format("Cannot find converter '{0}' in Config", converterType));
+		}
+
 		private static string GetArgs(IEnumerable<Expression> arguments)
 		{
 			var args = arguments.Skip(1).JoinToString(", ");

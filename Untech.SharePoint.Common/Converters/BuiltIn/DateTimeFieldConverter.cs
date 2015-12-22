@@ -25,7 +25,7 @@ namespace Untech.SharePoint.Common.Converters.BuiltIn
 			}
 			else
 			{
-				throw new ArgumentException("MemberType is invalid");
+				throw new ArgumentException("Member type should be DateTime or Syste.Nullable<DateTime>.");
 			}
 		}
 
