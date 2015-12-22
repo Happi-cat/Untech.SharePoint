@@ -94,8 +94,11 @@ namespace Untech.SharePoint.Client.Converters.BuiltIn
 					return "";
 
 				var urlInfo = (UrlInfo)value;
-
-				return string.Format("{0};#{1}", urlInfo.Url, urlInfo.Description);
+			    if (string.IsNullOrEmpty(urlInfo.Description))
+			    {
+			        return urlInfo.Url;
+			    }
+                return string.Format("{0}, {1}", urlInfo.Url.Replace(",", ",,"), urlInfo.Description);
 			}
 		}
 	}

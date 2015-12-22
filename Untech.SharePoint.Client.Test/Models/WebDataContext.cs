@@ -13,7 +13,7 @@ namespace Untech.SharePoint.Client.Test.Models
 		{
 		}
 
-		[SpList(Title = "Test List")]
-		public ISpList<TestListItem> TestList { get { return GetList(x => x.TestList); }}
+		[SpList(Title = "News")]
+		public ISpList<NewsItem> News { get { return GetList(x => x.News); }}
 	}
 }

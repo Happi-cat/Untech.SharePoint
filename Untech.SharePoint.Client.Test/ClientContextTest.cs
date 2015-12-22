@@ -13,7 +13,7 @@ namespace Untech.SharePoint.Client.Test
 	{
 		public ClientContextTest()
 		{
-			Context = new ClientContext("http://sp2013");
+			Context = new ClientContext("http://sp2013dev/sites/orm-test");
 		}
 
 		private ClientContext Context { get; set; }
@@ -29,7 +29,7 @@ namespace Untech.SharePoint.Client.Test
 		{
 			var ctx = new WebDataContext(Context, Bootstrap.GetConfig());
 
-			var count = ctx.TestList.Count();
+			var count = ctx.News.Count();
 		}
 
 		[TestMethod]
@@ -39,11 +39,11 @@ namespace Untech.SharePoint.Client.Test
 			var generatedTitle = string.Format("Generated Title {0}", DateTime.Now);
 
 			
-			Assert.IsTrue(ctx.TestList.Any(n => n.Title != generatedTitle));
+			Assert.IsTrue(ctx.News.Any(n => n.Title != generatedTitle));
 			
-			ctx.TestList.Add(new TestListItem{ Title = generatedTitle });
+			ctx.News.Add(new NewsItem{ Title = generatedTitle });
 
-			Assert.IsTrue(ctx.TestList.Any(n => n.Title == generatedTitle));
+			Assert.IsTrue(ctx.News.Any(n => n.Title == generatedTitle));
 		}
 
 		[TestMethod]
@@ -51,14 +51,14 @@ namespace Untech.SharePoint.Client.Test
 		{
 			var ctx = new WebDataContext(Context, Bootstrap.GetConfig());
 
-			var countBefore = ctx.TestList.Count();
-			var firstItem = ctx.TestList.First();
+			var countBefore = ctx.News.Count();
+			var firstItem = ctx.News.First();
 
-			ctx.TestList.Delete(firstItem);
+			ctx.News.Delete(firstItem);
 
-			Assert.IsTrue(ctx.TestList.Any(n => n.Id != firstItem.Id));
+			Assert.IsTrue(ctx.News.Any(n => n.Id != firstItem.Id));
 
-			var countAfter = ctx.TestList.Count();
+			var countAfter = ctx.News.Count();
 
 			Assert.AreEqual(countBefore, countAfter + 1);
 		}
@@ -68,12 +68,12 @@ namespace Untech.SharePoint.Client.Test
 		{
 			var ctx = new WebDataContext(Context, Bootstrap.GetConfig());
 
-			var firstItem = ctx.TestList.First();
+			var firstItem = ctx.News.First();
 			firstItem.Title = "Updated";
 
-			ctx.TestList.Update(firstItem);
+			ctx.News.Update(firstItem);
 
-			var updatedItem = ctx.TestList.Get(firstItem.Id);
+			var updatedItem = ctx.News.Get(firstItem.Id);
 
 			Assert.AreEqual(updatedItem.Title, "Updated");
 			Assert.AreNotEqual(firstItem.Modified, updatedItem.Modified);

@@ -19,35 +19,28 @@ namespace Untech.SharePoint.ApiTest
 		[TestMethod]
 		public void GetById()
 		{
-			Test(x => x.DevelopmentProjects, x => x.DevelopmentProjects,
-				x => x.Get(1), new DevelopmentProjectComparer());
+			Test(x => x.News, x => x.News,
+				x => x.Get(3), new DevelopmentProjectComparer());
 		}
 
 		[TestMethod]
 		public void SimpleQuery()
 		{
-			Test(x => x.DevelopmentProjects, x => x.DevelopmentProjects,
+			Test(x => x.News, x => x.News,
 				x => x, new DevelopmentProjectComparer());
 		}
 
 		[TestMethod]
 		public void WhereQuery()
 		{
-			Test(x => x.DevelopmentProjects, x => x.DevelopmentProjects,
+			Test(x => x.News, x => x.News,
 				x => x.Where(n => n.Title.Contains("T")), new DevelopmentProjectComparer());
 		}
 
-		[TestMethod]
-		public void WhereWithEnumsQuery()
-		{
-			Test(x => x.DevelopmentProjects, x => x.DevelopmentProjects,
-				x => x.Where(n => n.Status == ProjectStatus.Completed), new DevelopmentProjectComparer());
-		}
-
-		[TestMethod]
+	[TestMethod]
 		public void WhereWithDateTimeQuery()
 		{
-			Test(x => x.DevelopmentProjects, x => x.DevelopmentProjects,
+			Test(x => x.News, x => x.News,
 				x => x.Where(n => n.Created > DateTime.Now.AddMonths(-1)), new DevelopmentProjectComparer());
 		}
 
@@ -55,36 +48,36 @@ namespace Untech.SharePoint.ApiTest
 		public void WhereWithUserQuery()
 		{
 			// TODO: wrong result
-			var me = new UserInfo { Id = 9 };
-			Test(x => x.DevelopmentProjects, x => x.DevelopmentProjects,
-				x => x.Where(n => n.Approver == me), new DevelopmentProjectComparer());
+			var me = new UserInfo { Id = 1 };
+			Test(x => x.News, x => x.News,
+				x => x.Where(n => n.Author == me), new DevelopmentProjectComparer());
 		}
 
 		[TestMethod]
 		public void TakeQuery()
 		{
-			Test(x => x.DevelopmentProjects, x => x.DevelopmentProjects,
+			Test(x => x.News, x => x.News,
 				x => x.Take(10), new DevelopmentProjectComparer());
 		}
 
 		[TestMethod]
 		public void LastQuery()
 		{
-			Test(x => x.DevelopmentProjects, x => x.DevelopmentProjects,
+			Test(x => x.News, x => x.News,
 				x => x.Last(), new DevelopmentProjectComparer());
 		}
 
 		[TestMethod]
 		public void FirstQuery()
 		{
-			Test(x => x.DevelopmentProjects, x => x.DevelopmentProjects,
+			Test(x => x.News, x => x.News,
 				x => x.First(), new DevelopmentProjectComparer());
 		}
 
 		[TestMethod]
 		public void OrderByQuery()
 		{
-			Test(x => x.DevelopmentProjects, x => x.DevelopmentProjects,
+			Test(x => x.News, x => x.News,
 				x => x.OrderByDescending(n=> n.Modified), new DevelopmentProjectComparer());
 		}
 
@@ -99,14 +92,14 @@ namespace Untech.SharePoint.ApiTest
 		public ServerDataContext GetServerCtx()
 		{
 			var cfg = BuildConfig(ServerConfig.Begin());
-			var site = new SPSite("http://spnthpdvds0040v:8086/sites/investment");
+			var site = new SPSite("http://sp2013dev/sites/orm-test");
 			return new ServerDataContext(site.OpenWeb(), cfg);
 		}
 
 		public ClientDataContext GetClientCtx()
 		{
 			var cfg = BuildConfig(ClientConfig.Begin());
-			var ctx = new ClientContext("http://spnthpdvds0040v:8086/sites/investment");
+			var ctx = new ClientContext("http://sp2013dev/sites/orm-test");
 			return new ClientDataContext(ctx, cfg);
 		}
 
@@ -136,44 +129,30 @@ namespace Untech.SharePoint.ApiTest
 			Assert.IsTrue(comparer.Equals(serverQueryResult, clientQueryResult));
 		}
 
-		public class DevelopmentProjectComparer : IEqualityComparer<DevelopmentProject>
+		public class DevelopmentProjectComparer : IEqualityComparer<NewsItem>
 		{
-			public bool Equals(DevelopmentProject x, DevelopmentProject y)
+			public bool Equals(NewsItem x, NewsItem y)
 			{
 				return Check(x, y, n => n.Id) &&
 				       Check(x, y, n => n.Title) &&
-				       Check(x, y, n => n.Created) &&
-				       Check(x, y, n => n.Modified) &&
-				       Check(x, y, n => n.ContentTypeId) &&
-				       Check(x, y, n => n.Status) &&
-				       Check(x, y, n => n.Gate) &&
-				       Check(x, y, n => n.ProjectUid) &&
-				       Check(x, y, n => n.ProjectNo) &&
-				       Check(x, y, n => n.LobBudgetOwner) &&
-				       Check(x, y, n => n.LobDeliveryOwner) &&
-				       Check(x, y, n => n.SponsoringPortfolio) &&
-				       Check(x, y, n => n.ParentPortfolio) &&
-				       Check(x, y, n => n.ChildPortfolio) &&
-				       Check(x, y, n => n.Methodology) &&
-				       Check(x, y, n => n.Status) &&
-				       Check(x, y, n => n.Approver) &&
-				       Check(x, y, n => n.DecisionDate) &&
-				       Check(x, y, n => n.ProjectComments);
+				       //sCheck(x, y, n => n.Created) &&
+				       //Check(x, y, n => n.Modified) &&
+				       Check(x, y, n => n.ContentTypeId);
 
 			}
 
-			public int GetHashCode(DevelopmentProject obj)
+			public int GetHashCode(NewsItem obj)
 			{
 				if (obj == null) return 0;
 				return obj.GetHashCode();
 			}
 
-			protected bool Check<TProp>(DevelopmentProject x, DevelopmentProject y, Func<DevelopmentProject, TProp> selector)
+			protected bool Check<TProp>(NewsItem x, NewsItem y, Func<NewsItem, TProp> selector)
 			{
 				return EqualityComparer<TProp>.Default.Equals(selector(x), selector(y));
 			}
 
-			protected bool Check(DevelopmentProject x, DevelopmentProject y, Func<DevelopmentProject, UserInfo> selector)
+			protected bool Check(NewsItem x, NewsItem y, Func<NewsItem, UserInfo> selector)
 			{
 				var xUser = selector(x);
 				var yUser = selector(y);
@@ -183,7 +162,7 @@ namespace Untech.SharePoint.ApiTest
 				return xUser.Id == yUser.Id;
 			}
 
-			protected bool Check(DevelopmentProject x, DevelopmentProject y, Func<DevelopmentProject, ObjectReference> selector)
+			protected bool Check(NewsItem x, NewsItem y, Func<NewsItem, ObjectReference> selector)
 			{
 				var xRef = selector(x);
 				var yRef = selector(y);

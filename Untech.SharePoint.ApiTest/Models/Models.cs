@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Runtime.Serialization;
 using Microsoft.SharePoint;
 using Microsoft.SharePoint.Client;
@@ -20,14 +21,17 @@ namespace Untech.SharePoint.ApiTest.Models
 		{
 		}
 
-		[SpList(Title = "Projects Register")]
-		public ISpList<DevelopmentProject> DevelopmentProjects { get { return GetList(x => x.DevelopmentProjects); } }
+		[SpList(Title = "News")]
+		public ISpList<NewsItem> News { get { return GetList(x => x.News); } }
 
-		[SpList(Title = "Projects Register")]
-		public ISpList<MpsProject> MpsProjects{ get { return GetList(x => x.MpsProjects); } }
+		[SpList(Title = "Events")]
+		public ISpList<EventItem> Events { get { return GetList(x => x.Events); } }
 
-		[SpList(Title = "Projects Register")]
-		public ISpList<NplProject> NplProjects { get { return GetList(x => x.NplProjects); } }
+		[SpList(Title = "Teams")]
+		public ISpList<TeamItem> Teams { get { return GetList(x => x.Teams); } }
+
+		[SpList(Title = "Projects")]
+		public ISpList<ProjectItem> Projects { get { return GetList(x => x.Projects); } }
 	}
 
 	public class ClientDataContext : SpClientContext<ClientDataContext>
@@ -37,117 +41,99 @@ namespace Untech.SharePoint.ApiTest.Models
 		{
 		}
 
-		[SpList(Title = "Projects Register")]
-		public ISpList<DevelopmentProject> DevelopmentProjects { get { return GetList(x => x.DevelopmentProjects); } }
+		[SpList(Title = "News")]
+		public ISpList<NewsItem> News { get { return GetList(x => x.News); } }
 
-		[SpList(Title = "Projects Register")]
-		public ISpList<MpsProject> MpsProjects { get { return GetList(x => x.MpsProjects); } }
+		[SpList(Title = "Events")]
+		public ISpList<EventItem> Events { get { return GetList(x => x.Events); } }
 
-		[SpList(Title = "Projects Register")]
-		public ISpList<NplProject> NplProjects { get { return GetList(x => x.NplProjects); } }
+		[SpList(Title = "Teams")]
+		public ISpList<TeamItem> Teams { get { return GetList(x => x.Teams); } }
+
+		[SpList(Title = "Projects")]
+		public ISpList<ProjectItem> Projects { get { return GetList(x => x.Projects); } }
 	}
 
-	[JsonConverter(typeof(StringEnumConverter))]
-	public enum ProjectStatus
+
+	[SpContentType]
+	public class NewsItem : Entity
 	{
-		Invalid = 0x0,
-		Draft = 0x1,
-		[EnumMember(Value = "Pending Decision")]
-		Pending = 0x2,
-		Approved = 0x4,
-		Rejected = 0x8,
-		Rework = 0x10,
-		Cancelled = 0x20,
-		Completed = 0x40,
-		[EnumMember(Value = "On Hold")]
-		OnHold = 0x80,
-		[EnumMember(Value = "Change Request")]
-		ChangeRequest = 0x100,
-		[EnumMember(Value = "CR - Draft")]
-		CRDraft = Draft | ChangeRequest,
-		[EnumMember(Value = "CR - Pending Decision")]
-		CRPending = Pending | ChangeRequest,
-		[EnumMember(Value = "CR - Approved")]
-		CRApproved = Approved | ChangeRequest,
-		[EnumMember(Value = "CR - Rejected")]
-		CRRejected = Rejected | ChangeRequest,
-		[EnumMember(Value = "CR - Rework")]
-		CRRework = Rework | ChangeRequest,
-		[EnumMember(Value = "CR - Cancelled")]
-		CRCancelled = Cancelled | ChangeRequest,
-		[EnumMember(Value = "CR - On Hold")]
-		CROnHold = OnHold | ChangeRequest
+		[SpField]
+		public string Body { get; set; }
+
+		[SpField]
+		public string Description { get; set; }
+
+		[SpField(Name = "HeadingImage")]
+		public string HeadingImageUrl { get; set; }
+
+		[SpField(Name = "HeadingImage")]
+		public UrlInfo HeadingImage { get; set; }
 	}
 
-	[JsonConverter(typeof(StringEnumConverter))]
-	public enum ProjectGate
+	[SpContentType]
+	public class EventItem : Entity
 	{
-		Invalid = 0,
-		[EnumMember(Value = "Business Proposal")]
-		Idea,
-		Initiation,
-		Commit,
-		Development,
-		Testing,
-		Launch,
-		Realization
+		[SpField]
+		public DateTime? WhenStart { get; set; }
+
+		[SpField]
+		public DateTime? WhenComplete { get; set; }
+
+		[SpField]
+		public double? MaxPeople { get; set; }
+
+		[SpField]
+		public UserInfo Organizer { get; set; }
+
+		[SpField]
+		public UrlInfo Logo { get; set; }
+
+		[SpField]
+		public bool? FreeEntrance { get; set; }
 	}
 
-	[SpContentType(Id = "0x0100ED4D646C7EDE473BA41EC3DD8473CFFF")]
-	public class BaseProject : Entity
+	[SpContentType]
+	public class TeamItem : Entity
 	{
-		[SpField(Name = "BIFGate", CustomConverterType = typeof(EnumFieldConverter))]
-		public virtual ProjectGate Gate { get; set; }
+		[SpField]
+		public UserInfo Manager { get; set; }
 
-		[SpField(Name = "BIFProjectUid")]
-		public virtual string ProjectUid { get; set; }
+		public List<UserInfo> Developers { get; set; }
 
-		[SpField(Name = "BIFProjectNo")]
-		public virtual int? ProjectNo { get; set; }
-
-		[SpField(Name = "BIFLobBudgetOwner")]
-		public virtual UserInfo LobBudgetOwner { get; set; }
-
-		[SpField(Name = "BIFLobDeliveryOwner")]
-		public virtual UserInfo LobDeliveryOwner { get; set; }
-
-		[SpField(Name = "BIFProjectSponsoringPortfolio")]
-		public virtual string SponsoringPortfolio { get; set; }
-
-		[SpField(Name = "BIFProjectParentPortfolio")]
-		public virtual string ParentPortfolio { get; set; }
-
-		[SpField(Name = "BIFProjectChildPortfolio")]
-		public virtual string ChildPortfolio { get; set; }
-
-		[SpField(Name = "BIFProjectMethodology")]
-		public virtual string Methodology { get; set; }
-
-		[SpField(Name = "BIFStatus", CustomConverterType = typeof(EnumFieldConverter))]
-		public virtual ProjectStatus Status { get; set; }
-
-		[SpField(Name = "BIFApprover")]
-		public virtual UserInfo Approver { get; set; }
-
-		[SpField(Name = "BIFDecisionDate")]
-		public virtual DateTime? DecisionDate { get; set; }
-
-		[SpField(Name = "BIFProjectComments")]
-		public virtual string ProjectComments { get; set; }
+		[SpField]
+		public UrlInfo Logo { get; set; }
 	}
 
-	[SpContentType(Id = "0x0100ED4D646C7EDE473BA41EC3DD8473CFFF01")]
-	public class DevelopmentProject : BaseProject
+	[SpContentType]
+	public class ProjectItem : Entity
 	{
-	}
+		[SpField]
+		public ObjectReference Team { get; set; }
 
-	[SpContentType(Id = "0x0100ED4D646C7EDE473BA41EC3DD8473CFFF02")]
-	public class MpsProject : BaseProject
-	{
-	}
 
-	[SpContentType(Id = "0x0100ED4D646C7EDE473BA41EC3DD8473CFFF03")]
-	public class NplProject : BaseProject
-	{
+		[SpField]
+		public DateTime? ProjectStart { get; set; }
+
+		[SpField]
+		public DateTime? ProjectEnd { get; set; }
+
+		//[SpField(Name ="OS")]
+		//public string[] OSes { get; set; }
+
+		[SpField]
+		public string Technology { get; set; }
+
+		[SpField]
+		public List<ObjectReference> SubProjects { get; set; }
+
+		[SpField]
+		public double? Duration { get; set; }
+
+		[SpField]
+		public string Status { get; set; }
+
+		[SpField]
+		public UserInfo FinanceManager { get; set; }
 	}
 }

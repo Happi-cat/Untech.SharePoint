@@ -32,7 +32,8 @@ namespace Untech.SharePoint.Client.Test.Converters.BuiltIn
 				.CanConvertToSp(null, null)
 				.CanConvertToSp(new UrlInfo { Url = "http://google.com", Description = "Google It!" }, new FieldUrlValue { Url = "http://google.com", Description = "Google It!" }, new FieldUrlValueComparer())
 				.CanConvertToCaml(null, "")
-				.CanConvertToCaml(new UrlInfo { Url = "http://google.com", Description = "Google It!" }, "http://google.com;#Google It!");
+                .CanConvertToCaml(new UrlInfo { Url = "http://google.com" }, "http://google.com")
+				.CanConvertToCaml(new UrlInfo { Url = "http://google.com", Description = "Google It!" }, "http://google.com, Google It!");
 		}
 
 		protected override IFieldConverter GetConverter()

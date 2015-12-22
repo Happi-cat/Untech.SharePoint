@@ -138,7 +138,7 @@ namespace Untech.SharePoint.Common.Data.Translators
 				if (!_context.ProjectionApplied) return;
 				if (rule.CanApplyAfterProjection(node)) return;
 
-				throw  Error.SubqueryNotSupportedAfterProjection(node);
+				throw Error.SubqueryNotSupportedAfterProjection(node);
 			}
 
 			private void ThrowIfCannotApplyAfterRowLimit(ICombineRule rule, MethodCallExpression node)

@@ -100,7 +100,7 @@
     <Compile Include="Converters\BuiltIn\ContentTypeIdFieldConverterTest.cs" />
     <Compile Include="Converters\BuiltIn\UrlFieldConverterTest.cs" />
     <Compile Include="Models\Bootstrap.cs" />
-    <Compile Include="Models\TestListItem.cs" />
+    <Compile Include="Models\NewsItem.cs" />
     <Compile Include="Models\WebDataContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ClientContextTest.cs" />

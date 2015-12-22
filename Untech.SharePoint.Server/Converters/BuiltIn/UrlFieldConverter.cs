@@ -50,7 +50,7 @@ namespace Untech.SharePoint.Server.Converters.BuiltIn
 
 			public string ToCamlValue(object value)
 			{
-				return (string) ToSpValue(value);
+				return (string) ToSpValue(value) ?? "";
 			}
 		}
 
@@ -81,13 +81,16 @@ namespace Untech.SharePoint.Server.Converters.BuiltIn
 					return null;
 
 				var urlInfo = (UrlInfo)value;
-
-				return string.Format("{0};#{1}", urlInfo.Url, urlInfo.Description);
-			}
+                if (string.IsNullOrEmpty(urlInfo.Description))
+                {
+                    return urlInfo.Url;
+                }
+                return string.Format("{0}, {1}", urlInfo.Url.Replace(",", ",,"), urlInfo.Description);
+            }
 
 			public string ToCamlValue(object value)
 			{
-				return (string) ToSpValue(value);
+				return (string) ToSpValue(value) ?? "";
 			}
 		}
 	}

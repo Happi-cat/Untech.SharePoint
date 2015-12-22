@@ -74,7 +74,7 @@ namespace Untech.SharePoint.Client.Data
 
 				if (spField.FieldTypeKind == FieldType.Lookup)
 				{
-					var spLookupField = (FieldLookup)spField;
+					var spLookupField = SpList.Context.CastTo<FieldLookup>(spField);
 
 					field.AllowMultipleValues = spLookupField.AllowMultipleValues;
 					field.LookupList = spLookupField.LookupList;
@@ -82,7 +82,7 @@ namespace Untech.SharePoint.Client.Data
 				}
 				if (spField.FieldTypeKind == FieldType.User)
 				{
-					var spUserField = (FieldUser)spField;
+					var spUserField = SpList.Context.CastTo<FieldUser>(spField);
 
 					field.AllowMultipleValues = spUserField.AllowMultipleValues;
 				}
@@ -92,7 +92,7 @@ namespace Untech.SharePoint.Client.Data
 				}
 				if (spField.FieldTypeKind == FieldType.Calculated)
 				{
-					var spCalculatedField = (FieldCalculated) spField;
+					var spCalculatedField = SpList.Context.CastTo<FieldCalculated>(spField);
 					field.TypeAsString = spCalculatedField.OutputType.ToString();
 				}
 			}
