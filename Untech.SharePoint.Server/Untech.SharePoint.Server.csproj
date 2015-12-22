@@ -50,6 +50,7 @@
     <Compile Include="Converters\BuiltIn\ContentTypeIdConverter.cs" />
     <Compile Include="Converters\BuiltIn\GeolocationFieldConverter.cs" />
     <Compile Include="Converters\BuiltIn\LookupFieldConverter.cs" />
+    <Compile Include="Converters\BuiltIn\MultiChoiceFieldConverter.cs" />
     <Compile Include="Converters\BuiltIn\UrlFieldConverter.cs" />
     <Compile Include="Converters\BuiltIn\UserFieldConverter.cs" />
     <Compile Include="Data\Mapper\StoreAccessor.cs" />
