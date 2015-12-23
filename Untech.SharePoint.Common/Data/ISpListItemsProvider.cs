@@ -76,7 +76,7 @@ namespace Untech.SharePoint.Common.Data
 		/// </summary>
 		/// <typeparam name="T">Type of entity to add.</typeparam>
 		/// <param name="item"></param>
-		void Add<T>(T item);
+		T Add<T>(T item);
 
 		/// <summary>
 		/// Updates item with the specified ID in SP list.

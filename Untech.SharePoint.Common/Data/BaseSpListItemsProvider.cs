@@ -31,162 +31,164 @@ namespace Untech.SharePoint.Common.Data
 		[NotNull]
 		public MetaList List { get; private set; }
 
-	    public IEnumerable<T> Fetch<T>(QueryModel query)
-	    {
-	        var contentType = List.ContentTypes[typeof (T)];
-            UpdateViewFields(query, contentType);
-	        var viewFields = query.SelectableFields.ToList();
-	        var caml = ConvertToCamlString(query, contentType);
+		public IEnumerable<T> Fetch<T>(QueryModel query)
+		{
+			var contentType = List.ContentTypes[typeof(T)];
+			UpdateViewFields(query, contentType);
+			var viewFields = query.SelectableFields.ToList();
+			var caml = ConvertToCamlString(query, contentType);
 
-	        return Materialize<T>(FetchInternal(caml), contentType, viewFields);
-	    }
+			return Materialize<T>(FetchInternal(caml), contentType, viewFields);
+		}
 
-	    public bool Any<T>(QueryModel query)
-	    {
-            var contentType = List.ContentTypes[typeof(T)];
-            UpdateViewFields(query, contentType);
-            var caml = ConvertToCamlString(query, contentType);
+		public bool Any<T>(QueryModel query)
+		{
+			var contentType = List.ContentTypes[typeof(T)];
+			UpdateViewFields(query, contentType);
+			var caml = ConvertToCamlString(query, contentType);
 
-            return FetchInternal(caml).Any();
-	    }
+			return FetchInternal(caml).Any();
+		}
 
-	    public int Count<T>(QueryModel query)
-	    {
-            var contentType = List.ContentTypes[typeof(T)];
-            UpdateViewFields(query, contentType);
-            var caml = ConvertToCamlString(query, contentType);
+		public int Count<T>(QueryModel query)
+		{
+			var contentType = List.ContentTypes[typeof(T)];
+			UpdateViewFields(query, contentType);
+			var caml = ConvertToCamlString(query, contentType);
 
-            return FetchInternal(caml).Count;
-	    }
+			return FetchInternal(caml).Count;
+		}
 
-	    public T SingleOrDefault<T>(QueryModel query)
-	    {
-            var contentType = List.ContentTypes[typeof(T)];
-	        
-            query.RowLimit = 2;
-            UpdateViewFields(query, contentType);
-            
-            var viewFields = query.SelectableFields.ToList();
-            var caml = ConvertToCamlString(query, contentType);
+		public T SingleOrDefault<T>(QueryModel query)
+		{
+			var contentType = List.ContentTypes[typeof(T)];
 
-            var foundItems = FetchInternal(caml);
-            if (foundItems.Count > 1)
-            {
-                throw Error.MoreThanOneMatch();
-            }
-            return foundItems.Count == 1
-                ? Materialize<T>(foundItems[0], contentType, viewFields) 
-                : default(T);
-	    }
+			query.RowLimit = 2;
+			UpdateViewFields(query, contentType);
 
-	    public T FirstOrDefault<T>(QueryModel query)
-	    {
-            var contentType = List.ContentTypes[typeof(T)];
-            
-            query.RowLimit = 1;
-            UpdateViewFields(query, contentType);
-            
-            var viewFields = query.SelectableFields.ToList();
-            var caml = ConvertToCamlString(query, contentType);
+			var viewFields = query.SelectableFields.ToList();
+			var caml = ConvertToCamlString(query, contentType);
 
-            var foundItems = FetchInternal(caml);
-            return foundItems.Count == 1
-                ? Materialize<T>(foundItems[0], contentType, viewFields)
-                : default(T);
-	    }
+			var foundItems = FetchInternal(caml);
+			if (foundItems.Count > 1)
+			{
+				throw Error.MoreThanOneMatch();
+			}
+			return foundItems.Count == 1
+				? Materialize<T>(foundItems[0], contentType, viewFields)
+				: default(T);
+		}
 
-	    public T ElementAtOrDefault<T>(QueryModel query, int index)
-	    {
-            var contentType = List.ContentTypes[typeof(T)];
-            
-            query.RowLimit = index + 1;
-            UpdateViewFields(query, contentType);
-            
-            var viewFields = query.SelectableFields.ToList();
-            var caml = ConvertToCamlString(query, contentType);
+		public T FirstOrDefault<T>(QueryModel query)
+		{
+			var contentType = List.ContentTypes[typeof(T)];
 
-            var foundItems = FetchInternal(caml);
-            return foundItems.Count == 1
-                ? Materialize<T>(foundItems[0], contentType, viewFields)
-                : default(T);
-	    }
+			query.RowLimit = 1;
+			UpdateViewFields(query, contentType);
 
-	    public T Get<T>(int id)
-	    {
-            if (List.IsExternal)
-            {
-                throw Error.OperationNotAllowedForExternalList();
-            }
+			var viewFields = query.SelectableFields.ToList();
+			var caml = ConvertToCamlString(query, contentType);
 
-            var contentType = List.ContentTypes[typeof(T)];
-	        return Materialize<T>(GetInternal(id, contentType), contentType);
-	    }
+			var foundItems = FetchInternal(caml);
+			return foundItems.Count == 1
+				? Materialize<T>(foundItems[0], contentType, viewFields)
+				: default(T);
+		}
 
-	    public void Add<T>(T item)
-	    {
-            if (List.IsExternal)
-            {
-                throw Error.OperationNotAllowedForExternalList();
-            }
+		public T ElementAtOrDefault<T>(QueryModel query, int index)
+		{
+			var contentType = List.ContentTypes[typeof(T)];
 
-            var contentType = List.ContentTypes[typeof(T)];
-            var idField = contentType.GetKeyField();
+			query.RowLimit = index + 1;
+			UpdateViewFields(query, contentType);
 
-            if (idField == null)
-            {
-                throw Error.OperationRequireIdField();
-            }
+			var viewFields = query.SelectableFields.ToList();
+			var caml = ConvertToCamlString(query, contentType);
 
-            AddInternal(item, contentType);
-	    }
+			var foundItems = FetchInternal(caml);
+			return foundItems.Count == 1
+				? Materialize<T>(foundItems[0], contentType, viewFields)
+				: default(T);
+		}
 
-	    public void Update<T>(T item)
-	    {
-            if (List.IsExternal)
-            {
-                throw Error.OperationNotAllowedForExternalList();
-            }
+		public T Get<T>(int id)
+		{
+			if (List.IsExternal)
+			{
+				throw Error.OperationNotAllowedForExternalList();
+			}
 
-            var contentType = List.ContentTypes[typeof(T)];
-            var idField = contentType.GetKeyField();
+			var contentType = List.ContentTypes[typeof(T)];
+			return Materialize<T>(GetInternal(id, contentType), contentType);
+		}
 
-            if (idField == null)
-            {
-                throw Error.OperationRequireIdField();
-            }
+		public T Add<T>(T item)
+		{
+			if (List.IsExternal)
+			{
+				throw Error.OperationNotAllowedForExternalList();
+			}
 
-            var idValue = (int)idField
-                .GetMapper<TSPListItem>()
-                .MemberAccessor
-                .GetValue(item);
+			var contentType = List.ContentTypes[typeof(T)];
+			var idField = contentType.GetKeyField();
 
-            UpdateInternal(idValue, item, contentType);
-	    }
+			if (idField == null)
+			{
+				throw Error.OperationRequireIdField();
+			}
 
-	    public void Delete<T>(T item)
-	    {
-            if (List.IsExternal)
-            {
-                throw Error.OperationNotAllowedForExternalList();
-            }
+			var id = AddInternal(item, contentType);
 
-            var contentType = List.ContentTypes[typeof(T)];
-            var idField = contentType.GetKeyField();
+			return Get<T>(id);
+		}
 
-            if (idField == null)
-            {
-                throw Error.OperationRequireIdField();
-            }
+		public void Update<T>(T item)
+		{
+			if (List.IsExternal)
+			{
+				throw Error.OperationNotAllowedForExternalList();
+			}
 
-            var idValue = (int)idField
-                .GetMapper<TSPListItem>()
-                .MemberAccessor
-                .GetValue(item);
+			var contentType = List.ContentTypes[typeof(T)];
+			var idField = contentType.GetKeyField();
 
-            DeleteInternal(idValue, contentType);
-	    }
+			if (idField == null)
+			{
+				throw Error.OperationRequireIdField();
+			}
 
-	    /// <summary>
+			var idValue = (int)idField
+				.GetMapper<TSPListItem>()
+				.MemberAccessor
+				.GetValue(item);
+
+			UpdateInternal(idValue, item, contentType);
+		}
+
+		public void Delete<T>(T item)
+		{
+			if (List.IsExternal)
+			{
+				throw Error.OperationNotAllowedForExternalList();
+			}
+
+			var contentType = List.ContentTypes[typeof(T)];
+			var idField = contentType.GetKeyField();
+
+			if (idField == null)
+			{
+				throw Error.OperationRequireIdField();
+			}
+
+			var idValue = (int)idField
+				.GetMapper<TSPListItem>()
+				.MemberAccessor
+				.GetValue(item);
+
+			DeleteInternal(idValue, contentType);
+		}
+
+		/// <summary>
 		/// Converts query model to CAML-string in next format <![CDATA[<View><Query></Query></View>]]>.
 		/// </summary>
 		/// <typeparam name="T">Content Type.</typeparam>
@@ -197,49 +199,49 @@ namespace Untech.SharePoint.Common.Data
 		{
 			if (filterByContentTypeId && !List.IsExternal)
 			{
-                queryModel.MergeWheres(new ComparisonModel(ComparisonOperator.Eq, new ContentTypeIdRefModel(), contentType.Id)
-                {
-                    IsValueConverted = true
-                });
+				queryModel.MergeWheres(new ComparisonModel(ComparisonOperator.Eq, new ContentTypeIdRefModel(), contentType.Id)
+				{
+					IsValueConverted = true
+				});
 			}
 
 			return new CamlQueryTranslator(contentType).Process(queryModel);
 		}
 
-	    protected void UpdateViewFields([NotNull] QueryModel query, [NotNull] MetaContentType contentType)
-	    {
-	        if (!query.SelectableFields.IsNullOrEmpty())
-	        {
-	            return;
-	        } 
+		protected void UpdateViewFields([NotNull] QueryModel query, [NotNull] MetaContentType contentType)
+		{
+			if (!query.SelectableFields.IsNullOrEmpty())
+			{
+				return;
+			}
 
-	        var viewFields = ((IEnumerable<MetaField>)contentType.Fields)
-	            .Select(n => new MemberRefModel(n.Member))
-	            .ToList();
+			var viewFields = ((IEnumerable<MetaField>)contentType.Fields)
+				.Select(n => new MemberRefModel(n.Member))
+				.ToList();
 
-	        query.MergeSelectableFields(viewFields);
-	    }
+			query.MergeSelectableFields(viewFields);
+		}
 
-	    protected abstract IList<TSPListItem> FetchInternal(string caml);
+		protected abstract IList<TSPListItem> FetchInternal(string caml);
 
-	    protected abstract TSPListItem GetInternal(int id, MetaContentType contentType);
+		protected abstract TSPListItem GetInternal(int id, MetaContentType contentType);
 
-        protected abstract void AddInternal(object item, MetaContentType contentType);
+		protected abstract int AddInternal(object item, MetaContentType contentType);
 
-        protected abstract void UpdateInternal(int id, object item, MetaContentType contentType);
+		protected abstract void UpdateInternal(int id, object item, MetaContentType contentType);
 
-        protected abstract void DeleteInternal(int id, MetaContentType contentType);
+		protected abstract void DeleteInternal(int id, MetaContentType contentType);
 
-        protected T Materialize<T>(TSPListItem spItem, MetaContentType contentType, IReadOnlyCollection<MemberRefModel> fields = null)
-        {
-            var mapper = contentType.GetMapper<TSPListItem>();
+		protected T Materialize<T>(TSPListItem spItem, MetaContentType contentType, IReadOnlyCollection<MemberRefModel> fields = null)
+		{
+			var mapper = contentType.GetMapper<TSPListItem>();
 
-            return (T)mapper.CreateAndMap(spItem, fields);
-        }
+			return (T)mapper.CreateAndMap(spItem, fields);
+		}
 
-        protected IEnumerable<T> Materialize<T>(IEnumerable<TSPListItem> spItems, MetaContentType contentType, IReadOnlyCollection<MemberRefModel> fields = null)
-        {
-            return spItems.Select(n => Materialize<T>(n, contentType, fields));
-        }
+		protected IEnumerable<T> Materialize<T>(IEnumerable<TSPListItem> spItems, MetaContentType contentType, IReadOnlyCollection<MemberRefModel> fields = null)
+		{
+			return spItems.Select(n => Materialize<T>(n, contentType, fields));
+		}
 	}
 }

@@ -19,7 +19,7 @@ namespace Untech.SharePoint.Common.Data
 		/// Adds new item to SP list.
 		/// </summary>
 		/// <param name="item">Entity to add.</param>
-		void Add(T item);
+		T Add(T item);
 
 		/// <summary>
 		/// Updates item with the specified ID in SP list.

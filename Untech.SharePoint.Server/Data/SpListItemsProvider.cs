@@ -27,49 +27,51 @@ namespace Untech.SharePoint.Server.Data
 		public SPList SpList { get; private set; }
 
 		protected override IList<SPListItem> FetchInternal(string caml)
-	    {
-            return SpList.GetItems(CamlUtility.CamlStringToSPQuery(caml))
-                .Cast<SPListItem>()
-                .ToList();
-	    }
+		{
+			return SpList.GetItems(CamlUtility.CamlStringToSPQuery(caml))
+				.Cast<SPListItem>()
+				.ToList();
+		}
 
-	    protected override SPListItem GetInternal(int id, MetaContentType contentType)
-	    {
-            var spItem = SpList.GetItemById(id);
+		protected override SPListItem GetInternal(int id, MetaContentType contentType)
+		{
+			var spItem = SpList.GetItemById(id);
 
-            if (spItem.ContentTypeId.ToString() != contentType.Id)
-            {
-                throw new InvalidOperationException("ContentType mismatch");
-            }
+			if (spItem.ContentTypeId.ToString() != contentType.Id)
+			{
+				throw new InvalidOperationException("ContentType mismatch");
+			}
 
-            return spItem;
-	    }
+			return spItem;
+		}
 
-	    protected override void AddInternal(object item, MetaContentType contentType)
-	    {
-            var mapper = contentType.GetMapper<SPListItem>();
-            var spItem = SpList.AddItem();
+		protected override int AddInternal(object item, MetaContentType contentType)
+		{
+			var mapper = contentType.GetMapper<SPListItem>();
+			var spItem = SpList.AddItem();
 
-            mapper.Map(item, spItem);
+			mapper.Map(item, spItem);
 
-            spItem.Update();
-	    }
+			spItem.Update();
 
-	    protected override void UpdateInternal(int id, object item, MetaContentType contentType)
-	    {
-            var mapper = contentType.GetMapper<SPListItem>();
-            var spItem = SpList.GetItemById(id);
+			return spItem.ID;
+		}
 
-            mapper.Map(item, spItem);
+		protected override void UpdateInternal(int id, object item, MetaContentType contentType)
+		{
+			var mapper = contentType.GetMapper<SPListItem>();
+			var spItem = SpList.GetItemById(id);
 
-            spItem.Update();
-	    }
+			mapper.Map(item, spItem);
 
-	    protected override void DeleteInternal(int id, MetaContentType contentType)
-	    {
-            var spItem = SpList.GetItemById(id);
+			spItem.Update();
+		}
 
-            spItem.Delete();
-	    }
+		protected override void DeleteInternal(int id, MetaContentType contentType)
+		{
+			var spItem = SpList.GetItemById(id);
+
+			spItem.Delete();
+		}
 	}
 }

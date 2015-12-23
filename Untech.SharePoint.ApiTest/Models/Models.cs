@@ -118,8 +118,8 @@ namespace Untech.SharePoint.ApiTest.Models
 		[SpField]
 		public DateTime? ProjectEnd { get; set; }
 
-		//[SpField(Name ="OS")]
-		//public string[] OSes { get; set; }
+		[SpField(Name ="OS")]
+		public string[] OSes { get; set; }
 
 		[SpField]
 		public string Technology { get; set; }

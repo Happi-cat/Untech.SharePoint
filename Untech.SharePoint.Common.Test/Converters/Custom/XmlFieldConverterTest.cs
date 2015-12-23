@@ -1,4 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Xml.Linq;
 using System.Xml.Serialization;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Untech.SharePoint.Common.Converters;
@@ -20,11 +23,11 @@ namespace Untech.SharePoint.Common.Test.Converters.Custom
 				.CanConvertFromSp("<Test Field='value'></Test>", new TestObject {Field = "value"}, new TestObjectComparer())
 				.CanConvertToSp(null, null)
 				.CanConvertToSp(new TestObject(),
-					"<Test xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" />")
+					"<Test xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" />", new XmlComparer())
 				.CanConvertToSp(new TestObject {Field = "test"},
-					"<Test xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" Field=\"test\" />")
+					"<Test xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" Field=\"test\" />", new XmlComparer())
 				.CanConvertToSp(new TestObject { Field = "test", Inner = new InnerObject { Id=3 }},
-					"<Test xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" Field=\"test\"><Inner><Id>3</Id></Inner></Test>");
+					"<Test xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" Field=\"test\"><Inner><Id>3</Id></Inner></Test>", new XmlComparer());
 		}
 
 		[TestMethod]
@@ -37,9 +40,9 @@ namespace Untech.SharePoint.Common.Test.Converters.Custom
 				.CanConvertFromSp("<Obj xmlns=\"http://namespace.my\" Field1='value'></Obj>", new NamespacedObject { Field1 = "value" }, new NamespacedObjectComparer())
 				.CanConvertToSp(null, null)
 				.CanConvertToSp(new NamespacedObject(),
-					"<Obj xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns=\"http://namespace.my\" />")
+					"<Obj xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns=\"http://namespace.my\" />", new XmlComparer())
 				.CanConvertToSp(new NamespacedObject {Field1 = "test", Field2 = "value"},
-					"<Obj xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" Field1=\"test\" Field2=\"value\" xmlns=\"http://namespace.my\" />");
+					"<Obj xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" Field1=\"test\" Field2=\"value\" xmlns=\"http://namespace.my\" />", new XmlComparer());
 		}
 
 		protected override IFieldConverter GetConverter()
@@ -72,6 +75,55 @@ namespace Untech.SharePoint.Common.Test.Converters.Custom
 
 			[XmlAttribute]
 			public string Field2 { get; set; }
+		}
+
+		public class XmlComparer : EqualityComparer<string>, IEqualityComparer<XElement>, IEqualityComparer<XAttribute>
+		{
+			public override bool Equals(string x, string y)
+			{
+				return Equals(XElement.Parse(x), XElement.Parse(y));
+			}
+
+			public override int GetHashCode(string obj)
+			{
+				throw new System.NotImplementedException();
+			}
+
+			public bool Equals(XElement x, XElement y)
+			{
+				var xAttrs =x.Attributes()
+					.OrderBy(n => n.Name.LocalName)
+					.ThenBy(n => n.Name.NamespaceName)
+					.ToList();
+
+				var yAttrs = y.Attributes()
+					.OrderBy(n => n.Name.LocalName)
+					.ThenBy(n => n.Name.NamespaceName)
+					.ToList();
+
+				var xElems = x.Elements()
+					.ToList();
+
+				var yElems = y.Elements()
+					.ToList();
+
+				return xAttrs.SequenceEqual(yAttrs, this) && xElems.SequenceEqual(yElems, this);
+			}
+
+			public int GetHashCode(XElement obj)
+			{
+				throw new System.NotImplementedException();
+			}
+
+			public bool Equals(XAttribute x, XAttribute y)
+			{
+				return x.Name == y.Name && string.Equals(x.Value, y.Value, StringComparison.InvariantCultureIgnoreCase);
+			}
+
+			public int GetHashCode(XAttribute obj)
+			{
+				throw new System.NotImplementedException();
+			}
 		}
 
 		public class TestObjectComparer : EqualityComparer<TestObject>

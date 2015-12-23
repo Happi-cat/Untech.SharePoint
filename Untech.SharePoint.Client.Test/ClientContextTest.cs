@@ -41,7 +41,7 @@ namespace Untech.SharePoint.Client.Test
 			
 			Assert.IsTrue(ctx.News.Any(n => n.Title != generatedTitle));
 			
-			ctx.News.Add(new NewsItem{ Title = generatedTitle });
+			var newItem = ctx.News.Add(new NewsItem{ Title = generatedTitle });
 
 			Assert.IsTrue(ctx.News.Any(n => n.Title == generatedTitle));
 		}
