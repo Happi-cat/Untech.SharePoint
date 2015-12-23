@@ -27,9 +27,11 @@ namespace Untech.SharePoint.Common.Data.Translators.Predicate
 			{ExpressionType.NotEqual, ComparisonOperator.IsNotNull},
 		};
 
+		[NotNull] private readonly IEnumerable<ExpressionVisitor> _preProcessors;
+
 		public CamlPredicateProcessor()
 		{
-			PreProcessors = new List<ExpressionVisitor>
+			_preProcessors = new List<ExpressionVisitor>
 			{
 				new Evaluator(),
 				new StringIsNullOrEmptyRewriter(),
@@ -40,9 +42,6 @@ namespace Untech.SharePoint.Common.Data.Translators.Predicate
 				new SwapComparisonVisitor()
 			};
 		}
-
-		[NotNull]
-		private IEnumerable<ExpressionVisitor> PreProcessors { get; set; }
 
 		public WhereModel Process([NotNull]Expression predicate)
 		{
@@ -56,7 +55,7 @@ namespace Untech.SharePoint.Common.Data.Translators.Predicate
 				predicate = ((LambdaExpression) predicate).Body;
 			}
 			
-			predicate = PreProcessors.Aggregate(predicate, (n, v) => v.Visit(n));
+			predicate = _preProcessors.Aggregate(predicate, (n, v) => v.Visit(n));
 
 			Logger.Trace(LogCategories.PredicateProcessor, "Pre-processed predicate:\n{0}", predicate);
 
@@ -172,13 +171,13 @@ namespace Untech.SharePoint.Common.Data.Translators.Predicate
 		{
 			if (MethodUtils.IsOperator(callNode.Method, MethodUtils.EContains))
 			{
-				return new ComparisonModel(ComparisonOperator.Includes,
+				return new ComparisonModel(ComparisonOperator.ContainsOrIncludes,
 					CamlProcessorUtils.GetFieldRef(callNode.Arguments[0]),
 					GetValue(callNode.Arguments[1]));
 			}
 			if (MethodUtils.IsOperator(callNode.Method, MethodUtils.ListContains))
 			{
-				return new ComparisonModel(ComparisonOperator.Includes,
+				return new ComparisonModel(ComparisonOperator.ContainsOrIncludes,
 					CamlProcessorUtils.GetFieldRef(callNode.Object),
 					GetValue(callNode.Arguments[0]));
 			}
@@ -195,7 +194,7 @@ namespace Untech.SharePoint.Common.Data.Translators.Predicate
 				(callNode.Object.Type.IsArray || callNode.Object.Type.IsIEnumerable()) && 
 				callNode.Arguments.Count == 1)
 			{
-				return new ComparisonModel(ComparisonOperator.Includes,
+				return new ComparisonModel(ComparisonOperator.ContainsOrIncludes,
 					CamlProcessorUtils.GetFieldRef(callNode.Object),
 					GetValue(callNode.Arguments[0]));
 			}

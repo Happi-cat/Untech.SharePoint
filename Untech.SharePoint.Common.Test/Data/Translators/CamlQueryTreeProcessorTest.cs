@@ -103,7 +103,7 @@ namespace Untech.SharePoint.Common.Test.Data.Translators
 			Given(source => source
 				.Where(n => n.StringCollection1.Contains("TEST")))
 				.ExpectedCaml("<View><Query><Where>" +
-				              "<Includes><FieldRef Name='StringCollection1' /><Value>TEST</Value></Includes>" +
+				              "<ContainsOrIncludes><FieldRef Name='StringCollection1' /><Value>TEST</Value></ContainsOrIncludes>" +
 				              "</Where></Query>" +
 				              "</View>");
 		}
@@ -114,7 +114,7 @@ namespace Untech.SharePoint.Common.Test.Data.Translators
 			Given(source => source
 				.Where(n => n.StringCollection2.Contains("TEST")))
 				.ExpectedCaml("<View><Query><Where>" +
-				              "<Includes><FieldRef Name='StringCollection2' /><Value>TEST</Value></Includes>" +
+				              "<ContainsOrIncludes><FieldRef Name='StringCollection2' /><Value>TEST</Value></ContainsOrIncludes>" +
 				              "</Where></Query>" +
 				              "</View>");
 		}
@@ -125,7 +125,7 @@ namespace Untech.SharePoint.Common.Test.Data.Translators
 			Given(source => source
 				.Where(n => n.StringCollection3.Contains("TEST")))
 				.ExpectedCaml("<View><Query><Where>" +
-				              "<Includes><FieldRef Name='StringCollection3' /><Value>TEST</Value></Includes>" +
+				              "<ContainsOrIncludes><FieldRef Name='StringCollection3' /><Value>TEST</Value></ContainsOrIncludes>" +
 				              "</Where></Query>" +
 				              "</View>");
 
@@ -137,7 +137,7 @@ namespace Untech.SharePoint.Common.Test.Data.Translators
 			Given(source => source
 				.Where(n => n.StringCollection4.Contains("TEST")))
 				.ExpectedCaml("<View><Query><Where>" +
-				              "<Includes><FieldRef Name='StringCollection4' /><Value>TEST</Value></Includes>" +
+				              "<ContainsOrIncludes><FieldRef Name='StringCollection4' /><Value>TEST</Value></ContainsOrIncludes>" +
 				              "</Where></Query>" +
 				              "</View>");
 		}

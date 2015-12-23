@@ -52,7 +52,21 @@ namespace Untech.SharePoint.Common.Data.QueryModels
 		/// Equals to null.
 		/// </summary>
 		IsNull,
+		/// <summary>
+		/// Lookup includes value.
+		/// </summary>
 		Includes,
-		NotIncludes
+		/// <summary>
+		/// Lookup not includes value.
+		/// </summary>
+		NotIncludes,
+		/// <summary>
+		/// Pseudo-operator that will be replaced with <see cref="Contains"/> or <see cref="Includes"/> according to specific parameters.
+		/// </summary>
+		ContainsOrIncludes,
+		/// <summary>
+		/// Pseudo-operator that will be replaced with <see cref="NotIncludes"/> according to specific parameters.
+		/// </summary>
+		NotContainsOrIncludes
 	}
 }

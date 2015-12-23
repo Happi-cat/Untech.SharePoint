@@ -104,8 +104,8 @@ namespace Untech.SharePoint.Common.Test.Data.Translators.Predicate
 		{
 			Given(n => n.StringCollection1.Contains("Value 1") && !n.StringCollection4.Contains("Value 4"))
 				.Expected("<And>" +
-						  "<Includes><FieldRef Name='StringCollection1' /><Value>Value 1</Value></Includes>" +
-						  "<NotIncludes><FieldRef Name='StringCollection4' /><Value>Value 4</Value></NotIncludes>" +
+						  "<ContainsOrIncludes><FieldRef Name='StringCollection1' /><Value>Value 1</Value></ContainsOrIncludes>" +
+						  "<NotContainsOrIncludes><FieldRef Name='StringCollection4' /><Value>Value 4</Value></NotContainsOrIncludes>" +
 						  "</And>");
 		}
 
@@ -128,7 +128,6 @@ namespace Untech.SharePoint.Common.Test.Data.Translators.Predicate
 		}
 
 		[TestMethod]
-		[SuppressMessage("ReSharper", "RedundantLogicalConditionalExpressionOperand")]
 		[SuppressMessage("ReSharper", "EqualExpressionComparison")]
 		public void CanSwapMemberToLeft()
 		{

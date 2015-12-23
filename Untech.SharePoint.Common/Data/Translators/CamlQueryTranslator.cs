@@ -133,16 +133,57 @@ namespace Untech.SharePoint.Common.Data.Translators
 		[NotNull]
 		private XElement GetComparison([NotNull]ComparisonModel comparison)
 		{
+			if (comparison.ComparisonOperator == ComparisonOperator.ContainsOrIncludes ||
+				comparison.ComparisonOperator == ComparisonOperator.NotContainsOrIncludes)
+			{
+				return GetContainsOrIncludes(comparison);
+			}
+
 			if (comparison.ComparisonOperator == ComparisonOperator.IsNull ||
 				comparison.ComparisonOperator == ComparisonOperator.IsNotNull)
 			{
 				return new XElement(comparison.ComparisonOperator.ToString(),
 					new XElement(Tags.FieldRef, GetFieldRefName(comparison.Field)));
 			}
-			
+
 			return new XElement(comparison.ComparisonOperator.ToString(),
-				new XElement(Tags.FieldRef, GetFieldRefName(comparison.Field), GetLookupId(comparison.Field)),
+				new XElement(Tags.FieldRef, GetFieldRefName(comparison.Field)),
 				GetValue(comparison.Field, comparison.Value, comparison.IsValueConverted));
+		}
+
+		[NotNull]
+		private XElement GetContainsOrIncludes([NotNull] ComparisonModel comparison)
+		{
+			if (comparison.Field.Type != FieldRefType.KnownMember)
+			{
+				throw new NotSupportedException("Unsupported FieldRefType value");
+			}
+
+			var memberRef = (MemberRefModel)comparison.Field;
+			var metaField = GetMetaField(memberRef.Member);
+
+			if (comparison.ComparisonOperator == ComparisonOperator.NotContainsOrIncludes)
+			{
+				if (metaField.TypeAsString.StartsWith("User") || metaField.TypeAsString.StartsWith("Lookup")) 
+				{
+					return new XElement(ComparisonOperator.NotIncludes.ToString(),
+						new XElement(Tags.FieldRef, GetFieldRefName(memberRef), new XAttribute("LookupId", "TRUE")),
+						GetValue(comparison.Field, comparison.Value, comparison.IsValueConverted));
+				}
+
+				throw new NotSupportedException("Cannot negate Contains operation for non-lookup fields");
+			}
+
+			if (metaField.TypeAsString.StartsWith("User") || metaField.TypeAsString.StartsWith("Lookup"))
+			{
+				return new XElement(ComparisonOperator.Includes.ToString(),
+					new XElement(Tags.FieldRef, GetFieldRefName(memberRef), new XAttribute("LookupId", "TRUE")),
+					GetValue(comparison.Field, comparison.Value, comparison.IsValueConverted));
+			}
+
+			return new XElement(ComparisonOperator.Contains.ToString(),
+					new XElement(Tags.FieldRef, GetFieldRefName(memberRef)),
+					GetValue(comparison.Field, comparison.Value, comparison.IsValueConverted));
 		}
 
 		[NotNull]
@@ -156,27 +197,16 @@ namespace Untech.SharePoint.Common.Data.Translators
 				case FieldRefType.ContentTypeId:
 					return new XAttribute(Tags.Name, Fields.ContentTypeId);
 				case FieldRefType.KnownMember:
-					var memberRef = (MemberRefModel)fieldRef;
-					return new XAttribute(Tags.Name, GetMetaField(memberRef.Member).InternalName);
+					return GetFieldRefName((MemberRefModel)fieldRef);
 			}
 
 			throw new NotSupportedException("Unsupported FieldRefType value");
 		}
 
-		[CanBeNull]
-		private XAttribute GetLookupId([NotNull] FieldRefModel fieldRef)
+		[NotNull]
+		private XAttribute GetFieldRefName([NotNull] MemberRefModel memberRef)
 		{
-			if (fieldRef.Type == FieldRefType.KnownMember)
-			{
-				var memberRef = (MemberRefModel) fieldRef;
-				var metaField = GetMetaField(memberRef.Member);
-				if (metaField.TypeAsString.StartsWith("User") || metaField.TypeAsString.StartsWith("Lookup"))
-				{
-					return new XAttribute("LookupId", "TRUE");	
-				}
-			}
-
-			return null;
+			return new XAttribute(Tags.Name, GetMetaField(memberRef.Member).InternalName);
 		}
 
 		[NotNull]

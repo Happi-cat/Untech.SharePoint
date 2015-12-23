@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.SharePoint.Client;
 using Untech.SharePoint.Common.CodeAnnotations;
 using Untech.SharePoint.Common.Converters;
 using Untech.SharePoint.Common.Extensions;
@@ -54,17 +53,16 @@ namespace Untech.SharePoint.Client.Converters.BuiltIn
 
 		public string ToCamlValue(object value)
 		{
-			// TODO ;#value1;#value2;#
-			if (value == null) return null;
+			if (value == null) return "";
 
 			var singleValue = value as string;
 			if (singleValue != null)
 			{
-				return singleValue;
+				return string.Format(";#{0};#", singleValue);
 			}
 
-			var multiValue = (IEnumerable<string>)value;
-			return multiValue.JoinToString(";#");
+			var multiValue = ((IEnumerable<string>)value).ToList();
+			return multiValue.Any() ? string.Format(";#{0};#", multiValue.JoinToString(";#")) : "";
 		}
 	}
 }

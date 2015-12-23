@@ -23,6 +23,8 @@ namespace Untech.SharePoint.Common.Data.QueryModels
 			{ComparisonOperator.IsNull, ComparisonOperator.IsNotNull},
 			{ComparisonOperator.Includes, ComparisonOperator.NotIncludes},
 			{ComparisonOperator.NotIncludes, ComparisonOperator.Includes},
+			{ComparisonOperator.ContainsOrIncludes, ComparisonOperator.NotContainsOrIncludes},
+			{ComparisonOperator.NotContainsOrIncludes, ComparisonOperator.ContainsOrIncludes}
 		};
 
 		/// <summary>

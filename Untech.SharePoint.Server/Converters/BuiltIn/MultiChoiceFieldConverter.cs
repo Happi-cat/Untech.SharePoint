@@ -63,17 +63,16 @@ namespace Untech.SharePoint.Server.Converters.BuiltIn
 
 		public string ToCamlValue(object value)
 		{
-			// TODO
-			if (value == null) return null;
+			if (value == null) return "";
 
 			var singleValue = value as string;
 			if (singleValue != null)
 			{
-				return singleValue;
+				return string.Format(";#{0};#", singleValue);
 			}
 
-			var multiValue = (IEnumerable<string>)value;
-			return multiValue.JoinToString(";#");
+			var multiValue = ((IEnumerable<string>)value).ToList();
+			return multiValue.Any() ? string.Format(";#{0};#", multiValue.JoinToString(";#")) : "";
 		}
 	}
 }
