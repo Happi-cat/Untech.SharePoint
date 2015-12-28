@@ -21,11 +21,5 @@ namespace Untech.SharePoint.Common.Extensions
 		{
 			return collection != null && collection.Contains(obj);
 		}
-
-		public static TResult As<T, TResult>(this T obj)
-			where TResult: class 
-		{
-			return obj as TResult;
-		}
 	}
 }

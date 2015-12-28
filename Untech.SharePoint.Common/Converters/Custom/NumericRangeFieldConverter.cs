@@ -4,6 +4,10 @@ using Untech.SharePoint.Common.MetaModels;
 
 namespace Untech.SharePoint.Common.Converters.Custom
 {
+	/// <summary>
+	/// Represetns field convertert that can convert string to <see cref="Tuple{Double,Double}"/> and vice versa.
+	/// This converter use next notation for string: 0.0..1.0
+	/// </summary>
 	public class NumericRangeFieldConverter : IFieldConverter
 	{
 		public void Initialize(MetaField field)

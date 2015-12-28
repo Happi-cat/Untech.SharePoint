@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Untech.SharePoint.Common.CodeAnnotations;
 using Untech.SharePoint.Common.Configuration;
@@ -10,6 +11,7 @@ using Untech.SharePoint.Common.MetaModels;
 namespace Untech.SharePoint.Common.Test.Mappings.Annotation
 {
 	[TestClass]
+	[SuppressMessage("ReSharper", "UnusedAutoPropertyAccessor.Local")]
 	public class AnnotatedContextMappingTest
 	{
 		[TestMethod]

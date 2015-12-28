@@ -1,13 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Runtime.Serialization;
 using Microsoft.SharePoint;
 using Microsoft.SharePoint.Client;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
 using Untech.SharePoint.Client.Data;
 using Untech.SharePoint.Common.Configuration;
-using Untech.SharePoint.Common.Converters.Custom;
 using Untech.SharePoint.Common.Data;
 using Untech.SharePoint.Common.Mappings.Annotation;
 using Untech.SharePoint.Common.Models;

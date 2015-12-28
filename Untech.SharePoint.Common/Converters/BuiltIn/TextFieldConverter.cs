@@ -11,13 +11,9 @@ namespace Untech.SharePoint.Common.Converters.BuiltIn
 	[UsedImplicitly]
 	internal class TextFieldConverter : IFieldConverter
 	{
-		private MetaField Field { get; set; }
-
 		public void Initialize(MetaField field)
 		{
 			Guard.CheckNotNull("field", field);
-
-			Field = field;
 
 			if (field.MemberType != typeof(string))
 			{

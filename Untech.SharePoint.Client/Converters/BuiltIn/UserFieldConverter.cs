@@ -16,31 +16,28 @@ namespace Untech.SharePoint.Client.Converters.BuiltIn
 	[UsedImplicitly]
 	internal class UserFieldConverter : IFieldConverter
 	{
-		private MetaField Field { get; set; }
-		private bool IsMulti { get; set; }
-		private bool IsArray { get; set; }
+		private bool _isMulti;
+		private bool _isArray;
 
 		public void Initialize(MetaField field)
 		{
 			Guard.CheckNotNull("field", field);
 
-			Field = field;
-
 			if (field.AllowMultipleValues)
 			{
-				if (field.MemberType != typeof (UserInfo[]) &&
-				    !field.MemberType.IsAssignableFrom(typeof (List<UserInfo>)))
+				if (field.MemberType != typeof(UserInfo[]) &&
+					!field.MemberType.IsAssignableFrom(typeof(List<UserInfo>)))
 				{
 					throw new ArgumentException(
 						"Only UserInfo[] or any class assignable from List<UserInfo> can be used as a member type.");
 				}
 
-				IsMulti = true;
-				IsArray = field.MemberType.IsArray;
+				_isMulti = true;
+				_isArray = field.MemberType.IsArray;
 			}
 			else
 			{
-				if (field.MemberType != typeof (UserInfo))
+				if (field.MemberType != typeof(UserInfo))
 				{
 					throw new ArgumentException(
 						"Only UserInfo can be used as a member type.");
@@ -52,22 +49,22 @@ namespace Untech.SharePoint.Client.Converters.BuiltIn
 		{
 			if (value == null) return null;
 
-			if (!IsMulti)
+			if (!_isMulti)
 			{
-				return ConvertToUserInfo((FieldUserValue) value);
+				return ConvertToUserInfo((FieldUserValue)value);
 			}
 
-			var fieldValues = (IEnumerable<FieldUserValue>) value;
+			var fieldValues = (IEnumerable<FieldUserValue>)value;
 			var userValues = fieldValues.Select(ConvertToUserInfo);
 
-			return IsArray ? (object) userValues.ToArray() : userValues.ToList();
+			return _isArray ? (object)userValues.ToArray() : userValues.ToList();
 		}
 
 		public object ToSpValue(object value)
 		{
 			if (value == null) return null;
 
-			if (!IsMulti)
+			if (!_isMulti)
 			{
 				var userValue = (UserInfo)value;
 
@@ -91,7 +88,7 @@ namespace Untech.SharePoint.Client.Converters.BuiltIn
 				return singleValue.Id.ToString();
 			}
 
-			var multiValue = (IEnumerable<UserInfo>) value;
+			var multiValue = (IEnumerable<UserInfo>)value;
 			return multiValue
 				.Select(n => string.Format("{0};#{1}", n.Id, n.Login))
 				.JoinToString(";#");

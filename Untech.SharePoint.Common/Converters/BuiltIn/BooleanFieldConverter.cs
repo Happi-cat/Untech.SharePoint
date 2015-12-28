@@ -10,18 +10,16 @@ namespace Untech.SharePoint.Common.Converters.BuiltIn
 	[UsedImplicitly]
 	internal class BooleanFieldConverter : IFieldConverter
 	{
-		private MetaField Field { get; set; }
-		private bool IsNullableMemberType { get; set; }
+		private bool _isNullableMemberType;
 
 		public void Initialize(MetaField field)
 		{
 			Guard.CheckNotNull("field", field);
 
-			Field = field;
 			var memberType = field.MemberType;
 			if (memberType.IsNullable())
 			{
-				IsNullableMemberType = true;
+				_isNullableMemberType = true;
 				memberType = memberType.GetGenericArguments()[0];
 			}
 			if (memberType != typeof(bool))
@@ -32,7 +30,7 @@ namespace Untech.SharePoint.Common.Converters.BuiltIn
 
 		public object FromSpValue(object value)
 		{
-			if (IsNullableMemberType)
+			if (_isNullableMemberType)
 				return (bool?)value;
 
 			return (bool?)value ?? false;

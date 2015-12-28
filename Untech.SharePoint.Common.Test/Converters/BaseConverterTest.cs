@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Untech.SharePoint.Common.CodeAnnotations;
 using Untech.SharePoint.Common.Configuration;
@@ -105,6 +106,7 @@ namespace Untech.SharePoint.Common.Test.Converters
 		}
 
 		[UsedImplicitly(ImplicitUseTargetFlags.WithMembers)]
+		[SuppressMessage("ReSharper", "UnusedAutoPropertyAccessor.Local")]
 		public class Context<T> : ISpContext
 		{
 			[SpList]

@@ -8,7 +8,7 @@ using Untech.SharePoint.Server.Data.Mapper;
 
 namespace Untech.SharePoint.Server.Data
 {
-	public class SpCommonService : ICommonService
+	internal class SpCommonService : ICommonService
 	{
 		public SpCommonService(SPWeb web, Config config)
 		{

@@ -17,16 +17,13 @@ namespace Untech.SharePoint.Server.Converters.BuiltIn
 	[UsedImplicitly]
 	internal class UserFieldConverter : IFieldConverter
 	{
-		private MetaField Field { get; set; }
-		private SPWeb Web { get; set; }
-		private bool IsMulti { get; set; }
-		private bool IsArray { get; set; }
+		private SPWeb _web;
+		private bool _isMulti;
+		private bool _isArray;
 
 		public void Initialize(MetaField field)
 		{
 			Guard.CheckNotNull("field", field);
-
-			Field = field;
 
 			if (field.AllowMultipleValues)
 			{
@@ -37,8 +34,8 @@ namespace Untech.SharePoint.Server.Converters.BuiltIn
 						"Only UserInfo[] or any class assignable from List<UserInfo> can be used as a member type.");
 				}
 
-				IsMulti = true;
-				IsArray = field.MemberType.IsArray;
+				_isMulti = true;
+				_isArray = field.MemberType.IsArray;
 			}
 			else
 			{
@@ -49,40 +46,40 @@ namespace Untech.SharePoint.Server.Converters.BuiltIn
 				}
 			}
 
-			Web = field.GetSpWeb();
+			_web = field.GetSpWeb();
 		}
 
 		public object FromSpValue(object value)
 		{
 			if (value == null) return null;
 
-			if (!IsMulti)
+			if (!_isMulti)
 			{
-				return ConvertToUserInfo(new SPFieldUserValue(Web, value.ToString()));
+				return ConvertToUserInfo(new SPFieldUserValue(_web, value.ToString()));
 			}
 
-			var fieldValues = new SPFieldUserValueCollection(Web, value.ToString());
+			var fieldValues = new SPFieldUserValueCollection(_web, value.ToString());
 			var userValues = fieldValues.Select(ConvertToUserInfo);
 
-			return IsArray ? (object)userValues.ToArray() : userValues.ToList();
+			return _isArray ? (object)userValues.ToArray() : userValues.ToList();
 		}
 
 		public object ToSpValue(object value)
 		{
 			if (value == null) return null;
 
-			if (!IsMulti)
+			if (!_isMulti)
 			{
 				var userValue = (UserInfo)value;
 
-				var fieldValue = new SPFieldUserValue(Web, userValue.Id, userValue.Login);
+				var fieldValue = new SPFieldUserValue(_web, userValue.Id, userValue.Login);
 				return fieldValue.ToString();
 			}
 
 			var userValues = (IEnumerable<UserInfo>)value;
 
 			var fieldValues = new SPFieldUserValueCollection();
-			fieldValues.AddRange(userValues.Select(n => new SPFieldUserValue(Web, n.Id, n.Login)));
+			fieldValues.AddRange(userValues.Select(n => new SPFieldUserValue(_web, n.Id, n.Login)));
 
 			return fieldValues;
 		}

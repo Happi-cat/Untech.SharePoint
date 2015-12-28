@@ -7,12 +7,14 @@ using Untech.SharePoint.Common.Utils;
 
 namespace Untech.SharePoint.Common.Converters.Custom
 {
+	/// <summary>
+	/// Represetns field converter that can convert string to <see cref="Dictionary{String,String}"/> and vice versa.
+	/// This converter use next notation for string: Key1 : Value1 ;  Key2 : Value2
+	/// </summary>
 	public class KeyValueFieldConverter : IFieldConverter
 	{
 		private const string PairDelimiter = ";";
 		private const string KeyValueDelimiter = ":";
-
-		private MetaField Field { get; set; }
 
 		/// <summary>
 		/// Initialzes current instance with the specified <see cref="MetaField"/>
@@ -21,8 +23,6 @@ namespace Untech.SharePoint.Common.Converters.Custom
 		public void Initialize(MetaField field)
 		{
 			Guard.CheckNotNull("field", field);
-
-			Field = field;
 
 			if (!field.MemberType.IsAssignableFrom(typeof(Dictionary<string, string>)))
 			{

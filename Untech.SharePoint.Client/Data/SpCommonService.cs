@@ -8,7 +8,7 @@ using Untech.SharePoint.Common.MetaModels.Visitors;
 
 namespace Untech.SharePoint.Client.Data
 {
-	public class SpCommonService : ICommonService
+	internal class SpCommonService : ICommonService
 	{
 		public SpCommonService(ClientContext clientContextweb, Config config)
 		{

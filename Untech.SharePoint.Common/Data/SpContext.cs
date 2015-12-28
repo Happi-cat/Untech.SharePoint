@@ -13,20 +13,18 @@ namespace Untech.SharePoint.Common.Data
 	/// Represents base data context.
 	/// </summary>
 	/// <typeparam name="TContext">Type of the data context.</typeparam>
-	/// <typeparam name="TCommonService">Type of the services.</typeparam>
 	[PublicAPI]
-	public abstract class SpContext<TContext, TCommonService> : ISpContext
-		where TContext : SpContext<TContext, TCommonService>
-		where TCommonService: ICommonService
+	public abstract class SpContext<TContext> : ISpContext
+		where TContext : SpContext<TContext>
 	{
 		/// <summary>
-		/// Initializes a new instance of the <see cref="SpContext{TContext,TCommonService}"/> with the specified config and services.
+		/// Initializes a new instance of the <see cref="SpContext{TContext}"/> with the specified config and services.
 		/// </summary>
 		/// <param name="config">Configuration.</param>
 		/// <param name="commonService">Instance of the commen services.</param>
 		/// <exception cref="ArgumentNullException"><paramref name="config"/> or <paramref name="commonService"/> is null.</exception>
 		/// <exception cref="InvalidOperationException">Cannot find mapping source for current context type in the config,</exception>
-		protected SpContext([NotNull]Config config, [NotNull]TCommonService commonService)
+		protected SpContext([NotNull]Config config, [NotNull]ICommonService commonService)
 		{
 			Guard.CheckNotNull("config", config);
 			Guard.CheckNotNull("commonService", commonService);
@@ -56,7 +54,7 @@ namespace Untech.SharePoint.Common.Data
 		/// Gets <see cref="ICommonService"/> instance that used by this data context instance.
 		/// </summary>
 		[NotNull]
-		public TCommonService CommonService { get; private set; }
+		public ICommonService CommonService { get; private set; }
 
 		/// <summary>
 		/// Gets <see cref="IMappingSource"/> that is used by this instance of the <see cref="ISpContext"/>

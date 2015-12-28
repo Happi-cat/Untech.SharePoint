@@ -13,24 +13,20 @@ namespace Untech.SharePoint.Client.Converters.BuiltIn
 	[UsedImplicitly]
 	internal class MultiChoiceFieldConverter : IFieldConverter
 	{
-		private MetaField Field { get; set; }
-
-		private bool IsArray { get; set; }
+		private bool _isArray;
 
 		public void Initialize(MetaField field)
 		{
 			Guard.CheckNotNull("field", field);
 
-			Field = field;
-
-			if (field.MemberType != typeof (string[]) &&
-			    !field.MemberType.IsAssignableFrom(typeof (List<string>)))
+			if (field.MemberType != typeof(string[]) &&
+				!field.MemberType.IsAssignableFrom(typeof(List<string>)))
 			{
 				throw new ArgumentException(
 					"Only string[] or any class assignable from List<string> can be used as a member type.");
 			}
 
-			IsArray = field.MemberType.IsArray;
+			_isArray = field.MemberType.IsArray;
 		}
 
 		public object FromSpValue(object value)
@@ -39,7 +35,7 @@ namespace Untech.SharePoint.Client.Converters.BuiltIn
 
 			var lookupValues = (IEnumerable<string>)value;
 
-			return IsArray ? (object)lookupValues.ToArray() : lookupValues.ToList();
+			return _isArray ? (object)lookupValues.ToArray() : lookupValues.ToList();
 		}
 
 		public object ToSpValue(object value)

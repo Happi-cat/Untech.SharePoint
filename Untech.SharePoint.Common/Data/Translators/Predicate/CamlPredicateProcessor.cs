@@ -121,14 +121,7 @@ namespace Untech.SharePoint.Common.Data.Translators.Predicate
 			return new ComparisonModel(ComparisonOperator.Eq, fieldRef, true);
 		}
 
-		[NotNull]
-		private WhereModel TranslateFalseProperty([NotNull]UnaryExpression unaryNode)
-		{
-			var fieldRef = CamlProcessorUtils.GetFieldRef(unaryNode.Operand);
-			return new ComparisonModel(ComparisonOperator.Eq, fieldRef, false);
-		}
-
-		[NotNull]
+	    [NotNull]
 		private WhereModel TranslateAnd([NotNull]BinaryExpression binaryNode)
 		{
 			return WhereModel.And(Translate(binaryNode.Left), Translate(binaryNode.Right));

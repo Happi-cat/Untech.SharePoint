@@ -45,13 +45,10 @@ namespace Untech.SharePoint.Client.Converters.BuiltIn
 
 			public object ToSpValue(object value)
 			{
-				if (value == null)
-					return null;
-
-				return new FieldUrlValue {Url = value.ToString()};
+			    return value == null ? null : new FieldUrlValue {Url = value.ToString()};
 			}
 
-			public string ToCamlValue(object value)
+		    public string ToCamlValue(object value)
 			{
 				return (string)value ?? "";
 			}

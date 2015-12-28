@@ -86,7 +86,7 @@ namespace Untech.SharePoint.Common.Test.Converters.Custom
 
 			public override int GetHashCode(string obj)
 			{
-				throw new System.NotImplementedException();
+				throw new NotImplementedException();
 			}
 
 			public bool Equals(XElement x, XElement y)
@@ -112,7 +112,7 @@ namespace Untech.SharePoint.Common.Test.Converters.Custom
 
 			public int GetHashCode(XElement obj)
 			{
-				throw new System.NotImplementedException();
+				throw new NotImplementedException();
 			}
 
 			public bool Equals(XAttribute x, XAttribute y)
@@ -122,7 +122,7 @@ namespace Untech.SharePoint.Common.Test.Converters.Custom
 
 			public int GetHashCode(XAttribute obj)
 			{
-				throw new System.NotImplementedException();
+				throw new NotImplementedException();
 			}
 		}
 

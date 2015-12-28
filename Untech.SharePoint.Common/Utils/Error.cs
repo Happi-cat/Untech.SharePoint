@@ -4,7 +4,6 @@ using System.Linq;
 using System.Linq.Expressions;
 using Untech.SharePoint.Common.Converters;
 using Untech.SharePoint.Common.Data;
-using Untech.SharePoint.Common.Data.QueryModels;
 using Untech.SharePoint.Common.Extensions;
 using Untech.SharePoint.Common.MetaModels;
 

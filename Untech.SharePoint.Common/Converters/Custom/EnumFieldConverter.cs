@@ -15,9 +15,8 @@ namespace Untech.SharePoint.Common.Converters.Custom
 	[PublicAPI]
 	public sealed class EnumFieldConverter : IFieldConverter
 	{
-		private MetaField Field { get; set; }
-		private bool IsNullableMemberType { get; set; }
-		private Type EnumType { get; set; }
+		private bool _isNullableMemberType;
+		private Type _enumType;
 
 		/// <summary>
 		/// Initialzes current instance with the specified <see cref="MetaField"/>
@@ -30,7 +29,7 @@ namespace Untech.SharePoint.Common.Converters.Custom
 			var memberType = field.MemberType;
 			if (memberType.IsNullable())
 			{
-				IsNullableMemberType = true;
+				_isNullableMemberType = true;
 				memberType = memberType.GetGenericArguments()[0];
 			}
 			if (!memberType.IsEnum)
@@ -39,8 +38,7 @@ namespace Untech.SharePoint.Common.Converters.Custom
 			if (!Enum.IsDefined(memberType, 0))
 				throw new ArgumentException(string.Format("Enum {0} should have default value (i.e. 0)", field.MemberType));
 
-			Field = field;
-			EnumType = memberType;
+			_enumType = memberType;
 		}
 
 		/// <summary>
@@ -50,10 +48,10 @@ namespace Untech.SharePoint.Common.Converters.Custom
 		/// <returns>Member value.</returns>
 		public object FromSpValue(object value)
 		{
-			if (IsNullableMemberType && value == null)
+			if (_isNullableMemberType && value == null)
 				return null;
 
-			return ConvertToEnum(EnumType, (string) value);
+			return ConvertToEnum(_enumType, (string) value);
 		}
 
 		
@@ -65,10 +63,10 @@ namespace Untech.SharePoint.Common.Converters.Custom
 		/// <returns>SP field value.</returns>
 		public object ToSpValue(object value)
 		{
-			if (IsNullableMemberType && value == null)
+			if (_isNullableMemberType && value == null)
 				return null;
 
-			return ConvertFromEnum(EnumType, value);
+			return ConvertFromEnum(_enumType, value);
 		}
 
 		string IFieldConverter.ToCamlValue(object value)

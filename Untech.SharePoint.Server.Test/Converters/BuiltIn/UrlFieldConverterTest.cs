@@ -1,11 +1,10 @@
 ﻿using System.Collections.Generic;
 using Microsoft.SharePoint;
-using Microsoft.SharePoint.Client;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Untech.SharePoint.Server.Converters.BuiltIn;
 using Untech.SharePoint.Common.Converters;
 using Untech.SharePoint.Common.Models;
 using Untech.SharePoint.Common.Test.Converters;
+using Untech.SharePoint.Server.Converters.BuiltIn;
 
 namespace Untech.SharePoint.Server.Test.Converters.BuiltIn
 {

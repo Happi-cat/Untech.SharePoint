@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.SharePoint;
 using Untech.SharePoint.Common.Data;
-using Untech.SharePoint.Common.Data.QueryModels;
+using Untech.SharePoint.Common.Data.Mapper;
 using Untech.SharePoint.Common.MetaModels;
 using Untech.SharePoint.Server.Utils;
 
@@ -11,31 +11,24 @@ namespace Untech.SharePoint.Server.Data
 {
 	internal class SpListItemsProvider : BaseSpListItemsProvider<SPListItem>
 	{
-		public SpListItemsProvider(SPWeb web, SpCommonService commonService, MetaList list)
+		private readonly SPList _spList;
+
+		public SpListItemsProvider(SPWeb web, MetaList list)
 			: base(list)
 		{
-			Web = web;
-			CommonService = commonService;
-
-			SpList = web.Lists[list.Title];
+			_spList = web.Lists[list.Title];
 		}
-
-		public SPWeb Web { get; private set; }
-
-		public SpCommonService CommonService { get; private set; }
-
-		public SPList SpList { get; private set; }
 
 		protected override IList<SPListItem> FetchInternal(string caml)
 		{
-			return SpList.GetItems(CamlUtility.CamlStringToSPQuery(caml))
+			return _spList.GetItems(CamlUtility.CamlStringToSPQuery(caml))
 				.Cast<SPListItem>()
 				.ToList();
 		}
 
 		protected override SPListItem GetInternal(int id, MetaContentType contentType)
 		{
-			var spItem = SpList.GetItemById(id);
+			var spItem = _spList.GetItemById(id);
 
 			if (spItem.ContentTypeId.ToString() != contentType.Id)
 			{
@@ -45,10 +38,9 @@ namespace Untech.SharePoint.Server.Data
 			return spItem;
 		}
 
-		protected override int AddInternal(object item, MetaContentType contentType)
+		protected override int AddInternal(object item, TypeMapper<SPListItem> mapper)
 		{
-			var mapper = contentType.GetMapper<SPListItem>();
-			var spItem = SpList.AddItem();
+			var spItem = _spList.AddItem();
 
 			mapper.Map(item, spItem);
 
@@ -57,19 +49,18 @@ namespace Untech.SharePoint.Server.Data
 			return spItem.ID;
 		}
 
-		protected override void UpdateInternal(int id, object item, MetaContentType contentType)
+		protected override void UpdateInternal(int id, object item, TypeMapper<SPListItem> mapper)
 		{
-			var mapper = contentType.GetMapper<SPListItem>();
-			var spItem = SpList.GetItemById(id);
+			var spItem = _spList.GetItemById(id);
 
 			mapper.Map(item, spItem);
 
 			spItem.Update();
 		}
 
-		protected override void DeleteInternal(int id, MetaContentType contentType)
+		protected override void DeleteInternal(int id)
 		{
-			var spItem = SpList.GetItemById(id);
+			var spItem = _spList.GetItemById(id);
 
 			spItem.Delete();
 		}

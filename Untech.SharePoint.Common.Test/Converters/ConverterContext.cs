@@ -1,4 +1,5 @@
-﻿using Untech.SharePoint.Common.CodeAnnotations;
+﻿using System.Diagnostics.CodeAnalysis;
+using Untech.SharePoint.Common.CodeAnnotations;
 using Untech.SharePoint.Common.Configuration;
 using Untech.SharePoint.Common.Data;
 using Untech.SharePoint.Common.Mappings;
@@ -15,6 +16,7 @@ namespace Untech.SharePoint.Common.Test.Converters
 		Value3
 	}
 
+	[SuppressMessage("ReSharper", "UnusedAutoPropertyAccessor.Local")]
 	public class ConverterDataContext : ISpContext
 	{
 		[SpList]

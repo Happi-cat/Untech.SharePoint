@@ -5,7 +5,7 @@ using Untech.SharePoint.Common.MetaModels.Visitors;
 namespace Untech.SharePoint.Common.Data
 {
 	/// <summary>
-	/// Represents interface of services that can be used inside <see cref="SpContext{TContext,TCommonService}"/>.
+	/// Represents interface of services that can be used inside <see cref="SpContext{TContext}"/>.
 	/// </summary>
 	public interface ICommonService
 	{

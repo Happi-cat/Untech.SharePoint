@@ -8,7 +8,7 @@ using Untech.SharePoint.Common.Utils;
 namespace Untech.SharePoint.Common.Configuration
 {
 	/// <summary>
-	/// Represents configuration that is required by <see cref="SpContext{TContext,TCommonService}"/>.
+	/// Represents configuration that is required by <see cref="SpContext{TContext}"/>.
 	/// </summary>
 	[PublicAPI]
 	public sealed class Config

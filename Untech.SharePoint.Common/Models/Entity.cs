@@ -36,6 +36,9 @@ namespace Untech.SharePoint.Common.Models
 		[DataMember]
 		public virtual DateTime Created { get; set; }
 
+		/// <summary>
+		/// Gets or sets item author.
+		/// </summary>
 		[SpField(FieldType = "User")]
 		public virtual UserInfo Author { get; set; }
 
@@ -46,6 +49,9 @@ namespace Untech.SharePoint.Common.Models
 		[DataMember]
 		public virtual DateTime Modified { get; set; }
 
+		/// <summary>
+		/// Gets or sets item editor.
+		/// </summary>
 		[SpField(FieldType = "User")]
 		public virtual UserInfo Editor { get; set; }
 
