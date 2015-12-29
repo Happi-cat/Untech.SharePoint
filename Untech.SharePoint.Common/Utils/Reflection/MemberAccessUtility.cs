@@ -15,16 +15,21 @@ namespace Untech.SharePoint.Common.Utils.Reflection
 
 		public static Getter CreateGetter(MemberInfo memberInfo)
 		{
+			return CreateGetter<object, object>(memberInfo);
+		}
+
+		public static Func<TObj, TProp> CreateGetter<TObj, TProp>(MemberInfo memberInfo)
+		{
 			var property = memberInfo as PropertyInfo;
-			if (property != null) return CreateGetter(property);
+			if (property != null) return CreateGetter<TObj, TProp>(property);
 
 			var field = memberInfo as FieldInfo;
-			if (field != null) return CreateGetter(field);
+			if (field != null) return CreateGetter<TObj, TProp>(field);
 
 			throw ReflectionError.CannotCreateGetter(memberInfo);
 		}
 
-		public static Getter CreateGetter(PropertyInfo propertyInfo)
+		private static Func<TObj, TProp> CreateGetter<TObj, TProp>(PropertyInfo propertyInfo)
 		{
 			if (!propertyInfo.GetIndexParameters().IsNullOrEmpty())
 			{
@@ -34,30 +39,35 @@ namespace Untech.SharePoint.Common.Utils.Reflection
 			{
 				throw ReflectionError.CannotCreateGetterForWriteOnly(propertyInfo);
 			}
-			return CreateGetter(propertyInfo.DeclaringType, propertyInfo.Name);
+			return CreateGetter<TObj, TProp>(propertyInfo.DeclaringType, propertyInfo.Name);
 		}
 
-		public static Getter CreateGetter(FieldInfo fieldInfo)
+		private static Func<TObj, TProp> CreateGetter<TObj, TProp>(FieldInfo fieldInfo)
 		{
-			return CreateGetter(fieldInfo.DeclaringType, fieldInfo.Name);
+			return CreateGetter<TObj, TProp>(fieldInfo.DeclaringType, fieldInfo.Name);
 		}
 
 		#endregion
 
 		#region [Create Setter]
 
-		public static Setter CreateSetter(MemberInfo memberInfo)
+		public static Action<object, object> CreateSetter(MemberInfo memberInfo)
+		{
+			return CreateSetter<object, object>(memberInfo);
+		}
+
+		public static Action<TObj, TProp> CreateSetter<TObj, TProp>(MemberInfo memberInfo)
 		{
 			var property = memberInfo as PropertyInfo;
-			if (property != null) return CreateSetter(property);
+			if (property != null) return CreateSetter<TObj, TProp>(property);
 
 			var field = memberInfo as FieldInfo;
-			if (field != null) return CreateSetter(field);
+			if (field != null) return CreateSetter<TObj, TProp>(field);
 
 			throw ReflectionError.CannotCreateSetter(memberInfo);
 		}
 
-		public static Setter CreateSetter(PropertyInfo propertyInfo)
+		private static Action<TObj, TProp> CreateSetter<TObj, TProp>(PropertyInfo propertyInfo)
 		{
 			if (!propertyInfo.GetIndexParameters().IsNullOrEmpty())
 			{
@@ -67,42 +77,43 @@ namespace Untech.SharePoint.Common.Utils.Reflection
 			{
 				throw ReflectionError.CannotCreateSetterForReadOnly(propertyInfo);
 			}
-			return CreateSetter(propertyInfo.DeclaringType, propertyInfo.Name, propertyInfo.PropertyType);
+			return CreateSetter<TObj, TProp>(propertyInfo.DeclaringType, propertyInfo.Name, propertyInfo.PropertyType);
 		}
 
-		public static Setter CreateSetter(FieldInfo fieldInfo)
+		private static Action<TObj, TProp> CreateSetter<TObj, TProp>(FieldInfo fieldInfo)
 		{
 			if (fieldInfo.IsInitOnly || fieldInfo.IsLiteral)
 			{
 				throw ReflectionError.CannotCreateSetterForReadOnly(fieldInfo);
 			}
-			return CreateSetter(fieldInfo.DeclaringType, fieldInfo.Name, fieldInfo.FieldType);
+			return CreateSetter<TObj, TProp>(fieldInfo.DeclaringType, fieldInfo.Name, fieldInfo.FieldType);
 		}
 
 		#endregion
 
 		#region [Private Methods]
 
-		private static Setter CreateSetter(Type declaringType, string memberName, Type propertyType)
+		private static Action<TObj, TProp> CreateSetter<TObj, TProp>(Type declaringType, string memberName, Type propertyType)
 		{
-			var objectParameter = Expression.Parameter(typeof (object), "object");
-			var valueParameter = Expression.Parameter(typeof (object), "value");
+			var objectParameter = Expression.Parameter(typeof (TObj), "object");
+			var valueParameter = Expression.Parameter(typeof (TProp), "value");
 
 			var propertyExpression = Expression.PropertyOrField(Expression.Convert(objectParameter, declaringType), memberName);
 
 			var assignExpression = Expression.Assign(propertyExpression, Expression.Convert(valueParameter, propertyType));
 
-			return Expression.Lambda<Setter>(assignExpression, objectParameter, valueParameter)
+			return Expression
+				.Lambda<Action<TObj, TProp>>(assignExpression, objectParameter, valueParameter)
 				.Compile();
 		}
 
-		private static Getter CreateGetter(Type declaringType, string memberName)
+		private static Func<TObj, TProp> CreateGetter<TObj, TProp>(Type declaringType, string memberName)
 		{
-			var objectParameter = Expression.Parameter(typeof (object), "object");
+			var objectParameter = Expression.Parameter(typeof (TObj), "object");
 
 			var propertyExpression = Expression.PropertyOrField(Expression.Convert(objectParameter, declaringType), memberName);
 
-			return Expression.Lambda<Getter>(Expression.Convert(propertyExpression, typeof (object)), objectParameter)
+			return Expression.Lambda<Func<TObj, TProp>>(Expression.Convert(propertyExpression, typeof(TProp)), objectParameter)
 				.Compile();
 		}
 
