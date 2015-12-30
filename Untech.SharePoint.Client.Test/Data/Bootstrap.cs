@@ -2,7 +2,7 @@
 using Untech.SharePoint.Common.Configuration;
 using Untech.SharePoint.Common.Utils;
 
-namespace Untech.SharePoint.Client.Test.Models
+namespace Untech.SharePoint.Client.Test.Data
 {
 	public class Bootstrap
 	{

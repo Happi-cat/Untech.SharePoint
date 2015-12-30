@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
-using Untech.SharePoint.Common.Test.Tools;
 
-namespace Untech.SharePoint.Common.Test.Spec
+namespace Untech.SharePoint.Common.Test.Tools
 {
 	public class PerfomanceScenarioRunner :ScenarioRunner
 	{

@@ -2,14 +2,14 @@
 using Untech.SharePoint.Common.Utils;
 using Untech.SharePoint.Server.Configuration;
 
-namespace Untech.SharePoint.Server.Test.Models
+namespace Untech.SharePoint.Server.Test.Data
 {
 	public class Bootstrap
 	{
 		public Bootstrap()
 		{
 			Config = ServerConfig.Begin()
-				.RegisterMappings(n => n.Annotated<WebDataContext>())
+				.RegisterMappings(n => n.Annotated<DataContext>())
 				.BuildConfig();
 		}
 

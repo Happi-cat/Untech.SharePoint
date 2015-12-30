@@ -6,7 +6,6 @@ using Untech.SharePoint.Common.Test.Tools;
 
 namespace Untech.SharePoint.Common.Test.Spec
 {
-	[TestClass]
 	public class BasicListOperationsTest
 	{
 		private readonly IDataContext _dataContext;

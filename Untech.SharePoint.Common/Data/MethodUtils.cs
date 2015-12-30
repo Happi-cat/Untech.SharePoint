@@ -70,6 +70,7 @@ namespace Untech.SharePoint.Common.Data
 		public static readonly MethodInfo QReverse = GetMethodInfo(() => Queryable.Reverse<int>(null));
 
 		public static readonly MethodInfo QCount = GetMethodInfo(() => Queryable.Count<int>(null));
+		public static readonly MethodInfo QCountP = GetMethodInfo(() => Queryable.Count<int>(null, null));
 
 		public static readonly MethodInfo QElementAt = GetMethodInfo(() => Queryable.ElementAt<int>(null, 0));
 		public static readonly MethodInfo QElementAtOrDefault = GetMethodInfo(() => Queryable.ElementAtOrDefault<int>(null, 0));

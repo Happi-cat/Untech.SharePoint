@@ -60,7 +60,8 @@ namespace Untech.SharePoint.Common.Data.Translators
 
 				{MethodUtils.QReverse, new ReverseRewriteRule()},
 
-				{MethodUtils.QCount, new CountRewriteRule()}
+				{MethodUtils.QCount, new CountRewriteRule()},
+				{MethodUtils.QCountP, new CountRewriteRule()}
 			};
 		}
 
@@ -608,17 +609,23 @@ namespace Untech.SharePoint.Common.Data.Translators
 		{
 			public bool CanApplyAfterProjection(MethodCallExpression node)
 			{
-				return true;
+				return node.Arguments.Count == 1;
 			}
 
 			public bool CanApplyAfterRowLimit(MethodCallExpression node)
 			{
-				return true;
+				return node.Arguments.Count == 1;
 			}
 
 			public void Apply(RuleContext context, MethodCallExpression node)
 			{
+				if (node.Arguments.Count != 2)
+				{
+					return;
+				}
 
+				var predicate = node.Arguments[1];
+				context.ApplyFiltering(predicate);
 			}
 
 			public Expression Get(RuleContext context, MethodCallExpression node)

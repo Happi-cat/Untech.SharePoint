@@ -14,10 +14,19 @@ namespace Untech.SharePoint.Common.Test.Spec.Scenarios
 		private readonly Func<IQueryable<T>, TResult> _query;
 		private readonly IEqualityComparer<TResult> _comparer;
 		private IReadOnlyCollection<T> _addedItems;
+		private IQueryable<T> _alternateList;
 
 		public FetchScenario(ISpList<T> list, Func<IQueryable<T>, TResult> query, IEqualityComparer<TResult> comparer)
 			: base(list)
 		{
+			_query = query;
+			_comparer = comparer;
+		}
+
+		public FetchScenario(ISpList<T> list, IQueryable<T> alternateList, Func<IQueryable<T>, TResult> query, IEqualityComparer<TResult> comparer)
+			: base(list)
+		{
+			_alternateList = alternateList;
 			_query = query;
 			_comparer = comparer;
 		}
@@ -35,6 +44,11 @@ namespace Untech.SharePoint.Common.Test.Spec.Scenarios
 				.SelectMany(n => n.Generate())
 				.Select(n => List.Add(n))
 				.ToList();
+
+			if (_alternateList == null)
+			{
+				_alternateList = _addedItems.AsQueryable();
+			}
 		}
 
 		public override void Run()
@@ -42,8 +56,8 @@ namespace Untech.SharePoint.Common.Test.Spec.Scenarios
 			Stopwatch.Start();
 			var loadedResult = _query(List);
 			Stopwatch.Stop();
-
-			var expectedResult = _query(_addedItems.AsQueryable());
+			
+			var expectedResult = _query(_alternateList);
 
 			Assert.IsTrue(_comparer.Equals(loadedResult, expectedResult));
 		}

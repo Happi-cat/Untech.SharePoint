@@ -89,7 +89,13 @@
     <Compile Include="CustomAssert.cs" />
     <Compile Include="Mappings\Annotation\AnnotatedContextMappingTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Spec\PerfomanceScenarioRunner.cs" />
+    <Compile Include="Spec\EntitySequenceComparer.cs" />
+    <Compile Include="Spec\PagingListOperationsTest.cs" />
+    <Compile Include="Spec\OrderingListOperationsTest.cs" />
+    <Compile Include="Spec\SetListOperationsTest.cs" />
+    <Compile Include="Spec\ProjectionListOperationsTest.cs" />
+    <Compile Include="Spec\FilteringListOperationsTest.cs" />
+    <Compile Include="Tools\PerfomanceScenarioRunner.cs" />
     <Compile Include="Spec\Scenarios\ConverterScenario.cs" />
     <Compile Include="Spec\Scenarios\ListScenario.cs" />
     <Compile Include="Spec\Scenarios\AddScenario.cs" />
@@ -97,7 +103,7 @@
     <Compile Include="Spec\Scenarios\GetScenario.cs" />
     <Compile Include="Spec\Scenarios\UpdateScenario.cs" />
     <Compile Include="Spec\BasicListOperationsTest.cs" />
-    <Compile Include="Spec\FetchListOperationsTest.cs" />
+    <Compile Include="Spec\AggregateListOperationsTest.cs" />
     <Compile Include="Tools\IScenario.cs" />
     <Compile Include="Spec\Models\Fillers\Fillers.cs" />
     <Compile Include="Spec\Models\IDataContext.cs" />

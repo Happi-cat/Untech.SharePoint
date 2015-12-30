@@ -61,10 +61,9 @@
   <ItemGroup>
     <Compile Include="Converters\BuiltIn\ContentTypeIdFieldConverterTest.cs" />
     <Compile Include="Converters\BuiltIn\UrlFieldConverterTest.cs" />
-    <Compile Include="Models\Bootstrap.cs" />
-    <Compile Include="Models\NewsItem.cs" />
-    <Compile Include="Models\WebDataContext.cs" />
-    <Compile Include="ServerContextTest.cs" />
+    <Compile Include="Data\Bootstrap.cs" />
+    <Compile Include="Data\DataContext.cs" />
+    <Compile Include="Data\Tests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
