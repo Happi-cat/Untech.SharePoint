@@ -27,7 +27,7 @@ namespace Untech.SharePoint.Common.Mappings.Annotation
 
 		public static bool IsAnnotated(PropertyInfo property)
 		{
-			return property.IsDefined(typeof (SpListAttribute));
+			return property.IsDefined(typeof (SpListAttribute), true);
 		}
 
 		public static AnnotatedListPart Create(string listTitle, IEnumerable<PropertyInfo> contextProperties)

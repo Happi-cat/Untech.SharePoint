@@ -63,8 +63,8 @@
     <Compile Include="Converters\BuiltIn\UrlFieldConverterTest.cs" />
     <Compile Include="Data\Bootstrap.cs" />
     <Compile Include="Data\DataContext.cs" />
-    <Compile Include="Data\Tests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Data\QueryableTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Untech.SharePoint.Common.Test\Untech.SharePoint.Common.Test.csproj">

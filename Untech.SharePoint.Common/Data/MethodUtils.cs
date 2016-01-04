@@ -99,6 +99,7 @@ namespace Untech.SharePoint.Common.Data
 		public static readonly MethodInfo SpqElementAtP = GetMethodInfo(() => SpQueryable.ElementAt<int, int>(null, null, 0, false, null));
 
 		public static readonly MethodInfo SpqAny = GetMethodInfo(() => SpQueryable.Any<int>(null, null));
+		public static readonly MethodInfo SpqAll = GetMethodInfo(() => SpQueryable.NotAny<int>(null, null));
 		public static readonly MethodInfo SpqCount = GetMethodInfo(() => SpQueryable.Count<int>(null, null));
 
 		#endregion

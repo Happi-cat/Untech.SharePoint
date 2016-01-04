@@ -27,8 +27,8 @@ namespace Untech.SharePoint.Common.Test.Spec.Models
 		[SpField]
 		public List<ObjectReference> SubProjects { get; set; }
 
-		[SpField]
-		public double? Duration { get; set; }
+		//[SpField]
+		//public double? Duration { get; set; }
 
 		[SpField]
 		public string Status { get; set; }

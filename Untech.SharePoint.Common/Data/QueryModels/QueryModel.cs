@@ -51,8 +51,13 @@ namespace Untech.SharePoint.Common.Data.QueryModels
 		{
 			get
 			{
-				if (_orderBys == null) return null;
-				return _isOrderReversed ? _orderBys.Select(n => n.Reverse()) : _orderBys;
+				if (_isOrderReversed)
+				{
+					return _orderBys.IsNullOrEmpty()
+						? new[] {new OrderByModel(new KeyRefModel(), false)}
+						: _orderBys.Select(n => n.Reverse());
+				}
+				return _orderBys;
 			}
 		}
 

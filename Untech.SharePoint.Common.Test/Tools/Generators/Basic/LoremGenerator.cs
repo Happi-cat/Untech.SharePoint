@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Text;
 
-namespace Untech.SharePoint.Common.Test.Tools.Generators
+namespace Untech.SharePoint.Common.Test.Tools.Generators.Basic
 {
 	public class LoremGenerator : BaseRandomGenerator, IValueGenerator<string>
 	{
@@ -39,7 +39,7 @@ namespace Untech.SharePoint.Common.Test.Tools.Generators
 				LoremIpsumSentences(result);
 			}
 			AppendForHtml(result, "</div>");
-			return result.ToString();
+			return result.ToString().Trim();
 		}
 
 		private void LoremIpsumSentences(StringBuilder sb)

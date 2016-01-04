@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace Untech.SharePoint.Common.Test.Tools.Generators
+namespace Untech.SharePoint.Common.Test.Tools.Generators.Basic
 {
-	public class ArrayGenerator<T> : IValueGenerator<IEnumerable<T>>, IValueGenerator<T[]>
+	public class ArrayGenerator<T> : BaseRandomGenerator, IValueGenerator<List<T>>, IValueGenerator<T[]>
 	{
 		public ArrayGenerator(IValueGenerator<T> itemGenerator)
 		{
@@ -12,11 +12,14 @@ namespace Untech.SharePoint.Common.Test.Tools.Generators
 
 		public int Size { get; set; }
 
+		public ArrayGenerationOptions Options { get; set; }
+
 		public IValueGenerator<T> ItemGenerator { get; private set; }
 
-		public virtual IEnumerable<T> Generate()
+		public virtual List<T> Generate()
 		{
-			var counter = Size;
+			var counter = GetSize();
+
 			var list = new List<T>();
 			while (counter-- > 0)
 			{
@@ -28,6 +31,11 @@ namespace Untech.SharePoint.Common.Test.Tools.Generators
 		T[] IValueGenerator<T[]>.Generate()
 		{
 			return Generate().ToArray();
+		}
+
+		private int GetSize()
+		{
+			return Options == ArrayGenerationOptions.RandomSize ? Rand.Next(Size) : Size;
 		}
 	}
 }

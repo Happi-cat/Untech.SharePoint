@@ -17,14 +17,14 @@ namespace Untech.SharePoint.Common.Mappings.Annotation
 			Guard.CheckNotNull("member", member);
 
 			_member = member;
-			_fieldAttribute = member.GetCustomAttribute<SpFieldAttribute>();
+			_fieldAttribute = member.GetCustomAttribute<SpFieldAttribute>(true);
 		}
 
 		#region [Public Static]
 
 		public static bool IsAnnotated(MemberInfo member)
 		{
-			return member.IsDefined(typeof(SpFieldAttribute)) && !member.IsDefined(typeof(SpFieldRemovedAttribute));
+			return member.IsDefined(typeof(SpFieldAttribute), true) && !member.IsDefined(typeof(SpFieldRemovedAttribute), true);
 		}
 
 		public static AnnotatedFieldPart Create(PropertyInfo property)

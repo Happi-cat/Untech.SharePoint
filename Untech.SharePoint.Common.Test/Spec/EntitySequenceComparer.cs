@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Untech.SharePoint.Common.Models;
 
@@ -28,12 +27,11 @@ namespace Untech.SharePoint.Common.Test.Spec
 		}
 	}
 
-	public class EntitySequenceComparer<T> :IEqualityComparer<IEnumerable<T>>
-		where T : Entity
+	public class EntitySequenceComparer : IEqualityComparer<IEnumerable<Entity>>
 	{
-		public static readonly IEqualityComparer<IEnumerable<T>> Default = new EntitySequenceComparer<T>();
+		public static readonly IEqualityComparer<IEnumerable<Entity>> Default = new EntitySequenceComparer();
 
-		public bool Equals(IEnumerable<T> x, IEnumerable<T> y)
+		public bool Equals(IEnumerable<Entity> x, IEnumerable<Entity> y)
 		{
 			if (object.Equals(x, y)) return true;
 			if (x == null || y == null) return false;
@@ -41,7 +39,7 @@ namespace Untech.SharePoint.Common.Test.Spec
 			return x.SequenceEqual(y, EntityComparer.Default);
 		}
 
-		public int GetHashCode(IEnumerable<T> obj)
+		public int GetHashCode(IEnumerable<Entity> obj)
 		{
 			throw new System.NotImplementedException();
 		}

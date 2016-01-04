@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Untech.SharePoint.Common.Test.Tools.Generators
+namespace Untech.SharePoint.Common.Test.Tools.Generators.Basic
 {
 	public class DateTimeRangeGenerator : BaseRandomGenerator, IValueGenerator<DateTime>, IValueGenerator<DateTime?>
 	{

@@ -106,9 +106,9 @@ namespace Untech.SharePoint.Common.Data
 			var viewFields = query.SelectableFields.ToList();
 			var caml = ConvertToCamlString(query, contentType);
 
-			var foundItems = FetchInternal(caml);
-			return foundItems.Count == 1
-				? Materialize<T>(foundItems[0], contentType, viewFields)
+			var foundItem = FetchInternal(caml).ElementAtOrDefault(index);
+			return foundItem != null
+				? Materialize<T>(foundItem, contentType, viewFields)
 				: default(T);
 		}
 

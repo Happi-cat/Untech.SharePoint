@@ -3,8 +3,9 @@ using System.Linq;
 using Untech.SharePoint.Common.CodeAnnotations;
 using Untech.SharePoint.Common.Extensions;
 using Untech.SharePoint.Common.Models;
+using Untech.SharePoint.Common.Test.Tools.Generators.Basic;
 
-namespace Untech.SharePoint.Common.Test.Tools.Generators
+namespace Untech.SharePoint.Common.Test.Tools.Generators.Custom
 {
 	public class UserInfoGenerator : BaseRandomGenerator, IValueGenerator<UserInfo>
 	{

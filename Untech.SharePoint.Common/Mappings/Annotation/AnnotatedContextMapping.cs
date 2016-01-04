@@ -20,7 +20,7 @@ namespace Untech.SharePoint.Common.Mappings.Annotation
 
 		public string GetListTitleFromContextMember(MemberInfo member)
 		{
-			var listAttribute = member.GetCustomAttribute<SpListAttribute>();
+			var listAttribute = member.GetCustomAttribute<SpListAttribute>(true);
 
 			return string.IsNullOrEmpty(listAttribute.Title) ? member.Name : listAttribute.Title;
 		}

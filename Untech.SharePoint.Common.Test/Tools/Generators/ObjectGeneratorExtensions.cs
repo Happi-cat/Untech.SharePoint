@@ -1,48 +1,48 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
+using Untech.SharePoint.Common.Test.Tools.Generators.Basic;
 
 namespace Untech.SharePoint.Common.Test.Tools.Generators
 {
-	public static class ItemFillerExtensions
+	public static class ObjectGeneratorExtensions
 	{
-		public static ItemFiller<T> WithStatic<T, TProp>(this ItemFiller<T> filler, Expression<Func<T, TProp>> selector, TProp value)
+		public static ObjectGenerator<T> WithStatic<T, TProp>(this ObjectGenerator<T> filler, Expression<Func<T, TProp>> selector, TProp value)
 		{
 			return filler.With(selector, new StaticGenerator<TProp>(value));
 		}
 
-		public static ItemFiller<T> WithArray<T, TProp>(this ItemFiller<T> filler, Expression<Func<T, TProp[]>> selector,
+		public static ObjectGenerator<T> WithArray<T, TProp>(this ObjectGenerator<T> filler, Expression<Func<T, TProp[]>> selector,
 			int size, IEnumerable<TProp> range)
 		{
 			return filler.WithArray(selector, size, new RangeGenerator<TProp>(range));
 		}
 
-		public static ItemFiller<T> WithArray<T, TProp>(this ItemFiller<T> filler, Expression<Func<T, TProp[]>> selector,
+		public static ObjectGenerator<T> WithArray<T, TProp>(this ObjectGenerator<T> filler, Expression<Func<T, TProp[]>> selector,
 			int size, IValueGenerator<TProp> itemGenerator)
 		{
 			return filler.With(selector, new ArrayGenerator<TProp>(itemGenerator) { Size = size });
 		}
 
-		public static ItemFiller<T> WithArray<T, TProp>(this ItemFiller<T> filler,
+		public static ObjectGenerator<T> WithArray<T, TProp>(this ObjectGenerator<T> filler,
 			Expression<Func<T, IEnumerable<TProp>>> selector, int size, IEnumerable<TProp> range)
 		{
 			return filler.WithArray(selector, size, new RangeGenerator<TProp>(range));
 		}
 
-		public static ItemFiller<T> WithArray<T, TProp>(this ItemFiller<T> filler,
+		public static ObjectGenerator<T> WithArray<T, TProp>(this ObjectGenerator<T> filler,
 			Expression<Func<T, IEnumerable<TProp>>> selector, int size, IValueGenerator<TProp> itemGenerator)
 		{
 			return filler.With(selector, new ArrayGenerator<TProp>(itemGenerator) { Size = size });
 		}
 
-		public static ItemFiller<T> WithRange<T, TProp>(this ItemFiller<T> filler, Expression<Func<T, TProp>> selector,
+		public static ObjectGenerator<T> WithRange<T, TProp>(this ObjectGenerator<T> filler, Expression<Func<T, TProp>> selector,
 			IEnumerable<TProp> range) where T : new()
 		{
 			return filler.With(selector, new RangeGenerator<TProp>(range));
 		}
 
-		public static ItemFiller<T> WithShortLorem<T>(this ItemFiller<T> filler, Expression<Func<T, string>> selector)
-
+		public static ObjectGenerator<T> WithShortLorem<T>(this ObjectGenerator<T> filler, Expression<Func<T, string>> selector)
 		{
 			return filler.With(selector, new LoremGenerator
 			{
@@ -51,8 +51,7 @@ namespace Untech.SharePoint.Common.Test.Tools.Generators
 			});
 		}
 
-		public static ItemFiller<T> WithLongLorem<T>(this ItemFiller<T> filler, Expression<Func<T, string>> selector)
-
+		public static ObjectGenerator<T> WithLongLorem<T>(this ObjectGenerator<T> filler, Expression<Func<T, string>> selector)
 		{
 			return filler.With(selector, new LoremGenerator
 			{
@@ -65,8 +64,7 @@ namespace Untech.SharePoint.Common.Test.Tools.Generators
 		}
 
 
-		public static ItemFiller<T> WithHtmlLongLorem<T>(this ItemFiller<T> filler, Expression<Func<T, string>> selector)
-
+		public static ObjectGenerator<T> WithHtmlLongLorem<T>(this ObjectGenerator<T> filler, Expression<Func<T, string>> selector)
 		{
 			return filler.With(selector, new LoremGenerator
 			{
@@ -79,8 +77,7 @@ namespace Untech.SharePoint.Common.Test.Tools.Generators
 			});
 		}
 
-		public static ItemFiller<T> WithPastDate<T>(this ItemFiller<T> filler, Expression<Func<T, DateTime?>> selector)
-
+		public static ObjectGenerator<T> WithPastDate<T>(this ObjectGenerator<T> filler, Expression<Func<T, DateTime?>> selector)
 		{
 			return filler.With(selector, new DateTimeRangeGenerator
 			{
@@ -89,8 +86,7 @@ namespace Untech.SharePoint.Common.Test.Tools.Generators
 			});
 		}
 
-		public static ItemFiller<T> WithPastDate<T>(this ItemFiller<T> filler, Expression<Func<T, DateTime>> selector)
-
+		public static ObjectGenerator<T> WithPastDate<T>(this ObjectGenerator<T> filler, Expression<Func<T, DateTime>> selector)
 		{
 			return filler.With(selector, new DateTimeRangeGenerator
 			{
@@ -99,9 +95,8 @@ namespace Untech.SharePoint.Common.Test.Tools.Generators
 			});
 		}
 
-		public static ItemFiller<T> WithFutureDate<T>(this ItemFiller<T> filler,
+		public static ObjectGenerator<T> WithFutureDate<T>(this ObjectGenerator<T> filler,
 			Expression<Func<T, DateTime?>> selector)
-
 		{
 			return filler.With(selector, new DateTimeRangeGenerator
 			{
@@ -110,9 +105,8 @@ namespace Untech.SharePoint.Common.Test.Tools.Generators
 			});
 		}
 
-		public static ItemFiller<T> WithFutureDate<T>(this ItemFiller<T> filler,
+		public static ObjectGenerator<T> WithFutureDate<T>(this ObjectGenerator<T> filler,
 			Expression<Func<T, DateTime>> selector)
-
 		{
 			return filler.With(selector, new DateTimeRangeGenerator
 			{
@@ -121,8 +115,7 @@ namespace Untech.SharePoint.Common.Test.Tools.Generators
 			});
 		}
 
-		public static ItemFiller<T> WithActualDate<T>(this ItemFiller<T> filler, Expression<Func<T, DateTime?>> selector)
-
+		public static ObjectGenerator<T> WithActualDate<T>(this ObjectGenerator<T> filler, Expression<Func<T, DateTime?>> selector)
 		{
 			return filler.With(selector, new DateTimeRangeGenerator
 			{
@@ -131,8 +124,7 @@ namespace Untech.SharePoint.Common.Test.Tools.Generators
 			});
 		}
 
-		public static ItemFiller<T> WithActualDate<T>(this ItemFiller<T> filler, Expression<Func<T, DateTime>> selector)
-
+		public static ObjectGenerator<T> WithActualDate<T>(this ObjectGenerator<T> filler, Expression<Func<T, DateTime>> selector)
 		{
 			return filler.With(selector, new DateTimeRangeGenerator
 			{

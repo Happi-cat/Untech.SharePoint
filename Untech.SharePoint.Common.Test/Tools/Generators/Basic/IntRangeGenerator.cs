@@ -1,4 +1,4 @@
-﻿namespace Untech.SharePoint.Common.Test.Tools.Generators
+﻿namespace Untech.SharePoint.Common.Test.Tools.Generators.Basic
 {
 	public class IntRangeGenerator : BaseRandomGenerator, IValueGenerator<int>, IValueGenerator<int?>
 	{

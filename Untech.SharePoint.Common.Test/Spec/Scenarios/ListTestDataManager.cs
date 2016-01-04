@@ -5,6 +5,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Untech.SharePoint.Common.Data;
 using Untech.SharePoint.Common.Extensions;
 using Untech.SharePoint.Common.Test.Tools.Generators;
+using Untech.SharePoint.Common.Test.Tools.Generators.Basic;
 
 namespace Untech.SharePoint.Common.Test.Spec.Scenarios
 {

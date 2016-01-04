@@ -134,7 +134,7 @@ namespace Untech.SharePoint.Common.Data.Mapper
 			var viewMembers = viewFields.Select(n => n.Member).ToList();
 
 			return ContentType.Fields
-				.Where<MetaField>(n =>  viewMembers.Contains(n.Member))
+				.Where<MetaField>(n =>  viewMembers.Contains(n.Member, MemberInfoComparer.Default))
 				.Select(n => n.GetMapper<TSPItem>());
 		}
 	}

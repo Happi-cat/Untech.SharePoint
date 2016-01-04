@@ -3,7 +3,7 @@ using System.Linq;
 using Untech.SharePoint.Common.CodeAnnotations;
 using Untech.SharePoint.Common.Extensions;
 
-namespace Untech.SharePoint.Common.Test.Tools.Generators
+namespace Untech.SharePoint.Common.Test.Tools.Generators.Basic
 {
 	public class RangeGenerator<T> : BaseRandomGenerator, IValueGenerator<T>
 	{

@@ -3,6 +3,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Untech.SharePoint.Common.Data;
 using Untech.SharePoint.Common.Models;
 using Untech.SharePoint.Common.Test.Tools.Generators;
+using Untech.SharePoint.Common.Test.Tools.Generators.Basic;
 
 namespace Untech.SharePoint.Common.Test.Spec.Scenarios
 {
@@ -28,7 +29,7 @@ namespace Untech.SharePoint.Common.Test.Spec.Scenarios
 		public override void Run()
 		{
 			var oldTitle = _addedItem.Title;
-			var generatedTitle = string.Format("Upd #{0}: {1}", DateTime.Now.Ticks, _titleGenerator.Generate());
+			var generatedTitle = string.Format("Upd #{0}: {1}", DateTime.Now.Ticks, _titleGenerator.Generate().Trim());
 			_addedItem.Title = generatedTitle;
 
 			Stopwatch.Start();

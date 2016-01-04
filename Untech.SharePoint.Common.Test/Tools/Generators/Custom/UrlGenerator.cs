@@ -1,7 +1,8 @@
 using System.Text;
 using Untech.SharePoint.Common.Models;
+using Untech.SharePoint.Common.Test.Tools.Generators.Basic;
 
-namespace Untech.SharePoint.Common.Test.Tools.Generators
+namespace Untech.SharePoint.Common.Test.Tools.Generators.Custom
 {
 	public class UrlGenerator : BaseRandomGenerator, IValueGenerator<string>, IValueGenerator<UrlInfo>
 	{

@@ -9,7 +9,7 @@ namespace Untech.SharePoint.Client.Test.Data
 		public Bootstrap()
 		{
 			Config = ClientConfig.Begin()
-				.RegisterMappings(n => n.Annotated<WebDataContext>())
+				.RegisterMappings(n => n.Annotated<DataContext>())
 				.BuildConfig();
 		}
 

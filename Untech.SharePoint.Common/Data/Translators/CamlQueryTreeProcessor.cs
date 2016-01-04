@@ -80,8 +80,9 @@ namespace Untech.SharePoint.Common.Data.Translators
 
 		private class SubtreeCallsCombiner : ExpressionVisitor
 		{
-			[NotNull] private readonly RuleContext _context = new RuleContext();
-			
+			[NotNull]
+			private readonly RuleContext _context = new RuleContext();
+
 			public override Expression Visit(Expression node)
 			{
 				switch (node.NodeType)
@@ -125,7 +126,7 @@ namespace Untech.SharePoint.Common.Data.Translators
 				}
 
 				var currentRule = CombineRules[node.Method];
-				
+
 				ThrowIfCannotApplyAfterProjection(currentRule, node);
 				ThrowIfCannotApplyAfterRowLimit(currentRule, node);
 
@@ -164,7 +165,7 @@ namespace Untech.SharePoint.Common.Data.Translators
 			public Type ProjectedType { get; private set; }
 
 			public bool ProjectionApplied { get; private set; }
-			
+
 			public bool RowLimitApplied { get; private set; }
 
 			public void ApplyContentType(Type entityType)
@@ -229,7 +230,7 @@ namespace Untech.SharePoint.Common.Data.Translators
 			public void Apply(RuleContext context, MethodCallExpression node)
 			{
 				context.Query = new QueryModel();
-				context.ListItemsProvider = (ISpListItemsProvider) ((ConstantExpression) node.Arguments[0].StripQuotes()).Value;
+				context.ListItemsProvider = (ISpListItemsProvider)((ConstantExpression)node.Arguments[0].StripQuotes()).Value;
 
 				var entityType = node.Method.GetGenericArguments()[0];
 				context.ApplyContentType(entityType);
@@ -262,8 +263,7 @@ namespace Untech.SharePoint.Common.Data.Translators
 
 			public Expression Get(RuleContext context, MethodCallExpression node)
 			{
-				var entityType = node.Method.GetGenericArguments()[0];
-				return SpQueryable.MakeFetch(entityType, context.ListItemsProvider, context.Query);
+				return SpQueryable.MakeFetch(context.EntityType, context.ListItemsProvider, context.Query);
 			}
 		}
 
@@ -287,11 +287,9 @@ namespace Untech.SharePoint.Common.Data.Translators
 
 			public Expression Get(RuleContext context, MethodCallExpression node)
 			{
-				var genericArgs = node.Method.GetGenericArguments();
+				var lambdaNode = (LambdaExpression)node.Arguments[1].StripQuotes();
 
-				var lambdaNode = (LambdaExpression) node.Arguments[1].StripQuotes();
-
-				return SpQueryable.MakeSelect(genericArgs[0], genericArgs[1], context.ListItemsProvider, context.Query, lambdaNode);
+				return SpQueryable.MakeSelect(context.EntityType, context.ProjectedType, context.ListItemsProvider, context.Query, lambdaNode);
 			}
 		}
 
@@ -315,11 +313,9 @@ namespace Untech.SharePoint.Common.Data.Translators
 
 			public Expression Get(RuleContext context, MethodCallExpression node)
 			{
-				var genericArgs = node.Method.GetGenericArguments();
-
 				var lambdaNode = (LambdaExpression)node.Arguments[1].StripQuotes();
 
-				return SpQueryable.MakeMin(genericArgs[0], genericArgs[1], context.ListItemsProvider, context.Query, lambdaNode);
+				return SpQueryable.MakeMin(context.EntityType, context.ProjectedType, context.ListItemsProvider, context.Query, lambdaNode);
 			}
 		}
 
@@ -343,11 +339,9 @@ namespace Untech.SharePoint.Common.Data.Translators
 
 			public Expression Get(RuleContext context, MethodCallExpression node)
 			{
-				var genericArgs = node.Method.GetGenericArguments();
-
 				var lambdaNode = (LambdaExpression)node.Arguments[1].StripQuotes();
 
-				return SpQueryable.MakeMax(genericArgs[0], genericArgs[1], context.ListItemsProvider, context.Query, lambdaNode);
+				return SpQueryable.MakeMax(context.EntityType, context.ProjectedType, context.ListItemsProvider, context.Query, lambdaNode);
 			}
 		}
 
@@ -376,7 +370,7 @@ namespace Untech.SharePoint.Common.Data.Translators
 
 			public Expression Get(RuleContext context, MethodCallExpression node)
 			{
-				return SpQueryable.MakeAny(node.Method.GetGenericArguments()[0], context.ListItemsProvider, context.Query);
+				return SpQueryable.MakeAny(context.EntityType, context.ListItemsProvider, context.Query);
 			}
 		}
 
@@ -400,7 +394,7 @@ namespace Untech.SharePoint.Common.Data.Translators
 
 			public Expression Get(RuleContext context, MethodCallExpression node)
 			{
-				return SpQueryable.MakeAny(node.Method.GetGenericArguments()[0], context.ListItemsProvider, context.Query);
+				return SpQueryable.MakeNotAny(context.EntityType, context.ListItemsProvider, context.Query);
 			}
 		}
 
@@ -431,8 +425,7 @@ namespace Untech.SharePoint.Common.Data.Translators
 
 			public Expression Get(RuleContext context, MethodCallExpression node)
 			{
-				var entityType = node.Method.GetGenericArguments()[0];
-				return SpQueryable.MakeFetch(entityType, context.ListItemsProvider, context.Query);
+				return SpQueryable.MakeFetch(context.EntityType, context.ListItemsProvider, context.Query);
 			}
 		}
 
@@ -450,7 +443,7 @@ namespace Untech.SharePoint.Common.Data.Translators
 
 			public void Apply(RuleContext context, MethodCallExpression node)
 			{
-				context.ApplyRowLimit((int) ((ConstantExpression) node.Arguments[1].StripQuotes()).Value);
+				context.ApplyRowLimit((int)((ConstantExpression)node.Arguments[1].StripQuotes()).Value);
 			}
 
 			public Expression Get(RuleContext context, MethodCallExpression node)
@@ -553,7 +546,7 @@ namespace Untech.SharePoint.Common.Data.Translators
 
 			public Expression Get(RuleContext context, MethodCallExpression node)
 			{
-				var count = (int) ((ConstantExpression) node.Arguments[1].StripQuotes()).Value;
+				var count = (int)((ConstantExpression)node.Arguments[1].StripQuotes()).Value;
 
 				if (context.ProjectionApplied)
 				{
@@ -585,8 +578,7 @@ namespace Untech.SharePoint.Common.Data.Translators
 		{
 			public Expression Get(RuleContext context, MethodCallExpression node)
 			{
-				var entityType = node.Method.GetGenericArguments()[0];
-				return SpQueryable.MakeFetch(entityType, context.ListItemsProvider, context.Query);
+				return SpQueryable.MakeFetch(context.EntityType, context.ListItemsProvider, context.Query);
 			}
 
 			public bool CanApplyAfterProjection(MethodCallExpression node)
@@ -630,7 +622,7 @@ namespace Untech.SharePoint.Common.Data.Translators
 
 			public Expression Get(RuleContext context, MethodCallExpression node)
 			{
-				return SpQueryable.MakeCount(node.Method.GetGenericArguments()[0], context.ListItemsProvider, context.Query);
+				return SpQueryable.MakeCount(context.EntityType, context.ListItemsProvider, context.Query);
 			}
 		}
 

@@ -1,48 +1,50 @@
 ﻿using Untech.SharePoint.Common.Models;
 using Untech.SharePoint.Common.Test.Tools.Generators;
+using Untech.SharePoint.Common.Test.Tools.Generators.Basic;
+using Untech.SharePoint.Common.Test.Tools.Generators.Custom;
 
-namespace Untech.SharePoint.Common.Test.Spec.Models.Fillers
+namespace Untech.SharePoint.Common.Test.Spec.Models
 {
-	public static class Fillers
+	public static class Generators
 	{
-		public static ItemFiller<EventModel> GetCompletedEventFiller()
+		public static ObjectGenerator<EventModel> GetCompletedEventGenerator()
 		{
-			return GetBaseEventFiller()
+			return GetBaseEventGenerator()
 				.WithPastDate(n => n.WhenStart)
 				.WithPastDate(n => n.WhenComplete);
 		}
 
-		public static ItemFiller<EventModel> GetGoingEventFiller()
+		public static ObjectGenerator<EventModel> GetGoingEventGenerator()
 		{
-			return GetBaseEventFiller()
+			return GetBaseEventGenerator()
 				.WithActualDate(n => n.WhenStart)
 				.WithActualDate(n => n.WhenComplete);
 		}
 
-		public static ItemFiller<EventModel> GetFutureEventFiller()
+		public static ObjectGenerator<EventModel> GetFutureEventGenerator()
 		{
-			return GetBaseEventFiller()
+			return GetBaseEventGenerator()
 				.WithFutureDate(n => n.WhenStart)
 				.WithFutureDate(n => n.WhenComplete);
 		}
 
-		public static ItemFiller<NewsModel> GetNewsFiller()
+		public static ObjectGenerator<NewsModel> GetNewsGenerator()
 		{
-			return GetBaseEntityFiller<NewsModel>()
+			return GetBaseEntityGenerator<NewsModel>()
 				.WithHtmlLongLorem(n => n.Body)
 				.WithLongLorem(n => n.Description)
 				.With(n => n.HeadingImage, new UrlGenerator());
 		}
 
-		public static ItemFiller<TeamModel> GetTeamFiller()
+		public static ObjectGenerator<TeamModel> GetTeamGenerator()
 		{
-			return GetBaseEntityFiller<TeamModel>()
+			return GetBaseEntityGenerator<TeamModel>()
 				.With(n => n.Logo, new UrlGenerator());
 		}
 
-		public static ItemFiller<ProjectModel> GetProjectFiller()
+		public static ObjectGenerator<ProjectModel> GetProjectGenerator()
 		{
-			return GetBaseEntityFiller<ProjectModel>()
+			return GetBaseEntityGenerator<ProjectModel>()
 				.WithActualDate(n => n.ProjectStart)
 				.WithActualDate(n => n.ProjectEnd)
 				.WithArray(n => n.OSes, 3, new[] {"Linux", "MaxOS", "Windows"})
@@ -50,18 +52,18 @@ namespace Untech.SharePoint.Common.Test.Spec.Models.Fillers
 				.WithRange(n => n.Technology, new[] {".NET", "NodeJS", "Java"});
 		}
 
-		private static ItemFiller<EventModel> GetBaseEventFiller()
+		private static ObjectGenerator<EventModel> GetBaseEventGenerator()
 		{
-			return GetBaseEntityFiller<EventModel>()
+			return GetBaseEntityGenerator<EventModel>()
 				.With(n => n.Logo, new UrlGenerator())
 				.With(n => n.MaxPeople, new DoubleRangeGenerator { Min = 1, Max = 10 })
 				.With(n => n.FreeEntrance, new BoolGenerator());
 		}
 
-		private static ItemFiller<T> GetBaseEntityFiller<T>()
+		private static ObjectGenerator<T> GetBaseEntityGenerator<T>()
 			where T: Entity
 		{
-			return new ItemFiller<T>()
+			return new ObjectGenerator<T>()
 				.WithShortLorem(n => n.Title);
 		}
 

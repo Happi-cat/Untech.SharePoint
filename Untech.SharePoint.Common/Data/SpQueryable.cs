@@ -211,6 +211,23 @@ namespace Untech.SharePoint.Common.Data
 
 		}
 
+		internal static bool NotAny<T>(ISpListItemsProvider listItemsProvider, QueryModel queryModel)
+		{
+			queryModel.RowLimit = 1;
+
+			return !listItemsProvider.Any<T>(queryModel);
+		}
+
+		internal static MethodCallExpression MakeNotAny(Type entityType, ISpListItemsProvider listItemsProvider,
+			QueryModel queryModel)
+		{
+			return Expression.Call(MethodUtils.SpqAll.MakeGenericMethod(entityType),
+				Expression.Constant(listItemsProvider, typeof(ISpListItemsProvider)),
+				Expression.Constant(queryModel, typeof(QueryModel)));
+
+		}
+
+
 		internal static int Count<T>(ISpListItemsProvider listItemsProvider, QueryModel queryModel)
 		{
 			return listItemsProvider.Count<T>(queryModel);
