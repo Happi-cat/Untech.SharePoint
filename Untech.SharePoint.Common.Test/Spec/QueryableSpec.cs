@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using Untech.SharePoint.Common.Data;
-using Untech.SharePoint.Common.Extensions;
-using Untech.SharePoint.Common.Test.Spec.DataManagers;
 using Untech.SharePoint.Common.Test.Spec.Models;
+using Untech.SharePoint.Common.Test.Tools.DataManagers;
+using Untech.SharePoint.Common.Test.Tools.QueryTests;
 
 namespace Untech.SharePoint.Common.Test.Spec
 {
@@ -19,6 +19,8 @@ namespace Untech.SharePoint.Common.Test.Spec
 			_dataManager = new TestDataManager(_dataContext);
 		}
 
+		public string FilePath { get; set; }
+
 		public void Init()
 		{
 			_dataManager.Init();
@@ -26,37 +28,53 @@ namespace Untech.SharePoint.Common.Test.Spec
 
 		public void Aggregate()
 		{
-			Run(_dataContext.News, _dataManager.News, new AggregateListOperationsSpec());
+			Run(_dataContext.News, _dataManager.News, new AggregateQuerySpec());
 		}
 
 		public void Filtering()
 		{
-			Run(_dataContext.News, _dataManager.News, new FilteringListOperationsSpec());
+			Run(_dataContext.News, _dataManager.News, new FilteringQuerySpec());
 		}
 
 		public void Ordering()
 		{
-			Run(_dataContext.Projects, _dataManager.Projects, new OrderingListOperationsSpec());
+			Run(_dataContext.Projects, _dataManager.Projects, new OrderingQuerySpec());
 		}
 
 		public void Paging()
 		{
-			Run(_dataContext.News, _dataManager.News, new PagingListOperationsSpec());
+			Run(_dataContext.News, _dataManager.News, new PagingQuerySpec());
 		}
 
 		public void Set()
 		{
-			Run(_dataContext.News, _dataManager.News, new SetListOperationsSpec());
+			Run(_dataContext.News, _dataManager.News, new SetQuerySpec());
 		}
 
 		public void Projection()
 		{
-			Run(_dataContext.News, _dataManager.News, new ProjectionListOperationsSpec());
+			Run(_dataContext.News, _dataManager.News, new ProjectionQuerySpec());
 		}
 
-		private void Run<T>(ISpList<T> list, IEnumerable<T> alternateList, ITestQueryProvider<T> queryProvider)
+		private void Run<T>(ISpList<T> list, IReadOnlyList<T> alternateList, IQueryTestsProvider<T> queryProvider)
 		{
-			queryProvider.GetTestQueries().Each(n => n.Test(list, alternateList.AsQueryable()));
+			var category = queryProvider.GetType().Name;
+			foreach (var queryTest in queryProvider.GetQueryTests())
+			{
+				Run(category, queryTest, list, alternateList);
+			}
+		}
+
+		private void Run<T>(string category, QueryTest<T> test, ISpList<T> list, IEnumerable<T> alternateList)
+		{
+			if (string.IsNullOrEmpty(FilePath))
+			{
+				test.Test(list, alternateList.AsQueryable());
+			}
+			else
+			{
+				new QueryTestPerfMeter<T>(FilePath, category, test).Test(list, alternateList.AsQueryable());
+			}
 		}
 
 		/// <summary>

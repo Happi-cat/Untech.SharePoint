@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using Untech.SharePoint.Common.Models;
 using Untech.SharePoint.Common.Test.Spec.Models;
+using Untech.SharePoint.Common.Test.Tools.QueryTests;
 
 namespace Untech.SharePoint.Common.Test.Spec
 {
 	/// <summary>
 	/// The aggregate methods are Aggregate, Average, Count, LongCount, Max, Min, and Sum.
 	/// </summary>
-	public class AggregateListOperationsSpec : ITestQueryProvider<NewsModel>
+	public class AggregateQuerySpec : IQueryTestsProvider<NewsModel>
 	{
 		#region [Count]
 
@@ -20,21 +21,21 @@ namespace Untech.SharePoint.Common.Test.Spec
 
 		public int CountPQuery(IQueryable<NewsModel> source)
 		{
-			return source.Count(n => n.Description.StartsWith("ABC"));
+			return source.Count(n => n.Description.StartsWith("DESCRIPTION"));
 		}
 
 		public int WhereCountQuery(IQueryable<NewsModel> source)
 		{
 			return source
-				.Where(n => n.Description.Contains("lorem"))
+				.Where(n => n.Description.Contains("DESCRIPTION"))
 				.Count();
 		}
 
 		public int WhereCountPQuery(IQueryable<NewsModel> source)
 		{
 			return source
-				.Where(n => n.Description.Contains("lorem"))
-				.Count(n => n.Title.StartsWith("lorem"));
+				.Where(n => n.Description.Contains("DESCRIPTION"))
+				.Count(n => n.Title.Contains("lorem"));
 		}
 
 		public int SelectCountQuery(IQueryable<NewsModel> source)
@@ -130,28 +131,28 @@ namespace Untech.SharePoint.Common.Test.Spec
 		#endregion
 
 
-		public IEnumerable<TestQuery<NewsModel>> GetTestQueries()
+		public IEnumerable<QueryTest<NewsModel>> GetQueryTests()
 		{
 			return new[]
 			{
-				TestQuery<NewsModel>.Create(CountQuery),
-				TestQuery<NewsModel>.Create(CountPQuery),
-				TestQuery<NewsModel>.Create(WhereCountQuery),
-				TestQuery<NewsModel>.Create(WhereCountPQuery),
-				TestQuery<NewsModel>.Create(SelectCountQuery),
-				TestQuery<NewsModel>.Create(Take10CountQuery), 
+				QueryTest<NewsModel>.Create(CountQuery),
+				QueryTest<NewsModel>.Create(CountPQuery),
+				QueryTest<NewsModel>.Create(WhereCountQuery),
+				QueryTest<NewsModel>.Create(WhereCountPQuery),
+				QueryTest<NewsModel>.Create(SelectCountQuery),
+				QueryTest<NewsModel>.Create(Take10CountQuery), 
 
-				TestQuery<NewsModel>.Create(MinPQuery),
-				TestQuery<NewsModel>.Create(WhereMinPQuery),
-				TestQuery<NewsModel>.Create(SelectMinQuery).Throws<NotSupportedException>(),
-				TestQuery<NewsModel>.Create(SelectMinPQuery).Throws<NotSupportedException>(),
-				TestQuery<NewsModel>.Create(Take10MinPQuery), 
+				QueryTest<NewsModel>.Create(MinPQuery),
+				QueryTest<NewsModel>.Create(WhereMinPQuery),
+				QueryTest<NewsModel>.Create(SelectMinQuery).Throws<NotSupportedException>(),
+				QueryTest<NewsModel>.Create(SelectMinPQuery).Throws<NotSupportedException>(),
+				QueryTest<NewsModel>.Create(Take10MinPQuery), 
 
-				TestQuery<NewsModel>.Create(MaxPQuery),
-				TestQuery<NewsModel>.Create(WhereMaxPQuery),
-				TestQuery<NewsModel>.Create(SelectMaxQuery).Throws<NotSupportedException>(),
-				TestQuery<NewsModel>.Create(SelectMaxPQuery).Throws<NotSupportedException>(),
-				TestQuery<NewsModel>.Create(Take10MaxPQuery), 
+				QueryTest<NewsModel>.Create(MaxPQuery),
+				QueryTest<NewsModel>.Create(WhereMaxPQuery),
+				QueryTest<NewsModel>.Create(SelectMaxQuery).Throws<NotSupportedException>(),
+				QueryTest<NewsModel>.Create(SelectMaxPQuery).Throws<NotSupportedException>(),
+				QueryTest<NewsModel>.Create(Take10MaxPQuery), 
 			};
 		}
 	}

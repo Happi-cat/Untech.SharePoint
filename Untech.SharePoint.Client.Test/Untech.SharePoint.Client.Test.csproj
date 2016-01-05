@@ -103,6 +103,7 @@
     <Compile Include="Converters\BuiltIn\UrlFieldConverterTest.cs" />
     <Compile Include="Data\DataContext.cs" />
     <Compile Include="Data\Bootstrap.cs" />
+    <Compile Include="Data\QueryablePerfTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Data\QueryableTest.cs" />
   </ItemGroup>

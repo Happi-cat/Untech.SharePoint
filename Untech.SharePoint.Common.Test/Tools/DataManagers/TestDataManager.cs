@@ -6,7 +6,7 @@ using Untech.SharePoint.Common.Test.Spec.Models;
 using Untech.SharePoint.Common.Test.Tools.Generators;
 using Untech.SharePoint.Common.Test.Tools.Generators.Basic;
 
-namespace Untech.SharePoint.Common.Test.Spec.DataManagers
+namespace Untech.SharePoint.Common.Test.Tools.DataManagers
 {
 	public class TestDataManager : IDisposable
 	{
@@ -23,10 +23,10 @@ namespace Untech.SharePoint.Common.Test.Spec.DataManagers
 			_projectsData = new ListTestDataManager<ProjectModel>(dataContext.Projects);
 		}
 
-		public IEnumerable<NewsModel> News { get { return _newsData.GeneratedItems; } }
-		public IEnumerable<EventModel> Events { get { return _eventsData.GeneratedItems; } }
-		public IEnumerable<TeamModel> Teams { get { return _teamsData.GeneratedItems; } }
-		public IEnumerable<ProjectModel> Projects { get { return _projectsData.GeneratedItems; } }
+		public IReadOnlyList<NewsModel> News { get { return _newsData.GeneratedItems; } }
+		public IReadOnlyList<EventModel> Events { get { return _eventsData.GeneratedItems; } }
+		public IReadOnlyList<TeamModel> Teams { get { return _teamsData.GeneratedItems; } }
+		public IReadOnlyList<ProjectModel> Projects { get { return _projectsData.GeneratedItems; } }
 
 		public void Init()
 		{
@@ -50,12 +50,12 @@ namespace Untech.SharePoint.Common.Test.Spec.DataManagers
 		private void GenerateNews()
 		{
 			_newsData
-				.WithArray(20, Generators.GetNewsGenerator())
-				.WithArray(20, Generators.GetNewsGenerator()
+				.WithArray(20, Spec.Models.Generators.GetNewsGenerator())
+				.WithArray(20, Spec.Models.Generators.GetNewsGenerator()
 					.WithRange(x => x.Description, new[] {"DESCRIPTION 1", "DESCRIPTION 2", "DESCRIPTION 3", "DESCRIPTION 4"}))
-				.WithArray(20, Generators.GetNewsGenerator()
+				.WithArray(20, Spec.Models.Generators.GetNewsGenerator()
 					.WithStatic(x => x.Description, "STATIC"))
-				.WithArray(1, Generators.GetNewsGenerator()
+				.WithArray(1, Spec.Models.Generators.GetNewsGenerator()
 					.WithStatic(x => x.Description, "SINGLETON"))
 				.Generate();
 		}
@@ -63,16 +63,16 @@ namespace Untech.SharePoint.Common.Test.Spec.DataManagers
 		private void GenerateEvents()
 		{
 			_eventsData
-				.WithArray(20, Generators.GetCompletedEventGenerator())
-				.WithArray(20, Generators.GetGoingEventGenerator())
-				.WithArray(20, Generators.GetFutureEventGenerator())
+				.WithArray(20, Spec.Models.Generators.GetCompletedEventGenerator())
+				.WithArray(20, Spec.Models.Generators.GetGoingEventGenerator())
+				.WithArray(20, Spec.Models.Generators.GetFutureEventGenerator())
 				.Generate();
 		}
 
 		private void GenerateTeams()
 		{
 			_teamsData
-				.WithArray(20, Generators.GetTeamGenerator())
+				.WithArray(20, Spec.Models.Generators.GetTeamGenerator())
 				.Generate();
 		}
 
@@ -89,8 +89,8 @@ namespace Untech.SharePoint.Common.Test.Spec.DataManagers
 				.ToList();
 
 			_projectsData
-				.WithArray(20, Generators.GetProjectGenerator())
-				.WithArray(20, Generators.GetProjectGenerator().WithRange(x => x.Team, teamsRefs))
+				.WithArray(20, Spec.Models.Generators.GetProjectGenerator())
+				.WithArray(20, Spec.Models.Generators.GetProjectGenerator().WithRange(x => x.Team, teamsRefs))
 				.Generate();
 		}
 
@@ -107,8 +107,8 @@ namespace Untech.SharePoint.Common.Test.Spec.DataManagers
 			};
 
 			_projectsData
-				.WithArray(10, Generators.GetProjectGenerator().With(x => x.SubProjects, subprojectGenerator))
-				.WithArray(10, Generators.GetProjectGenerator()
+				.WithArray(10, Spec.Models.Generators.GetProjectGenerator().With(x => x.SubProjects, subprojectGenerator))
+				.WithArray(10, Spec.Models.Generators.GetProjectGenerator()
 					.With(x => x.SubProjects, subprojectGenerator)
 					.WithStatic(x => x.Status, "Approved"))
 				.Generate();

@@ -7,7 +7,7 @@ using Untech.SharePoint.Common.Extensions;
 using Untech.SharePoint.Common.Test.Tools.Generators;
 using Untech.SharePoint.Common.Test.Tools.Generators.Basic;
 
-namespace Untech.SharePoint.Common.Test.Spec.DataManagers
+namespace Untech.SharePoint.Common.Test.Tools.DataManagers
 {
 	public class ListTestDataManager<T> : IDisposable
 	{
@@ -23,7 +23,7 @@ namespace Untech.SharePoint.Common.Test.Spec.DataManagers
 			_list = list;
 		}
 
-		public IEnumerable<T> GeneratedItems { get { return _addedItems; } }
+		public IReadOnlyList<T> GeneratedItems { get { return _addedItems; } }
 
 		public void Generate()
 		{

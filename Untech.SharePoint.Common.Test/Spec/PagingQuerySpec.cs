@@ -2,13 +2,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using Untech.SharePoint.Common.Test.Spec.Models;
+using Untech.SharePoint.Common.Test.Tools.Comparers;
+using Untech.SharePoint.Common.Test.Tools.QueryTests;
 
 namespace Untech.SharePoint.Common.Test.Spec
 {
 	/// <summary>
 	/// Paging operations return a single, specific element from a sequence. The element methods are ElementAt, First, FirstOrDefault, Last, LastOrDefault, Single, Skip, Take, TakeWhile.
 	/// </summary>
-	public class PagingListOperationsSpec : ITestQueryProvider<NewsModel>
+	public class PagingQuerySpec : IQueryTestsProvider<NewsModel>
 	{
 		#region [Single]
 
@@ -253,122 +255,114 @@ namespace Untech.SharePoint.Common.Test.Spec
 		public IEnumerable<NewsModel> TakeQuery(IQueryable<NewsModel> source)
 		{
 			return source
-				.Take(10)
-				.ToList();
+				.Take(10);
 		}
 
 		public IEnumerable<string> SelectTakeQuery(IQueryable<NewsModel> source)
 		{
 			return source
 				.Select(n => n.Title)
-				.Take(10)
-				.ToList();
+				.Take(10);
 		}
 
 		public IEnumerable<string> TakeSelectQuery(IQueryable<NewsModel> source)
 		{
 			return source
 				.Take(10)
-				.Select(n => n.Title)
-				.ToList();
+				.Select(n => n.Title);
 		}
 
 		public IEnumerable<NewsModel> WhereTakeQuery(IQueryable<NewsModel> source)
 		{
 			return source
 				.Where(n => n.Description.Contains("DESCRIPTION"))
-				.Take(10)
-				.ToList();
+				.Take(10);
 		}
 
 		public IEnumerable<NewsModel> TakeWhereQuery(IQueryable<NewsModel> source)
 		{
 			return source
 				.Take(10)
-				.Where(n => n.Description.Contains("DESCRIPTION"))
-				.ToList();
+				.Where(n => n.Description.Contains("DESCRIPTION"));
 		}
 
 		public IEnumerable<NewsModel> OrderByTakeQuery(IQueryable<NewsModel> source)
 		{
 			return source
 				.OrderBy(n => n.Title)
-				.Take(10)
-				.ToList();
+				.Take(10);
 		}
 
 		public IEnumerable<NewsModel> TakeOrderByQuery(IQueryable<NewsModel> source)
 		{
 			return source
 				.Take(10)
-				.OrderBy(n => n.Title)
-				.ToList();
+				.OrderBy(n => n.Title);
 		}
 
 		public IEnumerable<NewsModel> TakeTakeQuery(IQueryable<NewsModel> source)
 		{
 			return source
 				.Take(10)
-				.Take(2)
-				.ToList();
+				.Take(2);
 		}
 
 		#endregion
 
 
-		public IEnumerable<TestQuery<NewsModel>> GetTestQueries()
+		public IEnumerable<QueryTest<NewsModel>> GetQueryTests()
 		{
 			return new[]
 			{
-				TestQuery<NewsModel>.Create(SingleQuery, EntityComparer.Default),
-				TestQuery<NewsModel>.Create(SelectSingleQuery),
-				TestQuery<NewsModel>.Create(Take10SingleQuery, EntityComparer.Default),
-				TestQuery<NewsModel>.Create(SingleOrDefaultQuery, EntityComparer.Default),
+				QueryTest<NewsModel>.Create(SingleQuery, EntityComparer.Default),
+				QueryTest<NewsModel>.Create(SelectSingleQuery),
+				QueryTest<NewsModel>.Create(Take10SingleQuery, EntityComparer.Default),
+				QueryTest<NewsModel>.Create(SingleOrDefaultQuery, EntityComparer.Default),
 
-				TestQuery<NewsModel>.Create(SinglePQuery, EntityComparer.Default),
-				TestQuery<NewsModel>.Create(SelectSinglePQuery).Throws<NotSupportedException>(),
-				TestQuery<NewsModel>.Create(Take10SinglePQuery).Throws<NotSupportedException>(),
-				TestQuery<NewsModel>.Create(SingleOrDefaultPQuery, EntityComparer.Default),
+				QueryTest<NewsModel>.Create(SinglePQuery, EntityComparer.Default),
+				QueryTest<NewsModel>.Create(SelectSinglePQuery).Throws<NotSupportedException>(),
+				QueryTest<NewsModel>.Create(Take10SinglePQuery).Throws<NotSupportedException>(),
+				QueryTest<NewsModel>.Create(SingleOrDefaultPQuery, EntityComparer.Default),
 
-				TestQuery<NewsModel>.Create(ElementAtQuery, EntityComparer.Default),
-				TestQuery<NewsModel>.Create(Take10ElementAtQuery).Throws<NotSupportedException>(),
-				TestQuery<NewsModel>.Create(SelectElementAtQuery),
-				TestQuery<NewsModel>.Create(ElementAtOrDefaultQuery, EntityComparer.Default),
+				QueryTest<NewsModel>.Create(ElementAtQuery, EntityComparer.Default),
+				QueryTest<NewsModel>.Create(Take10ElementAtQuery).Throws<NotSupportedException>(),
+				QueryTest<NewsModel>.Create(SelectElementAtQuery),
+				QueryTest<NewsModel>.Create(ElementAtOrDefaultQuery, EntityComparer.Default),
 				
-				TestQuery<NewsModel>.Create(FirstQuery, EntityComparer.Default),
-				TestQuery<NewsModel>.Create(Take10FirstQuery, EntityComparer.Default),
-				TestQuery<NewsModel>.Create(SelectFirstQuery),
-				TestQuery<NewsModel>.Create(WhereFirstQuery, EntityComparer.Default),
-				TestQuery<NewsModel>.Create(OrderByFirstQuery, EntityComparer.Default),
-				TestQuery<NewsModel>.Create(FirstOrDefaultQuery, EntityComparer.Default),
+				QueryTest<NewsModel>.Create(FirstQuery, EntityComparer.Default),
+				QueryTest<NewsModel>.Create(Take10FirstQuery, EntityComparer.Default),
+				QueryTest<NewsModel>.Create(SelectFirstQuery),
+				QueryTest<NewsModel>.Create(WhereFirstQuery, EntityComparer.Default),
+				QueryTest<NewsModel>.Create(OrderByFirstQuery, EntityComparer.Default),
+				QueryTest<NewsModel>.Create(FirstOrDefaultQuery, EntityComparer.Default),
 
-				TestQuery<NewsModel>.Create(FirstPQuery, EntityComparer.Default),
-				TestQuery<NewsModel>.Create(Take10FirstPQuery).Throws<NotSupportedException>(),
-				TestQuery<NewsModel>.Create(SelectFirstPQuery).Throws<NotSupportedException>(),
-				TestQuery<NewsModel>.Create(WhereFirstPQuery, EntityComparer.Default),
-				TestQuery<NewsModel>.Create(FirstPOrDefaultQuery, EntityComparer.Default),
+				QueryTest<NewsModel>.Create(FirstPQuery, EntityComparer.Default),
+				QueryTest<NewsModel>.Create(Take10FirstPQuery).Throws<NotSupportedException>(),
+				QueryTest<NewsModel>.Create(SelectFirstPQuery).Throws<NotSupportedException>(),
+				QueryTest<NewsModel>.Create(WhereFirstPQuery, EntityComparer.Default),
+				QueryTest<NewsModel>.Create(FirstPOrDefaultQuery, EntityComparer.Default),
 				
-				TestQuery<NewsModel>.Create(LastQuery, EntityComparer.Default),
-				TestQuery<NewsModel>.Create(Take10LastQuery).Throws<NotSupportedException>(),
-				TestQuery<NewsModel>.Create(SelectLastQuery),
-				TestQuery<NewsModel>.Create(WhereLastQuery, EntityComparer.Default),
-				TestQuery<NewsModel>.Create(OrderByLastQuery, EntityComparer.Default),
-				TestQuery<NewsModel>.Create(LastOrDefaultQuery, EntityComparer.Default),
+				QueryTest<NewsModel>.Create(LastQuery, EntityComparer.Default),
+				QueryTest<NewsModel>.Create(Take10LastQuery).Throws<NotSupportedException>(),
+				QueryTest<NewsModel>.Create(SelectLastQuery),
+				QueryTest<NewsModel>.Create(WhereLastQuery, EntityComparer.Default),
+				QueryTest<NewsModel>.Create(OrderByLastQuery, EntityComparer.Default),
+				QueryTest<NewsModel>.Create(LastOrDefaultQuery, EntityComparer.Default),
 
-				TestQuery<NewsModel>.Create(LastPQuery, EntityComparer.Default),
-				TestQuery<NewsModel>.Create(Take10LastPQuery).Throws<NotSupportedException>(),
-				TestQuery<NewsModel>.Create(SelectLastPQuery).Throws<NotSupportedException>(),
-				TestQuery<NewsModel>.Create(WhereLastPQuery, EntityComparer.Default),
-				TestQuery<NewsModel>.Create(LastPOrDefaultQuery, EntityComparer.Default),
+				QueryTest<NewsModel>.Create(LastPQuery, EntityComparer.Default),
+				QueryTest<NewsModel>.Create(Take10LastPQuery).Throws<NotSupportedException>(),
+				QueryTest<NewsModel>.Create(SelectLastPQuery).Throws<NotSupportedException>(),
+				QueryTest<NewsModel>.Create(WhereLastPQuery, EntityComparer.Default),
+				QueryTest<NewsModel>.Create(LastPOrDefaultQuery, EntityComparer.Default),
 
-				TestQuery<NewsModel>.Create(TakeQuery, EntitySequenceComparer.Default),
-				TestQuery<NewsModel>.Create(SelectTakeQuery, SequenceComparer<string>.Default),
-				TestQuery<NewsModel>.Create(TakeSelectQuery, SequenceComparer<string>.Default),
-				TestQuery<NewsModel>.Create(WhereTakeQuery, EntitySequenceComparer.Default),
-				TestQuery<NewsModel>.Create(TakeWhereQuery).Throws<NotSupportedException>(),
-				TestQuery<NewsModel>.Create(OrderByTakeQuery, EntitySequenceComparer.Default),
-				TestQuery<NewsModel>.Create(TakeOrderByQuery).Throws<NotSupportedException>(),
-				TestQuery<NewsModel>.Create(TakeTakeQuery).Throws<NotSupportedException>(),
+				QueryTest<NewsModel>.Create(TakeQuery, EntityComparer.Default),
+				QueryTest<NewsModel>.Create(SelectTakeQuery),
+				QueryTest<NewsModel>.Create(TakeSelectQuery),
+				QueryTest<NewsModel>.Create(WhereTakeQuery, EntityComparer.Default),
+				QueryTest<NewsModel>.Create(TakeWhereQuery).Throws<NotSupportedException>(),
+				QueryTest<NewsModel>.Create(OrderByTakeQuery, EntityComparer.Default),
+				QueryTest<NewsModel>.Create(TakeOrderByQuery).Throws<NotSupportedException>(),
+				QueryTest<NewsModel>.Create(TakeTakeQuery).Throws<NotSupportedException>(),
 			};
 		}
 	}

@@ -2,13 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using Untech.SharePoint.Common.Test.Spec.Models;
+using Untech.SharePoint.Common.Test.Tools.QueryTests;
 
 namespace Untech.SharePoint.Common.Test.Spec
 {
 	/// <summary>
 	/// The set methods are All, Any, Concat, Contains, DefaultIfEmpty, Distinct, EqualAll, Except, Intersect, and Union.
 	/// </summary>
-	public class SetListOperationsSpec : ITestQueryProvider<NewsModel>
+	public class SetQuerySpec : IQueryTestsProvider<NewsModel>
 	{
 		#region [All]
 
@@ -98,24 +99,24 @@ namespace Untech.SharePoint.Common.Test.Spec
 		#endregion
 
 
-		public IEnumerable<TestQuery<NewsModel>> GetTestQueries()
+		public IEnumerable<QueryTest<NewsModel>> GetQueryTests()
 		{
 			return new[]
 			{
-				TestQuery<NewsModel>.Create(AllQuery),
-				TestQuery<NewsModel>.Create(WhereAllQuery),
-				TestQuery<NewsModel>.Create(SelectAllQuery).Throws<NotSupportedException>(),
-				TestQuery<NewsModel>.Create(Take10AllQuery).Throws<NotSupportedException>(),
+				QueryTest<NewsModel>.Create(AllQuery),
+				QueryTest<NewsModel>.Create(WhereAllQuery),
+				QueryTest<NewsModel>.Create(SelectAllQuery).Throws<NotSupportedException>(),
+				QueryTest<NewsModel>.Create(Take10AllQuery).Throws<NotSupportedException>(),
 
-				TestQuery<NewsModel>.Create(AnyQuery),
-				TestQuery<NewsModel>.Create(WhereAnyQuery),
-				TestQuery<NewsModel>.Create(SelectAnyQuery),
-				TestQuery<NewsModel>.Create(Take10AnyQuery),
+				QueryTest<NewsModel>.Create(AnyQuery),
+				QueryTest<NewsModel>.Create(WhereAnyQuery),
+				QueryTest<NewsModel>.Create(SelectAnyQuery),
+				QueryTest<NewsModel>.Create(Take10AnyQuery),
 
-				TestQuery<NewsModel>.Create(AnyPQuery),
-				TestQuery<NewsModel>.Create(WhereAnyPQuery),
-				TestQuery<NewsModel>.Create(SelectAnyPQuery).Throws<NotSupportedException>(),
-				TestQuery<NewsModel>.Create(Take10AnyPQuery).Throws<NotSupportedException>(),
+				QueryTest<NewsModel>.Create(AnyPQuery),
+				QueryTest<NewsModel>.Create(WhereAnyPQuery),
+				QueryTest<NewsModel>.Create(SelectAnyPQuery).Throws<NotSupportedException>(),
+				QueryTest<NewsModel>.Create(Take10AnyPQuery).Throws<NotSupportedException>(),
 			};
 		}
 	}

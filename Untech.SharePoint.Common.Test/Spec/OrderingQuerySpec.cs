@@ -2,82 +2,75 @@
 using System.Collections.Generic;
 using System.Linq;
 using Untech.SharePoint.Common.Test.Spec.Models;
+using Untech.SharePoint.Common.Test.Tools.Comparers;
+using Untech.SharePoint.Common.Test.Tools.QueryTests;
 
 namespace Untech.SharePoint.Common.Test.Spec
 {
 	/// <summary>
 	/// The ordering methods are OrderBy, OrderByDescending, ThenBy, ThenByDescending, and Reverse.
 	/// </summary>
-	public class OrderingListOperationsSpec : ITestQueryProvider<ProjectModel>
+	public class OrderingQuerySpec : IQueryTestsProvider<ProjectModel>
 	{
 		public IEnumerable<ProjectModel> OrderByQuery(IQueryable<ProjectModel> source)
 		{
 			return source
-				.OrderBy(n => n.Technology)
-				.ToList();
+				.OrderBy(n => n.Technology);
 		}
 
 		public IEnumerable<ProjectModel> WhereOrderByQuery(IQueryable<ProjectModel> source)
 		{
 			return source
 				.Where(n => n.Status == "Approved")
-				.OrderBy(n => n.Technology)
-				.ToList();
+				.OrderBy(n => n.Technology);
 		}
 
 		public IEnumerable<ProjectModel> OrderByWhereQuery(IQueryable<ProjectModel> source)
 		{
 			return source
 				.OrderBy(n => n.Technology)
-				.Where(n => n.Status == "Approved")
-				.ToList();
+				.Where(n => n.Status == "Approved");
 		}
 
 		public IEnumerable<ProjectModel> Take10OrderByQuery(IQueryable<ProjectModel> source)
 		{
 			return source
 				.Take(10)
-				.OrderBy(n => n.Technology)
-				.ToList();
+				.OrderBy(n => n.Technology);
 		}
 
 		public IEnumerable<ProjectModel> OrderByTake10Query(IQueryable<ProjectModel> source)
 		{
 			return source
 				.OrderBy(n => n.Technology)
-				.Take(10)
-				.ToList();
+				.Take(10);
 		}
 
 		public IEnumerable<Tuple<string, string>> SelectOrderByQuery(IQueryable<ProjectModel> source)
 		{
 			return source
 				.Select(n => new Tuple<string, string>(n.Title, n.Technology))
-				.OrderBy(n => n.Item2)
-				.ToList();
+				.OrderBy(n => n.Item2);
 		}
 
 		public IEnumerable<ProjectModel> OrderByDescQuery(IQueryable<ProjectModel> source)
 		{
 			return source
-				.OrderByDescending(n => n.Technology)
-				.ToList();
+				.OrderByDescending(n => n.Technology);
 		}
 
 		public IEnumerable<ProjectModel> ThenByQuery(IQueryable<ProjectModel> source)
 		{
 			return source
 				.OrderBy(n => n.Technology)
-				.ThenBy(n => n.Title)
-				.ToList();
+				.ThenBy(n => n.Title);
 		}
 
 		public IEnumerable<ProjectModel> ThenByDescQuery(IQueryable<ProjectModel> source)
 		{
 			return source
 				.OrderBy(n => n.Technology)
-				.ThenByDescending(n => n.Title)
-				.ToList();
+				.ThenByDescending(n => n.Title);
 		}
 
 		public IEnumerable<ProjectModel> ReverseQuery(IQueryable<ProjectModel> source)
@@ -85,28 +78,27 @@ namespace Untech.SharePoint.Common.Test.Spec
 			return source
 				.OrderBy(n => n.Technology)
 				.ThenBy(n => n.Title)
-				.Reverse()
-				.ToList();
+				.Reverse();
 		}
 
-		public IEnumerable<TestQuery<ProjectModel>> GetTestQueries()
+		public IEnumerable<QueryTest<ProjectModel>> GetQueryTests()
 		{
 			return new[]
 			{
-				TestQuery<ProjectModel>.Create(OrderByQuery, EntitySequenceComparer.Default),
+				QueryTest<ProjectModel>.Create(OrderByQuery, EntityComparer.Default),
 
-				TestQuery<ProjectModel>.Create(WhereOrderByQuery, EntitySequenceComparer.Default),
-				TestQuery<ProjectModel>.Create(OrderByWhereQuery, EntitySequenceComparer.Default),
+				QueryTest<ProjectModel>.Create(WhereOrderByQuery, EntityComparer.Default),
+				QueryTest<ProjectModel>.Create(OrderByWhereQuery, EntityComparer.Default),
 
-				TestQuery<ProjectModel>.Create(SelectOrderByQuery).Throws<NotSupportedException>(),
+				QueryTest<ProjectModel>.Create(SelectOrderByQuery).Throws<NotSupportedException>(),
 
-				TestQuery<ProjectModel>.Create(Take10OrderByQuery).Throws<NotSupportedException>(),
-				TestQuery<ProjectModel>.Create(OrderByTake10Query, EntitySequenceComparer.Default),
+				QueryTest<ProjectModel>.Create(Take10OrderByQuery).Throws<NotSupportedException>(),
+				QueryTest<ProjectModel>.Create(OrderByTake10Query, EntityComparer.Default),
 
-				TestQuery<ProjectModel>.Create(OrderByDescQuery, EntitySequenceComparer.Default),
-				TestQuery<ProjectModel>.Create(ThenByQuery, EntitySequenceComparer.Default),
-				TestQuery<ProjectModel>.Create(ThenByDescQuery, EntitySequenceComparer.Default),
-				TestQuery<ProjectModel>.Create(ReverseQuery, EntitySequenceComparer.Default),
+				QueryTest<ProjectModel>.Create(OrderByDescQuery, EntityComparer.Default),
+				QueryTest<ProjectModel>.Create(ThenByQuery, EntityComparer.Default),
+				QueryTest<ProjectModel>.Create(ThenByDescQuery, EntityComparer.Default),
+				QueryTest<ProjectModel>.Create(ReverseQuery, EntityComparer.Default),
 			};
 		}
 	}
