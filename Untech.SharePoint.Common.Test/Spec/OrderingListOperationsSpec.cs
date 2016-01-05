@@ -36,7 +36,7 @@ namespace Untech.SharePoint.Common.Test.Spec
 		public IEnumerable<ProjectModel> Take10OrderByQuery(IQueryable<ProjectModel> source)
 		{
 			return source
-				.Where(n => n.Status == "Approved")
+				.Take(10)
 				.OrderBy(n => n.Technology)
 				.ToList();
 		}
@@ -45,7 +45,7 @@ namespace Untech.SharePoint.Common.Test.Spec
 		{
 			return source
 				.OrderBy(n => n.Technology)
-				.Where(n => n.Status == "Approved")
+				.Take(10)
 				.ToList();
 		}
 

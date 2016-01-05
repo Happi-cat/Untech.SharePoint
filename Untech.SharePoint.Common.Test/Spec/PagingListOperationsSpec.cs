@@ -253,56 +253,64 @@ namespace Untech.SharePoint.Common.Test.Spec
 		public IEnumerable<NewsModel> TakeQuery(IQueryable<NewsModel> source)
 		{
 			return source
-				.Take(10);
+				.Take(10)
+				.ToList();
 		}
 
 		public IEnumerable<string> SelectTakeQuery(IQueryable<NewsModel> source)
 		{
 			return source
 				.Select(n => n.Title)
-				.Take(10);
+				.Take(10)
+				.ToList();
 		}
 
 		public IEnumerable<string> TakeSelectQuery(IQueryable<NewsModel> source)
 		{
 			return source
 				.Take(10)
-				.Select(n => n.Title);
+				.Select(n => n.Title)
+				.ToList();
 		}
 
 		public IEnumerable<NewsModel> WhereTakeQuery(IQueryable<NewsModel> source)
 		{
 			return source
 				.Where(n => n.Description.Contains("DESCRIPTION"))
-				.Take(10);
+				.Take(10)
+				.ToList();
 		}
 
 		public IEnumerable<NewsModel> TakeWhereQuery(IQueryable<NewsModel> source)
 		{
 			return source
 				.Take(10)
-				.Where(n => n.Description.Contains("DESCRIPTION"));
+				.Where(n => n.Description.Contains("DESCRIPTION"))
+				.ToList();
 		}
 
 		public IEnumerable<NewsModel> OrderByTakeQuery(IQueryable<NewsModel> source)
 		{
 			return source
 				.OrderBy(n => n.Title)
-				.Take(10);
+				.Take(10)
+				.ToList();
 		}
 
 		public IEnumerable<NewsModel> TakeOrderByQuery(IQueryable<NewsModel> source)
 		{
 			return source
 				.Take(10)
-				.OrderBy(n => n.Title);
+				.OrderBy(n => n.Title)
+				.ToList();
 		}
 
 		public IEnumerable<NewsModel> TakeTakeQuery(IQueryable<NewsModel> source)
 		{
 			return source
 				.Take(10)
-				.Take(2);
+				.Take(2)
+				.ToList();
 		}
 
 		#endregion
@@ -314,7 +322,7 @@ namespace Untech.SharePoint.Common.Test.Spec
 			{
 				TestQuery<NewsModel>.Create(SingleQuery, EntityComparer.Default),
 				TestQuery<NewsModel>.Create(SelectSingleQuery),
-				TestQuery<NewsModel>.Create(Take10SingleQuery),
+				TestQuery<NewsModel>.Create(Take10SingleQuery, EntityComparer.Default),
 				TestQuery<NewsModel>.Create(SingleOrDefaultQuery, EntityComparer.Default),
 
 				TestQuery<NewsModel>.Create(SinglePQuery, EntityComparer.Default),
@@ -323,7 +331,7 @@ namespace Untech.SharePoint.Common.Test.Spec
 				TestQuery<NewsModel>.Create(SingleOrDefaultPQuery, EntityComparer.Default),
 
 				TestQuery<NewsModel>.Create(ElementAtQuery, EntityComparer.Default),
-				TestQuery<NewsModel>.Create(Take10ElementAtQuery, EntityComparer.Default),
+				TestQuery<NewsModel>.Create(Take10ElementAtQuery).Throws<NotSupportedException>(),
 				TestQuery<NewsModel>.Create(SelectElementAtQuery),
 				TestQuery<NewsModel>.Create(ElementAtOrDefaultQuery, EntityComparer.Default),
 				
@@ -336,7 +344,7 @@ namespace Untech.SharePoint.Common.Test.Spec
 
 				TestQuery<NewsModel>.Create(FirstPQuery, EntityComparer.Default),
 				TestQuery<NewsModel>.Create(Take10FirstPQuery).Throws<NotSupportedException>(),
-				TestQuery<NewsModel>.Create(SelectFirstPQuery),
+				TestQuery<NewsModel>.Create(SelectFirstPQuery).Throws<NotSupportedException>(),
 				TestQuery<NewsModel>.Create(WhereFirstPQuery, EntityComparer.Default),
 				TestQuery<NewsModel>.Create(FirstPOrDefaultQuery, EntityComparer.Default),
 				
@@ -349,7 +357,7 @@ namespace Untech.SharePoint.Common.Test.Spec
 
 				TestQuery<NewsModel>.Create(LastPQuery, EntityComparer.Default),
 				TestQuery<NewsModel>.Create(Take10LastPQuery).Throws<NotSupportedException>(),
-				TestQuery<NewsModel>.Create(SelectLastPQuery),
+				TestQuery<NewsModel>.Create(SelectLastPQuery).Throws<NotSupportedException>(),
 				TestQuery<NewsModel>.Create(WhereLastPQuery, EntityComparer.Default),
 				TestQuery<NewsModel>.Create(LastPOrDefaultQuery, EntityComparer.Default),
 

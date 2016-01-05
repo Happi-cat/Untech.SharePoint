@@ -10,14 +10,16 @@ namespace Untech.SharePoint.Common.Test.Spec
 		public IEnumerable<Tuple<string, string>> SelectQuery(IQueryable<NewsModel> source)
 		{
 			return source
-				.Select(n => new Tuple<string, string>(n.Title, n.Description));
+				.Select(n => new Tuple<string, string>(n.Title, n.Description))
+				.ToList();
 		}
 
 		public IEnumerable<string> SelectSelectQuery(IQueryable<NewsModel> source)
 		{
 			return source
 				.Select(n => new Tuple<string, string>(n.Title, n.Description))
-				.Select(n => n.Item1);
+				.Select(n => n.Item1)
+				.ToList();
 		}
 
 		public IEnumerable<TestQuery<NewsModel>> GetTestQueries()

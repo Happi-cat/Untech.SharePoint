@@ -24,7 +24,7 @@ namespace Untech.SharePoint.Common.Mappings.Annotation
 
 		public static bool IsAnnotated(MemberInfo member)
 		{
-			return member.IsDefined(typeof(SpFieldAttribute), true) && !member.IsDefined(typeof(SpFieldRemovedAttribute), true);
+			return member.IsDefined(typeof(SpFieldAttribute)) && !member.IsDefined(typeof(SpFieldRemovedAttribute));
 		}
 
 		public static AnnotatedFieldPart Create(PropertyInfo property)

@@ -422,7 +422,8 @@ namespace Untech.SharePoint.Common.Test.Data.Translators
 				              "<RowLimit>1</RowLimit>" +
 				              "<Query>" +
 				              "<Where><Eq><FieldRef Name='Bool1' /><Value>True</Value></Eq></Where>" +
-				              "</Query>" +
+							  "<OrderBy><FieldRef Name='ID' Ascending='FALSE' /></OrderBy>" +
+							  "</Query>" +
 				              "<ViewFields><FieldRef Name='Int1' /><FieldRef Name='String1' /></ViewFields>" +
 				              "</View>");
 		}
@@ -457,6 +458,7 @@ namespace Untech.SharePoint.Common.Test.Data.Translators
 				              "<RowLimit>1</RowLimit>" +
 				              "<Query>" +
 				              "<Where><Eq><FieldRef Name='Bool1' /><Value>True</Value></Eq></Where>" +
+							  "<OrderBy><FieldRef Name='ID' Ascending='FALSE' /></OrderBy>" +
 				              "</Query>" +
 				              "<ViewFields><FieldRef Name='Int1' /><FieldRef Name='String1' /></ViewFields>" +
 				              "</View>");
