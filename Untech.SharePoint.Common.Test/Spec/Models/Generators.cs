@@ -47,8 +47,12 @@ namespace Untech.SharePoint.Common.Test.Spec.Models
 			return GetBaseEntityGenerator<ProjectModel>()
 				.WithActualDate(n => n.ProjectStart)
 				.WithActualDate(n => n.ProjectEnd)
-				.WithArray(n => n.OSes, 3, new[] {"Linux", "MaxOS", "Windows"})
-				.WithRange(n => n.Status, new[] {"Approved"})
+				.With(n => n.OSes, new ArrayGenerator<string>(new RangeGenerator<string>(new[] {"Linux", "MacOS", "Windows"}))
+				{
+					Size = 3,
+					Options = ArrayGenerationOptions.RandomSize
+				})
+				.WithRange(n => n.Status, new[] {"Approved", "Cancelled", "Completed", "Rejected"})
 				.WithRange(n => n.Technology, new[] {".NET", "NodeJS", "Java"});
 		}
 

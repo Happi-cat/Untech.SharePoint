@@ -7,12 +7,6 @@ using Untech.SharePoint.Common.Data;
 
 namespace Untech.SharePoint.Common.Test.Spec
 {
-	public enum TestQueryType
-	{
-		Supported,
-		Unsupported
-	}
-
 	public interface ITestQueryProvider<T>
 	{
 		IEnumerable<TestQuery<T>> GetTestQueries();
@@ -25,7 +19,7 @@ namespace Untech.SharePoint.Common.Test.Spec
 			Stopwatch = new Stopwatch();
 		}
 
-		public Stopwatch Stopwatch { get; private set; }
+		public Stopwatch Stopwatch { get; protected set; }
 
 		public static TestQuery<T> Create<TResult>(Func<IQueryable<T>, TResult> query)
 		{
@@ -37,26 +31,41 @@ namespace Untech.SharePoint.Common.Test.Spec
 			return new TestQuery<T, TResult>(query, comparer);
 		}
 
-		public static TestQuery<T> CreateNotSupported<TResult>(Func<IQueryable<T>, TResult> query)
+		public abstract void Test(ISpList<T> list, IQueryable<T> alternateList);
+
+		public TestQuery<T> Throws<TException>()
+			where TException : Exception
 		{
-			return new TestQuery<T, TResult>(query, TestQueryType.Unsupported);
+			return new TestQueryExceptionWrapper<T, TException>(this);
+		}
+	}
+
+	public class TestQueryExceptionWrapper<T, TException> : TestQuery<T>
+		where TException: Exception
+	{
+		private readonly TestQuery<T> _inner;
+
+		public TestQueryExceptionWrapper(TestQuery<T> inner)
+		{
+			_inner = inner;
+			Stopwatch = inner.Stopwatch;
 		}
 
-		public abstract void Test(ISpList<T> list, IQueryable<T> alternateList);
+		public override void Test(ISpList<T> list, IQueryable<T> alternateList)
+		{
+			CustomAssert.Throw<TException>(() => _inner.Test(list, alternateList));
+		}
+
+		public override string ToString()
+		{
+			return _inner.ToString();
+		}
 	}
 
 	public class TestQuery<T, TResult> : TestQuery<T>
 	{
-		private readonly bool _notSupported;
 		private readonly Func<IQueryable<T>, TResult> _query;
 		private readonly IEqualityComparer<TResult> _comparer;
-
-		public TestQuery(Func<IQueryable<T>, TResult> query, TestQueryType type = TestQueryType.Supported)
-		{
-			_query = query;
-			_comparer = EqualityComparer<TResult>.Default;
-			_notSupported = type == TestQueryType.Unsupported;
-		}
 
 		public TestQuery(Func<IQueryable<T>, TResult> query, IEqualityComparer<TResult> comparer)
 		{
@@ -64,17 +73,31 @@ namespace Untech.SharePoint.Common.Test.Spec
 			_comparer = comparer;
 		}
 
-
 		public override void Test(ISpList<T> list, IQueryable<T> alternateList)
 		{
-			if (_notSupported)
-			{
-				CustomAssert.Throw<NotSupportedException>(() => TestInternal(list, alternateList));
-			}
-			else
+			try
 			{
 				TestInternal(list, alternateList);
 			}
+			catch (Exception e)
+			{
+				e.Data["Query"] = _query;
+				e.Data["QueryName"] = _query.Method.Name;
+
+				throw;
+			}
+		}
+
+		private void TestInternal(ISpList<T> list, IQueryable<T> alternateList)
+		{
+			Stopwatch.Start();
+			var loadedResult = _query(list);
+			Stopwatch.Stop();
+
+			var expectedResult = _query(alternateList);
+
+			Assert.IsTrue(_comparer.Equals(loadedResult, expectedResult), "Query '{0}' is not equal to expected data",
+				_query.Method.Name);
 		}
 
 		/// <summary>
@@ -86,17 +109,6 @@ namespace Untech.SharePoint.Common.Test.Spec
 		public override string ToString()
 		{
 			return _query.Method.Name;
-		}
-
-		private void TestInternal(IQueryable<T> list, IQueryable<T> alternateList)
-		{
-			Stopwatch.Start();
-			var loadedResult = _query(list);
-			Stopwatch.Stop();
-
-			var expectedResult = _query(alternateList);
-
-			Assert.IsTrue(_comparer.Equals(loadedResult, expectedResult), "Query '{0}' is not equal to expected data", _query.Method.Name);
 		}
 	}
 }

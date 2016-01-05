@@ -52,7 +52,7 @@ namespace Untech.SharePoint.Common.Test.Spec.DataManagers
 			_newsData
 				.WithArray(20, Generators.GetNewsGenerator())
 				.WithArray(20, Generators.GetNewsGenerator()
-						.WithRange(x => x.Description, new[] {"DESCRIPTION 1", "DESCRIPTION 2", "DESCRIPTION 3", "DESCRIPTION 4"}))
+					.WithRange(x => x.Description, new[] {"DESCRIPTION 1", "DESCRIPTION 2", "DESCRIPTION 3", "DESCRIPTION 4"}))
 				.WithArray(20, Generators.GetNewsGenerator()
 					.WithStatic(x => x.Description, "STATIC"))
 				.WithArray(1, Generators.GetNewsGenerator()
@@ -78,15 +78,24 @@ namespace Untech.SharePoint.Common.Test.Spec.DataManagers
 
 		private void GenerateProjects()
 		{
+			GenerateProjects1();
+			GenerateProjects2();
+		}
+
+		private void GenerateProjects1()
+		{
 			var teamsRefs = _teamsData.GeneratedItems
-				.Select(n => new ObjectReference{ Id = n.Id })
+				.Select(n => new ObjectReference { Id = n.Id })
 				.ToList();
 
 			_projectsData
 				.WithArray(20, Generators.GetProjectGenerator())
 				.WithArray(20, Generators.GetProjectGenerator().WithRange(x => x.Team, teamsRefs))
 				.Generate();
+		}
 
+		private void GenerateProjects2()
+		{
 			var parentRefs = _projectsData.GeneratedItems
 				.Select(n => new ObjectReference { Id = n.Id })
 				.ToList();
@@ -98,7 +107,10 @@ namespace Untech.SharePoint.Common.Test.Spec.DataManagers
 			};
 
 			_projectsData
-				.WithArray(20, Generators.GetProjectGenerator().With(x => x.SubProjects, subprojectGenerator))
+				.WithArray(10, Generators.GetProjectGenerator().With(x => x.SubProjects, subprojectGenerator))
+				.WithArray(10, Generators.GetProjectGenerator()
+					.With(x => x.SubProjects, subprojectGenerator)
+					.WithStatic(x => x.Status, "Approved"))
 				.Generate();
 		}
 	}
