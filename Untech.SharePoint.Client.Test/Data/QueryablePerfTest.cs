@@ -13,22 +13,14 @@ namespace Untech.SharePoint.Client.Test.Data
 		[ClassInitialize]
 		public static void Init(TestContext ctx)
 		{
-			_spec = new QueryableSpec(GetContext())
-			{
-				FilePath = @"C:\Perf-Client.csv"
-			};
+			_spec = new QueryableSpec(GetContext());
 			_spec.Init();
 		}
 
 		[TestMethod]
 		public void Measure()
 		{
-			_spec.Aggregate();
-			_spec.Filtering();
-			_spec.Ordering();
-			_spec.Paging();
-			_spec.Set();
-			_spec.Projection();
+			_spec.MeasurePerfomance(@"C:\Perf-Client.csv");
 		}
 
 		private static IDataContext GetContext()

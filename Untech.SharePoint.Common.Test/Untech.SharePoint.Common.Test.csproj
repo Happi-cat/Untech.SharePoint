@@ -89,6 +89,7 @@
     <Compile Include="CustomAssert.cs" />
     <Compile Include="Mappings\Annotation\AnnotatedContextMappingTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Spec\PerfQuerySpec.cs" />
     <Compile Include="Tools\Comparers\EntityComparer.cs" />
     <Compile Include="Tools\Comparers\SequenceComparer.cs" />
     <Compile Include="Tools\DataGenerators\ListTestDataManager.cs" />

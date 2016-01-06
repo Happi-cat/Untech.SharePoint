@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Untech.SharePoint.Common.Data;
 using Untech.SharePoint.Common.Test.Spec.Models;
@@ -18,8 +17,6 @@ namespace Untech.SharePoint.Common.Test.Spec
 			_dataContext = dataContext;
 			_dataManager = new TestDataManager(_dataContext);
 		}
-
-		public string FilePath { get; set; }
 
 		public void Init()
 		{
@@ -56,24 +53,26 @@ namespace Untech.SharePoint.Common.Test.Spec
 			Run(_dataContext.News, _dataManager.News, new ProjectionQuerySpec());
 		}
 
+		public void MeasurePerfomance(string filePath)
+		{
+			RunPerfomance(_dataContext.News, _dataManager.News, new PerfQuerySpec(), filePath);
+		}
+
 		private void Run<T>(ISpList<T> list, IReadOnlyList<T> alternateList, IQueryTestsProvider<T> queryProvider)
+		{
+			foreach (var queryTest in queryProvider.GetQueryTests())
+			{
+				queryTest.Test(list, alternateList.AsQueryable());
+			}
+		}
+
+		private void RunPerfomance<T>(ISpList<T> list, IReadOnlyList<T> alternateList, IQueryTestsProvider<T> queryProvider, string filePath)
 		{
 			var category = queryProvider.GetType().Name;
 			foreach (var queryTest in queryProvider.GetQueryTests())
 			{
-				Run(category, queryTest, list, alternateList);
-			}
-		}
-
-		private void Run<T>(string category, QueryTest<T> test, ISpList<T> list, IEnumerable<T> alternateList)
-		{
-			if (string.IsNullOrEmpty(FilePath))
-			{
-				test.Test(list, alternateList.AsQueryable());
-			}
-			else
-			{
-				new QueryTestPerfMeter<T>(FilePath, category, test).Test(list, alternateList.AsQueryable());
+				new QueryTestPerfMeter<T>(filePath, category, queryTest)
+					.Test(list, alternateList.AsQueryable());
 			}
 		}
 	}
