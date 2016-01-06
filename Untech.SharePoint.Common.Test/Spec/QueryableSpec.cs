@@ -8,7 +8,7 @@ using Untech.SharePoint.Common.Test.Tools.QueryTests;
 
 namespace Untech.SharePoint.Common.Test.Spec
 {
-	public class QueryableSpec : IDisposable
+	public class QueryableSpec
 	{
 		private readonly IDataContext _dataContext;
 		private readonly TestDataManager _dataManager;
@@ -75,14 +75,6 @@ namespace Untech.SharePoint.Common.Test.Spec
 			{
 				new QueryTestPerfMeter<T>(FilePath, category, test).Test(list, alternateList.AsQueryable());
 			}
-		}
-
-		/// <summary>
-		/// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-		/// </summary>
-		public void Dispose()
-		{
-			_dataManager.Dispose();
 		}
 	}
 }

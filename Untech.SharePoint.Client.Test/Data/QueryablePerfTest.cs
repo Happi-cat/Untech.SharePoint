@@ -31,12 +31,6 @@ namespace Untech.SharePoint.Client.Test.Data
 			_spec.Projection();
 		}
 
-		[ClassCleanup]
-		public static void Cleanup()
-		{
-			_spec.Dispose();
-		}
-
 		private static IDataContext GetContext()
 		{
 			var context = new ClientContext(@"http://sp2013dev/sites/orm-test");

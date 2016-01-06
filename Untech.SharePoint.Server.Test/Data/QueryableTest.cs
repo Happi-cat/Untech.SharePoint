@@ -53,12 +53,6 @@ namespace Untech.SharePoint.Server.Test.Data
 			_spec.Projection();
 		}
 
-		[ClassCleanup]
-		public static void Cleanup()
-		{
-			_spec.Dispose();
-		}
-
 		private static IDataContext GetContext()
 		{
 			var site = new SPSite(@"http://sp2013dev/sites/orm-test", SPUserToken.SystemAccount);
