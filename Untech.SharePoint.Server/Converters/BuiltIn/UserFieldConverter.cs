@@ -106,7 +106,7 @@ namespace Untech.SharePoint.Server.Converters.BuiltIn
 			{
 				Id = userValue.LookupId,
 				Login = userValue.LookupValue,
-				Email = userValue.User.Email
+				//Email = userValue.User.Email
 			};
 		}
 	}
