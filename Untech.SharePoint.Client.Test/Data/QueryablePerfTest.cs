@@ -1,5 +1,8 @@
-﻿using Microsoft.SharePoint.Client;
+﻿using System.IO;
+using Microsoft.SharePoint.Client;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Untech.SharePoint.Client.Extensions;
+using Untech.SharePoint.Common.Extensions;
 using Untech.SharePoint.Common.Test.Spec;
 using Untech.SharePoint.Common.Test.Spec.Models;
 
@@ -8,19 +11,20 @@ namespace Untech.SharePoint.Client.Test.Data
 	[TestClass]
 	public class QueryablePerfTest
 	{
-		private static QueryableSpec _spec;
-
-		[ClassInitialize]
-		public static void Init(TestContext ctx)
-		{
-			_spec = new QueryableSpec(GetContext());
-			_spec.Init();
-		}
-
 		[TestMethod]
 		public void Measure()
 		{
-			_spec.MeasurePerfomance(@"C:\Perf-Client.csv");
+			var ctx = GetContext();
+			var webCtx = new ClientContext(@"http://sp2013dev/sites/orm-test");
+			var tests = new QueryablePerfomance().GetQueryTests();
+			var executor = new ClientQueryTestExecutor<NewsModel>
+			{
+				List = ctx.News,
+				SpList = webCtx.GetList("News"),
+				FilePath = @"C:\Perf-Client.csv"
+			};
+
+			tests.Each(executor.Execute);
 		}
 
 		private static IDataContext GetContext()
@@ -28,6 +32,5 @@ namespace Untech.SharePoint.Client.Test.Data
 			var context = new ClientContext(@"http://sp2013dev/sites/orm-test");
 			return new DataContext(context, Bootstrap.GetConfig());
 		}
-		 
 	}
 }

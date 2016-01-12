@@ -85,20 +85,20 @@ namespace Untech.SharePoint.Common.Test.Spec
 		{
 			return new[]
 			{
-				QueryTest<ProjectModel>.Create(OrderByQuery, EntityComparer.Default),
+				QueryTest<ProjectModel>.Functional(OrderByQuery, EntityComparer.Default),
 
-				QueryTest<ProjectModel>.Create(WhereOrderByQuery, EntityComparer.Default),
-				QueryTest<ProjectModel>.Create(OrderByWhereQuery, EntityComparer.Default),
+				QueryTest<ProjectModel>.Functional(WhereOrderByQuery, EntityComparer.Default),
+				QueryTest<ProjectModel>.Functional(OrderByWhereQuery, EntityComparer.Default),
 
-				QueryTest<ProjectModel>.Create(SelectOrderByQuery).Throws<NotSupportedException>(),
+				QueryTest<ProjectModel>.Functional(SelectOrderByQuery).Throws<NotSupportedException>(),
 
-				QueryTest<ProjectModel>.Create(Take10OrderByQuery).Throws<NotSupportedException>(),
-				QueryTest<ProjectModel>.Create(OrderByTake10Query, EntityComparer.Default),
+				QueryTest<ProjectModel>.Functional(Take10OrderByQuery).Throws<NotSupportedException>(),
+				QueryTest<ProjectModel>.Functional(OrderByTake10Query, EntityComparer.Default),
 
-				QueryTest<ProjectModel>.Create(OrderByDescQuery, EntityComparer.Default),
-				QueryTest<ProjectModel>.Create(ThenByQuery, EntityComparer.Default),
-				QueryTest<ProjectModel>.Create(ThenByDescQuery, EntityComparer.Default),
-				QueryTest<ProjectModel>.Create(ReverseQuery, EntityComparer.Default),
+				QueryTest<ProjectModel>.Functional(OrderByDescQuery, EntityComparer.Default),
+				QueryTest<ProjectModel>.Functional(ThenByQuery, EntityComparer.Default),
+				QueryTest<ProjectModel>.Functional(ThenByDescQuery, EntityComparer.Default),
+				QueryTest<ProjectModel>.Functional(ReverseQuery, EntityComparer.Default),
 			};
 		}
 	}

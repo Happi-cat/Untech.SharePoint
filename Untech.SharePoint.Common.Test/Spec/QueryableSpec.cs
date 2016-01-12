@@ -31,6 +31,7 @@ namespace Untech.SharePoint.Common.Test.Spec
 		public void Filtering()
 		{
 			Run(_dataContext.News, _dataManager.News, new FilteringQuerySpec());
+			Run(_dataContext.Projects, _dataManager.Projects, new FilteringQuerySpec());
 		}
 
 		public void Ordering()
@@ -53,26 +54,12 @@ namespace Untech.SharePoint.Common.Test.Spec
 			Run(_dataContext.News, _dataManager.News, new ProjectionQuerySpec());
 		}
 
-		public void MeasurePerfomance(string filePath)
-		{
-			RunPerfomance(_dataContext.News, _dataManager.News, new PerfQuerySpec(), filePath);
-		}
-
 		private void Run<T>(ISpList<T> list, IReadOnlyList<T> alternateList, IQueryTestsProvider<T> queryProvider)
 		{
+			var executor = QueryTestExecutor<T>.Functional(list, alternateList.AsQueryable());
 			foreach (var queryTest in queryProvider.GetQueryTests())
 			{
-				queryTest.Test(list, alternateList.AsQueryable());
-			}
-		}
-
-		private void RunPerfomance<T>(ISpList<T> list, IReadOnlyList<T> alternateList, IQueryTestsProvider<T> queryProvider, string filePath)
-		{
-			var category = queryProvider.GetType().Name;
-			foreach (var queryTest in queryProvider.GetQueryTests())
-			{
-				new QueryTestPerfMeter<T>(filePath, category, queryTest)
-					.Test(list, alternateList.AsQueryable());
+				queryTest.Accept(executor);
 			}
 		}
 	}

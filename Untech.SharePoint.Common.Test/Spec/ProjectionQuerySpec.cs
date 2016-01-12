@@ -25,8 +25,8 @@ namespace Untech.SharePoint.Common.Test.Spec
 		{
 			return new[]
 			{
-				QueryTest<NewsModel>.Create(SelectQuery),
-				QueryTest<NewsModel>.Create(SelectSelectQuery).Throws<NotSupportedException>()
+				QueryTest<NewsModel>.Functional(SelectQuery),
+				QueryTest<NewsModel>.Functional(SelectSelectQuery).Throws<NotSupportedException>()
 			};
 		}
 	}

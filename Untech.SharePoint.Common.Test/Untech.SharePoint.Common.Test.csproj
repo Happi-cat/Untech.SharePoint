@@ -89,11 +89,11 @@
     <Compile Include="CustomAssert.cs" />
     <Compile Include="Mappings\Annotation\AnnotatedContextMappingTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Spec\PerfQuerySpec.cs" />
+    <Compile Include="Spec\QueryablePerfomance.cs" />
     <Compile Include="Tools\Comparers\EntityComparer.cs" />
     <Compile Include="Tools\Comparers\SequenceComparer.cs" />
-    <Compile Include="Tools\DataGenerators\ListTestDataManager.cs" />
-    <Compile Include="Tools\DataGenerators\TestDataManager.cs" />
+    <Compile Include="Tools\DataGenerators\ListTestDataGenerator.cs" />
+    <Compile Include="Tools\DataGenerators\TestDataGenerator.cs" />
     <Compile Include="Tools\DataManagers\ListTestDataManager.cs" />
     <Compile Include="Spec\PagingQuerySpec.cs" />
     <Compile Include="Spec\OrderingQuerySpec.cs" />
@@ -104,7 +104,6 @@
     <Compile Include="Tools\DataManagers\TestDataManager.cs" />
     <Compile Include="Tools\QueryTests\IQueryTestsProvider.cs" />
     <Compile Include="Tools\QueryTests\QueryTest.cs" />
-    <Compile Include="Tools\QueryTests\QueryTestExceptionWrapper.cs" />
     <Compile Include="Tools\Generators\Basic\ArrayGenerationOptions.cs" />
     <Compile Include="Spec\AggregateQuerySpec.cs" />
     <Compile Include="Tools\DataGenerators\Generators.cs" />
@@ -128,7 +127,7 @@
     <Compile Include="Tools\Generators\ObjectGenerator.cs" />
     <Compile Include="Tools\Generators\ObjectGeneratorExtensions.cs" />
     <Compile Include="Tools\Generators\IValueGenerator.cs" />
-    <Compile Include="Tools\QueryTests\QueryTestPerfMeter.cs" />
+    <Compile Include="Tools\QueryTests\QueryTestExecutor.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Untech.SharePoint.Common\Untech.SharePoint.Common.csproj">

@@ -135,24 +135,24 @@ namespace Untech.SharePoint.Common.Test.Spec
 		{
 			return new[]
 			{
-				QueryTest<NewsModel>.Create(CountQuery),
-				QueryTest<NewsModel>.Create(CountPQuery),
-				QueryTest<NewsModel>.Create(WhereCountQuery),
-				QueryTest<NewsModel>.Create(WhereCountPQuery),
-				QueryTest<NewsModel>.Create(SelectCountQuery),
-				QueryTest<NewsModel>.Create(Take10CountQuery), 
+				QueryTest<NewsModel>.Functional(CountQuery),
+				QueryTest<NewsModel>.Functional(CountPQuery),
+				QueryTest<NewsModel>.Functional(WhereCountQuery),
+				QueryTest<NewsModel>.Functional(WhereCountPQuery),
+				QueryTest<NewsModel>.Functional(SelectCountQuery),
+				QueryTest<NewsModel>.Functional(Take10CountQuery), 
 
-				QueryTest<NewsModel>.Create(MinPQuery),
-				QueryTest<NewsModel>.Create(WhereMinPQuery),
-				QueryTest<NewsModel>.Create(SelectMinQuery).Throws<NotSupportedException>(),
-				QueryTest<NewsModel>.Create(SelectMinPQuery).Throws<NotSupportedException>(),
-				QueryTest<NewsModel>.Create(Take10MinPQuery), 
+				QueryTest<NewsModel>.Functional(MinPQuery),
+				QueryTest<NewsModel>.Functional(WhereMinPQuery),
+				QueryTest<NewsModel>.Functional(SelectMinQuery).Throws<NotSupportedException>(),
+				QueryTest<NewsModel>.Functional(SelectMinPQuery).Throws<NotSupportedException>(),
+				QueryTest<NewsModel>.Functional(Take10MinPQuery), 
 
-				QueryTest<NewsModel>.Create(MaxPQuery),
-				QueryTest<NewsModel>.Create(WhereMaxPQuery),
-				QueryTest<NewsModel>.Create(SelectMaxQuery).Throws<NotSupportedException>(),
-				QueryTest<NewsModel>.Create(SelectMaxPQuery).Throws<NotSupportedException>(),
-				QueryTest<NewsModel>.Create(Take10MaxPQuery), 
+				QueryTest<NewsModel>.Functional(MaxPQuery),
+				QueryTest<NewsModel>.Functional(WhereMaxPQuery),
+				QueryTest<NewsModel>.Functional(SelectMaxQuery).Throws<NotSupportedException>(),
+				QueryTest<NewsModel>.Functional(SelectMaxPQuery).Throws<NotSupportedException>(),
+				QueryTest<NewsModel>.Functional(Take10MaxPQuery), 
 			};
 		}
 	}

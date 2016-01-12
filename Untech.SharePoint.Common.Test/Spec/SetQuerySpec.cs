@@ -103,20 +103,20 @@ namespace Untech.SharePoint.Common.Test.Spec
 		{
 			return new[]
 			{
-				QueryTest<NewsModel>.Create(AllQuery),
-				QueryTest<NewsModel>.Create(WhereAllQuery),
-				QueryTest<NewsModel>.Create(SelectAllQuery).Throws<NotSupportedException>(),
-				QueryTest<NewsModel>.Create(Take10AllQuery).Throws<NotSupportedException>(),
+				QueryTest<NewsModel>.Functional(AllQuery),
+				QueryTest<NewsModel>.Functional(WhereAllQuery),
+				QueryTest<NewsModel>.Functional(SelectAllQuery).Throws<NotSupportedException>(),
+				QueryTest<NewsModel>.Functional(Take10AllQuery).Throws<NotSupportedException>(),
 
-				QueryTest<NewsModel>.Create(AnyQuery),
-				QueryTest<NewsModel>.Create(WhereAnyQuery),
-				QueryTest<NewsModel>.Create(SelectAnyQuery),
-				QueryTest<NewsModel>.Create(Take10AnyQuery),
+				QueryTest<NewsModel>.Functional(AnyQuery),
+				QueryTest<NewsModel>.Functional(WhereAnyQuery),
+				QueryTest<NewsModel>.Functional(SelectAnyQuery),
+				QueryTest<NewsModel>.Functional(Take10AnyQuery),
 
-				QueryTest<NewsModel>.Create(AnyPQuery),
-				QueryTest<NewsModel>.Create(WhereAnyPQuery),
-				QueryTest<NewsModel>.Create(SelectAnyPQuery).Throws<NotSupportedException>(),
-				QueryTest<NewsModel>.Create(Take10AnyPQuery).Throws<NotSupportedException>(),
+				QueryTest<NewsModel>.Functional(AnyPQuery),
+				QueryTest<NewsModel>.Functional(WhereAnyPQuery),
+				QueryTest<NewsModel>.Functional(SelectAnyPQuery).Throws<NotSupportedException>(),
+				QueryTest<NewsModel>.Functional(Take10AnyPQuery).Throws<NotSupportedException>(),
 			};
 		}
 	}

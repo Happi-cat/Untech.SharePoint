@@ -1,18 +1,26 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Untech.SharePoint.Common.Extensions;
 using Untech.SharePoint.Common.Test.Spec.Models;
 using Untech.SharePoint.Common.Test.Tools.Comparers;
 using Untech.SharePoint.Common.Test.Tools.QueryTests;
 
 namespace Untech.SharePoint.Common.Test.Spec
 {
-	public class FilteringQuerySpec : IQueryTestsProvider<NewsModel>
+	public class FilteringQuerySpec : IQueryTestsProvider<NewsModel>, IQueryTestsProvider<ProjectModel>
 	{
 		public IEnumerable<NewsModel> WhereQuery(IQueryable<NewsModel> source)
 		{
 			return source
 				.Where(n => n.Description.StartsWith("DESCRIPTION"));
+		}
+
+		public IEnumerable<ProjectModel> WhereQuery(IQueryable<ProjectModel> source)
+		{
+			return source
+				.Where(n => n.Status.In(new [] { "Approved", "Cancelled" }) && n.Technology == "Java")
+				.Where(n => n.OSes != null && n.OSes.Contains("Linux"));
 		}
 
 		public IEnumerable<NewsModel> WhereTake10Query(IQueryable<NewsModel> source)
@@ -56,14 +64,22 @@ namespace Untech.SharePoint.Common.Test.Spec
 		{
 			return new[]
 			{
-				QueryTest<NewsModel>.Create(WhereQuery, EntityComparer.Default),
+				QueryTest<NewsModel>.Functional(WhereQuery, EntityComparer.Default),
 
-				QueryTest<NewsModel>.Create(WhereTake10Query, EntityComparer.Default),
-				QueryTest<NewsModel>.Create(Take10WhereQuery).Throws<NotSupportedException>(),
+				QueryTest<NewsModel>.Functional(WhereTake10Query, EntityComparer.Default),
+				QueryTest<NewsModel>.Functional(Take10WhereQuery).Throws<NotSupportedException>(),
 
-				QueryTest<NewsModel>.Create(WhereWhereQuery, EntityComparer.Default),
-				QueryTest<NewsModel>.Create(WhereWhereTrueQuery, EntityComparer.Default),
-				QueryTest<NewsModel>.Create(WhereWhereFalseQuery, EntityComparer.Default)
+				QueryTest<NewsModel>.Functional(WhereWhereQuery, EntityComparer.Default),
+				QueryTest<NewsModel>.Functional(WhereWhereTrueQuery, EntityComparer.Default),
+				QueryTest<NewsModel>.Functional(WhereWhereFalseQuery, EntityComparer.Default)
+			};
+		}
+
+		IEnumerable<QueryTest<ProjectModel>> IQueryTestsProvider<ProjectModel>.GetQueryTests()
+		{
+			return new[]
+			{
+				QueryTest<ProjectModel>.Functional(WhereQuery, EntityComparer.Default)
 			};
 		}
 	}

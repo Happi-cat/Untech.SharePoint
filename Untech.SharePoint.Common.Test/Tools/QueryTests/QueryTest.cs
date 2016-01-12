@@ -1,9 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Untech.SharePoint.Common.Data;
 using Untech.SharePoint.Common.Test.Tools.Comparers;
 
 namespace Untech.SharePoint.Common.Test.Tools.QueryTests
@@ -12,174 +9,133 @@ namespace Untech.SharePoint.Common.Test.Tools.QueryTests
 	{
 		#region [Static]
 
-		public static QueryTest<T> Create<TResult>(Func<IQueryable<T>, TResult> query)
+		public static QueryTest<T> Functional<TResult>(Func<IQueryable<T>, TResult> query)
 		{
-			return new QueryObjectTest<T,TResult>(query, EqualityComparer<TResult>.Default);
+			return new ObjectQueryTest<T,TResult>(query, EqualityComparer<TResult>.Default);
 		}
 
-		public static QueryTest<T> Create<TResult>(Func<IQueryable<T>, IEnumerable<TResult>> query)
+		public static QueryTest<T> Functional<TResult>(Func<IQueryable<T>, IEnumerable<TResult>> query)
 		{
-			return new QuerySequenceTest<T,TResult>(query, SequenceComparer<TResult>.Default);
+			return new SequenceQueryTest<T,TResult>(query, SequenceComparer<TResult>.Default);
 		}
 
-		public static QueryTest<T> Create<TResult>(Func<IQueryable<T>, TResult> query, IEqualityComparer<TResult> comparer)
+		public static QueryTest<T> Functional<TResult>(Func<IQueryable<T>, TResult> query, IEqualityComparer<TResult> comparer)
 		{
-			return new QueryObjectTest<T, TResult>(query, comparer);
+			return new ObjectQueryTest<T, TResult>(query, comparer);
 		}
 
-		public static QueryTest<T> Create<TResult>(Func<IQueryable<T>, IEnumerable<TResult>> query,
+		public static QueryTest<T> Functional<TResult>(Func<IQueryable<T>, IEnumerable<TResult>> query,
 			IEqualityComparer<IEnumerable<TResult>> comparer)
 		{
-			return new QuerySequenceTest<T,TResult>(query, comparer);
+			return new SequenceQueryTest<T, TResult>(query, comparer);
+		}
+
+		public static QueryTest<T> Perfomance<TResult>(Func<IQueryable<T>, TResult> query, string caml)
+		{
+			return new ObjectQueryPerfTest<T, TResult>(query, caml);
+		}
+
+		public static QueryTest<T> Perfomance<TResult>(Func<IQueryable<T>, IEnumerable<TResult>> query, string caml)
+		{
+			return new SequenceQueryPerfTest<T, TResult>(query, caml);
 		}
 
 		#endregion
 
-
-		public abstract void Test(ISpList<T> list, IQueryable<T> alternateList);
-
-		public abstract TimeSpan GetElapsedTime();
-
-		public abstract int GetItemsCounter();
+		public abstract void Accept(QueryTestExecutor<T> executor);
 
 		public QueryTest<T> Throws<TException>()
 			where TException : Exception
 		{
-			return new QueryTestExceptionWrapper<T, TException>(this);
+			return new ExceptionQueryTest<T,TException>(this);
 		}
 	}
 
-	public class QueryObjectTest<T, TResult> : QueryTest<T>
+	public class ExceptionQueryTest<T, TException> : QueryTest<T>
+		where TException :Exception
 	{
-		private readonly Func<IQueryable<T>, TResult> _query;
-		private readonly IEqualityComparer<TResult> _comparer;
-		private readonly Stopwatch _stopwatch = new Stopwatch();
-		private int _itemsCounter;
-
-		public QueryObjectTest(Func<IQueryable<T>, TResult> query, IEqualityComparer<TResult> comparer)
+		public ExceptionQueryTest(QueryTest<T> inner)
 		{
-			_query = query;
-			_comparer = comparer;
+			Inner = inner;
 		}
 
-		public override void Test(ISpList<T> list, IQueryable<T> alternateList)
+		public QueryTest<T> Inner { get; private set; }
+
+		public override void Accept(QueryTestExecutor<T> executor)
 		{
-			try
-			{
-				var result = _comparer.Equals(GetResult(list), GetExpectedResult(alternateList));
-				Assert.IsTrue(result, "Query '{0}' is not equal to expected data", this);
-			}
-			catch (Exception e)
-			{
-				e.Data["Query"] = _query;
-				e.Data["QueryName"] = _query.Method.Name;
-
-				throw;
-			}
-		}
-
-		public override TimeSpan GetElapsedTime()
-		{
-			return _stopwatch.Elapsed;
-		}
-
-		public override int GetItemsCounter()
-		{
-			return _itemsCounter;
-		}
-
-		protected virtual TResult GetResult(ISpList<T> list)
-		{
-			_stopwatch.Start();
-			var loadedResult = _query(list);
-			_stopwatch.Stop();
-
-			_itemsCounter++;
-
-			return loadedResult;
-		}
-
-		protected virtual TResult GetExpectedResult(IQueryable<T> alternateList)
-		{
-			return _query(alternateList);
-		}
-
-		/// <summary>
-		/// Returns a string that represents the current object.
-		/// </summary>
-		/// <returns>
-		/// A string that represents the current object.
-		/// </returns>
-		public override string ToString()
-		{
-			return _query.Method.Name;
+			executor.Execute(this);
 		}
 	}
 
-	public class QuerySequenceTest<T, TResult> : QueryTest<T>
+	public class ObjectQueryTest<T, TResult> : QueryTest<T>
 	{
-		private readonly Func<IQueryable<T>, IEnumerable<TResult>> _query;
-		private readonly IEqualityComparer<IEnumerable<TResult>> _comparer;
-		private readonly Stopwatch _stopwatch = new Stopwatch();
-		private int _itemsCounter;
-
-		public QuerySequenceTest(Func<IQueryable<T>, IEnumerable<TResult>> query, IEqualityComparer<IEnumerable<TResult>> comparer)
+		public ObjectQueryTest(Func<IQueryable<T>, TResult> query, IEqualityComparer<TResult> comparer)
 		{
-			_query = query;
-			_comparer = comparer;
+			Query = query;
+			Comparer = comparer;
 		}
 
-		public override void Test(ISpList<T> list, IQueryable<T> alternateList)
-		{
-			try
-			{
-				var result = _comparer.Equals(GetResult(list), GetExpectedResult(alternateList));
-				Assert.IsTrue(result, "Query '{0}' is not equal to expected data", this);
-			}
-			catch (Exception e)
-			{
-				e.Data["Query"] = _query;
-				e.Data["QueryName"] = _query.Method.Name;
+		public Func<IQueryable<T>, TResult> Query { get; private set; }
 
-				throw;
-			}
+		public IEqualityComparer<TResult> Comparer { get; private set; }
+
+		public override void Accept(QueryTestExecutor<T> executor)
+		{
+			executor.Execute(this);
+		}
+	}
+
+	public class SequenceQueryTest<T, TResult> : QueryTest<T>
+	{
+		public SequenceQueryTest(Func<IQueryable<T>, IEnumerable<TResult>> query, IEqualityComparer<IEnumerable<TResult>> comparer)
+		{
+			Query = query;
+			Comparer = comparer;
 		}
 
-		public override TimeSpan GetElapsedTime()
+		public Func<IQueryable<T>, IEnumerable<TResult>> Query { get; private set; }
+
+		public IEqualityComparer<IEnumerable<TResult>> Comparer { get; private set; }
+
+		public override void Accept(QueryTestExecutor<T> executor)
 		{
-			return _stopwatch.Elapsed;
+			executor.Execute(this);
+		}
+	}
+
+	public class ObjectQueryPerfTest<T, TResult> : QueryTest<T>
+	{
+		public ObjectQueryPerfTest(Func<IQueryable<T>, TResult> query, string caml)
+		{
+			Query = query;
+			Caml = caml;
 		}
 
-		public override int GetItemsCounter()
+		public Func<IQueryable<T>, TResult> Query { get; private set; }
+
+		public string Caml { get; private set; }
+
+		public override void Accept(QueryTestExecutor<T> executor)
 		{
-			return _itemsCounter;
+			executor.Execute(this);
+		}
+	}
+
+	public class SequenceQueryPerfTest<T, TResult> : QueryTest<T>
+	{
+		public SequenceQueryPerfTest(Func<IQueryable<T>, IEnumerable<TResult>> query, string caml)
+		{
+			Query = query;
+			Caml = caml;
 		}
 
-		protected virtual IEnumerable<TResult> GetResult(ISpList<T> list)
+		public Func<IQueryable<T>, IEnumerable<TResult>> Query { get; private set; }
+
+		public string Caml { get; private set; }
+
+		public override void Accept(QueryTestExecutor<T> executor)
 		{
-			_stopwatch.Start();
-			var loadedResult = _query(list).ToList();
-			_stopwatch.Stop();
-
-			_itemsCounter += loadedResult.Count;
-
-			return loadedResult;
-		}
-
-		protected virtual IEnumerable<TResult> GetExpectedResult(IQueryable<T> alternateList)
-		{
-			return _query(alternateList).ToList();
-		}
-
-		/// <summary>
-		/// Returns a string that represents the current object.
-		/// </summary>
-		/// <returns>
-		/// A string that represents the current object.
-		/// </returns>
-		public override string ToString()
-		{
-			return _query.Method.Name;
+			executor.Execute(this);
 		}
 	}
 }

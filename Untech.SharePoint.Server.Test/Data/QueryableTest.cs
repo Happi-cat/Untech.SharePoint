@@ -17,6 +17,14 @@ namespace Untech.SharePoint.Server.Test.Data
 			_spec.Init();
 		}
 
+#if FIRST_RUN
+		[TestMethod]
+		public void Generate()
+		{
+			(new TestDataGenerator(GetContext())).Generate();
+		}
+#endif
+
 		[TestMethod]
 		public void Aggregate()
 		{
