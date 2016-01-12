@@ -13,9 +13,12 @@ namespace Untech.SharePoint.Server.Test.Data
 			var query = new SPQuery {ViewXml = caml};
 
 			CamlQueryFetchTimer.Start();
+			
+			// ReSharper disable once UnusedVariable
 			var result = SpList.GetItems(query)
 				.OfType<SPListItem>()
 				.ToList();
+
 			CamlQueryFetchTimer.Stop();
 		}
 	}

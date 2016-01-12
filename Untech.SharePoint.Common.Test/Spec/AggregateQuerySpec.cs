@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Untech.SharePoint.Common.Models;
 using Untech.SharePoint.Common.Test.Spec.Models;
@@ -10,6 +11,7 @@ namespace Untech.SharePoint.Common.Test.Spec
 	/// <summary>
 	/// The aggregate methods are Aggregate, Average, Count, LongCount, Max, Min, and Sum.
 	/// </summary>
+	[SuppressMessage("ReSharper", "ReplaceWithSingleCallToCount")]
 	public class AggregateQuerySpec : IQueryTestsProvider<NewsModel>
 	{
 		#region [Count]

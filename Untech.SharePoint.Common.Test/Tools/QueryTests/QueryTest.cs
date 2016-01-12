@@ -61,6 +61,8 @@ namespace Untech.SharePoint.Common.Test.Tools.QueryTests
 
 		public QueryTest<T> Inner { get; private set; }
 
+		public Type ExceptionType { get { return typeof (TException); } }
+
 		public override void Accept(QueryTestExecutor<T> executor)
 		{
 			executor.Execute(this);

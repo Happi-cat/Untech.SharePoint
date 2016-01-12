@@ -121,7 +121,7 @@ namespace Untech.SharePoint.Common.Test.Tools.QueryTests
 				var result = MeasureQuery(test.Query);
 
 				Assert.IsNotNull(result);
-				ItemsCounter += result.Count();
+				ItemsCounter += result.Count;
 
 				MeasureCaml(test.Caml);
 			}

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Untech.SharePoint.Common.Test.Spec.Models;
 using Untech.SharePoint.Common.Test.Tools.Comparers;
@@ -10,6 +11,10 @@ namespace Untech.SharePoint.Common.Test.Spec
 	/// <summary>
 	/// Paging operations return a single, specific element from a sequence. The element methods are ElementAt, First, FirstOrDefault, Last, LastOrDefault, Single, Skip, Take, TakeWhile.
 	/// </summary>
+	[SuppressMessage("ReSharper", "ReplaceWithSingleCallToSingle")]
+	[SuppressMessage("ReSharper", "ReplaceWithSingleCallToSingleOrDefault")]
+	[SuppressMessage("ReSharper", "ReplaceWithSingleCallToFirst")]
+	[SuppressMessage("ReSharper", "ReplaceWithSingleCallToLast")]
 	public class PagingQuerySpec : IQueryTestsProvider<NewsModel>
 	{
 		#region [Single]

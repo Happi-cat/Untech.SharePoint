@@ -1,5 +1,4 @@
-﻿using System.IO;
-using Microsoft.SharePoint;
+﻿using Microsoft.SharePoint;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Untech.SharePoint.Common.Extensions;
 using Untech.SharePoint.Common.Test.Spec;

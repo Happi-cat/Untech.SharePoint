@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Untech.SharePoint.Common.Test.Spec.Models;
 using Untech.SharePoint.Common.Test.Tools.QueryTests;
@@ -9,6 +10,7 @@ namespace Untech.SharePoint.Common.Test.Spec
 	/// <summary>
 	/// The set methods are All, Any, Concat, Contains, DefaultIfEmpty, Distinct, EqualAll, Except, Intersect, and Union.
 	/// </summary>
+	[SuppressMessage("ReSharper", "ReplaceWithSingleCallToAny")]
 	public class SetQuerySpec : IQueryTestsProvider<NewsModel>
 	{
 		#region [All]
