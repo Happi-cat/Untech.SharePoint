@@ -37,9 +37,9 @@ namespace Untech.SharePoint.Common.Data.QueryModels
 		{
 			get
 			{
-				return _selectableFields
-					.EmptyIfNull()
-					.Distinct(MemberRefModelComparer.Default);
+				return _selectableFields != null 
+					? _selectableFields.Distinct(MemberRefModelComparer.Default) 
+					: null;
 			}
 		}
 

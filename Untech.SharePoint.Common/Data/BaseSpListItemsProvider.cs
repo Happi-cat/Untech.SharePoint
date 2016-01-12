@@ -36,7 +36,7 @@ namespace Untech.SharePoint.Common.Data
 		{
 			var contentType = List.ContentTypes[typeof(T)];
 			UpdateViewFields(query, contentType);
-			var viewFields = query.SelectableFields.ToList();
+			var viewFields = query.SelectableFields.EmptyIfNull().ToList();
 			var caml = ConvertToCamlString(query, contentType);
 
 			return Materialize<T>(FetchInternal(caml), contentType, viewFields);
@@ -67,7 +67,7 @@ namespace Untech.SharePoint.Common.Data
 			query.RowLimit = 2;
 			UpdateViewFields(query, contentType);
 
-			var viewFields = query.SelectableFields.ToList();
+			var viewFields = query.SelectableFields.EmptyIfNull().ToList();
 			var caml = ConvertToCamlString(query, contentType);
 
 			var foundItems = FetchInternal(caml);
@@ -87,7 +87,7 @@ namespace Untech.SharePoint.Common.Data
 			query.RowLimit = 1;
 			UpdateViewFields(query, contentType);
 
-			var viewFields = query.SelectableFields.ToList();
+			var viewFields = query.SelectableFields.EmptyIfNull().ToList();
 			var caml = ConvertToCamlString(query, contentType);
 
 			var foundItems = FetchInternal(caml);
@@ -103,7 +103,7 @@ namespace Untech.SharePoint.Common.Data
 			query.RowLimit = index + 1;
 			UpdateViewFields(query, contentType);
 
-			var viewFields = query.SelectableFields.ToList();
+			var viewFields = query.SelectableFields.EmptyIfNull().ToList();
 			var caml = ConvertToCamlString(query, contentType);
 
 			var foundItem = FetchInternal(caml).ElementAtOrDefault(index);
