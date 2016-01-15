@@ -19,9 +19,13 @@ namespace Untech.SharePoint.Common.Data
 		/// <summary>
 		/// Adds new item to SP list.
 		/// </summary>
-		/// <param name="item">Entity to add.</param>
+		/// <param name="item">Item to add.</param>
 		T Add(T item);
 
+		/// <summary>
+		/// Adds new items to SP list.
+		/// </summary>
+		/// <param name="items">Items to add.</param>
 		void Add(IEnumerable<T> items);
 
 		/// <summary>
@@ -30,6 +34,10 @@ namespace Untech.SharePoint.Common.Data
 		/// <param name="item">Item to update.</param>
 		void Update(T item);
 
+		/// <summary>
+		/// Updates items with the specified IDs in SP list.
+		/// </summary>
+		/// <param name="items">Items to update.</param>
 		void Update(IEnumerable<T> items);
 
 		/// <summary>
@@ -38,6 +46,10 @@ namespace Untech.SharePoint.Common.Data
 		/// <param name="item">Item to delete.</param>
 		void Delete(T item);
 
+		/// <summary>
+		/// Deletes items with the specified IDs from SP list.
+		/// </summary>
+		/// <param name="items">Items to delete.</param>
 		void Delete(IEnumerable<T> items);
 	}
 }

@@ -1,27 +1,30 @@
 ﻿using Microsoft.SharePoint;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Untech.SharePoint.Common.Extensions;
 using Untech.SharePoint.Common.Test.Spec;
-using Untech.SharePoint.Common.Test.Spec.Models;
 
 namespace Untech.SharePoint.Server.Test.Data
 {
 	[TestClass]
-	public class QueryablePerfTest
+	public class BasicOperationsTest
 	{
-		[TestMethod]
-		public void Measure()
-		{
-			var ctx = GetContext();
-			var tests = new QueryablePerfomance().GetQueryTests();
-			var executor = new ServerQueryTestExecutor<NewsModel>
-			{
-				List = ctx.News,
-				SpList = ctx.Web.Lists["News"],
-				FilePath = @"C:\Perf-Server.csv"
-			};
+		private static BasicOperationsSpec _spec;
 
-			tests.Each(executor.Execute);
+		[ClassInitialize]
+		public static void Init(TestContext ctx)
+		{
+			_spec = new BasicOperationsSpec("SERVER_BASIC_OPS", GetContext());
+		}
+
+		[TestMethod]
+		public void AddUpdateDelete()
+		{
+			_spec.AddUpdateDelete();
+		}
+
+		[TestMethod]
+		public void BatchAddUpdateDelete()
+		{
+			_spec.BatchAddUpdateDelete();
 		}
 
 		private static DataContext GetContext()

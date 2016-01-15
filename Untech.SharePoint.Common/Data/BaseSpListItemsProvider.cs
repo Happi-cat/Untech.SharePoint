@@ -15,6 +15,8 @@ namespace Untech.SharePoint.Common.Data
 	/// </summary>
 	public abstract class BaseSpListItemsProvider<TSPListItem> : ISpListItemsProvider
 	{
+		private const int BatchSize = 200;
+
 		/// <summary>
 		/// Initializes a new instance of the <see cref="BaseSpListItemsProvider{T}" />
 		/// </summary>
@@ -158,10 +160,10 @@ namespace Untech.SharePoint.Common.Data
 				throw Error.OperationRequireIdField();
 			}
 
-			var batches = items.ToPages(500);
+			var batches = items.ToPages(BatchSize);
 			foreach (var batch in batches)
 			{
-				AddInternal(batch, contentType.GetMapper<TSPListItem>());
+				AddInternal((IEnumerable<object>)batch, contentType.GetMapper<TSPListItem>());
 			}
 		}
 
@@ -208,8 +210,8 @@ namespace Untech.SharePoint.Common.Data
 				.MemberAccessor;
 
 			var itemsToAdd = items.Select(n => new KeyValuePair<int, object>((int) idValueAccessor.GetValue(n), n));
-			
-			var batches = itemsToAdd.ToPages(500);
+
+			var batches = itemsToAdd.ToPages(BatchSize);
 			foreach (var batch in batches)
 			{
 				UpdateInternal(batch, contentType.GetMapper<TSPListItem>());
@@ -260,7 +262,7 @@ namespace Untech.SharePoint.Common.Data
 
 			var batches = items
 				.Select(n => (int)idValueAccessor.GetValue(n))
-				.ToPages(500);
+				.ToPages(BatchSize);
 
 			foreach (var batch in batches)
 			{
@@ -331,6 +333,12 @@ namespace Untech.SharePoint.Common.Data
 		/// <returns>New SP list item ID.</returns>
 		protected abstract int AddInternal(object item, TypeMapper<TSPListItem> mapper);
 
+		/// <summary>
+		/// Adds items to SP list.
+		/// </summary>
+		/// <param name="items">Items to add.</param>
+		/// <param name="mapper">Mapper to SP list item.</param>
+		/// <returns>New SP list item ID.</returns>
 		protected abstract void AddInternal(IEnumerable<object> items, TypeMapper<TSPListItem> mapper);
 
 		/// <summary>
@@ -338,9 +346,14 @@ namespace Untech.SharePoint.Common.Data
 		/// </summary>
 		/// <param name="id">Item ID to update.</param>
 		/// <param name="item">Item to update.</param>
-		/// <param name="mapper">Mapper to SP lsit item.</param>
+		/// <param name="mapper">Mapper to SP list item.</param>
 		protected abstract void UpdateInternal(int id, object item, TypeMapper<TSPListItem> mapper);
 
+		/// <summary>
+		/// Updates items in SP list.
+		/// </summary>
+		/// <param name="items">Items to update.</param>
+		/// <param name="mapper">Mapper to SP list item.</param>
 		protected abstract void UpdateInternal(IEnumerable<KeyValuePair<int, object>> items, TypeMapper<TSPListItem> mapper);
 
 		/// <summary>
@@ -349,6 +362,10 @@ namespace Untech.SharePoint.Common.Data
 		/// <param name="id">Item ID to delete.</param>
 		protected abstract void DeleteInternal(int id);
 
+		/// <summary>
+		/// Deletes items from SP list.
+		/// </summary>
+		/// <param name="ids">Items IDs to delete.</param>
 		protected abstract void DeleteInternal(IEnumerable<int> ids);
 
 		/// <summary>

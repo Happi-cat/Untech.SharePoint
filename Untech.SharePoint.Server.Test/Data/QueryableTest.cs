@@ -1,7 +1,6 @@
 ﻿using Microsoft.SharePoint;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Untech.SharePoint.Common.Test.Spec;
-using Untech.SharePoint.Common.Test.Spec.Models;
 
 namespace Untech.SharePoint.Server.Test.Data
 {
@@ -61,7 +60,7 @@ namespace Untech.SharePoint.Server.Test.Data
 			_spec.Projection();
 		}
 
-		private static IDataContext GetContext()
+		private static DataContext GetContext()
 		{
 			var site = new SPSite(@"http://sp2013dev/sites/orm-test", SPUserToken.SystemAccount);
 			var web = site.OpenWeb();

@@ -46,7 +46,7 @@ namespace Untech.SharePoint.Common.Extensions
 		/// Determines whether the specified <paramref name="enumerable"/> is null or empty.
 		/// </summary>
 		/// <typeparam name="T">The type of collection element.</typeparam>
-		/// <param name="enumerable">Collectino that should be checked.</param>
+		/// <param name="enumerable">Collection that should be checked.</param>
 		/// <returns>true if the <see cref="IEnumerable{T}"/> is null or empty; otherwise, false.</returns>
 		[ContractAnnotation("null => true")]
 		public static bool IsNullOrEmpty<T>([CanBeNull]this IEnumerable<T> enumerable)
@@ -66,8 +66,17 @@ namespace Untech.SharePoint.Common.Extensions
 			return enumerable ?? Enumerable.Empty<T>();
 		}
 
-		public static List<List<T>> ToPages<T>(this IEnumerable<T> source, int pageSize)
+		/// <summary>
+		/// Returns sequence splitted into pages with specified <paramref name="pageSize"/>.
+		/// </summary>
+		/// <typeparam name="T">The type of collection element.</typeparam>
+		/// <param name="enumerable">Collection that should be splitted.</param>
+		/// <param name="pageSize">Page size</param>
+		/// <returns>List with pages.</returns>
+		[NotNull]
+		public static List<List<T>> ToPages<T>([NotNull]this IEnumerable<T> enumerable, int pageSize)
 		{
+			Guard.CheckNotNull("source", enumerable);
 			if (pageSize < 1)
 			{
 				throw new ArgumentOutOfRangeException("pageSize", "Page size cannot be less than 1.");
@@ -76,7 +85,7 @@ namespace Untech.SharePoint.Common.Extensions
 			var pages = new List<List<T>>();
 			var page = new List<T>();
 
-			foreach (var item in source)
+			foreach (var item in enumerable)
 			{
 				if (page.Count >= pageSize)
 				{

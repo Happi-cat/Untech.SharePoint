@@ -75,27 +75,42 @@ namespace Untech.SharePoint.Common.Data
 		/// Adds new item to SP list.
 		/// </summary>
 		/// <typeparam name="T">Type of entity to add.</typeparam>
-		/// <param name="item"></param>
+		/// <param name="item">Item to add.</param>
 		T Add<T>(T item);
 
+		/// <summary>
+		/// Adds new items to SP list.
+		/// </summary>
+		/// <typeparam name="T">Type of entity to add.</typeparam>
+		/// <param name="items">Items to add.</param>
 		void Add<T>(IEnumerable<T> items);
 
 		/// <summary>
 		/// Updates item with the specified ID in SP list.
 		/// </summary>
 		/// <typeparam name="T">Type of entity to update.</typeparam>
-		/// <param name="item"></param>
+		/// <param name="item">Item to update.</param>
 		void Update<T>(T item);
 
+		/// <summary>
+		/// Updates items with the specified IDs in SP list.
+		/// </summary>
+		/// <typeparam name="T">Type of entity to update.</typeparam>
+		/// <param name="items">Items to update.</param>
 		void Update<T>(IEnumerable<T> items);
 
 		/// <summary>
 		/// Deletes item with the specified ID from SP list.
 		/// </summary>
 		/// <typeparam name="T">Type of entity to delete.</typeparam>
-		/// <param name="item"></param>
+		/// <param name="item">Item to delete.</param>
 		void Delete<T>(T item);
 
+		/// <summary>
+		/// Deletes items with the specified IDs from SP list.
+		/// </summary>
+		/// <typeparam name="T">Type of entity to delete.</typeparam>
+		/// <param name="items">Items to delete.</param>
 		void Delete<T>(IEnumerable<T> items);
 	}
 }

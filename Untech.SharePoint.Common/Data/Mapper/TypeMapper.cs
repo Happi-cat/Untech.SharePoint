@@ -42,12 +42,6 @@ namespace Untech.SharePoint.Common.Data.Mapper
 		[NotNull]
 		public Func<object> TypeCreator { get; private set; }
 
-		[NotNull]
-		public IEnumerable<FieldMapper<TSPItem>> FieldMappers
-		{
-			get { return GetMappers(); }
-		}
-
 		/// <summary>
 		/// Maps source entity to SP list item.
 		/// </summary>
