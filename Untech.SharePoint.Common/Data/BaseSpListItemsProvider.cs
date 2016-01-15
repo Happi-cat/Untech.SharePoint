@@ -143,6 +143,28 @@ namespace Untech.SharePoint.Common.Data
 			return Get<T>(id);
 		}
 
+		public void Add<T>(IEnumerable<T> items)
+		{
+			if (List.IsExternal)
+			{
+				throw Error.OperationNotAllowedForExternalList();
+			}
+
+			var contentType = List.ContentTypes[typeof(T)];
+			var idField = contentType.GetKeyField();
+
+			if (idField == null)
+			{
+				throw Error.OperationRequireIdField();
+			}
+
+			var batches = items.ToPages(500);
+			foreach (var batch in batches)
+			{
+				AddInternal(batch, contentType.GetMapper<TSPListItem>());
+			}
+		}
+
 		public void Update<T>(T item)
 		{
 			if (List.IsExternal)
@@ -166,6 +188,34 @@ namespace Untech.SharePoint.Common.Data
 			UpdateInternal(idValue, item, contentType.GetMapper<TSPListItem>());
 		}
 
+		public void Update<T>(IEnumerable<T> items)
+		{
+			if (List.IsExternal)
+			{
+				throw Error.OperationNotAllowedForExternalList();
+			}
+
+			var contentType = List.ContentTypes[typeof(T)];
+			var idField = contentType.GetKeyField();
+
+			if (idField == null)
+			{
+				throw Error.OperationRequireIdField();
+			}
+
+			var idValueAccessor = idField
+				.GetMapper<TSPListItem>()
+				.MemberAccessor;
+
+			var itemsToAdd = items.Select(n => new KeyValuePair<int, object>((int) idValueAccessor.GetValue(n), n));
+			
+			var batches = itemsToAdd.ToPages(500);
+			foreach (var batch in batches)
+			{
+				UpdateInternal(batch, contentType.GetMapper<TSPListItem>());
+			}
+		}
+
 		public void Delete<T>(T item)
 		{
 			if (List.IsExternal)
@@ -187,6 +237,35 @@ namespace Untech.SharePoint.Common.Data
 				.GetValue(item);
 
 			DeleteInternal(idValue);
+		}
+
+		public void Delete<T>(IEnumerable<T> items)
+		{
+			if (List.IsExternal)
+			{
+				throw Error.OperationNotAllowedForExternalList();
+			}
+
+			var contentType = List.ContentTypes[typeof(T)];
+			var idField = contentType.GetKeyField();
+
+			if (idField == null)
+			{
+				throw Error.OperationRequireIdField();
+			}
+
+			var idValueAccessor = idField
+				.GetMapper<TSPListItem>()
+				.MemberAccessor;
+
+			var batches = items
+				.Select(n => (int)idValueAccessor.GetValue(n))
+				.ToPages(500);
+
+			foreach (var batch in batches)
+			{
+				DeleteInternal(batch);
+			}
 		}
 
 		/// <summary>
@@ -252,6 +331,8 @@ namespace Untech.SharePoint.Common.Data
 		/// <returns>New SP list item ID.</returns>
 		protected abstract int AddInternal(object item, TypeMapper<TSPListItem> mapper);
 
+		protected abstract void AddInternal(IEnumerable<object> items, TypeMapper<TSPListItem> mapper);
+
 		/// <summary>
 		/// Updates item in SP list.
 		/// </summary>
@@ -260,11 +341,15 @@ namespace Untech.SharePoint.Common.Data
 		/// <param name="mapper">Mapper to SP lsit item.</param>
 		protected abstract void UpdateInternal(int id, object item, TypeMapper<TSPListItem> mapper);
 
+		protected abstract void UpdateInternal(IEnumerable<KeyValuePair<int, object>> items, TypeMapper<TSPListItem> mapper);
+
 		/// <summary>
 		/// Deletes item from SP list.
 		/// </summary>
 		/// <param name="id">Item ID to delete.</param>
 		protected abstract void DeleteInternal(int id);
+
+		protected abstract void DeleteInternal(IEnumerable<int> ids);
 
 		/// <summary>
 		/// Creates native object from SP list item.

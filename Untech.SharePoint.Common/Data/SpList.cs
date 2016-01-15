@@ -1,4 +1,5 @@
-﻿using System.Linq.Expressions;
+﻿using System.Collections.Generic;
+using System.Linq.Expressions;
 using Untech.SharePoint.Common.Utils;
 
 namespace Untech.SharePoint.Common.Data
@@ -20,17 +21,38 @@ namespace Untech.SharePoint.Common.Data
 
 		public T Add(T item)
 		{
+			if (item == null) return default(T);
 			return ListItemsProvider.Add(item);
+		}
+
+		public void Add(IEnumerable<T> items)
+		{
+			if (items == null) return;
+			ListItemsProvider.Add(items);
 		}
 
 		public void Update(T item)
 		{
+			if (item == null) return;
 			ListItemsProvider.Update(item);
+		}
+
+		public void Update(IEnumerable<T> items)
+		{
+			if (items == null) return;
+			ListItemsProvider.Update(items);
 		}
 
 		public void Delete(T item)
 		{
+			if (item == null) return;
 			ListItemsProvider.Delete(item);
+		}
+
+		public void Delete(IEnumerable<T> items)
+		{
+			if (items == null) return;
+			ListItemsProvider.Delete(items);
 		}
 
 		private static Expression MakeFakeFetch(ISpListItemsProvider listItemsProvider)

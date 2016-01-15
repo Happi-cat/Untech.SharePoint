@@ -65,5 +65,33 @@ namespace Untech.SharePoint.Common.Extensions
 		{
 			return enumerable ?? Enumerable.Empty<T>();
 		}
+
+		public static List<List<T>> ToPages<T>(this IEnumerable<T> source, int pageSize)
+		{
+			if (pageSize < 1)
+			{
+				throw new ArgumentOutOfRangeException("pageSize", "Page size cannot be less than 1.");
+			}
+
+			var pages = new List<List<T>>();
+			var page = new List<T>();
+
+			foreach (var item in source)
+			{
+				if (page.Count >= pageSize)
+				{
+					page = new List<T>();
+				}
+
+				page.Add(item);
+
+				if (page.Count == 1)
+				{
+					pages.Add(page);
+				}
+			}
+
+			return pages;
+		}
 	}
 }

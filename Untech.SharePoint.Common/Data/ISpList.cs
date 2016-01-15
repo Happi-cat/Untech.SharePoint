@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace Untech.SharePoint.Common.Data
 {
@@ -21,16 +22,22 @@ namespace Untech.SharePoint.Common.Data
 		/// <param name="item">Entity to add.</param>
 		T Add(T item);
 
+		void Add(IEnumerable<T> items);
+
 		/// <summary>
 		/// Updates item with the specified ID in SP list.
 		/// </summary>
 		/// <param name="item">Item to update.</param>
 		void Update(T item);
 
+		void Update(IEnumerable<T> items);
+
 		/// <summary>
 		/// Deletes item with the specified ID from SP list.
 		/// </summary>
 		/// <param name="item">Item to delete.</param>
 		void Delete(T item);
+
+		void Delete(IEnumerable<T> items);
 	}
 }

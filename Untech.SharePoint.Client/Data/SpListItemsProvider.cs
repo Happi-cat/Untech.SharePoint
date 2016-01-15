@@ -4,6 +4,7 @@ using System.Linq;
 using Microsoft.SharePoint.Client;
 using Untech.SharePoint.Client.Extensions;
 using Untech.SharePoint.Client.Utils;
+using Untech.SharePoint.Common.CodeAnnotations;
 using Untech.SharePoint.Common.Data;
 using Untech.SharePoint.Common.Data.Mapper;
 using Untech.SharePoint.Common.MetaModels;
@@ -62,6 +63,21 @@ namespace Untech.SharePoint.Client.Data
 			return spItem.Id;
 		}
 
+		protected override void AddInternal(IEnumerable<object> items, TypeMapper<ListItem> mapper)
+		{
+			foreach (var item in items)
+			{
+				var info = new ListItemCreationInformation();
+				var spItem = _spList.AddItem(info);
+
+				mapper.Map(item, spItem);
+
+				spItem.Update();
+			}
+
+			_clientContext.ExecuteQuery();
+		}
+
 		protected override void UpdateInternal(int id, object item, TypeMapper<ListItem> mapper)
 		{
 			var spItem = _spList.GetItemById(id);
@@ -74,6 +90,27 @@ namespace Untech.SharePoint.Client.Data
 			_clientContext.ExecuteQuery();
 		}
 
+		protected override void UpdateInternal(IEnumerable<KeyValuePair<int, object>> items, TypeMapper<ListItem> mapper)
+		{
+			var loadedItems = new List<UpdateItemInfo>();
+
+			foreach (var pair in items)
+			{
+				var spItem = _spList.GetItemById(pair.Key);
+				_clientContext.Load(spItem);
+				loadedItems.Add(new UpdateItemInfo(spItem, pair.Value));
+			}
+			_clientContext.ExecuteQuery();
+
+			foreach (var info in loadedItems)
+			{
+				mapper.Map(info.Item, info.SpItem);
+
+				info.SpItem.Update();
+			}
+			_clientContext.ExecuteQuery();
+		}
+
 		protected override void DeleteInternal(int id)
 		{
 			var spItem = _spList.GetItemById(id);
@@ -82,6 +119,40 @@ namespace Untech.SharePoint.Client.Data
 
 			spItem.DeleteObject();
 			_clientContext.ExecuteQuery();
+		}
+
+		protected override void DeleteInternal(IEnumerable<int> ids)
+		{
+			var loadedItems = new List<ListItem>();
+			foreach (var id in ids)
+			{
+				var spItem = _spList.GetItemById(id);
+				_clientContext.Load(spItem);
+				loadedItems.Add(spItem);
+			}
+			_clientContext.ExecuteQuery();
+
+			foreach (var item in loadedItems)
+			{
+				item.DeleteObject();
+			}
+			_clientContext.ExecuteQuery();
+		}
+
+
+		private class UpdateItemInfo
+		{
+			public UpdateItemInfo([NotNull] ListItem spItem, [NotNull] object item)
+			{
+				SpItem = spItem;
+				Item = item;
+			}
+
+			[NotNull]
+			public ListItem SpItem { get; private set; }
+
+			[NotNull]
+			public object Item { get; private set; }
 		}
 	}
 }

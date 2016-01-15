@@ -42,6 +42,12 @@ namespace Untech.SharePoint.Common.Data.Mapper
 		[NotNull]
 		public Func<object> TypeCreator { get; private set; }
 
+		[NotNull]
+		public IEnumerable<FieldMapper<TSPItem>> FieldMappers
+		{
+			get { return GetMappers(); }
+		}
+
 		/// <summary>
 		/// Maps source entity to SP list item.
 		/// </summary>
@@ -64,6 +70,28 @@ namespace Untech.SharePoint.Common.Data.Mapper
 			}
 
 			SetContentType(dest);
+		}
+
+		/// <summary>
+		/// Maps source entity to dictionary with CAML values.
+		/// </summary>
+		/// <param name="source">Source object.</param>
+		/// <exception cref="ArgumentNullException"><paramref name="source"/> is null.</exception>
+		public IReadOnlyDictionary<string, string> MapToCaml([NotNull] object source)
+		{
+			Guard.CheckNotNull("source", source);
+
+			var fields = GetMappers()
+				.ToDictionary(n => n.Field.InternalName, n => n.MapToCaml(source));
+
+			if (ContentType.List.IsExternal)
+			{
+				return fields;
+			}
+
+			fields[Fields.ContentTypeId] = ContentType.Id;
+
+			return fields;
 		}
 
 		/// <summary>
