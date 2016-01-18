@@ -9,6 +9,13 @@ using Untech.SharePoint.Common.Utils;
 
 namespace Untech.SharePoint.Common.Data
 {
+	[Flags]
+	public enum SpListOptions
+	{
+		Default = 0,
+		NoFilteringByContentType = 0x01,
+	}
+
 	/// <summary>
 	/// Represents base data context.
 	/// </summary>
@@ -72,8 +79,9 @@ namespace Untech.SharePoint.Common.Data
 		/// </summary>
 		/// <typeparam name="TEntity">Type of element.</typeparam>
 		/// <param name="listAccessor">List accessor.</param>
+		/// <param name="options">List options.</param>
 		/// <returns>Instance of the <see cref="ISpList{T}"/>.</returns>
-		protected ISpList<TEntity> GetList<TEntity>(Expression<Func<TContext, ISpList<TEntity>>> listAccessor)
+		protected ISpList<TEntity> GetList<TEntity>(Expression<Func<TContext, ISpList<TEntity>>> listAccessor, SpListOptions options = SpListOptions.Default)
 		{
 			var memberExp = (MemberExpression)listAccessor.Body;
 			var listTitle = MappingSource.GetListTitleFromContextMember(memberExp.Member);
@@ -83,7 +91,7 @@ namespace Untech.SharePoint.Common.Data
 				throw new InvalidOperationException(string.Format("Can't find meta-list with title '{0}'", listTitle));
 			}
 
-			return GetList<TEntity>(Model.Lists[listTitle]);
+			return GetList<TEntity>(Model.Lists[listTitle], options);
 		}
 
 		/// <summary>
@@ -91,9 +99,14 @@ namespace Untech.SharePoint.Common.Data
 		/// </summary>
 		/// <typeparam name="TEntity">Type of element.</typeparam>
 		/// <param name="list">SP list metadata.</param>
+		/// <param name="options">List options.</param>
 		/// <returns>Instance of the <see cref="ISpList{T}"/>.</returns>
-		protected ISpList<TEntity> GetList<TEntity>(MetaList list)
+		protected ISpList<TEntity> GetList<TEntity>(MetaList list, SpListOptions options = SpListOptions.Default)
 		{
+			var itemsProvider = GetItemsProvider(list);
+			
+			itemsProvider.FilterByContentType = (options & SpListOptions.NoFilteringByContentType) == 0;
+
 			return new SpList<TEntity>(GetItemsProvider(list));
 		}
 

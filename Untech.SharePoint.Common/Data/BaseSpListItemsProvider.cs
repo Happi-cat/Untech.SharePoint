@@ -32,6 +32,8 @@ namespace Untech.SharePoint.Common.Data
 		[NotNull]
 		public MetaList List { get; private set; }
 
+		public bool FilterByContentType { get; set; }
+
 		public IEnumerable<T> Fetch<T>(QueryModel query)
 		{
 			var contentType = List.ContentTypes[typeof(T)];
@@ -194,11 +196,10 @@ namespace Untech.SharePoint.Common.Data
 		/// </summary>
 		/// <param name="queryModel">Query model to convert.</param>
 		/// <param name="contentType">Content type to use as a fields source.</param>
-		/// <param name="filterByContentTypeId"></param>
 		/// <returns>CAML-string in next format <![CDATA[<View><Query></Query></View>]]></returns>
-		protected string ConvertToCamlString([NotNull]QueryModel queryModel, [NotNull]MetaContentType contentType, bool filterByContentTypeId = true)
+		protected string ConvertToCamlString([NotNull]QueryModel queryModel, [NotNull]MetaContentType contentType)
 		{
-			if (filterByContentTypeId && !List.IsExternal)
+			if (FilterByContentType && !List.IsExternal)
 			{
 				queryModel.MergeWheres(new ComparisonModel(ComparisonOperator.Eq, new ContentTypeIdRefModel(), contentType.Id)
 				{

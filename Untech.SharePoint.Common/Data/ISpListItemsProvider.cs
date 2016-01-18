@@ -16,6 +16,8 @@ namespace Untech.SharePoint.Common.Data
 		/// </summary>
 		MetaList List { get; }
 
+		bool FilterByContentType { get; set; }
+
 		/// <summary>
 		/// Fetchs items by the specified CAML query string.
 		/// </summary>
