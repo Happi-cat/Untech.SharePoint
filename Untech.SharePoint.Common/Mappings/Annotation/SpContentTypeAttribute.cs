@@ -11,6 +11,19 @@ namespace Untech.SharePoint.Common.Mappings.Annotation
 	public class SpContentTypeAttribute : Attribute
 	{
 		/// <summary>
+		/// Initializes new instance of the <see cref="SpContentTypeAttribute"/>
+		/// </summary>
+		public SpContentTypeAttribute() { }
+
+		/// <summary>
+		/// Initializes new instance of the <see cref="SpContentTypeAttribute"/>
+		/// </summary>
+		public SpContentTypeAttribute(string id)
+		{
+			Id = id;
+		}
+
+		/// <summary>
 		/// Gets or sets content type id.
 		/// </summary>
 		public string Id { get; set; }
