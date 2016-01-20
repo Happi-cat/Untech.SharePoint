@@ -81,6 +81,29 @@ namespace Untech.SharePoint.Common.Data.Mapper
 		}
 
 		/// <summary>
+		/// Maps entity member to CAML value.
+		/// </summary>
+		/// <param name="source">Source entity to map.</param>
+		/// <exception cref="DataMappingException">Cannot map or convert value.</exception>
+		public string MapToCaml(object source)
+		{
+			if (!MemberAccessor.CanGetValue)
+			{
+				return null;
+			}
+
+			try
+			{
+				var clrValue = MemberAccessor.GetValue(source);
+				return Converter.ToCamlValue(clrValue);
+			}
+			catch (Exception e)
+			{
+				throw Error.CannotMapFieldToSP(Field, e);
+			}
+		}
+
+		/// <summary>
 		/// Maps SP list field to entity member.
 		/// </summary>
 		/// <param name="source">Source SP list item to map.</param>

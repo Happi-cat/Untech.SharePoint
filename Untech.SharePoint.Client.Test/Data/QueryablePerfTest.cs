@@ -14,19 +14,18 @@ namespace Untech.SharePoint.Client.Test.Data
 		public void Measure()
 		{
 			var ctx = GetContext();
-			var webCtx = new ClientContext(@"http://sp2013dev/sites/orm-test");
 			var tests = new QueryablePerfomance().GetQueryTests();
 			var executor = new ClientQueryTestExecutor<NewsModel>
 			{
 				List = ctx.News,
-				SpList = webCtx.GetList("News"),
+				SpList = ctx.ClientContext.GetList("News"),
 				FilePath = @"C:\Perf-Client.csv"
 			};
 
 			tests.Each(executor.Execute);
 		}
 
-		private static IDataContext GetContext()
+		private static DataContext GetContext()
 		{
 			var context = new ClientContext(@"http://sp2013dev/sites/orm-test");
 			return new DataContext(context, Bootstrap.GetConfig());

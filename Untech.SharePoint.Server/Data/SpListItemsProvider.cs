@@ -11,11 +11,13 @@ namespace Untech.SharePoint.Server.Data
 {
 	internal class SpListItemsProvider : BaseSpListItemsProvider<SPListItem>
 	{
+		private readonly SPWeb _spWeb;
 		private readonly SPList _spList;
 
 		public SpListItemsProvider(SPWeb web, MetaList list)
 			: base(list)
 		{
+			_spWeb = web;
 			_spList = web.Lists[list.Title];
 		}
 
@@ -49,6 +51,21 @@ namespace Untech.SharePoint.Server.Data
 			return mapper.CreateAndMap(spItem);
 		}
 
+		protected override void AddInternal(IEnumerable<object> items, TypeMapper<SPListItem> mapper)
+		{
+			var batchBuilder = new BatchBuilder();
+			batchBuilder.Begin();
+
+			foreach (var item in items)
+			{
+				batchBuilder.NewItem(_spList,  mapper.MapToCaml(item));
+			}
+
+			batchBuilder.End();
+
+			_spWeb.ProcessBatchData(batchBuilder.ToString());
+		}
+
 		protected override object UpdateInternal(int id, object item, TypeMapper<SPListItem> mapper)
 		{
 			var spItem = _spList.GetItemById(id);
@@ -60,11 +77,41 @@ namespace Untech.SharePoint.Server.Data
 			return mapper.CreateAndMap(spItem);
 		}
 
+		protected override void UpdateInternal(IEnumerable<KeyValuePair<int, object>> items, TypeMapper<SPListItem> mapper)
+		{
+			var batchBuilder = new BatchBuilder();
+			batchBuilder.Begin();
+
+			foreach (var pair in items)
+			{
+				batchBuilder.UpdateItem(_spList, mapper.MapToCaml(pair.Value));
+			}
+
+			batchBuilder.End();
+
+			_spWeb.ProcessBatchData(batchBuilder.ToString());
+		}
+
 		protected override void DeleteInternal(int id)
 		{
 			var spItem = _spList.GetItemById(id);
 
 			spItem.Delete();
+		}
+
+		protected override void DeleteInternal(IEnumerable<int> ids)
+		{
+			var batchBuilder = new BatchBuilder();
+			batchBuilder.Begin();
+
+			foreach (var id in ids)
+			{
+				batchBuilder.DeleteItem(_spList, id.ToString());
+			}
+
+			batchBuilder.End();
+
+			_spWeb.ProcessBatchData(batchBuilder.ToString());
 		}
 	}
 }

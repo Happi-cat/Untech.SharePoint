@@ -67,6 +67,28 @@ namespace Untech.SharePoint.Common.Data.Mapper
 		}
 
 		/// <summary>
+		/// Maps source entity to dictionary with CAML values.
+		/// </summary>
+		/// <param name="source">Source object.</param>
+		/// <exception cref="ArgumentNullException"><paramref name="source"/> is null.</exception>
+		public IReadOnlyDictionary<string, string> MapToCaml([NotNull] object source)
+		{
+			Guard.CheckNotNull("source", source);
+
+			var fields = GetMappers()
+				.ToDictionary(n => n.Field.InternalName, n => n.MapToCaml(source));
+
+			if (ContentType.List.IsExternal)
+			{
+				return fields;
+			}
+
+			fields[Fields.ContentTypeId] = ContentType.Id;
+
+			return fields;
+		}
+
+		/// <summary>
 		/// Maps SP list item to destination entity.
 		/// </summary>
 		/// <param name="source">Souce SP list item to map.</param>
