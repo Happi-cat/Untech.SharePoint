@@ -17,6 +17,11 @@ namespace Untech.SharePoint.Common.Data
 		MetaList List { get; }
 
 		/// <summary>
+		/// Gets or sets whether to filter list items by content type Id or not.
+		/// </summary>
+		bool FilterByContentType { get; set; }
+
+		/// <summary>
 		/// Fetchs items by the specified CAML query string.
 		/// </summary>
 		/// <typeparam name="T">Type of element to fetch.</typeparam>
@@ -90,7 +95,7 @@ namespace Untech.SharePoint.Common.Data
 		/// </summary>
 		/// <typeparam name="T">Type of entity to update.</typeparam>
 		/// <param name="item">Item to update.</param>
-		void Update<T>(T item);
+		T Update<T>(T item);
 
 		/// <summary>
 		/// Updates items with the specified IDs in SP list.

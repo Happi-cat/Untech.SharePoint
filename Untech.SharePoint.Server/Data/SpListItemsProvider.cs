@@ -40,7 +40,7 @@ namespace Untech.SharePoint.Server.Data
 			return spItem;
 		}
 
-		protected override int AddInternal(object item, TypeMapper<SPListItem> mapper)
+		protected override object AddInternal(object item, TypeMapper<SPListItem> mapper)
 		{
 			var spItem = _spList.AddItem();
 
@@ -48,7 +48,7 @@ namespace Untech.SharePoint.Server.Data
 
 			spItem.Update();
 
-			return spItem.ID;
+			return mapper.CreateAndMap(spItem);
 		}
 
 		protected override void AddInternal(IEnumerable<object> items, TypeMapper<SPListItem> mapper)
@@ -66,13 +66,15 @@ namespace Untech.SharePoint.Server.Data
 			_spWeb.ProcessBatchData(batchBuilder.ToString());
 		}
 
-		protected override void UpdateInternal(int id, object item, TypeMapper<SPListItem> mapper)
+		protected override object UpdateInternal(int id, object item, TypeMapper<SPListItem> mapper)
 		{
 			var spItem = _spList.GetItemById(id);
 
 			mapper.Map(item, spItem);
 
 			spItem.Update();
+
+			return mapper.CreateAndMap(spItem);
 		}
 
 		protected override void UpdateInternal(IEnumerable<KeyValuePair<int, object>> items, TypeMapper<SPListItem> mapper)

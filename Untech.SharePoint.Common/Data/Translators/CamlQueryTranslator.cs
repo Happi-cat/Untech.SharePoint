@@ -216,9 +216,15 @@ namespace Untech.SharePoint.Common.Data.Translators
 			{
 				var memberRef = (MemberRefModel) fieldRef;
 
-				return new XElement(Tags.Value,
-					new XAttribute(Tags.Type, GetMetaField(memberRef.Member).TypeAsString),
-					alreadyConverted ? value : GetConverter(memberRef.Member).ToCamlValue(value));
+				var metaField = GetMetaField(memberRef.Member);
+				var camlValue = alreadyConverted 
+					? value 
+					: GetConverter(metaField).ToCamlValue(value);
+				var typeAttr = metaField.IsCalculated
+					? new XAttribute(Tags.Type, metaField.OutputType)
+					: new XAttribute(Tags.Type, metaField.TypeAsString);
+
+				return new XElement(Tags.Value, typeAttr, camlValue);
 			}
 
 			if (!alreadyConverted)
@@ -240,12 +246,12 @@ namespace Untech.SharePoint.Common.Data.Translators
 			return ContentType.Fields[member.Name];
 		}
 
-		private IFieldConverter GetConverter([NotNull]MemberInfo member)
+		private IFieldConverter GetConverter([NotNull]MetaField field)
 		{
-			var converter = GetMetaField(member).Converter;
+			var converter = field.Converter;
 			if (converter == null)
 			{
-				throw new InvalidOperationException(string.Format("Converter wasn't initialized for '{0}' field", member));
+				throw new InvalidOperationException(string.Format("Converter wasn't initialized for '{0}' field", field.MemberName));
 			}
 			return converter;
 		}

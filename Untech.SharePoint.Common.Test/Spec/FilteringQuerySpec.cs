@@ -60,6 +60,18 @@ namespace Untech.SharePoint.Common.Test.Spec
 				.Where(n => flag);
 		}
 
+		public IEnumerable<ProjectModel> WhereCalculatedQuery1(IQueryable<ProjectModel> source)
+		{
+			return source
+				.Where(n => n.Over10Days);
+		}
+
+		public IEnumerable<ProjectModel> WhereCalculatedQuery2(IQueryable<ProjectModel> source)
+		{
+			return source
+				.Where(n => n.ProjectLaunch > DateTime.Now.AddMonths(-12));
+		}
+
 		public IEnumerable<QueryTest<NewsModel>> GetQueryTests()
 		{
 			return new[]
@@ -79,7 +91,9 @@ namespace Untech.SharePoint.Common.Test.Spec
 		{
 			return new[]
 			{
-				QueryTest<ProjectModel>.Functional(WhereQuery, EntityComparer.Default)
+				QueryTest<ProjectModel>.Functional(WhereQuery, EntityComparer.Default),
+				QueryTest<ProjectModel>.Functional(WhereCalculatedQuery1, EntityComparer.Default),
+				QueryTest<ProjectModel>.Functional(WhereCalculatedQuery2, EntityComparer.Default)
 			};
 		}
 	}

@@ -93,7 +93,7 @@ namespace Untech.SharePoint.Server.Data
 				if (spField.Type == SPFieldType.Calculated)
 				{
 					var spCalculatedField = (SPFieldCalculated) spField;
-					field.TypeAsString = spCalculatedField.OutputType.ToString();
+					field.OutputType = spCalculatedField.OutputType.ToString();
 				}
 			}
 		}

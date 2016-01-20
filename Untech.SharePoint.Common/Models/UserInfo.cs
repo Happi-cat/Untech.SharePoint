@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.Runtime.Serialization;
 using Newtonsoft.Json;
 using Untech.SharePoint.Common.CodeAnnotations;
 
@@ -8,25 +8,28 @@ namespace Untech.SharePoint.Common.Models
 	/// Represents user info
 	/// </summary>
 	[PublicAPI]
-	[Serializable]
+	[DataContract]
 	public class UserInfo
 	{
 		/// <summary>
 		/// Gets or sets user id.
 		/// </summary>
-		[JsonProperty]
+		[DataMember]
+		[JsonProperty("id")]
 		public int Id { get; set; }
 
 		/// <summary>
 		/// Gets or sets user login.
 		/// </summary>
-		[JsonProperty]
+		[DataMember]
+		[JsonProperty("login")]
 		public string Login { get; set; }
 
 		/// <summary>
 		/// Gets or sets user email.
 		/// </summary>
-		[JsonProperty]
+		[DataMember]
+		[JsonProperty("email")]
 		public string Email { get; set; }
 	}
 }

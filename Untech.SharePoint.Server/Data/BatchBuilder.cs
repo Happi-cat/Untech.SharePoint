@@ -12,6 +12,7 @@ namespace Untech.SharePoint.Server.Data
 	{
 		private readonly StringBuilder _sb;
 		private readonly StringWriter _sw;
+		private readonly XmlTextWriter _xmlWriter;
 		private int _counter;
 
 		public BatchBuilder()
@@ -19,6 +20,7 @@ namespace Untech.SharePoint.Server.Data
 			_counter = 0;
 			_sb = new StringBuilder();
 			_sw = new StringWriter(_sb);
+			_xmlWriter = new XmlTextWriter(_sw);
 		}
 
 		public void Begin()
@@ -93,11 +95,8 @@ namespace Untech.SharePoint.Server.Data
 			}
 
 			_sw.Write("<SetVar Name=\"{0}\">", fieldInternalName);
-
-			new XmlTextWriter(_sw).WriteString(value);
-
+			_xmlWriter.WriteString(value);
 			_sw.Write("</SetVar>");
-
 		}
 	}
 }

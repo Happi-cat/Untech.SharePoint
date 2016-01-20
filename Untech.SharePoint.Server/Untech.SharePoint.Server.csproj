@@ -47,6 +47,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Configuration\ServerConfig.cs" />
+    <Compile Include="Converters\BuiltIn\CalculatedFieldConverter.cs" />
     <Compile Include="Converters\BuiltIn\ContentTypeIdConverter.cs" />
     <Compile Include="Converters\BuiltIn\GeolocationFieldConverter.cs" />
     <Compile Include="Converters\BuiltIn\LookupFieldConverter.cs" />

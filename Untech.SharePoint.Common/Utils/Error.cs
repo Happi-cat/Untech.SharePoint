@@ -34,14 +34,14 @@ namespace Untech.SharePoint.Common.Utils
 		internal static Exception CannotMapFieldToSP(MetaField field, Exception inner)
 		{
 			var msg = string.Format("Cannot map member '{0}' of type '{1}' to SP field {2}.",
-				field.Member, field.MemberType, field.InternalName);
+				field.MemberName, field.MemberType, field.InternalName);
 			return new DataMappingException(msg, inner);
 		}
 		
 		internal static Exception CannotMapFieldFromSP(MetaField field, Exception inner)
 		{
 			var msg = string.Format("Cannot map member '{0}' of type '{1}' from SP field {2}.",
-				field.Member, field.MemberType, field.InternalName);
+				field.MemberName, field.MemberType, field.InternalName);
 			return new DataMappingException(msg, inner);
 		}
 

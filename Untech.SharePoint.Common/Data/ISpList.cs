@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Untech.SharePoint.Common.CodeAnnotations;
 
 namespace Untech.SharePoint.Common.Data
 {
@@ -7,6 +8,7 @@ namespace Untech.SharePoint.Common.Data
 	/// Represents interface for work with SP lists.
 	/// </summary>
 	/// <typeparam name="T"></typeparam>
+	[PublicAPI]
 	public interface ISpList<T> : IQueryable<T>
 	{
 		/// <summary>
@@ -32,7 +34,7 @@ namespace Untech.SharePoint.Common.Data
 		/// Updates item with the specified ID in SP list.
 		/// </summary>
 		/// <param name="item">Item to update.</param>
-		void Update(T item);
+		T Update(T item);
 
 		/// <summary>
 		/// Updates items with the specified IDs in SP list.

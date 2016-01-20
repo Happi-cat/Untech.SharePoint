@@ -21,8 +21,7 @@ namespace Untech.SharePoint.Common.Data
 
 		public T Add(T item)
 		{
-			if (item == null) return default(T);
-			return ListItemsProvider.Add(item);
+			return item == null ? default(T) : ListItemsProvider.Add(item);
 		}
 
 		public void Add(IEnumerable<T> items)
@@ -31,10 +30,9 @@ namespace Untech.SharePoint.Common.Data
 			ListItemsProvider.Add(items);
 		}
 
-		public void Update(T item)
+		public T Update(T item)
 		{
-			if (item == null) return;
-			ListItemsProvider.Update(item);
+			return item == null ? default(T) : ListItemsProvider.Update(item);
 		}
 
 		public void Update(IEnumerable<T> items)

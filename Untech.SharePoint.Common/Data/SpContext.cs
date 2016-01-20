@@ -71,19 +71,32 @@ namespace Untech.SharePoint.Common.Data
 		/// Gets <see cref="ISpList{T}"/> instance by list accessor.
 		/// </summary>
 		/// <typeparam name="TEntity">Type of element.</typeparam>
-		/// <param name="listAccessor">List accessor.</param>
+		/// <param name="listSelector">List property accessor.</param>
+		/// <param name="options">List options.</param>
 		/// <returns>Instance of the <see cref="ISpList{T}"/>.</returns>
-		protected ISpList<TEntity> GetList<TEntity>(Expression<Func<TContext, ISpList<TEntity>>> listAccessor)
+		protected ISpList<TEntity> GetList<TEntity>(Expression<Func<TContext, ISpList<TEntity>>> listSelector, SpListOptions options = SpListOptions.Default)
 		{
-			var memberExp = (MemberExpression)listAccessor.Body;
+			var listTitle = GetListTitle(listSelector);
+
+			return GetList<TEntity>(Model.Lists[listTitle], options);
+		}
+
+		/// <summary>
+		/// Gets list title by list accessor.
+		/// </summary>
+		/// <typeparam name="TEntity">Type of element.</typeparam>
+		/// <param name="listSelector">List property accessor.</param>
+		/// <returns>List title</returns>
+		protected string GetListTitle<TEntity>(Expression<Func<TContext, ISpList<TEntity>>> listSelector)
+		{
+			var memberExp = (MemberExpression) listSelector.Body;
 			var listTitle = MappingSource.GetListTitleFromContextMember(memberExp.Member);
 
 			if (!Model.Lists.ContainsKey(listTitle))
 			{
 				throw new InvalidOperationException(string.Format("Can't find meta-list with title '{0}'", listTitle));
 			}
-
-			return GetList<TEntity>(Model.Lists[listTitle]);
+			return listTitle;
 		}
 
 		/// <summary>
@@ -91,9 +104,14 @@ namespace Untech.SharePoint.Common.Data
 		/// </summary>
 		/// <typeparam name="TEntity">Type of element.</typeparam>
 		/// <param name="list">SP list metadata.</param>
+		/// <param name="options">List options.</param>
 		/// <returns>Instance of the <see cref="ISpList{T}"/>.</returns>
-		protected ISpList<TEntity> GetList<TEntity>(MetaList list)
+		protected ISpList<TEntity> GetList<TEntity>(MetaList list, SpListOptions options = SpListOptions.Default)
 		{
+			var itemsProvider = GetItemsProvider(list);
+			
+			itemsProvider.FilterByContentType = (options & SpListOptions.NoFilteringByContentType) == 0;
+
 			return new SpList<TEntity>(GetItemsProvider(list));
 		}
 

@@ -1,13 +1,13 @@
-﻿using System;
-using System.Runtime.Serialization;
+﻿using System.Runtime.Serialization;
 using Newtonsoft.Json;
+using Untech.SharePoint.Common.CodeAnnotations;
 
 namespace Untech.SharePoint.Common.Models
 {
 	/// <summary>
 	/// Represents geo info data.
 	/// </summary>
-	[Serializable]
+	[PublicAPI]
 	[DataContract]
 	public class GeoInfo
 	{
@@ -15,28 +15,28 @@ namespace Untech.SharePoint.Common.Models
 		/// Gets or sets altitude.
 		/// </summary>
 		[DataMember]
-		[JsonProperty(PropertyName = "altitude", DefaultValueHandling = DefaultValueHandling.Populate)]
+		[JsonProperty("altitude")]
 		public double Altitude { get; set; }
 
 		/// <summary>
 		/// Gets or sets latitude.
 		/// </summary>
 		[DataMember]
-		[JsonProperty(PropertyName = "latitude", DefaultValueHandling = DefaultValueHandling.Populate)]
+		[JsonProperty("latitude")]
 		public double Latitude { get; set; }
 
 		/// <summary>
 		/// Gets or sets longitude.
 		/// </summary>
 		[DataMember]
-		[JsonProperty(PropertyName = "longitude", DefaultValueHandling = DefaultValueHandling.Populate)]
+		[JsonProperty("longitude")]
 		public double Longitude { get; set; }
 
 		/// <summary>
 		/// Gets or sets measure.
 		/// </summary>
 		[DataMember]
-		[JsonProperty(PropertyName = "measure", DefaultValueHandling = DefaultValueHandling.Populate)]
+		[JsonProperty("measure")]
 		public double Measure { get; set; }
 	}
 }

@@ -34,6 +34,8 @@ namespace Untech.SharePoint.Common.Data
 		[NotNull]
 		public MetaList List { get; private set; }
 
+		public bool FilterByContentType { get; set; }
+
 		public IEnumerable<T> Fetch<T>(QueryModel query)
 		{
 			var contentType = List.ContentTypes[typeof(T)];
@@ -140,9 +142,7 @@ namespace Untech.SharePoint.Common.Data
 				throw Error.OperationRequireIdField();
 			}
 
-			var id = AddInternal(item, contentType.GetMapper<TSPListItem>());
-
-			return Get<T>(id);
+			return (T) AddInternal(item, contentType.GetMapper<TSPListItem>());
 		}
 
 		public void Add<T>(IEnumerable<T> items)
@@ -167,7 +167,7 @@ namespace Untech.SharePoint.Common.Data
 			}
 		}
 
-		public void Update<T>(T item)
+		public T Update<T>(T item)
 		{
 			if (List.IsExternal)
 			{
@@ -187,7 +187,7 @@ namespace Untech.SharePoint.Common.Data
 				.MemberAccessor
 				.GetValue(item);
 
-			UpdateInternal(idValue, item, contentType.GetMapper<TSPListItem>());
+			return (T) UpdateInternal(idValue, item, contentType.GetMapper<TSPListItem>());
 		}
 
 		public void Update<T>(IEnumerable<T> items)
@@ -275,11 +275,10 @@ namespace Untech.SharePoint.Common.Data
 		/// </summary>
 		/// <param name="queryModel">Query model to convert.</param>
 		/// <param name="contentType">Content type to use as a fields source.</param>
-		/// <param name="filterByContentTypeId"></param>
 		/// <returns>CAML-string in next format <![CDATA[<View><Query></Query></View>]]></returns>
-		protected string ConvertToCamlString([NotNull]QueryModel queryModel, [NotNull]MetaContentType contentType, bool filterByContentTypeId = true)
+		protected string ConvertToCamlString([NotNull]QueryModel queryModel, [NotNull]MetaContentType contentType)
 		{
-			if (filterByContentTypeId && !List.IsExternal)
+			if (FilterByContentType && !List.IsExternal)
 			{
 				queryModel.MergeWheres(new ComparisonModel(ComparisonOperator.Eq, new ContentTypeIdRefModel(), contentType.Id)
 				{
@@ -331,7 +330,7 @@ namespace Untech.SharePoint.Common.Data
 		/// <param name="item">Item to add.</param>
 		/// <param name="mapper">Mapper to SP list item.</param>
 		/// <returns>New SP list item ID.</returns>
-		protected abstract int AddInternal(object item, TypeMapper<TSPListItem> mapper);
+		protected abstract object AddInternal(object item, TypeMapper<TSPListItem> mapper);
 
 		/// <summary>
 		/// Adds items to SP list.
@@ -347,7 +346,7 @@ namespace Untech.SharePoint.Common.Data
 		/// <param name="id">Item ID to update.</param>
 		/// <param name="item">Item to update.</param>
 		/// <param name="mapper">Mapper to SP list item.</param>
-		protected abstract void UpdateInternal(int id, object item, TypeMapper<TSPListItem> mapper);
+		protected abstract object UpdateInternal(int id, object item, TypeMapper<TSPListItem> mapper);
 
 		/// <summary>
 		/// Updates items in SP list.

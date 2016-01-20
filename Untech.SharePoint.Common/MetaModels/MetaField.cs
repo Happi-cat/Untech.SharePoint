@@ -58,6 +58,11 @@ namespace Untech.SharePoint.Common.MetaModels
 		public string TypeAsString { get; set; }
 
 		/// <summary>
+		/// Gets or sets SP Field Output Type for calculated fields.
+		/// </summary>
+		public string OutputType { get; set; }
+
+		/// <summary>
 		/// Gets or sets whether this SP field is calculated.
 		/// </summary>
 		public bool IsCalculated { get; set; }

@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Linq.Expressions;
 using Microsoft.SharePoint.Client;
+using Untech.SharePoint.Client.Extensions;
 using Untech.SharePoint.Common.CodeAnnotations;
 using Untech.SharePoint.Common.Configuration;
 using Untech.SharePoint.Common.Data;
@@ -42,6 +44,17 @@ namespace Untech.SharePoint.Client.Data
 		protected override ISpListItemsProvider GetItemsProvider(MetaList list)
 		{
 			return new SpListItemsProvider(ClientContext, list);
+		}
+
+		/// <summary>
+		/// Gets <see cref="List"/> instance by list accessor.
+		/// </summary>
+		/// <typeparam name="TEntity">Type of element.</typeparam>
+		/// <param name="listSelector">List property accessor.</param>
+		/// <returns>Instance of the <see cref="List"/>.</returns>
+		public List GetSPList<TEntity>(Expression<Func<TContext, ISpList<TEntity>>> listSelector)
+		{
+			return ClientContext.GetList(GetListTitle(listSelector));
 		}
 	}
 }
