@@ -58,6 +58,7 @@ namespace Untech.SharePoint.Client.Data
 			mapper.Map(item, spItem);
 
 			spItem.Update();
+			_clientContext.Load(spItem);
 			_clientContext.ExecuteQuery();
 
 			return mapper.CreateAndMap(spItem);

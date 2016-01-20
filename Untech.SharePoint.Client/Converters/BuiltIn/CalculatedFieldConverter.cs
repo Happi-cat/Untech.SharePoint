@@ -8,7 +8,7 @@ using Untech.SharePoint.Common.Utils;
 
 namespace Untech.SharePoint.Client.Converters.BuiltIn
 {
-	[SpFieldConverter("Calcualted")]
+	[SpFieldConverter("Calculated")]
 	public class CalculatedFieldConverter : MultiTypeFieldConverter
 	{
 		private static readonly IReadOnlyDictionary<string, Func<IFieldConverter>> ValueConverters = new Dictionary<string, Func<IFieldConverter>>

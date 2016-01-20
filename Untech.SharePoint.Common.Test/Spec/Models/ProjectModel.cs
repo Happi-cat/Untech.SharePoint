@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using Untech.SharePoint.Common.Mappings.Annotation;
 using Untech.SharePoint.Common.Models;
 
@@ -27,13 +28,27 @@ namespace Untech.SharePoint.Common.Test.Spec.Models
 		[SpField]
 		public List<ObjectReference> SubProjects { get; set; }
 
-		//[SpField]
-		//public double? Duration { get; set; }
+		[SpField]
+		[Description("Calculated")]
+		public double Duration { get; set; }
 
 		[SpField]
 		public string Status { get; set; }
 
 		[SpField]
 		public UserInfo FinanceManager { get; set; }
+
+		[SpField]
+		[Description("Calculated")]
+		public bool Over10Days { get; set; }
+
+		[SpField]
+		[Description("Calculated")]
+		public string Definition{ get; set; }
+
+		[SpField]
+		[Description("Calculated")]
+		public DateTime ProjectLaunch { get; set; }
+
 	}
 }

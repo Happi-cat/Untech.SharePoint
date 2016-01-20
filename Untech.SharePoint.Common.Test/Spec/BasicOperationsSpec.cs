@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Untech.SharePoint.Common.Data;
 using Untech.SharePoint.Common.Extensions;
+using Untech.SharePoint.Common.Models;
 using Untech.SharePoint.Common.Test.Spec.Models;
 using Untech.SharePoint.Common.Test.Tools.DataGenerators;
 using Untech.SharePoint.Common.Test.Tools.Generators;
@@ -27,119 +30,141 @@ namespace Untech.SharePoint.Common.Test.Spec
 
 		public void AddUpdateDelete()
 		{
-			var addedItem = Add();
-			Update(addedItem);
-			Delete(addedItem);
+			var addedEvent = Add(_dataContext.Events, GetEventGenerator());
+			Update(_dataContext.Events, addedEvent);
+			Delete(_dataContext.Events, addedEvent);
+
+			var addedProject = Add(_dataContext.Projects, GetProjectGenerator());
+			Update(_dataContext.Projects, addedProject);
+			Delete(_dataContext.Projects, addedProject);
 		}
 
-		public EventModel Add()
+		public T Add<T>(ISpList<T> list, IValueGenerator<T> generator)
+			where T: Entity
 		{
-			var itemToAdd = GenerateModel();
-			var addedItem = _dataContext.Events.Add(itemToAdd);
+			var itemToAdd = generator.Generate();
+			var addedItem = list.Add(itemToAdd);
 
-			Assert.IsTrue(addedItem.Id > 0);
-			Assert.AreEqual(itemToAdd.Title, addedItem.Title);
+			Assert.IsTrue(addedItem.Id > 0, "addedItem.Id > 0");
+			Assert.AreEqual(itemToAdd.Title, addedItem.Title, "Titles are not equal");
+
+			Assert.IsTrue(addedItem.Created > DateTime.Today, "addedItem.Created > DateTime.Today");
+			Assert.IsTrue(addedItem.Author != null && addedItem.Author.Id > 0, "addedItem.Author.Id > 0");
+
+			Assert.IsTrue(addedItem.Modified > DateTime.Today, "addedItem.Modified > DateTime.Today");
+			Assert.IsTrue(addedItem.Editor != null && addedItem.Editor.Id > 0, "addedItem.Editor.Id > 0");
 
 			return addedItem;
 		}
 
-		public void Update(EventModel existingItem)
+		public void Update<T>(ISpList<T> list, T existingItem)
+			where T : Entity
 		{
 			existingItem.Title += "[Updated]";
 
-			_dataContext.Events.Update(existingItem);
+			Thread.Sleep(1000);
+			var updatedItem = list.Update(existingItem);
 
-			var updatedItem = _dataContext.Events.Get(existingItem.Id);
+			Assert.AreEqual(existingItem.Id, updatedItem.Id, "Ids are not equal");
+			Assert.AreEqual(existingItem.Title, updatedItem.Title, "Titles are not equal");
 
-			Assert.AreEqual(existingItem.Id, updatedItem.Id);
-			Assert.AreEqual(existingItem.Title, updatedItem.Title);
+			Assert.IsTrue(updatedItem.Modified > existingItem.Modified, "updatedItem.Modified > existingItem.Modified");
 		}
 
-		public void Delete(EventModel existingItem)
+		public void Delete<T>(ISpList<T> list, T existingItem)
+			where T : Entity
 		{
-			_dataContext.Events.Delete(existingItem);
+			list.Delete(existingItem);
 
-			var foundItem = _dataContext.Events.FirstOrDefault(n => n.Id == existingItem.Id);
+			var foundItem = list.FirstOrDefault(n => n.Id == existingItem.Id);
 
-			Assert.IsNull(foundItem);
+			Assert.IsNull(foundItem, "foundItem != null");
 		}
+
 		public void BatchAddUpdateDelete()
 		{
-			var addedItems = AddBatch();
-			UpdateBatch(addedItems);
-			DeleteBatch(addedItems);
+			var addedEvents = AddBatch(_dataContext.Events, GetEventGenerator(), GetExistingItems);
+			UpdateBatch(_dataContext.Events, addedEvents, GetExistingItems);
+			DeleteBatch(_dataContext.Events, addedEvents, GetExistingItems);
+
+			var addedProjects = AddBatch(_dataContext.Projects, GetProjectGenerator(), GetExistingItems);
+			UpdateBatch(_dataContext.Projects, addedProjects, GetExistingItems);
+			DeleteBatch(_dataContext.Projects, addedProjects, GetExistingItems);
 		}
 
-		public List<EventModel> AddBatch()
+		public List<T> AddBatch<T>(ISpList<T> list, IValueGenerator<T> itemGenerator, Func<ISpList<T>, List<T>> selector)
+			where T : Entity
 		{
-			var itemsToAdd = GenerateModels();
+			var arrayGenerator = new ArrayGenerator<T>(itemGenerator) { Size = 50 };
+
+			var itemsToAdd = arrayGenerator.Generate();
 			itemsToAdd.Each(AddToken);
 
-			_dataContext.Events.Add(itemsToAdd);
+			list.Add(itemsToAdd);
 
-			var addedItems = GetExistingItems();
+			var addedItems = selector(list);
 
 			var generatedTitles = itemsToAdd.Select(n => n.Title);
 			var addedTitles = addedItems.Select(n => n.Title);
 
-			Assert.IsTrue(generatedTitles.SequenceEqual(addedTitles));
+			Assert.IsTrue(generatedTitles.SequenceEqual(addedTitles), "generatedTitles.SequenceEqual(addedTitles)");
 
 			return addedItems;
 		}
 
-		public void UpdateBatch(List<EventModel> existingItems)
+		public void UpdateBatch<T>(ISpList<T> list, List<T> existingItems, Func<ISpList<T>, List<T>> selector)
+			where T : Entity
 		{
 			existingItems.Each(n => n.Title += "[Updated]");
 
-			_dataContext.Events.Update(existingItems);
+			list.Update(existingItems);
 
-			var updatedItems = GetExistingItems();
+			var updatedItems = selector(list);
 
 			var generatedTitles = existingItems.Select(n => n.Title);
 			var updatedTitles = updatedItems.Select(n => n.Title);
 
-			Assert.IsTrue(generatedTitles.SequenceEqual(updatedTitles));
+			Assert.IsTrue(generatedTitles.SequenceEqual(updatedTitles), "generatedTitles.SequenceEqual(updatedTitles)");
 		}
 
-		public void DeleteBatch(List<EventModel> existingItems)
+		public void DeleteBatch<T>(ISpList<T> list, List<T> existingItems, Func<ISpList<T>, List<T>> selector)
+			where T : Entity
 		{
-			_dataContext.Events.Delete(existingItems);
+			list.Delete(existingItems);
 
-			var deletedItems = GetExistingItems();
+			var deletedItems = selector(list);
 
-			Assert.IsFalse(deletedItems.Any());
+			Assert.IsFalse(deletedItems.Any(), "deletedItems.Any()");
 		}
 
-		private List<EventModel> GetExistingItems()
+		private List<ProjectModel> GetExistingItems(ISpList<ProjectModel> projects)
 		{
-			return _dataContext.Events
+			return projects
+				.Where(n => n.Title.StartsWith("<" + _token + ">"))
+				.ToList();
+		}
+
+		private List<EventModel> GetExistingItems(ISpList<EventModel> events)
+		{
+			return events
 				.Where(n => n.Title.StartsWith("<" + _token + ">"))
 				.Where(n => n.WhenStart == _date1 && n.WhenComplete == _date2)
 				.ToList();
 		}
 
-		private IValueGenerator<EventModel> GetGenerator()
+		private IValueGenerator<EventModel> GetEventGenerator()
 		{
 			return Generators.GetGoingEventGenerator()
 				.WithStatic(n => n.WhenStart, _date1)
 				.WithStatic(n => n.WhenComplete, _date2);
 		}
 
-		private EventModel GenerateModel()
+		private IValueGenerator<ProjectModel> GetProjectGenerator()
 		{
-			return GetGenerator().Generate();
+			return Generators.GetProjectGenerator();
 		}
 
-		private List<EventModel> GenerateModels()
-		{
-			var generator = new ArrayGenerator<EventModel>(GetGenerator())
-			{
-				Size = 50
-			};
-			return generator.Generate();
-		}
-
-		private void AddToken(EventModel model)
+		private void AddToken(Entity model)
 		{
 			model.Title = "<" + _token + ">: " + model.Title;
 		}

@@ -6,7 +6,7 @@ using Untech.SharePoint.Common.MetaModels;
 
 namespace Untech.SharePoint.Server.Converters.BuiltIn
 {
-	[SpFieldConverter("Calcualted")]
+	[SpFieldConverter("Calculated")]
 	public class CalculatedFieldConverter : MultiTypeFieldConverter
 	{
 		private static readonly IReadOnlyDictionary<string, Func<IFieldConverter>> ValueConverters = new Dictionary<string, Func<IFieldConverter>>
@@ -143,7 +143,7 @@ namespace Untech.SharePoint.Server.Converters.BuiltIn
 
 			public object FromSpValue(object value)
 			{
-				var strValue = ExtractValue((string)value, "bool;#");
+				var strValue = ExtractValue((string)value, "boolean;#");
 				if (string.IsNullOrEmpty(strValue)) return false;
 				return strValue == "1";
 			}
@@ -151,7 +151,7 @@ namespace Untech.SharePoint.Server.Converters.BuiltIn
 			public object ToSpValue(object value)
 			{
 				var boolValue = (bool) value;
-				return "bool;#" + (boolValue ? "1" : "0");
+				return "boolean;#" + (boolValue ? "1" : "0");
 			}
 
 			public string ToCamlValue(object value)
