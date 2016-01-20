@@ -79,6 +79,7 @@
     <Compile Include="Data\QueryModels\WhereType.cs" />
     <Compile Include="Data\SpLinqQuery.cs" />
     <Compile Include="Data\SpLinqQueryProvider.cs" />
+    <Compile Include="Data\SpListOptions.cs" />
     <Compile Include="Data\Translators\CamlQueryTreeProcessor.cs" />
     <Compile Include="Data\Translators\IProcessor.cs" />
     <Compile Include="Diagnostics\DebuggerLoggingEndpoint.cs" />

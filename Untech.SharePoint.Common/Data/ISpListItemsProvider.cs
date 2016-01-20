@@ -16,6 +16,9 @@ namespace Untech.SharePoint.Common.Data
 		/// </summary>
 		MetaList List { get; }
 
+		/// <summary>
+		/// Gets or sets whether to filter list items by content type Id or not.
+		/// </summary>
 		bool FilterByContentType { get; set; }
 
 		/// <summary>

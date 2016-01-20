@@ -9,13 +9,6 @@ using Untech.SharePoint.Common.Utils;
 
 namespace Untech.SharePoint.Common.Data
 {
-	[Flags]
-	public enum SpListOptions
-	{
-		Default = 0,
-		NoFilteringByContentType = 0x01,
-	}
-
 	/// <summary>
 	/// Represents base data context.
 	/// </summary>
