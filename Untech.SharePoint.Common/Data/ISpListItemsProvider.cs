@@ -85,7 +85,7 @@ namespace Untech.SharePoint.Common.Data
 		/// </summary>
 		/// <typeparam name="T">Type of entity to update.</typeparam>
 		/// <param name="item"></param>
-		void Update<T>(T item);
+		T Update<T>(T item);
 
 		/// <summary>
 		/// Deletes item with the specified ID from SP list.

@@ -93,7 +93,7 @@ namespace Untech.SharePoint.Client.Data
 				if (spField.FieldTypeKind == FieldType.Calculated)
 				{
 					var spCalculatedField = SpList.Context.CastTo<FieldCalculated>(spField);
-					field.TypeAsString = spCalculatedField.OutputType.ToString();
+					field.OutputType = spCalculatedField.OutputType.ToString();
 				}
 			}
 		}

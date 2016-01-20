@@ -140,12 +140,10 @@ namespace Untech.SharePoint.Common.Data
 				throw Error.OperationRequireIdField();
 			}
 
-			var id = AddInternal(item, contentType.GetMapper<TSPListItem>());
-
-			return Get<T>(id);
+			return (T) AddInternal(item, contentType.GetMapper<TSPListItem>());
 		}
 
-		public void Update<T>(T item)
+		public T Update<T>(T item)
 		{
 			if (List.IsExternal)
 			{
@@ -165,7 +163,7 @@ namespace Untech.SharePoint.Common.Data
 				.MemberAccessor
 				.GetValue(item);
 
-			UpdateInternal(idValue, item, contentType.GetMapper<TSPListItem>());
+			return (T) UpdateInternal(idValue, item, contentType.GetMapper<TSPListItem>());
 		}
 
 		public void Delete<T>(T item)
@@ -251,7 +249,7 @@ namespace Untech.SharePoint.Common.Data
 		/// <param name="item">Item to add.</param>
 		/// <param name="mapper">Mapper to SP list item.</param>
 		/// <returns>New SP list item ID.</returns>
-		protected abstract int AddInternal(object item, TypeMapper<TSPListItem> mapper);
+		protected abstract object AddInternal(object item, TypeMapper<TSPListItem> mapper);
 
 		/// <summary>
 		/// Updates item in SP list.
@@ -259,7 +257,7 @@ namespace Untech.SharePoint.Common.Data
 		/// <param name="id">Item ID to update.</param>
 		/// <param name="item">Item to update.</param>
 		/// <param name="mapper">Mapper to SP lsit item.</param>
-		protected abstract void UpdateInternal(int id, object item, TypeMapper<TSPListItem> mapper);
+		protected abstract object UpdateInternal(int id, object item, TypeMapper<TSPListItem> mapper);
 
 		/// <summary>
 		/// Deletes item from SP list.

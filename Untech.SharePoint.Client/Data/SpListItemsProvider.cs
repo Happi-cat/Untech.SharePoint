@@ -49,7 +49,7 @@ namespace Untech.SharePoint.Client.Data
 			return spItem;
 		}
 
-		protected override int AddInternal(object item, TypeMapper<ListItem> mapper)
+		protected override object AddInternal(object item, TypeMapper<ListItem> mapper)
 		{
 			var info = new ListItemCreationInformation();
 			var spItem = _spList.AddItem(info);
@@ -59,10 +59,10 @@ namespace Untech.SharePoint.Client.Data
 			spItem.Update();
 			_clientContext.ExecuteQuery();
 
-			return spItem.Id;
+			return mapper.CreateAndMap(spItem);
 		}
 
-		protected override void UpdateInternal(int id, object item, TypeMapper<ListItem> mapper)
+		protected override object UpdateInternal(int id, object item, TypeMapper<ListItem> mapper)
 		{
 			var spItem = _spList.GetItemById(id);
 			_clientContext.Load(spItem);
@@ -72,6 +72,8 @@ namespace Untech.SharePoint.Client.Data
 
 			spItem.Update();
 			_clientContext.ExecuteQuery();
+
+			return mapper.CreateAndMap(spItem);
 		}
 
 		protected override void DeleteInternal(int id)

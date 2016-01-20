@@ -23,9 +23,9 @@ namespace Untech.SharePoint.Common.Data
 			return ListItemsProvider.Add(item);
 		}
 
-		public void Update(T item)
+		public T Update(T item)
 		{
-			ListItemsProvider.Update(item);
+			return ListItemsProvider.Update(item);
 		}
 
 		public void Delete(T item)
