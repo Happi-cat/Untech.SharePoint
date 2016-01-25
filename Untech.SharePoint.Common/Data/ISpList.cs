@@ -11,6 +11,8 @@ namespace Untech.SharePoint.Common.Data
 	[PublicAPI]
 	public interface ISpList<T> : IQueryable<T>
 	{
+		string Title { get; }
+
 		/// <summary>
 		/// Gets item by id.
 		/// </summary>

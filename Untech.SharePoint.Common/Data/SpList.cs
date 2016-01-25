@@ -14,6 +14,8 @@ namespace Untech.SharePoint.Common.Data
 
 		private ISpListItemsProvider ListItemsProvider { get; set; }
 
+		public string Title { get { return ListItemsProvider.List.Title; } }
+
 		public T Get(int id)
 		{
 			return ListItemsProvider.Get<T>(id);
