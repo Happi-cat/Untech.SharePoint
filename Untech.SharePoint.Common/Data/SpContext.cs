@@ -112,7 +112,7 @@ namespace Untech.SharePoint.Common.Data
 			
 			itemsProvider.FilterByContentType = (options & SpListOptions.NoFilteringByContentType) == 0;
 
-			return new SpList<TEntity>(GetItemsProvider(list));
+			return new SpList<TEntity>(itemsProvider);
 		}
 
 		/// <summary>
