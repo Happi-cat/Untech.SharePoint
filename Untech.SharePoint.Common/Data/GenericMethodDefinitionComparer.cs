@@ -14,8 +14,18 @@ namespace Untech.SharePoint.Common.Data
 
 		public int GetHashCode(MethodInfo obj)
 		{
-			if (obj == null) { return 0; }
-			return obj.MetadataToken ^ obj.Module.GetHashCode();
+			if (obj == null)
+			{
+				return 0;
+			}
+
+			unchecked
+			{
+				var hash = 17;
+				hash = hash*37 + obj.MetadataToken;
+				hash = hash*37 + obj.Module.GetHashCode();
+				return hash;
+			}
 		}
 	}
 }

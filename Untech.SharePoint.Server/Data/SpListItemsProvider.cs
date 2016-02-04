@@ -47,6 +47,7 @@ namespace Untech.SharePoint.Server.Data
 			mapper.Map(item, spItem);
 
 			spItem.Update();
+			spItem = _spList.GetItemById(spItem.ID);
 
 			return mapper.CreateAndMap(spItem);
 		}
