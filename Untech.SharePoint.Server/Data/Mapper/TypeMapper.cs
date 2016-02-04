@@ -12,7 +12,7 @@ namespace Untech.SharePoint.Server.Data.Mapper
 
 		protected override void SetContentType(SPListItem spItem)
 		{
-			spItem[SPBuiltInFieldId.ContentType] = new SPContentTypeId(ContentType.Id);
+			spItem[SPBuiltInFieldId.ContentTypeId] = new SPContentTypeId(ContentType.Id);
 		}
 	}
 }
