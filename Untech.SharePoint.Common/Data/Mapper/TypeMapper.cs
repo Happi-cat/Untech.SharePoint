@@ -76,6 +76,7 @@ namespace Untech.SharePoint.Common.Data.Mapper
 			Guard.CheckNotNull("source", source);
 
 			var fields = GetMappers()
+				.Where(n => n.StoreAccessor.CanSetValue || n.Field.InternalName.In(new [] { Fields.Id, Fields.BdcIdentity }))
 				.ToDictionary(n => n.Field.InternalName, n => n.MapToCaml(source));
 
 			if (ContentType.List.IsExternal)
