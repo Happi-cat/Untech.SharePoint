@@ -32,7 +32,7 @@ namespace Untech.SharePoint.Server.Data
 		{
 			var spItem = _spList.GetItemById(id);
 
-			if (spItem.ContentTypeId.ToString() != contentType.Id)
+			if (FilterByContentType && spItem.ContentTypeId.ToString() != contentType.Id)
 			{
 				throw new InvalidOperationException("ContentType mismatch");
 			}

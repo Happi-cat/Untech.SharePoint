@@ -42,7 +42,7 @@ namespace Untech.SharePoint.Client.Data
 			_clientContext.Load(spItem, n => n, n => n.ContentType.StringId);
 			_clientContext.ExecuteQuery();
 
-			if (spItem.ContentType.StringId != contentType.Id)
+			if (FilterByContentType && spItem.ContentType.StringId != contentType.Id)
 			{
 				throw new InvalidOperationException("ContentType mismatch");
 			}
