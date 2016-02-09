@@ -9,16 +9,6 @@ namespace Untech.SharePoint.Common.Data
 	public class DataMappingException : Exception
 	{
 		/// <summary>
-		/// Initializes a new instance of the <see cref="DataMappingException"/> class with the specified <see cref="MetaField"/>.
-		/// </summary>
-		/// <param name="message">Message of the exception.</param>
-		public DataMappingException(string message)
-			: base(message)
-		{
-			
-		}
-
-		/// <summary>
 		/// Initializes a new instance of the <see cref="DataMappingException"/> class with the specified <see cref="MetaField"/>
 		/// and a reference to the inner exception that is the cause of this exception.
 		/// </summary>

@@ -31,7 +31,6 @@ namespace Untech.SharePoint.Common.Data
 		/// <summary>
 		/// Gets list associated with this instance of the <see cref="BaseSpListItemsProvider{T}"/>.
 		/// </summary>
-		[NotNull]
 		public MetaList List { get; private set; }
 
 		public bool FilterByContentType { get; set; }

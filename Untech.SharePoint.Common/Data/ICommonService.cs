@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Untech.SharePoint.Common.CodeAnnotations;
 using Untech.SharePoint.Common.MetaModels;
 using Untech.SharePoint.Common.MetaModels.Visitors;
 
@@ -12,6 +13,7 @@ namespace Untech.SharePoint.Common.Data
 		/// <summary>
 		/// Gets ordered collection of <see cref="IMetaModel"/> processors.
 		/// </summary>
+		[NotNull]
 		IReadOnlyCollection<IMetaModelVisitor> MetaModelProcessors { get; } 
 	}
 }

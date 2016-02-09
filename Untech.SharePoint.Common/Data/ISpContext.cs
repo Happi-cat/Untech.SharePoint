@@ -14,16 +14,19 @@ namespace Untech.SharePoint.Common.Data
 		/// <summary>
 		/// Gets <see cref="Config"/> that is used by this instance of the <see cref="ISpContext"/>
 		/// </summary>
+		[NotNull]
 		Config Config { get; }
 
 		/// <summary>
 		/// Gets <see cref="IMappingSource"/> that is used by this instance of the <see cref="ISpContext"/>
 		/// </summary>
+		[NotNull]
 		IMappingSource MappingSource { get; }
 
 		/// <summary>
 		/// Gets <see cref="MetaContext"/> that is used by this instance of the <see cref="ISpContext"/>
 		/// </summary>
+		[NotNull]
 		MetaContext Model { get; }
 	}
 }

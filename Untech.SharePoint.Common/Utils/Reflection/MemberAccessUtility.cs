@@ -71,7 +71,7 @@ namespace Untech.SharePoint.Common.Utils.Reflection
 		{
 			if (!propertyInfo.GetIndexParameters().IsNullOrEmpty())
 			{
-				throw ReflectionError.CannotCreateGetterForIndexer(propertyInfo);
+				throw ReflectionError.CannotCreateSetterForIndexer(propertyInfo);
 			}
 			if (!propertyInfo.CanWrite)
 			{

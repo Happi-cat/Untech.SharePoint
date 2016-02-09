@@ -76,7 +76,7 @@ namespace Untech.SharePoint.Common.Extensions
 		[NotNull]
 		public static List<List<T>> ToPages<T>([NotNull]this IEnumerable<T> enumerable, int pageSize)
 		{
-			Guard.CheckNotNull("source", enumerable);
+			Guard.CheckNotNull("enumerable", enumerable);
 			if (pageSize < 1)
 			{
 				throw new ArgumentOutOfRangeException("pageSize", "Page size cannot be less than 1.");

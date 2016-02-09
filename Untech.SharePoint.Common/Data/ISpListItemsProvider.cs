@@ -14,6 +14,7 @@ namespace Untech.SharePoint.Common.Data
 		/// <summary>
 		/// Gets list associated with this instance of the <see cref="ISpListItemsProvider"/>.
 		/// </summary>
+		[NotNull]
 		MetaList List { get; }
 
 		/// <summary>
