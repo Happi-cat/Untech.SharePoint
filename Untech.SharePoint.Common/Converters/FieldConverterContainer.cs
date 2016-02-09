@@ -49,7 +49,7 @@ namespace Untech.SharePoint.Common.Converters
 		public void Add<TConverter>()
 			where TConverter : IFieldConverter
 		{
-			var converterType = typeof (TConverter);
+			var converterType = typeof(TConverter);
 
 			Register(converterType, InstanceCreationUtility.GetCreator<IFieldConverter>(converterType));
 		}
@@ -58,7 +58,8 @@ namespace Untech.SharePoint.Common.Converters
 		/// Adds the specified <paramref name="converterType"/>.
 		/// </summary>
 		/// <param name="converterType">Type of the field converter to add.</param>
-		public void Add(Type converterType)
+		/// <exception cref="ArgumentNullException"><paramref name="converterType"/> is null.</exception>
+		public void Add([NotNull]Type converterType)
 		{
 			Guard.CheckNotNull("converterType", converterType);
 
@@ -70,7 +71,7 @@ namespace Untech.SharePoint.Common.Converters
 		/// </summary>
 		/// <param name="typeAsString">SP field type as string.</param>
 		/// <returns>true if can resovle the specified <paramref name="typeAsString"/>.</returns>
-		public bool CanResolve([NotNull] string typeAsString)
+		public bool CanResolve(string typeAsString)
 		{
 			Guard.CheckNotNull("typeAsString", typeAsString);
 
@@ -82,8 +83,7 @@ namespace Untech.SharePoint.Common.Converters
 		/// </summary>
 		/// <param name="typeAsString">SP field type as string.</param>
 		/// <returns>New instance of the <see cref="IFieldConverter"/> that matchs to the specified SP field type.</returns>
-		[NotNull]
-		public IFieldConverter Resolve([NotNull] string typeAsString)
+		public IFieldConverter Resolve(string typeAsString)
 		{
 			Guard.CheckNotNull("typeAsString", typeAsString);
 
@@ -95,7 +95,7 @@ namespace Untech.SharePoint.Common.Converters
 		/// </summary>
 		/// <param name="converterType">SP field converter type to check.</param>
 		/// <returns>true if can resovle the specified <paramref name="converterType"/>.</returns>
-		public bool CanResolve([NotNull] Type converterType)
+		public bool CanResolve(Type converterType)
 		{
 			Guard.CheckNotNull("converterType", converterType);
 
@@ -107,8 +107,7 @@ namespace Untech.SharePoint.Common.Converters
 		/// </summary>
 		/// <param name="converterType">type of the field converter to instantiate.</param>
 		/// <returns>New instance of the <see cref="IFieldConverter"/>.</returns>
-		[NotNull]
-		public IFieldConverter Resolve([NotNull] Type converterType)
+		public IFieldConverter Resolve(Type converterType)
 		{
 			Guard.CheckNotNull("converterType", converterType);
 

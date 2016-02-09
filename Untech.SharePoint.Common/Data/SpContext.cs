@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using System.Linq.Expressions;
 using Untech.SharePoint.Common.CodeAnnotations;
 using Untech.SharePoint.Common.Collections;
@@ -53,7 +52,6 @@ namespace Untech.SharePoint.Common.Data
 		/// <summary>
 		/// Gets <see cref="ISpContext.Config"/> that is used by this instance of the <see cref="ISpContext"/>
 		/// </summary>
-		[NotNull]
 		public Config Config { get; private set; }
 
 		/// <summary>
@@ -65,7 +63,6 @@ namespace Untech.SharePoint.Common.Data
 		/// <summary>
 		/// Gets <see cref="IMappingSource"/> that is used by this instance of the <see cref="ISpContext"/>
 		/// </summary>
-		[NotNull]
 		public IMappingSource MappingSource { get; private set; }
 
 		/// <summary>

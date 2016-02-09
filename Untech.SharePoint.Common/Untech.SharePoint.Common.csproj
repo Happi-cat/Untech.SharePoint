@@ -133,7 +133,6 @@
     <Compile Include="Converters\FieldConverterWrapper.cs" />
     <Compile Include="Converters\IFieldConverter.cs" />
     <Compile Include="Converters\IFieldConverterResolver.cs" />
-    <Compile Include="Converters\InvalidFieldConverterException.cs" />
     <Compile Include="Converters\SpFieldConverterAttribute.cs" />
     <Compile Include="Data\ISpContext.cs" />
     <Compile Include="Data\ISpList.cs" />

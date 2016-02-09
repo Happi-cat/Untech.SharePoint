@@ -12,27 +12,30 @@ namespace Untech.SharePoint.Common.Converters
 		/// Initialzes current instance with the specified <see cref="MetaField"/>
 		/// </summary>
 		/// <param name="field"></param>
-		void Initialize(MetaField field);
+		void Initialize([NotNull] MetaField field);
 
 		/// <summary>
 		/// Converts SP field value to <see cref="MetaField.MemberType"/>.
 		/// </summary>
 		/// <param name="value">SP value to convert.</param>
 		/// <returns>Member value.</returns>
-		object FromSpValue(object value);
+		[CanBeNull]
+		object FromSpValue([CanBeNull]object value);
 
 		/// <summary>
 		/// Converts <see cref="MetaField.Member"/> value to SP field value.
 		/// </summary>
 		/// <param name="value">Member value to convert.</param>
 		/// <returns>SP field value.</returns>
-		object ToSpValue(object value);
+		[CanBeNull]
+		object ToSpValue([CanBeNull]object value);
 
 		/// <summary>
 		/// Converts <see cref="MetaField.Member"/> value to SP Caml value.
 		/// </summary>
 		/// <param name="value"></param>
 		/// <returns>Caml value.</returns>
-		string ToCamlValue(object value);
+		[CanBeNull]
+		string ToCamlValue([CanBeNull]object value);
 	}
 }

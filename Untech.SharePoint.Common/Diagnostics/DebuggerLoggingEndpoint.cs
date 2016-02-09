@@ -1,11 +1,13 @@
 ﻿using System.Diagnostics;
 using System.Threading;
+using Untech.SharePoint.Common.CodeAnnotations;
 
 namespace Untech.SharePoint.Common.Diagnostics
 {
 	/// <summary>
 	/// Represents class of logging endpoint that writes messages to <see cref="Debugger"/> instance.
 	/// </summary>
+	[PublicAPI]
 	public class DebuggerLoggingEndpoint : ILoggingEndpoint
 	{
 		/// <summary>

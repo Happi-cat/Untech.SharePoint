@@ -29,7 +29,7 @@ namespace Untech.SharePoint.Server.Data
 			_sw.Write("<Batch OnError=\"Return\">");
 		}
 
-		public int NewItem(SPList list, IEnumerable<KeyValuePair<string, string>> fields)
+		public void NewItem(SPList list, IEnumerable<KeyValuePair<string, string>> fields)
 		{
 			_counter++;
 			_sw.Write("<Method ID=\"{0}\">", _counter);
@@ -42,10 +42,9 @@ namespace Untech.SharePoint.Server.Data
 				.Each(WriteField);
 
 			_sw.Write("</Method>");
-			return _counter;
 		}
 
-		public int UpdateItem(SPList list, IEnumerable<KeyValuePair<string, string>> fields)
+		public void UpdateItem(SPList list, IEnumerable<KeyValuePair<string, string>> fields)
 		{
 			_counter++;
 			_sw.Write("<Method ID=\"{0}\">", _counter);
@@ -55,11 +54,9 @@ namespace Untech.SharePoint.Server.Data
 			fields.Each(WriteField);
 
 			_sw.Write("</Method>");
-
-			return _counter;
 		}
 
-		public int DeleteItem(SPList list, string id)
+		public void DeleteItem(SPList list, string id)
 		{
 			_counter++;
 			_sw.Write("<Method ID=\"{0}\">", _counter);
@@ -69,7 +66,6 @@ namespace Untech.SharePoint.Server.Data
 			WriteField("ID", id);
 
 			_sw.Write("</Method>");
-			return _counter;
 		}
 
 		public void End()

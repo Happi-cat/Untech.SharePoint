@@ -1,4 +1,5 @@
 ﻿using System;
+using Untech.SharePoint.Common.CodeAnnotations;
 
 namespace Untech.SharePoint.Common.Mappings
 {
@@ -12,13 +13,14 @@ namespace Untech.SharePoint.Common.Mappings
 		/// </summary>
 		/// <param name="contextType">Context type to check.</param>
 		/// <returns>true if can resovle the specified <paramref name="contextType"/>.</returns>
-		bool CanResolve(Type contextType);
+		bool CanResolve([NotNull]Type contextType);
 
 		/// <summary>
 		/// Resolves <paramref name="contextType"/>.
 		/// </summary>
 		/// <param name="contextType">Context type to resovle.</param>
 		/// <returns>Instance of <see cref="IMappingSource"/> that is associated with current <paramref name="contextType"/>.</returns>
-		IMappingSource Resolve(Type contextType);
+		[NotNull]
+		IMappingSource Resolve([NotNull]Type contextType);
 	}
 }
