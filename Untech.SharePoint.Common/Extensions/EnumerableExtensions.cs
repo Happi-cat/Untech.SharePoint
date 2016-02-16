@@ -20,7 +20,7 @@ namespace Untech.SharePoint.Common.Extensions
 		/// <param name="delimeter">Item delimiter.</param>
 		/// <returns>Concatenated string</returns>
 		[NotNull]
-		public static string JoinToString<T>([CanBeNull]this IEnumerable<T> enumerable, [CanBeNull]string delimeter = "; ")
+		public static string JoinToString<T>([CanBeNull, InstantHandle]this IEnumerable<T> enumerable, [CanBeNull]string delimeter = "; ")
 		{
 			return enumerable == null ? "" : string.Join(delimeter ?? "", enumerable);
 		}
@@ -31,7 +31,7 @@ namespace Untech.SharePoint.Common.Extensions
 		/// <typeparam name="T">The type of collection element.</typeparam>
 		/// <param name="enumerable">Collection to iterate over.</param>
 		/// <param name="action">Action that should be invoke for every item in the specified collection.</param>
-		public static void Each<T>([CanBeNull]this IEnumerable<T> enumerable, [NotNull]Action<T> action)
+		public static void Each<T>([CanBeNull, InstantHandle]this IEnumerable<T> enumerable, [NotNull]Action<T> action)
 		{
 			Guard.CheckNotNull("action", action);
 			if (enumerable == null) return;
@@ -49,7 +49,7 @@ namespace Untech.SharePoint.Common.Extensions
 		/// <param name="enumerable">Collection that should be checked.</param>
 		/// <returns>true if the <see cref="IEnumerable{T}"/> is null or empty; otherwise, false.</returns>
 		[ContractAnnotation("null => true")]
-		public static bool IsNullOrEmpty<T>([CanBeNull]this IEnumerable<T> enumerable)
+		public static bool IsNullOrEmpty<T>([CanBeNull, InstantHandle]this IEnumerable<T> enumerable)
 		{
 			return enumerable == null || !enumerable.Any();
 		}
@@ -74,7 +74,7 @@ namespace Untech.SharePoint.Common.Extensions
 		/// <param name="pageSize">Page size</param>
 		/// <returns>List with pages.</returns>
 		[NotNull]
-		public static List<List<T>> ToPages<T>([NotNull]this IEnumerable<T> enumerable, int pageSize)
+		public static List<List<T>> ToPages<T>([NotNull, InstantHandle]this IEnumerable<T> enumerable, int pageSize)
 		{
 			Guard.CheckNotNull("enumerable", enumerable);
 			if (pageSize < 1)

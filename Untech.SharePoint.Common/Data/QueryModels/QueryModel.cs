@@ -13,7 +13,7 @@ namespace Untech.SharePoint.Common.Data.QueryModels
 	[PublicAPI]
 	public sealed class QueryModel
 	{
-		[CanBeNull] private IEnumerable<FieldRefModel> _selectableFields;
+		[CanBeNull] private List<FieldRefModel> _selectableFields;
 		[CanBeNull] private List<OrderByModel> _orderBys;
 		private bool _isOrderReversed;
 
