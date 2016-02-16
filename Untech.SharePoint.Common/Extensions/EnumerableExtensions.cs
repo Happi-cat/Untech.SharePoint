@@ -61,7 +61,7 @@ namespace Untech.SharePoint.Common.Extensions
 		/// <typeparam name="T">The type of collection element.</typeparam>
 		/// <returns>Empty Enumerable if <paramref name="enumerable"/> is null; otherwise, <paramref name="enumerable"/>.</returns>
 		[NotNull]
-		public static IEnumerable<T> EmptyIfNull<T>([CanBeNull][NoEnumeration] this IEnumerable<T> enumerable)
+		public static IEnumerable<T> EmptyIfNull<T>([CanBeNull, NoEnumeration] this IEnumerable<T> enumerable)
 		{
 			return enumerable ?? Enumerable.Empty<T>();
 		}

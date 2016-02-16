@@ -112,7 +112,7 @@ namespace Untech.SharePoint.Common.Data.Translators
 
 			var models = fieldRefs.ToList();
 			return models.Any()
-				? new XElement(Tags.ViewFields, models.Select(GetViewField))
+				? new XElement(Tags.ViewFields, models.Select(GetViewField).Distinct(new XNodeEqualityComparer()))
 				: null;
 		}
 
