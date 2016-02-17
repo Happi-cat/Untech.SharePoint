@@ -10,7 +10,7 @@ namespace Untech.SharePoint.Common.Models
 	/// </summary>
 	[PublicAPI]
 	[DataContract]
-	public class ObjectReference
+	public class ObjectReference : IEquatable<ObjectReference>
 	{
 		/// <summary>
 		/// Gets or sets lookup id.
@@ -32,5 +32,23 @@ namespace Untech.SharePoint.Common.Models
 		[DataMember]
 		[JsonProperty("listId")]
 		public Guid ListId { get; set; }
+
+		public bool Equals(ObjectReference other)
+		{
+			return Id == other.Id && ListId == other.ListId;
+		}
+
+		public static bool operator ==(ObjectReference left, ObjectReference right)
+		{
+			if (ReferenceEquals(left, right)) return true;
+			if (ReferenceEquals(null, left) || ReferenceEquals(null, right)) return false;
+
+			return left.Equals(right);
+		}
+
+		public static bool operator !=(ObjectReference left, ObjectReference right)
+		{
+			return !(left == right);
+		}
 	}
 }

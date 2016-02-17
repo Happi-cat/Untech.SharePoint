@@ -1,4 +1,5 @@
-﻿using System.Runtime.Serialization;
+﻿using System;
+using System.Runtime.Serialization;
 using Newtonsoft.Json;
 using Untech.SharePoint.Common.CodeAnnotations;
 
@@ -9,7 +10,7 @@ namespace Untech.SharePoint.Common.Models
 	/// </summary>
 	[PublicAPI]
 	[DataContract]
-	public class UserInfo
+	public class UserInfo : IEquatable<UserInfo>
 	{
 		/// <summary>
 		/// Gets or sets user id.
@@ -31,5 +32,23 @@ namespace Untech.SharePoint.Common.Models
 		[DataMember]
 		[JsonProperty("email")]
 		public string Email { get; set; }
+
+		public bool Equals(UserInfo other)
+		{
+			return Id == other.Id;
+		}
+
+		public static bool operator ==(UserInfo left, UserInfo right)
+		{
+			if (ReferenceEquals(left, right)) return true;
+			if (ReferenceEquals(null, left) || ReferenceEquals(null, right)) return false;
+
+			return left.Equals(right);
+		}
+
+		public static bool operator !=(UserInfo left, UserInfo right)
+		{
+			return !(left == right);
+		}
 	}
 }

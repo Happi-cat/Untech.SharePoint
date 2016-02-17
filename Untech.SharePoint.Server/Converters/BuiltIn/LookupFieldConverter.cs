@@ -58,9 +58,13 @@ namespace Untech.SharePoint.Server.Converters.BuiltIn
 			}
 
 			var fieldValues = new SPFieldLookupValueCollection(value.ToString());
-			var lookupValues = fieldValues.Select(ConvertToObjRef);
+			var lookupValues = fieldValues.Select(ConvertToObjRef).ToList();
+			if (!lookupValues.Any())
+			{
+				return null;
+			}
 
-			return IsArray ? (object)lookupValues.ToArray() : lookupValues.ToList();
+			return IsArray ? (object) lookupValues.ToArray() : lookupValues;
 		}
 
 		public object ToSpValue(object value)
@@ -75,7 +79,11 @@ namespace Untech.SharePoint.Server.Converters.BuiltIn
 				return fieldValue.ToString();
 			}
 
-			var lookupValues = (IEnumerable<ObjectReference>)value;
+			var lookupValues = ((IEnumerable<ObjectReference>)value).ToList();
+			if (!lookupValues.Any())
+			{
+				return null;
+			}
 
 			var fieldValues = new SPFieldLookupValueCollection();
 			fieldValues.AddRange(lookupValues.Select(n => new SPFieldLookupValue(n.Id, n.Value)));

@@ -59,9 +59,13 @@ namespace Untech.SharePoint.Server.Converters.BuiltIn
 			}
 
 			var fieldValues = new SPFieldUserValueCollection(_web, value.ToString());
-			var userValues = fieldValues.Select(ConvertToUserInfo);
+			var userValues = fieldValues.Select(ConvertToUserInfo).ToList();
 
-			return _isArray ? (object)userValues.ToArray() : userValues.ToList();
+			if (!userValues.Any())
+			{
+				return null;
+			}
+			return _isArray ? (object)userValues.ToArray() : userValues;
 		}
 
 		public object ToSpValue(object value)
@@ -76,7 +80,11 @@ namespace Untech.SharePoint.Server.Converters.BuiltIn
 				return fieldValue.ToString();
 			}
 
-			var userValues = (IEnumerable<UserInfo>)value;
+			var userValues = ((IEnumerable<UserInfo>)value).ToList();
+			if (!userValues.Any())
+			{
+				return null;
+			}
 
 			var fieldValues = new SPFieldUserValueCollection();
 			fieldValues.AddRange(userValues.Select(n => new SPFieldUserValue(_web, n.Id, n.Login)));

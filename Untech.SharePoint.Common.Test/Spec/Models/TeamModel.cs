@@ -10,6 +10,7 @@ namespace Untech.SharePoint.Common.Test.Spec.Models
 		[SpField]
 		public UserInfo Manager { get; set; }
 
+		[SpField]
 		public List<UserInfo> Developers { get; set; }
 
 		[SpField]
