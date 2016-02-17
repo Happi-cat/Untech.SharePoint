@@ -1,40 +1,20 @@
 ﻿using System;
+using System.CodeDom;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Xml.Linq;
+using System.Xml.Serialization;
 using Untech.SharePoint.Common.CodeAnnotations;
 using Untech.SharePoint.Common.Converters;
 using Untech.SharePoint.Common.Data.QueryModels;
 using Untech.SharePoint.Common.Diagnostics;
+using Untech.SharePoint.Common.Extensions;
 using Untech.SharePoint.Common.MetaModels;
 using Untech.SharePoint.Common.Utils;
 
 namespace Untech.SharePoint.Common.Data.Translators
 {
-	internal static class CamlHelper
-	{
-		public static XElement CreateView([CanBeNull]XElement xRowLimit, [CanBeNull]XElement xQuery, [CanBeNull]XElement xViewFields)
-		{
-			return new XElement(Tags.View, xRowLimit, xQuery, xViewFields);
-		}
-
-		public static XElement CreateQuery([CanBeNull]XElement xWhere, [CanBeNull]XElement xOrderBy)
-		{
-			return new XElement(Tags.Query, xWhere, xOrderBy);
-		}
-
-		public static XElement CreateWhere(LogicalJoinOperator logicalJoinOperator, [NotNull]XElement xFirst, [NotNull]XElement xSecond)
-		{
-			return new XElement(logicalJoinOperator.ToString(), xFirst, xSecond);
-		}
-
-		public static XElement CreateWhere(ComparisonOperator comparisonOperator, [NotNull]XElement xFieldRef, [CanBeNull]XElement xValue)
-		{
-			return new XElement(comparisonOperator.ToString(), xFieldRef, xValue);
-		}
-	}
-
 	internal class CamlQueryTranslator : IProcessor<QueryModel, string>
 	{
 		public CamlQueryTranslator([NotNull]MetaContentType contentType)
@@ -54,7 +34,7 @@ namespace Untech.SharePoint.Common.Data.Translators
 
 			Logger.Trace(LogCategories.QueryTranslator, "Original QueryModel:\n{0}", query);
 
-			var result = GetQuery(query).ToString();
+			var result = View(query).ToString();
 
 			Logger.Trace(LogCategories.QueryTranslator, "CAML-string that was generated from QueryModel:\n{0}", result);
 
@@ -62,170 +42,207 @@ namespace Untech.SharePoint.Common.Data.Translators
 		}
 
 		[NotNull]
-		private XElement GetQuery([NotNull] QueryModel query)
+		private XElement View([NotNull]QueryModel queryModel)
 		{
-			return CamlHelper.CreateView(
-				GetRowLimit(query.RowLimit),
-				CamlHelper.CreateQuery(
-					GetWheres(query.Where),
-					GetOrderBys(query.OrderBys)),
-				GetViewFields(query.SelectableFields));
-		}
+			XElement xRowLimit = null;
+			XElement xViewFields = null;
 
-		[CanBeNull]
-		private XElement GetRowLimit(int? rowLimit)
-		{
-			return rowLimit != null ? new XElement(Tags.RowLimit, rowLimit) : null;
-		}
-
-		[CanBeNull]
-		private XElement GetWheres([CanBeNull]WhereModel where)
-		{
-			var xWhere = GetWhere(where);
-
-			return xWhere != null ? new XElement(Tags.Where, xWhere) : null;
-		}
-
-		[CanBeNull]
-		private XElement GetWhere([CanBeNull]WhereModel @where)
-		{
-			if (@where == null)
+			if (queryModel.RowLimit != null)
 			{
-				return null;
+				xRowLimit = new XElement(Tags.RowLimit, queryModel.RowLimit);
+			}
+			var viewFields = queryModel.SelectableFields.EmptyIfNull().ToList();
+			if (viewFields.Any())
+			{
+				xViewFields = new XElement(Tags.ViewFields, 
+					viewFields.Select(FieldRef).Distinct(new XNodeEqualityComparer()));
 			}
 
+			return new XElement(Tags.View, 
+				xRowLimit, 
+				Query(queryModel), 
+				xViewFields);
+		}
+
+		[NotNull]
+		private XElement Query([NotNull]QueryModel queryModel)
+		{
+			XElement xWhere = null;
+			XElement xOrderBy = null;
+
+			if (queryModel.Where != null)
+			{
+				xWhere = new XElement(Tags.Where, Where(queryModel.Where));
+			}
+			var orderFields = queryModel.OrderBys.EmptyIfNull().ToList();
+			if (orderFields.Any())
+			{
+				xOrderBy = new XElement(Tags.OrderBy, orderFields.Select(FieldRef));
+			}
+
+			return new XElement(Tags.Query, xWhere, xOrderBy);
+		}
+
+		#region [Where]
+
+		[NotNull]
+		private XElement Where([NotNull] WhereModel @where)
+		{
 			switch (@where.Type)
 			{
 				case WhereType.LogicalJoin:
-					return GetLogicalJoin((LogicalJoinModel)@where);
+					return Where((LogicalJoinModel) @where);
 				case WhereType.Comparison:
-					return GetComparison((ComparisonModel)@where);
+					return Where((ComparisonModel) @where);
 			}
 
 			throw new NotSupportedException(string.Format("'{0}' is not supported", @where));
 		}
 
-		[CanBeNull]
-		private XElement GetOrderBys([CanBeNull][ItemNotNull] IEnumerable<OrderByModel> orderBys)
+		[NotNull]
+		private XElement Where([NotNull] LogicalJoinModel logicalJoin)
 		{
-			if (orderBys == null)
-			{
-				return null;
-			}
-
-			var models = orderBys.ToList();
-			return models.Any() ? new XElement(Tags.OrderBy, models.Select(GetOrderBy)) : null;
+			return Where(logicalJoin.LogicalOperator,
+				Where(logicalJoin.First),
+				Where(logicalJoin.Second));
 		}
 
 		[NotNull]
-		private XElement GetOrderBy([NotNull]OrderByModel orderBy)
-		{
-			return new XElement(Tags.FieldRef,
-				new XAttribute(Tags.Ascending, orderBy.Ascending.ToString().ToUpper()),
-				GetFieldRefName(orderBy.FieldRef));
-		}
-
-		[CanBeNull]
-		private XElement GetViewFields([CanBeNull][ItemNotNull] IEnumerable<FieldRefModel> fieldRefs)
-		{
-			if (fieldRefs == null)
-			{
-				return null;
-			}
-
-			var models = fieldRefs.ToList();
-			return models.Any()
-				? new XElement(Tags.ViewFields, models.Select(GetViewField).Distinct(new XNodeEqualityComparer()))
-				: null;
-		}
-
-		[NotNull]
-		private XElement GetViewField([NotNull]FieldRefModel fieldRef)
-		{
-			return new XElement(Tags.FieldRef, GetFieldRefName(fieldRef));
-		}
-
-		[NotNull]
-		private XElement GetLogicalJoin([NotNull]LogicalJoinModel logicalJoin)
-		{
-			return new XElement(logicalJoin.LogicalOperator.ToString(),
-				GetWhere(logicalJoin.First),
-				GetWhere(logicalJoin.Second));
-		}
-
-		[NotNull]
-		private XElement GetComparison([NotNull]ComparisonModel comparison)
+		private XElement Where([NotNull] ComparisonModel comparison)
 		{
 			if (comparison.ComparisonOperator == ComparisonOperator.ContainsOrIncludes ||
-				comparison.ComparisonOperator == ComparisonOperator.NotContainsOrIncludes)
+			    comparison.ComparisonOperator == ComparisonOperator.NotContainsOrIncludes)
 			{
-				return GetContainsOrIncludes(comparison);
+				return WhereContainsOrIncludes(comparison);
 			}
 
 			if (comparison.ComparisonOperator == ComparisonOperator.IsNull ||
-				comparison.ComparisonOperator == ComparisonOperator.IsNotNull)
+			    comparison.ComparisonOperator == ComparisonOperator.IsNotNull)
 			{
-				return new XElement(comparison.ComparisonOperator.ToString(),
-					new XElement(Tags.FieldRef, GetFieldRefName(comparison.Field)));
+				return Where(comparison.ComparisonOperator,
+					FieldRef(comparison.Field),
+					null);
 			}
 
-			return GetComparison(comparison.ComparisonOperator, comparison.Field, comparison.Value, comparison.IsValueConverted);
+			return WhereComparison(comparison.ComparisonOperator, comparison.Field, comparison.Value, comparison.IsValueConverted);
 		}
 
 		[NotNull]
-		private XElement GetContainsOrIncludes([NotNull] ComparisonModel comparison)
+		private XElement Where(LogicalJoinOperator logicalJoinOperator, [NotNull] XElement xFirst, [NotNull] XElement xSecond)
+		{
+			return new XElement(logicalJoinOperator.ToString(), xFirst, xSecond);
+		}
+
+		[NotNull]
+		private XElement Where(ComparisonOperator comparisonOperator, [NotNull] XElement xFieldRef,
+			[CanBeNull] XElement xValue)
+		{
+			return new XElement(comparisonOperator.ToString(), xFieldRef, xValue);
+		}
+
+		#endregion
+
+
+		#region [FieldRef]
+
+		[NotNull]
+		private XElement FieldRef(string internalName)
+		{
+			return new XElement(Tags.FieldRef, new XAttribute(Tags.Name, internalName));
+		}
+
+		[NotNull]
+		private XElement FieldRef([NotNull] FieldRefModel fieldRef)
+		{
+			return new XElement(Tags.FieldRef,
+				new XAttribute(Tags.Name, GetFieldInternalName(fieldRef)));
+		}
+
+		[NotNull]
+		private XElement FieldRef([NotNull] OrderByModel orderBy)
+		{
+			var ascending = orderBy.Ascending.ToString().ToUpper();
+
+			return new XElement(Tags.FieldRef,
+				new XAttribute(Tags.Name, GetFieldInternalName(orderBy.FieldRef)),
+				new XAttribute(Tags.Ascending, ascending));
+		}
+
+		[NotNull]
+		private XElement FieldRef(MetaField metaField)
+		{
+			var isLookup = metaField.TypeAsString.StartsWith("User") || metaField.TypeAsString.StartsWith("Lookup");
+
+			return new XElement(Tags.FieldRef,
+				new XAttribute(Tags.Name, metaField.InternalName),
+				isLookup ? new XAttribute("LookupId", "TRUE") : null);
+		}
+
+		#endregion
+
+
+		#region [Where Specials]
+
+		[NotNull]
+		private XElement WhereContainsOrIncludes([NotNull] ComparisonModel comparison)
 		{
 			if (comparison.Field.Type != FieldRefType.KnownMember)
 			{
 				throw new NotSupportedException("Unsupported FieldRefType value");
 			}
 
-			var memberRef = (MemberRefModel)comparison.Field;
-			var metaField = GetMetaField(memberRef.Member);
+			var memberRef = (MemberRefModel) comparison.Field;
+			var metaField = GetMetaField(memberRef);
+			var isLookup = metaField.TypeAsString.StartsWith("User") || metaField.TypeAsString.StartsWith("Lookup");
 
-			if (comparison.ComparisonOperator == ComparisonOperator.NotContainsOrIncludes)
+			if (comparison.ComparisonOperator == ComparisonOperator.ContainsOrIncludes)
 			{
-				if (metaField.TypeAsString.StartsWith("User") || metaField.TypeAsString.StartsWith("Lookup")) 
-				{
-					return GetComparison(ComparisonOperator.NotIncludes, metaField, comparison.Value, comparison.IsValueConverted);
-				}
-
-				throw new NotSupportedException("Cannot negate Contains operation for non-lookup fields");
+				return WhereComparison(isLookup ? ComparisonOperator.Includes : ComparisonOperator.Contains,
+					metaField,
+					comparison.Value,
+					comparison.IsValueConverted);
 			}
 
-			if (metaField.TypeAsString.StartsWith("User") || metaField.TypeAsString.StartsWith("Lookup"))
+			if (isLookup)
 			{
-				return GetComparison(ComparisonOperator.Includes, metaField, comparison.Value, comparison.IsValueConverted);
+				return WhereComparison(ComparisonOperator.NotIncludes, metaField, comparison.Value, comparison.IsValueConverted);
 			}
 
-			return GetComparison(ComparisonOperator.Contains, metaField, comparison.Value, comparison.IsValueConverted);
+			throw new NotSupportedException("Cannot negate Contains operation for non-lookup fields");
 		}
 
 		[NotNull]
-		private XAttribute GetFieldRefName([NotNull]FieldRefModel fieldRef)
+		private XElement WhereComparison(ComparisonOperator comparisonOperator, [NotNull] FieldRefModel fieldRef, object value,
+			bool alreadyConverted = false)
 		{
-			switch (fieldRef.Type)
+			if (fieldRef.Type != FieldRefType.KnownMember)
 			{
-				case FieldRefType.Key:
-					var key = ContentType.List.IsExternal ? Fields.BdcIdentity : Fields.Id;
-					return new XAttribute(Tags.Name, key);
-				case FieldRefType.ContentTypeId:
-					return new XAttribute(Tags.Name, Fields.ContentTypeId);
-				case FieldRefType.KnownMember:
-					var memberRef = (MemberRefModel) fieldRef;
-					return new XAttribute(Tags.Name, GetMetaField(memberRef.Member).InternalName);
+				return Where(comparisonOperator,
+					FieldRef(fieldRef),
+					Value(fieldRef, value, alreadyConverted));
 			}
 
-			throw new NotSupportedException("Unsupported FieldRefType value");
+			return WhereComparison(comparisonOperator, GetMetaField((MemberRefModel) fieldRef), value, alreadyConverted);
 		}
 
 		[NotNull]
-		private XElement GetValue([NotNull]FieldRefModel fieldRef, [CanBeNull]object value, bool alreadyConverted = false)
+		private XElement WhereComparison(ComparisonOperator comparisonOperator, [NotNull] MetaField metaField, object value,
+			bool alreadyConverted = false)
+		{
+			return Where(comparisonOperator, FieldRef(metaField), Value(metaField, value, alreadyConverted));
+		}
+
+		#endregion
+
+
+		#region [Value]
+
+		[NotNull]
+		private XElement Value([NotNull] FieldRefModel fieldRef, [CanBeNull] object value, bool alreadyConverted = false)
 		{
 			if (fieldRef.Type == FieldRefType.KnownMember)
 			{
-				var memberRef = (MemberRefModel) fieldRef;
-				return GetValue(GetMetaField(memberRef.Member), value, alreadyConverted);
+				return Value(GetMetaField((MemberRefModel) fieldRef), value, alreadyConverted);
 			}
 
 			if (!alreadyConverted)
@@ -237,7 +254,7 @@ namespace Untech.SharePoint.Common.Data.Translators
 		}
 
 		[NotNull]
-		private XElement GetValue([NotNull] MetaField metaField, [CanBeNull] object value, bool alreadyConverted = false)
+		private XElement Value([NotNull] MetaField metaField, [CanBeNull] object value, bool alreadyConverted = false)
 		{
 			var camlValue = alreadyConverted
 				? value
@@ -249,9 +266,32 @@ namespace Untech.SharePoint.Common.Data.Translators
 			return new XElement(Tags.Value, typeAttr, camlValue);
 		}
 
+		#endregion
+
+
+		#region [Helpers]
+
 		[NotNull]
-		private MetaField GetMetaField([NotNull]MemberInfo member)
+		private string GetFieldInternalName([NotNull] FieldRefModel fieldRef)
 		{
+			switch (fieldRef.Type)
+			{
+				case FieldRefType.Key:
+					return ContentType.List.IsExternal ? Fields.BdcIdentity : Fields.Id;
+				case FieldRefType.ContentTypeId:
+					return Fields.ContentTypeId;
+				case FieldRefType.KnownMember:
+					return GetMetaField((MemberRefModel) fieldRef).InternalName;
+			}
+
+			throw new NotSupportedException("Unsupported FieldRefType value");
+		}
+
+
+		[NotNull]
+		private MetaField GetMetaField([NotNull] MemberRefModel memberRef)
+		{
+			var member = memberRef.Member;
 			if (!ContentType.Fields.ContainsKey(member.Name))
 			{
 				throw new InvalidOperationException(string.Format("'{0}' wasn't mapped and cannot be used in CAML query.", member));
@@ -260,7 +300,7 @@ namespace Untech.SharePoint.Common.Data.Translators
 			return ContentType.Fields[member.Name];
 		}
 
-		private IFieldConverter GetConverter([NotNull]MetaField field)
+		private IFieldConverter GetConverter([NotNull] MetaField field)
 		{
 			var converter = field.Converter;
 			if (converter == null)
@@ -270,33 +310,7 @@ namespace Untech.SharePoint.Common.Data.Translators
 			return converter;
 		}
 
-		[NotNull]
-		private XElement GetComparison(ComparisonOperator comparisonOperator, [NotNull] FieldRefModel fieldRef, object value,
-			bool alreadyConverted = false)
-		{
-			if (fieldRef.Type != FieldRefType.KnownMember)
-			{
-				return CamlHelper.CreateWhere(comparisonOperator,
-					new XElement(Tags.FieldRef, GetFieldRefName(fieldRef)),
-					GetValue(fieldRef, value, alreadyConverted));
-			}
+		#endregion
 
-			var memberRef = (MemberRefModel) fieldRef;
-			return GetComparison(comparisonOperator, GetMetaField(memberRef.Member), value, alreadyConverted);
-		}
-
-		[NotNull]
-		private XElement GetComparison(ComparisonOperator comparisonOperator, [NotNull] MetaField metaField, object value,
-			bool alreadyConverted = false)
-		{
-			var xFieldRef = new XElement(Tags.FieldRef, new XAttribute(Tags.Name, metaField.InternalName));
-			if (metaField.TypeAsString.StartsWith("User") || metaField.TypeAsString.StartsWith("Lookup"))
-			{
-				xFieldRef.Add(new XAttribute("LookupId", "TRUE"));
-			}
-			var xValue = GetValue(metaField, value, alreadyConverted);
-
-			return CamlHelper.CreateWhere(comparisonOperator, xFieldRef, xValue);
-		}
 	}
 }
