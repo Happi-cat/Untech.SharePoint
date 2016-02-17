@@ -58,9 +58,13 @@ namespace Untech.SharePoint.Client.Converters.BuiltIn
 			}
 
 			var fieldValues = (IEnumerable<FieldLookupValue>) value;
-			var lookupValues = fieldValues.Select(ConvertToObjRef);
+			var lookupValues = fieldValues.Select(ConvertToObjRef).ToList();
 
-			return IsArray ? (object) lookupValues.ToArray() : lookupValues.ToList();
+			if (!lookupValues.Any())
+			{
+				return null;
+			}
+			return IsArray ? (object) lookupValues.ToArray() : lookupValues;
 		}
 
 		public object ToSpValue(object value)
@@ -74,8 +78,12 @@ namespace Untech.SharePoint.Client.Converters.BuiltIn
 				return new FieldLookupValue { LookupId = lookupValue.Id };
 			}
 
-			var lookupValues = (IEnumerable<ObjectReference>)value;
+			var lookupValues = ((IEnumerable<ObjectReference>)value).ToList();
 
+			if (!lookupValues.Any())
+			{
+				return null;
+			}
 			return lookupValues
 				.Select(n => new FieldLookupValue { LookupId = n.Id })
 				.ToList();

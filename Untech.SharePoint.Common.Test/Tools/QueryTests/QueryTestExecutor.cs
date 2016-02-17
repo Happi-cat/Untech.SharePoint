@@ -59,7 +59,7 @@ namespace Untech.SharePoint.Common.Test.Tools.QueryTests
 				var expected = test.Query(AlternateList);
 
 				var result = test.Comparer.Equals(actual, expected);
-				Assert.IsTrue(result, "Query '{0}' is not equal to expected data", this);
+				Assert.IsTrue(result, "Query '{0}' is not equal to expected data", test.Query.Method.Name);
 			}
 			catch (Exception e)
 			{
@@ -78,7 +78,7 @@ namespace Untech.SharePoint.Common.Test.Tools.QueryTests
 				var expected = test.Query(AlternateList).ToList();
 
 				var result = test.Comparer.Equals(actual, expected);
-				Assert.IsTrue(result, "Query '{0}' is not equal to expected data", this);
+				Assert.IsTrue(result, "Query '{0}' is not equal to expected data", test.Query.Method.Name);
 			}
 			catch (Exception e)
 			{

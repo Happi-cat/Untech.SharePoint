@@ -55,9 +55,13 @@ namespace Untech.SharePoint.Client.Converters.BuiltIn
 			}
 
 			var fieldValues = (IEnumerable<FieldUserValue>)value;
-			var userValues = fieldValues.Select(ConvertToUserInfo);
+			var userValues = fieldValues.Select(ConvertToUserInfo).ToList();
 
-			return _isArray ? (object)userValues.ToArray() : userValues.ToList();
+			if (!userValues.Any())
+			{
+				return null;
+			}
+			return _isArray ? (object)userValues.ToArray() : userValues;
 		}
 
 		public object ToSpValue(object value)
@@ -71,7 +75,11 @@ namespace Untech.SharePoint.Client.Converters.BuiltIn
 				return new FieldUserValue { LookupId = userValue.Id };
 			}
 
-			var userValues = (IEnumerable<UserInfo>)value;
+			var userValues = ((IEnumerable<UserInfo>)value).ToList();
+			if (!userValues.Any())
+			{
+				return null;
+			}
 
 			return userValues
 				.Select(n => new FieldUserValue { LookupId = n.Id })

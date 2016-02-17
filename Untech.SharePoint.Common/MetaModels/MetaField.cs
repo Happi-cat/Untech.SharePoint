@@ -2,6 +2,7 @@
 using System.Reflection;
 using Untech.SharePoint.Common.CodeAnnotations;
 using Untech.SharePoint.Common.Converters;
+using Untech.SharePoint.Common.Data;
 using Untech.SharePoint.Common.Extensions;
 using Untech.SharePoint.Common.MetaModels.Visitors;
 using Untech.SharePoint.Common.Utils;
@@ -136,6 +137,17 @@ namespace Untech.SharePoint.Common.MetaModels
 		public override void Accept([NotNull]IMetaModelVisitor visitor)
 		{
 			visitor.VisitField(this);
+		}
+
+		public override int GetHashCode()
+		{
+			unchecked
+			{
+				var hash = 17;
+				hash = hash*37 + InternalName.GetHashCode();
+				hash = hash*37 + MemberInfoComparer.Default.GetHashCode(Member);
+				return hash;
+			}
 		}
 	}
 }

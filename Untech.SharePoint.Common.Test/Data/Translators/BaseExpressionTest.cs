@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Untech.SharePoint.Common.CodeAnnotations;
+using Untech.SharePoint.Common.Models;
 
 namespace Untech.SharePoint.Common.Test.Data.Translators
 {
@@ -31,6 +32,12 @@ namespace Untech.SharePoint.Common.Test.Data.Translators
 			public ICollection<string> StringCollection3 { get; set; }
 
 			public List<string> StringCollection4 { get; set; }
+
+			public UserInfo User1 { get; set; }
+
+			public UserInfo User2 { get; set; }
+
+			public UserInfo[] Users { get; set; }
 		} 
 	}
 }

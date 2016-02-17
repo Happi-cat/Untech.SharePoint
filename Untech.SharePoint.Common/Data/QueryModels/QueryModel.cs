@@ -13,7 +13,7 @@ namespace Untech.SharePoint.Common.Data.QueryModels
 	[PublicAPI]
 	public sealed class QueryModel
 	{
-		[CanBeNull] private List<MemberRefModel> _selectableFields;
+		[CanBeNull] private List<FieldRefModel> _selectableFields;
 		[CanBeNull] private List<OrderByModel> _orderBys;
 		private bool _isOrderReversed;
 
@@ -33,13 +33,27 @@ namespace Untech.SharePoint.Common.Data.QueryModels
 		/// Gets collection of specific selectable fields.
 		/// </summary>
 		[CanBeNull]
-		public IEnumerable<MemberRefModel> SelectableFields
+		public IEnumerable<FieldRefModel> SelectableFields
 		{
 			get
 			{
-				return _selectableFields != null 
-					? _selectableFields.Distinct(MemberRefModelComparer.Default) 
-					: null;
+				return _selectableFields.IsNullOrEmpty()
+					? null
+					: _selectableFields.Distinct(FieldRefModelComparer.Default);
+			}
+		}
+
+		[CanBeNull]
+		public IEnumerable<MemberRefModel> SelectableKnownFields
+		{
+			get
+			{
+				return _selectableFields.IsNullOrEmpty()
+					? null
+					: _selectableFields
+						.Where(n => n.Type == FieldRefType.KnownMember)
+						.Cast<MemberRefModel>()
+						.Distinct(MemberRefModelComparer.Default);
 			}
 		}
 
@@ -89,13 +103,13 @@ namespace Untech.SharePoint.Common.Data.QueryModels
 		/// Merges current CAML selectable fields with new ones.
 		/// </summary>
 		/// <param name="selectableFields">New selectable fields to merge.</param>
-		public void MergeSelectableFields([CanBeNull]IEnumerable<MemberRefModel> selectableFields)
+		public void MergeSelectableFields([CanBeNull]IEnumerable<FieldRefModel> selectableFields)
 		{
 			if (selectableFields == null) return;
 			
 			if (_selectableFields == null)
 			{
-				_selectableFields = new List<MemberRefModel>();
+				_selectableFields = new List<FieldRefModel>();
 			}
 			_selectableFields.AddRange(selectableFields);
 		}
@@ -104,7 +118,7 @@ namespace Untech.SharePoint.Common.Data.QueryModels
 		/// Replaces current CAML selectable fields with new ones.
 		/// </summary>
 		/// <param name="selectableFields">New selectable fields to replace.</param>
-		public void ReplaceSelectableFields([CanBeNull]IEnumerable<MemberRefModel> selectableFields)
+		public void ReplaceSelectableFields([CanBeNull]IEnumerable<FieldRefModel> selectableFields)
 		{
 			_selectableFields = selectableFields
 				.EmptyIfNull()

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq.Expressions;
 using Untech.SharePoint.Common.CodeAnnotations;
-using Untech.SharePoint.Common.Collections;
 using Untech.SharePoint.Common.Configuration;
 using Untech.SharePoint.Common.Extensions;
 using Untech.SharePoint.Common.Mappings;
@@ -18,8 +17,6 @@ namespace Untech.SharePoint.Common.Data
 	public abstract class SpContext<TContext> : ISpContext
 		where TContext : SpContext<TContext>
 	{
-		private readonly Container<MetaList, ISpListItemsProvider> _listItemsProviders;
-
 		/// <summary>
 		/// Initializes a new instance of the <see cref="SpContext{TContext}"/> with the specified config and services.
 		/// </summary>
@@ -45,8 +42,6 @@ namespace Untech.SharePoint.Common.Data
 			Model = MappingSource.GetMetaContext();
 
 			CommonService.MetaModelProcessors.Each(n => n.Visit(Model));
-
-			_listItemsProviders = new Container<MetaList, ISpListItemsProvider>();
 		}
 
 		/// <summary>
@@ -111,20 +106,11 @@ namespace Untech.SharePoint.Common.Data
 		/// <returns>Instance of the <see cref="ISpList{T}"/>.</returns>
 		protected ISpList<TEntity> GetList<TEntity>(MetaList list, SpListOptions options = SpListOptions.Default)
 		{
-			var itemsProvider = GetPooledItemsProvider(list);
+			var itemsProvider = GetItemsProvider(list);
 			
 			itemsProvider.FilterByContentType = (options & SpListOptions.NoFilteringByContentType) == 0;
 
 			return new SpList<TEntity>(itemsProvider);
-		}
-
-		protected ISpListItemsProvider GetPooledItemsProvider(MetaList list)
-		{
-			if (!_listItemsProviders.IsRegistered(list))
-			{
-				_listItemsProviders.Register(list, GetItemsProvider(list));
-			}
-			return _listItemsProviders.Resolve(list);
 		}
 
 		/// <summary>
