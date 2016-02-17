@@ -146,6 +146,15 @@ namespace Untech.SharePoint.Common.Data.Translators
 					new XElement(Tags.FieldRef, GetFieldRefName(comparison.Field)));
 			}
 
+			var memberRef = (MemberRefModel)comparison.Field;
+			var metaField = GetMetaField(memberRef.Member);
+			if (metaField.TypeAsString.StartsWith("User") || metaField.TypeAsString.StartsWith("Lookup"))
+			{
+				return new XElement(comparison.ComparisonOperator.ToString(),
+				new XElement(Tags.FieldRef, GetFieldRefName(comparison.Field), new XAttribute("LookupId", "TRUE")),
+				GetValue(comparison.Field, comparison.Value, comparison.IsValueConverted));
+			}
+
 			return new XElement(comparison.ComparisonOperator.ToString(),
 				new XElement(Tags.FieldRef, GetFieldRefName(comparison.Field)),
 				GetValue(comparison.Field, comparison.Value, comparison.IsValueConverted));
