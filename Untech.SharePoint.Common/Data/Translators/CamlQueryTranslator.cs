@@ -12,6 +12,29 @@ using Untech.SharePoint.Common.Utils;
 
 namespace Untech.SharePoint.Common.Data.Translators
 {
+	internal static class CamlHelper
+	{
+		public static XElement CreateView([CanBeNull]XElement xRowLimit, [CanBeNull]XElement xQuery, [CanBeNull]XElement xViewFields)
+		{
+			return new XElement(Tags.View, xRowLimit, xQuery, xViewFields);
+		}
+
+		public static XElement CreateQuery([CanBeNull]XElement xWhere, [CanBeNull]XElement xOrderBy)
+		{
+			return new XElement(Tags.Query, xWhere, xOrderBy);
+		}
+
+		public static XElement CreateWhere(LogicalJoinOperator logicalJoinOperator, [NotNull]XElement xFirst, [NotNull]XElement xSecond)
+		{
+			return new XElement(logicalJoinOperator.ToString(), xFirst, xSecond);
+		}
+
+		public static XElement CreateWhere(ComparisonOperator comparisonOperator, [NotNull]XElement xFieldRef, [CanBeNull]XElement xValue)
+		{
+			return new XElement(comparisonOperator.ToString(), xFieldRef, xValue);
+		}
+	}
+
 	internal class CamlQueryTranslator : IProcessor<QueryModel, string>
 	{
 		public CamlQueryTranslator([NotNull]MetaContentType contentType)
@@ -41,9 +64,9 @@ namespace Untech.SharePoint.Common.Data.Translators
 		[NotNull]
 		private XElement GetQuery([NotNull] QueryModel query)
 		{
-			return new XElement(Tags.View,
+			return CamlHelper.CreateView(
 				GetRowLimit(query.RowLimit),
-				new XElement(Tags.Query,
+				CamlHelper.CreateQuery(
 					GetWheres(query.Where),
 					GetOrderBys(query.OrderBys)),
 				GetViewFields(query.SelectableFields));
@@ -146,18 +169,7 @@ namespace Untech.SharePoint.Common.Data.Translators
 					new XElement(Tags.FieldRef, GetFieldRefName(comparison.Field)));
 			}
 
-			var memberRef = (MemberRefModel)comparison.Field;
-			var metaField = GetMetaField(memberRef.Member);
-			if (metaField.TypeAsString.StartsWith("User") || metaField.TypeAsString.StartsWith("Lookup"))
-			{
-				return new XElement(comparison.ComparisonOperator.ToString(),
-				new XElement(Tags.FieldRef, GetFieldRefName(comparison.Field), new XAttribute("LookupId", "TRUE")),
-				GetValue(comparison.Field, comparison.Value, comparison.IsValueConverted));
-			}
-
-			return new XElement(comparison.ComparisonOperator.ToString(),
-				new XElement(Tags.FieldRef, GetFieldRefName(comparison.Field)),
-				GetValue(comparison.Field, comparison.Value, comparison.IsValueConverted));
+			return GetComparison(comparison.ComparisonOperator, comparison.Field, comparison.Value, comparison.IsValueConverted);
 		}
 
 		[NotNull]
@@ -175,9 +187,7 @@ namespace Untech.SharePoint.Common.Data.Translators
 			{
 				if (metaField.TypeAsString.StartsWith("User") || metaField.TypeAsString.StartsWith("Lookup")) 
 				{
-					return new XElement(ComparisonOperator.NotIncludes.ToString(),
-						new XElement(Tags.FieldRef, GetFieldRefName(memberRef), new XAttribute("LookupId", "TRUE")),
-						GetValue(comparison.Field, comparison.Value, comparison.IsValueConverted));
+					return GetComparison(ComparisonOperator.NotIncludes, metaField, comparison.Value, comparison.IsValueConverted);
 				}
 
 				throw new NotSupportedException("Cannot negate Contains operation for non-lookup fields");
@@ -185,14 +195,10 @@ namespace Untech.SharePoint.Common.Data.Translators
 
 			if (metaField.TypeAsString.StartsWith("User") || metaField.TypeAsString.StartsWith("Lookup"))
 			{
-				return new XElement(ComparisonOperator.Includes.ToString(),
-					new XElement(Tags.FieldRef, GetFieldRefName(memberRef), new XAttribute("LookupId", "TRUE")),
-					GetValue(comparison.Field, comparison.Value, comparison.IsValueConverted));
+				return GetComparison(ComparisonOperator.Includes, metaField, comparison.Value, comparison.IsValueConverted);
 			}
 
-			return new XElement(ComparisonOperator.Contains.ToString(),
-					new XElement(Tags.FieldRef, GetFieldRefName(memberRef)),
-					GetValue(comparison.Field, comparison.Value, comparison.IsValueConverted));
+			return GetComparison(ComparisonOperator.Contains, metaField, comparison.Value, comparison.IsValueConverted);
 		}
 
 		[NotNull]
@@ -206,16 +212,11 @@ namespace Untech.SharePoint.Common.Data.Translators
 				case FieldRefType.ContentTypeId:
 					return new XAttribute(Tags.Name, Fields.ContentTypeId);
 				case FieldRefType.KnownMember:
-					return GetFieldRefName((MemberRefModel)fieldRef);
+					var memberRef = (MemberRefModel) fieldRef;
+					return new XAttribute(Tags.Name, GetMetaField(memberRef.Member).InternalName);
 			}
 
 			throw new NotSupportedException("Unsupported FieldRefType value");
-		}
-
-		[NotNull]
-		private XAttribute GetFieldRefName([NotNull] MemberRefModel memberRef)
-		{
-			return new XAttribute(Tags.Name, GetMetaField(memberRef.Member).InternalName);
 		}
 
 		[NotNull]
@@ -224,16 +225,7 @@ namespace Untech.SharePoint.Common.Data.Translators
 			if (fieldRef.Type == FieldRefType.KnownMember)
 			{
 				var memberRef = (MemberRefModel) fieldRef;
-
-				var metaField = GetMetaField(memberRef.Member);
-				var camlValue = alreadyConverted 
-					? value 
-					: GetConverter(metaField).ToCamlValue(value);
-				var typeAttr = metaField.IsCalculated
-					? new XAttribute(Tags.Type, metaField.OutputType)
-					: new XAttribute(Tags.Type, metaField.TypeAsString);
-
-				return new XElement(Tags.Value, typeAttr, camlValue);
+				return GetValue(GetMetaField(memberRef.Member), value, alreadyConverted);
 			}
 
 			if (!alreadyConverted)
@@ -242,6 +234,19 @@ namespace Untech.SharePoint.Common.Data.Translators
 			}
 
 			return new XElement(Tags.Value, value);
+		}
+
+		[NotNull]
+		private XElement GetValue([NotNull] MetaField metaField, [CanBeNull] object value, bool alreadyConverted = false)
+		{
+			var camlValue = alreadyConverted
+				? value
+				: GetConverter(metaField).ToCamlValue(value);
+			var typeAttr = metaField.IsCalculated
+				? new XAttribute(Tags.Type, metaField.OutputType)
+				: new XAttribute(Tags.Type, metaField.TypeAsString);
+
+			return new XElement(Tags.Value, typeAttr, camlValue);
 		}
 
 		[NotNull]
@@ -263,6 +268,35 @@ namespace Untech.SharePoint.Common.Data.Translators
 				throw new InvalidOperationException(string.Format("Converter wasn't initialized for '{0}' field", field.MemberName));
 			}
 			return converter;
+		}
+
+		[NotNull]
+		private XElement GetComparison(ComparisonOperator comparisonOperator, [NotNull] FieldRefModel fieldRef, object value,
+			bool alreadyConverted = false)
+		{
+			if (fieldRef.Type != FieldRefType.KnownMember)
+			{
+				return CamlHelper.CreateWhere(comparisonOperator,
+					new XElement(Tags.FieldRef, GetFieldRefName(fieldRef)),
+					GetValue(fieldRef, value, alreadyConverted));
+			}
+
+			var memberRef = (MemberRefModel) fieldRef;
+			return GetComparison(comparisonOperator, GetMetaField(memberRef.Member), value, alreadyConverted);
+		}
+
+		[NotNull]
+		private XElement GetComparison(ComparisonOperator comparisonOperator, [NotNull] MetaField metaField, object value,
+			bool alreadyConverted = false)
+		{
+			var xFieldRef = new XElement(Tags.FieldRef, new XAttribute(Tags.Name, metaField.InternalName));
+			if (metaField.TypeAsString.StartsWith("User") || metaField.TypeAsString.StartsWith("Lookup"))
+			{
+				xFieldRef.Add(new XAttribute("LookupId", "TRUE"));
+			}
+			var xValue = GetValue(metaField, value, alreadyConverted);
+
+			return CamlHelper.CreateWhere(comparisonOperator, xFieldRef, xValue);
 		}
 	}
 }
