@@ -172,9 +172,11 @@ namespace Untech.SharePoint.Common.Data.Translators
 		private XElement FieldRef(MetaField metaField)
 		{
 			var isLookup = metaField.TypeAsString.StartsWith("User") || metaField.TypeAsString.StartsWith("Lookup");
+			var isDateTime = metaField.TypeAsString == "DateTime";
 
 			return new XElement(Tags.FieldRef,
 				new XAttribute(Tags.Name, metaField.InternalName),
+				isDateTime ? new XAttribute("IncludeTimeValue", "TRUE") : null,
 				isLookup ? new XAttribute("LookupId", "TRUE") : null);
 		}
 

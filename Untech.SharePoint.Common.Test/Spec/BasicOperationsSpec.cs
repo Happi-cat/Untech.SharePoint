@@ -31,6 +31,7 @@ namespace Untech.SharePoint.Common.Test.Spec
 		public void AddUpdateDelete()
 		{
 			var addedEvent = Add(_dataContext.Events, GetEventGenerator());
+			Thread.Sleep(1000);
 			Update(_dataContext.Events, addedEvent);
 			Delete(_dataContext.Events, addedEvent);
 
@@ -62,7 +63,6 @@ namespace Untech.SharePoint.Common.Test.Spec
 		{
 			existingItem.Title += "[Updated]";
 
-			Thread.Sleep(1000);
 			var updatedItem = list.Update(existingItem);
 
 			Assert.AreEqual(existingItem.Id, updatedItem.Id, "Ids are not equal");
