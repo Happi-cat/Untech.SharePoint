@@ -1,6 +1,15 @@
 # Untech.SharePoint
 
-[![NuGet version](https://badge.fury.io/nu/Untech.SharePoint.Common.svg)](https://badge.fury.io/nu/Untech.SharePoint.Common) [![Join the chat at https://gitter.im/Happi-cat/Untech.SharePoint](https://badges.gitter.im/Happi-cat/Untech.SharePoint.svg)](https://gitter.im/Happi-cat/Untech.SharePoint?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
+[![Build status](https://ci.appveyor.com/api/projects/status/efr87iaha2dg98aw/branch/master?svg=true)](https://ci.appveyor.com/project/Happi-cat/untech-sharepoint/branch/master)
+[![Join the chat at https://gitter.im/Happi-cat/Untech.SharePoint](https://badges.gitter.im/Happi-cat/Untech.SharePoint.svg)](https://gitter.im/Happi-cat/Untech.SharePoint?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
+* **Untech.SharePoint.Common**: 
+	[![NuGet version](https://badge.fury.io/nu/Untech.SharePoint.Common.svg)](https://badge.fury.io/nu/Untech.SharePoint.Common) 
+* **Untech.SharePoint.Server**:
+	[![NuGet version](https://badge.fury.io/nu/Untech.SharePoint.Server.svg)](https://badge.fury.io/nu/Untech.SharePoint.Server)
+* **Untech.SharePoint.Client**:
+	[![NuGet version](https://badge.fury.io/nu/Untech.SharePoint.Client.svg)](https://badge.fury.io/nu/Untech.SharePoint.Client) 
 
 Untech.SharePoint - library that will improve your work with Lists in SharePoint (can be used with SSOM and CSOM).
 
