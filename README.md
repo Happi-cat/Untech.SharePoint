@@ -1,6 +1,6 @@
 # Untech.SharePoint
 
-[![Join the chat at https://gitter.im/Happi-cat/Untech.SharePoint](https://badges.gitter.im/Happi-cat/Untech.SharePoint.svg)](https://gitter.im/Happi-cat/Untech.SharePoint?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![NuGet version](https://badge.fury.io/nu/Untech.SharePoint.Common.svg)](https://badge.fury.io/nu/Untech.SharePoint.Common) [![Join the chat at https://gitter.im/Happi-cat/Untech.SharePoint](https://badges.gitter.im/Happi-cat/Untech.SharePoint.svg)](https://gitter.im/Happi-cat/Untech.SharePoint?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 Untech.SharePoint - library that will improve your work with Lists in SharePoint (can be used with SSOM and CSOM).
 
