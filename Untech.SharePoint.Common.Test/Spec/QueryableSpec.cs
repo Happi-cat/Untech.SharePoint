@@ -32,6 +32,7 @@ namespace Untech.SharePoint.Common.Test.Spec
 		{
 			Run(_dataContext.News, _dataManager.News, new FilteringQuerySpec());
 			Run(_dataContext.Projects, _dataManager.Projects, new FilteringQuerySpec());
+			Run(_dataContext.Teams, _dataManager.Teams, new FilteringQuerySpec());
 		}
 
 		public void Ordering()

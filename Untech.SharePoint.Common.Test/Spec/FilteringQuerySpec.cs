@@ -2,13 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using Untech.SharePoint.Common.Extensions;
+using Untech.SharePoint.Common.Models;
 using Untech.SharePoint.Common.Test.Spec.Models;
 using Untech.SharePoint.Common.Test.Tools.Comparers;
 using Untech.SharePoint.Common.Test.Tools.QueryTests;
 
 namespace Untech.SharePoint.Common.Test.Spec
 {
-	public class FilteringQuerySpec : IQueryTestsProvider<NewsModel>, IQueryTestsProvider<ProjectModel>
+	public class FilteringQuerySpec : IQueryTestsProvider<NewsModel>, IQueryTestsProvider<ProjectModel>, IQueryTestsProvider<TeamModel>
 	{
 		public IEnumerable<NewsModel> WhereQuery(IQueryable<NewsModel> source)
 		{
@@ -72,6 +73,82 @@ namespace Untech.SharePoint.Common.Test.Spec
 				.Where(n => n.ProjectLaunch > DateTime.Now.AddMonths(-12));
 		}
 
+		public IEnumerable<ProjectModel> WhereLookupNotNull(IQueryable<ProjectModel> source)
+		{
+			return source
+				.Where(n => n.Team != null);
+		}
+
+		public IEnumerable<ProjectModel> WhereLookupNotEqual(IQueryable<ProjectModel> source)
+		{
+			return source
+				.Where(n => n.Team != new ObjectReference { Id = 1});
+		}
+
+		public IEnumerable<ProjectModel> WhereLookupEqual(IQueryable<ProjectModel> source)
+		{
+			var firstTeamRef = source.Where(n => n.Team != null).Select(n => n.Team).First();
+
+			return source
+				.Where(n => n.Team == firstTeamRef);
+		}
+
+		public IEnumerable<ProjectModel> WhereLookupMultiNotNull(IQueryable<ProjectModel> source)
+		{
+			return source
+				.Where(n => n.SubProjects != null);
+		}
+
+		public IEnumerable<ProjectModel> WhereLookupMultiNotContains(IQueryable<ProjectModel> source)
+		{
+			return source
+				.Where(n => n.SubProjects != null && !n.SubProjects.Contains(new ObjectReference { Id = 1 }));
+		}
+
+		public IEnumerable<ProjectModel> WhereLookupMultiContains(IQueryable<ProjectModel> source)
+		{
+			var firstSubprojectRefs = source.Where(n => n.SubProjects != null).Select(n => n.SubProjects).First();
+
+			return source
+				.Where(n => n.SubProjects != null && n.SubProjects.Contains(firstSubprojectRefs.First()));
+		}
+
+		public IEnumerable<TeamModel> WhereUserNotNull(IQueryable<TeamModel> source)
+		{
+			return source
+				.Where(n => n.Manager != null);
+		}
+
+		public IEnumerable<TeamModel> WhereUserNotEqual(IQueryable<TeamModel> source)
+		{
+			return source
+				.Where(n => n.Manager != new UserInfo { Id = 1 });
+		}
+
+		public IEnumerable<TeamModel> WhereUserEqual(IQueryable<TeamModel> source)
+		{
+			return source
+				.Where(n => n.Manager == new UserInfo { Id = 1 });
+		}
+
+		public IEnumerable<TeamModel> WhereUserMultiNotNull(IQueryable<TeamModel> source)
+		{
+			return source
+				.Where(n => n.Developers != null);
+		}
+
+		public IEnumerable<TeamModel> WhereUserMultiNotContains(IQueryable<TeamModel> source)
+		{
+			return source
+				.Where(n => n.Developers != null && !n.Developers.Contains(new UserInfo { Id = 1 }));
+		}
+
+		public IEnumerable<TeamModel> WhereUserMultiContains(IQueryable<TeamModel> source)
+		{
+			return source
+				.Where(n => n.Developers != null && n.Developers.Contains(new UserInfo { Id = 1 }));
+		}
+
 		public IEnumerable<QueryTest<NewsModel>> GetQueryTests()
 		{
 			return new[]
@@ -93,7 +170,29 @@ namespace Untech.SharePoint.Common.Test.Spec
 			{
 				QueryTest<ProjectModel>.Functional(WhereQuery, EntityComparer.Default),
 				QueryTest<ProjectModel>.Functional(WhereCalculatedQuery1, EntityComparer.Default),
-				QueryTest<ProjectModel>.Functional(WhereCalculatedQuery2, EntityComparer.Default)
+				QueryTest<ProjectModel>.Functional(WhereCalculatedQuery2, EntityComparer.Default),
+
+				QueryTest<ProjectModel>.Functional(WhereLookupNotNull, EntityComparer.Default),
+				QueryTest<ProjectModel>.Functional(WhereLookupNotEqual, EntityComparer.Default),
+				QueryTest<ProjectModel>.Functional(WhereLookupEqual, EntityComparer.Default),
+
+				QueryTest<ProjectModel>.Functional(WhereLookupMultiNotNull, EntityComparer.Default),
+				QueryTest<ProjectModel>.Functional(WhereLookupMultiNotContains, EntityComparer.Default),
+				QueryTest<ProjectModel>.Functional(WhereLookupMultiContains, EntityComparer.Default)
+			};
+		}
+
+		IEnumerable<QueryTest<TeamModel>> IQueryTestsProvider<TeamModel>.GetQueryTests()
+		{
+			return new[]
+			{
+				QueryTest<TeamModel>.Functional(WhereUserNotNull, EntityComparer.Default),
+				QueryTest<TeamModel>.Functional(WhereUserNotEqual, EntityComparer.Default),
+				QueryTest<TeamModel>.Functional(WhereUserEqual, EntityComparer.Default),
+
+				QueryTest<TeamModel>.Functional(WhereUserMultiNotNull, EntityComparer.Default),
+				QueryTest<TeamModel>.Functional(WhereUserMultiNotContains, EntityComparer.Default),
+				QueryTest<TeamModel>.Functional(WhereUserMultiContains, EntityComparer.Default)
 			};
 		}
 	}
