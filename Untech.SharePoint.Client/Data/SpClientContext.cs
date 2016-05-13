@@ -24,7 +24,7 @@ namespace Untech.SharePoint.Client.Data
 		/// <param name="config">Configuration.</param>
 		/// <exception cref="ArgumentNullException"><paramref name="context"/> or <paramref name="config"/> is null.</exception>
 		protected SpClientContext([NotNull] ClientContext context, [NotNull] Config config)
-			: base(config, new SpCommonService(context, config))
+			: base(new SpClientCommonService(context, config))
 		{
 			Guard.CheckNotNull("context", context);
 
@@ -35,16 +35,6 @@ namespace Untech.SharePoint.Client.Data
 		/// Gets <see cref="ClientContext"/> that is associated with the current data context.
 		/// </summary>
 		public ClientContext ClientContext { get; private set; }
-
-		/// <summary>
-		/// Gets instance of the <see cref="ISpListItemsProvider"/> for the specified <see cref="MetaList"/>.
-		/// </summary>
-		/// <param name="list">SP list metadata.</param>
-		/// <returns>Instance of the <see cref="ISpListItemsProvider"/>.</returns>
-		protected override ISpListItemsProvider GetItemsProvider(MetaList list)
-		{
-			return new SpListItemsProvider(ClientContext, list);
-		}
 
 		/// <summary>
 		/// Gets <see cref="List"/> instance by list accessor.

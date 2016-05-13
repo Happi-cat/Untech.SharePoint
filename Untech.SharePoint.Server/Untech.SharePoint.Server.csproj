@@ -64,7 +64,7 @@
     <Compile Include="Data\Mapper\MapperInitializer.cs" />
     <Compile Include="Data\RuntimeInfoLoader.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Data\SpCommonService.cs" />
+    <Compile Include="Data\SpServerCommonService.cs" />
     <Compile Include="Utils\CamlUtility.cs" />
   </ItemGroup>
   <ItemGroup>

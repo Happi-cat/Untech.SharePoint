@@ -9,10 +9,10 @@ namespace Untech.SharePoint.Common.Test.Spec
 {
 	public class QueryableSpec
 	{
-		private readonly IDataContext _dataContext;
+		private readonly DataContext _dataContext;
 		private readonly TestDataManager _dataManager;
 
-		public QueryableSpec(IDataContext dataContext)
+		public QueryableSpec(DataContext dataContext)
 		{
 			_dataContext = dataContext;
 			_dataManager = new TestDataManager(_dataContext);

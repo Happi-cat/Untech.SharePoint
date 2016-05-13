@@ -24,30 +24,24 @@ namespace Untech.SharePoint.Common.Data
 		/// <param name="commonService">Instance of the commen services.</param>
 		/// <exception cref="ArgumentNullException"><paramref name="config"/> or <paramref name="commonService"/> is null.</exception>
 		/// <exception cref="InvalidOperationException">Cannot find mapping source for current context type in the config,</exception>
-		protected SpContext([NotNull]Config config, [NotNull]ICommonService commonService)
+		protected SpContext([NotNull]ICommonService commonService)
 		{
-			Guard.CheckNotNull("config", config);
 			Guard.CheckNotNull("commonService", commonService);
 
-			Config = config;
 			CommonService = commonService;
 
+			var config = commonService.Config;
 			var contextType = GetType();
-			if (!Config.Mappings.CanResolve(contextType))
+			if (!config.Mappings.CanResolve(contextType))
 			{
 				throw new InvalidOperationException("Cannot find mapping for this context in Config");
 			}
 
-			MappingSource = Config.Mappings.Resolve(contextType);
+			MappingSource = config.Mappings.Resolve(contextType);
 			Model = MappingSource.GetMetaContext();
 
 			CommonService.MetaModelProcessors.Each(n => n.Visit(Model));
 		}
-
-		/// <summary>
-		/// Gets <see cref="ISpContext.Config"/> that is used by this instance of the <see cref="ISpContext"/>
-		/// </summary>
-		public Config Config { get; private set; }
 
 		/// <summary>
 		/// Gets <see cref="ICommonService"/> instance that used by this data context instance.
@@ -106,18 +100,11 @@ namespace Untech.SharePoint.Common.Data
 		/// <returns>Instance of the <see cref="ISpList{T}"/>.</returns>
 		protected ISpList<TEntity> GetList<TEntity>(MetaList list, SpListOptions options = SpListOptions.Default)
 		{
-			var itemsProvider = GetItemsProvider(list);
+			var itemsProvider = CommonService.GetItemsProvider(list);
 			
 			itemsProvider.FilterByContentType = (options & SpListOptions.NoFilteringByContentType) == 0;
 
 			return new SpList<TEntity>(itemsProvider);
 		}
-
-		/// <summary>
-		/// Gets instance of the <see cref="ISpListItemsProvider"/> for the specified <see cref="MetaList"/>.
-		/// </summary>
-		/// <param name="list">SP list metadata.</param>
-		/// <returns>Instance of the <see cref="ISpListItemsProvider"/>.</returns>
-		protected abstract ISpListItemsProvider GetItemsProvider(MetaList list);
 	}
 }

@@ -10,7 +10,7 @@ namespace Untech.SharePoint.Common.Test.Tools.DataManagers
 		private readonly ListTestDataManager<TeamModel> _teamsData;
 		private readonly ListTestDataManager<ProjectModel> _projectsData;
 
-		public TestDataManager(IDataContext dataContext)
+		public TestDataManager(DataContext dataContext)
 		{
 			_newsData = new ListTestDataManager<NewsModel>(dataContext.News);
 			_eventsData = new ListTestDataManager<EventModel>(dataContext.Events);

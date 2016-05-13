@@ -15,12 +15,12 @@ namespace Untech.SharePoint.Common.Test.Spec
 {
 	public class BasicOperationsSpec
 	{
-		private readonly IDataContext _dataContext;
+		private readonly DataContext _dataContext;
 		private readonly string _token;
 		private readonly DateTime _date1;
 		private readonly DateTime _date2;
 
-		public BasicOperationsSpec(string token, IDataContext dataContext)
+		public BasicOperationsSpec(string token, DataContext dataContext)
 		{
 			_date1 = DateTime.Now.AddMinutes(-1);
 			_date2 = DateTime.Now.AddMinutes(1);

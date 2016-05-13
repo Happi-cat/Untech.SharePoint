@@ -108,7 +108,7 @@
     <Compile Include="Tools\Generators\Basic\ArrayGenerationOptions.cs" />
     <Compile Include="Spec\AggregateQuerySpec.cs" />
     <Compile Include="Tools\DataGenerators\Generators.cs" />
-    <Compile Include="Spec\Models\IDataContext.cs" />
+    <Compile Include="Spec\Models\DataContext.cs" />
     <Compile Include="Spec\Models\ProjectModel.cs" />
     <Compile Include="Spec\Models\EventModel.cs" />
     <Compile Include="Spec\Models\NewsModel.cs" />

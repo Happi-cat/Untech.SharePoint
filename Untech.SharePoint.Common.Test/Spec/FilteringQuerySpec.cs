@@ -116,37 +116,37 @@ namespace Untech.SharePoint.Common.Test.Spec
 		public IEnumerable<TeamModel> WhereUserNotNull(IQueryable<TeamModel> source)
 		{
 			return source
-				.Where(n => n.Manager != null);
+				.Where(n => n.ProjectManager != null);
 		}
 
 		public IEnumerable<TeamModel> WhereUserNotEqual(IQueryable<TeamModel> source)
 		{
 			return source
-				.Where(n => n.Manager != new UserInfo { Id = 1 });
+				.Where(n => n.ProjectManager != new UserInfo { Id = 1 });
 		}
 
 		public IEnumerable<TeamModel> WhereUserEqual(IQueryable<TeamModel> source)
 		{
 			return source
-				.Where(n => n.Manager == new UserInfo { Id = 1 });
+				.Where(n => n.ProjectManager == new UserInfo { Id = 1 });
 		}
 
 		public IEnumerable<TeamModel> WhereUserMultiNotNull(IQueryable<TeamModel> source)
 		{
 			return source
-				.Where(n => n.Developers != null);
+				.Where(n => n.BackendDevelopers != null);
 		}
 
 		public IEnumerable<TeamModel> WhereUserMultiNotContains(IQueryable<TeamModel> source)
 		{
 			return source
-				.Where(n => n.Developers != null && !n.Developers.Contains(new UserInfo { Id = 1 }));
+				.Where(n => n.BackendDevelopers != null && !n.BackendDevelopers.Contains(new UserInfo { Id = 1 }));
 		}
 
 		public IEnumerable<TeamModel> WhereUserMultiContains(IQueryable<TeamModel> source)
 		{
 			return source
-				.Where(n => n.Developers != null && n.Developers.Contains(new UserInfo { Id = 1 }));
+				.Where(n => n.BackendDevelopers != null && n.BackendDevelopers.Contains(new UserInfo { Id = 1 }));
 		}
 
 		public IEnumerable<QueryTest<NewsModel>> GetQueryTests()

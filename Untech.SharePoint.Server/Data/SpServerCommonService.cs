@@ -5,20 +5,26 @@ using Untech.SharePoint.Common.Converters;
 using Untech.SharePoint.Common.Data;
 using Untech.SharePoint.Common.MetaModels.Visitors;
 using Untech.SharePoint.Server.Data.Mapper;
+using Untech.SharePoint.Common.CodeAnnotations;
+using Untech.SharePoint.Common.MetaModels;
+using Untech.SharePoint.Common.Utils;
 
 namespace Untech.SharePoint.Server.Data
 {
-	internal class SpCommonService : ICommonService
+	public class SpServerCommonService : ICommonService
 	{
-		public SpCommonService(SPWeb web, Config config)
+		public SpServerCommonService([NotNull] SPWeb web, [NotNull] Config config)
 		{
+			Guard.CheckNotNull("web", web);
+			Guard.CheckNotNull("config", config);
+
 			Web = web;
 			Config = config;
 		}
 
 		private SPWeb Web { get; set; }
 
-		private Config Config { get; set; }
+		public Config Config { get; private set; }
 
 		public IReadOnlyCollection<IMetaModelVisitor> MetaModelProcessors
 		{
@@ -32,6 +38,11 @@ namespace Untech.SharePoint.Server.Data
 					new MapperInitializer()
 				};
 			}
+		}
+
+		public ISpListItemsProvider GetItemsProvider([NotNull] MetaList list)
+		{
+			return new SpListItemsProvider(Web, list);
 		}
 	}
 }
