@@ -262,8 +262,11 @@ namespace Untech.SharePoint.Common.Data.Translators
 			var typeAttr = metaField.IsCalculated
 				? new XAttribute(Tags.Type, metaField.OutputType)
 				: new XAttribute(Tags.Type, metaField.TypeAsString);
+			var includeTimeAttr = metaField.TypeAsString == "DateTime"
+				? new XAttribute("IncludeTimeValue", "TRUE")
+				: null;
 
-			return new XElement(Tags.Value, typeAttr, camlValue);
+			return new XElement(Tags.Value, typeAttr, includeTimeAttr, camlValue);
 		}
 
 		#endregion
