@@ -17,6 +17,7 @@ namespace Untech.SharePoint.Common.Test.Tools.Generators.Basic
 
 		public T Generate()
 		{
+			if (_values.Count == 0) return default(T);
 			return _values[Rand.Next(_values.Count)];
 		}
 	}

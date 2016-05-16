@@ -35,7 +35,18 @@ namespace Untech.SharePoint.Common.Test.Spec
 			Update(_dataContext.Events, addedEvent);
 			Delete(_dataContext.Events, addedEvent);
 
+			var addedNews = Add(_dataContext.News, GetNewsGenerator());
+			Thread.Sleep(1000);
+			Update(_dataContext.News, addedNews);
+			Delete(_dataContext.News, addedNews);
+
+			var addedTeam = Add(_dataContext.Teams, GetTeamGenerator());
+			Thread.Sleep(1000);
+			Update(_dataContext.Teams, addedTeam);
+			Delete(_dataContext.Teams, addedTeam);
+
 			var addedProject = Add(_dataContext.Projects, GetProjectGenerator());
+			Thread.Sleep(1000);
 			Update(_dataContext.Projects, addedProject);
 			Delete(_dataContext.Projects, addedProject);
 		}
@@ -86,6 +97,14 @@ namespace Untech.SharePoint.Common.Test.Spec
 			var addedEvents = AddBatch(_dataContext.Events, GetEventGenerator(), GetExistingItems);
 			UpdateBatch(_dataContext.Events, addedEvents, GetExistingItems);
 			DeleteBatch(_dataContext.Events, addedEvents, GetExistingItems);
+
+			var addedNews = AddBatch(_dataContext.News, GetNewsGenerator(), GetExistingItems);
+			UpdateBatch(_dataContext.News, addedNews, GetExistingItems);
+			DeleteBatch(_dataContext.News, addedNews, GetExistingItems);
+
+			var addedTeams = AddBatch(_dataContext.Teams, GetTeamGenerator(), GetExistingItems);
+			UpdateBatch(_dataContext.Teams, addedTeams, GetExistingItems);
+			DeleteBatch(_dataContext.Teams, addedTeams, GetExistingItems);
 
 			var addedProjects = AddBatch(_dataContext.Projects, GetProjectGenerator(), GetExistingItems);
 			UpdateBatch(_dataContext.Projects, addedProjects, GetExistingItems);
@@ -144,6 +163,20 @@ namespace Untech.SharePoint.Common.Test.Spec
 				.ToList();
 		}
 
+		private List<NewsModel> GetExistingItems(ISpList<NewsModel> news)
+		{
+			return news
+				.Where(n => n.Title.StartsWith("<" + _token + ">"))
+				.ToList();
+		}
+
+		private List<TeamModel> GetExistingItems(ISpList<TeamModel> teams)
+		{
+			return teams
+				.Where(n => n.Title.StartsWith("<" + _token + ">"))
+				.ToList();
+		}
+
 		private List<EventModel> GetExistingItems(ISpList<EventModel> events)
 		{
 			return events
@@ -161,7 +194,20 @@ namespace Untech.SharePoint.Common.Test.Spec
 
 		private IValueGenerator<ProjectModel> GetProjectGenerator()
 		{
-			return Generators.GetProjectGenerator();
+			return Generators.GetProjectGenerator()
+				.WithStatic( n=> n.Team, new ObjectReference { Id = 1 });
+		}
+
+		private IValueGenerator<NewsModel> GetNewsGenerator()
+		{
+			return Generators.GetNewsGenerator();
+		}
+
+		private IValueGenerator<TeamModel> GetTeamGenerator()
+		{
+			return Generators.GetTeamGenerator()
+				.WithStatic(n => n.ProjectManager, new UserInfo { Id = 1 })
+				.WithStatic(n => n.FinanceManager, new UserInfo { Id = 1 });
 		}
 
 		private void AddToken(Entity model)
