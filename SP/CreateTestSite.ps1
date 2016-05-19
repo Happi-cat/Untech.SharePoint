@@ -113,7 +113,11 @@ function Generate-Data {
     $config = "Debug"
     (& $msbuild /p:Configuration=$config $csproj) >> .\Build.Log
 
-
+    if ($LastExitCode -ne 0) {
+        Write-Host "Failed Rebuilding" -ForegroundColor:Red
+        return
+    }
+    
     try {
         Write-Host "Generating Test Data:" -ForegroundColor:Cyan    
 
