@@ -80,7 +80,7 @@ namespace Untech.SharePoint.Server.Converters.BuiltIn
 				return fieldValue.ToString();
 			}
 
-			var userValues = ((IEnumerable<UserInfo>)value).ToList();
+			var userValues = ((IEnumerable<UserInfo>)value).Distinct().ToList();
 			if (!userValues.Any())
 			{
 				return null;
@@ -104,6 +104,7 @@ namespace Untech.SharePoint.Server.Converters.BuiltIn
 
 			var multiValue = (IEnumerable<UserInfo>)value;
 			return multiValue
+				.Distinct()
 				.Select(n => string.Format("{0};#{1}", n.Id, n.Login))
 				.JoinToString(";#");
 		}

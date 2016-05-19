@@ -1,11 +1,8 @@
-﻿#define FIRST_RUN
-using System.Linq;
-using Microsoft.SharePoint;
+﻿using Microsoft.SharePoint;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Untech.SharePoint.Common.Test.Spec;
 using Untech.SharePoint.Common.Test.Spec.Models;
 using Untech.SharePoint.Server.Data;
-using Untech.SharePoint.Common.Models;
 
 namespace Untech.SharePoint.Server.Test.Data
 {
@@ -20,23 +17,6 @@ namespace Untech.SharePoint.Server.Test.Data
 			_spec = new QueryableSpec(GetContext());
 			_spec.Init();
 		}
-
-
-#if FIRST_RUN
-		[TestMethod]
-		public void Generate()
-		{
-			var site = new SPSite(@"http://sp2013dev/sites/orm-test", SPUserToken.SystemAccount);
-			var web = site.OpenWeb();
-			var context = new DataContext(new SpServerCommonService(web, Bootstrap.GetConfig()));
-			var users = web.AllUsers
-				.Cast<SPUser>()
-				.Select(n => new UserInfo { Id = n.ID })
-				.ToList();
-
-			(new Common.Test.Tools.DataGenerators.TestDataGenerator(context, users)).Generate();
-		}
-#endif
 
 		[TestMethod]
 		public void Aggregate()

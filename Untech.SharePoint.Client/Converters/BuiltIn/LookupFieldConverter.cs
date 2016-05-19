@@ -78,7 +78,7 @@ namespace Untech.SharePoint.Client.Converters.BuiltIn
 				return new FieldLookupValue { LookupId = lookupValue.Id };
 			}
 
-			var lookupValues = ((IEnumerable<ObjectReference>)value).ToList();
+			var lookupValues = ((IEnumerable<ObjectReference>)value).Distinct().ToList();
 
 			if (!lookupValues.Any())
 			{
@@ -101,6 +101,7 @@ namespace Untech.SharePoint.Client.Converters.BuiltIn
 
 			var multiValue = (IEnumerable<ObjectReference>) value;
 			return multiValue
+				.Distinct()
 				.Select(n => string.Format("{0};#{1}", n.Id, n.Value))
 				.JoinToString(";#");
 		}

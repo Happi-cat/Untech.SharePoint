@@ -50,7 +50,7 @@ namespace Untech.SharePoint.Server.Converters.BuiltIn
 			if (value == null) return null;
 
 
-			var lookupValues = (IEnumerable<string>)value;
+			var lookupValues = ((IEnumerable<string>)value).Distinct();
 			var fieldValues = new SPFieldMultiChoiceValue();
 			lookupValues.Each(n => fieldValues.Add(n));
 
@@ -67,7 +67,7 @@ namespace Untech.SharePoint.Server.Converters.BuiltIn
 				return string.Format(";#{0};#", singleValue);
 			}
 
-			var multiValue = ((IEnumerable<string>)value).ToList();
+			var multiValue = ((IEnumerable<string>)value).Distinct().ToList();
 			return multiValue.Any() ? string.Format(";#{0};#", multiValue.JoinToString(";#")) : "";
 		}
 	}

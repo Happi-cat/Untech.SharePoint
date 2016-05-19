@@ -57,10 +57,24 @@ namespace Untech.SharePoint.Common.Test.Tools.DataGenerators
 		private void GenerateTeams()
 		{
 			_teamsData
-				.WithArray(20, Generators.GetTeamGenerator()
+				.WithArray(10, Generators.GetTeamGenerator()
 					.With(n => n.ProjectManager, new RangeGenerator<UserInfo>(_allUsers))
 					.With(n => n.FinanceManager, new RangeGenerator<UserInfo>(_allUsers))
+					.With(n => n.BusinessAnalyst, new RangeGenerator<UserInfo>(_allUsers))
+					.With(n => n.SoftwareArchitect, new RangeGenerator<UserInfo>(_allUsers))
+					.With(n => n.DatabaseArchitect, new RangeGenerator<UserInfo>(_allUsers))
+					.WithArray(n => n.BackendDevelopers, 3, new RangeGenerator<UserInfo>(_allUsers))
+					.WithArray(n => n.FrontendDevelopers, 3, new RangeGenerator<UserInfo>(_allUsers))
+					.WithArray(n => n.Designers, 3, new RangeGenerator<UserInfo>(_allUsers))
+					.WithArray(n => n.Testers, 3, new RangeGenerator<UserInfo>(_allUsers))
 				)
+				.WithArray(5, Generators.GetTeamGenerator()
+					.With(n => n.ProjectManager, new RangeGenerator<UserInfo>(_allUsers))
+					.With(n => n.FinanceManager, new RangeGenerator<UserInfo>(_allUsers))
+					.WithArray(n => n.Designers, 3, new RangeGenerator<UserInfo>(_allUsers))
+					.WithArray(n => n.Testers, 3, new RangeGenerator<UserInfo>(_allUsers))
+				)
+				.WithArray(5, Generators.GetTeamGenerator())
 				.Generate();
 		}
 
