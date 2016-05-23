@@ -146,13 +146,13 @@ namespace Untech.SharePoint.Common.Test.Spec
 
 				QueryTest<NewsModel>.Functional(MinPQuery),
 				QueryTest<NewsModel>.Functional(WhereMinPQuery),
-				QueryTest<NewsModel>.Functional(SelectMinQuery).Throws<NotSupportedException>(),
+				QueryTest<NewsModel>.Functional(SelectMinQuery),
 				QueryTest<NewsModel>.Functional(SelectMinPQuery).Throws<NotSupportedException>(),
 				QueryTest<NewsModel>.Functional(Take10MinPQuery), 
 
 				QueryTest<NewsModel>.Functional(MaxPQuery),
 				QueryTest<NewsModel>.Functional(WhereMaxPQuery),
-				QueryTest<NewsModel>.Functional(SelectMaxQuery).Throws<NotSupportedException>(),
+				QueryTest<NewsModel>.Functional(SelectMaxQuery),
 				QueryTest<NewsModel>.Functional(SelectMaxPQuery).Throws<NotSupportedException>(),
 				QueryTest<NewsModel>.Functional(Take10MaxPQuery), 
 			};
