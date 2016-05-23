@@ -10,14 +10,16 @@ namespace Untech.SharePoint.Common.Test.Spec
 	/// <summary>
 	/// The ordering methods are OrderBy, OrderByDescending, ThenBy, ThenByDescending, and Reverse.
 	/// </summary>
-	public class OrderingQuerySpec : IQueryTestsProvider<ProjectModel>
+	public class OrderingQuerySpec : ITestQueryProvider<ProjectModel>
 	{
+		[QueryComparer(typeof(EntityComparer))]
 		public IEnumerable<ProjectModel> OrderByQuery(IQueryable<ProjectModel> source)
 		{
 			return source
 				.OrderBy(n => n.Technology);
 		}
 
+		[QueryComparer(typeof(EntityComparer))]
 		public IEnumerable<ProjectModel> WhereOrderByQuery(IQueryable<ProjectModel> source)
 		{
 			return source
@@ -25,6 +27,7 @@ namespace Untech.SharePoint.Common.Test.Spec
 				.OrderBy(n => n.Technology);
 		}
 
+		[QueryComparer(typeof(EntityComparer))]
 		public IEnumerable<ProjectModel> OrderByWhereQuery(IQueryable<ProjectModel> source)
 		{
 			return source
@@ -32,6 +35,8 @@ namespace Untech.SharePoint.Common.Test.Spec
 				.Where(n => n.Status == "Approved");
 		}
 
+		[QueryComparer(typeof(EntityComparer))]
+		[QueryException(typeof(NotSupportedException))]
 		public IEnumerable<ProjectModel> Take10OrderByQuery(IQueryable<ProjectModel> source)
 		{
 			return source
@@ -39,6 +44,7 @@ namespace Untech.SharePoint.Common.Test.Spec
 				.OrderBy(n => n.Technology);
 		}
 
+		[QueryComparer(typeof(EntityComparer))]
 		public IEnumerable<ProjectModel> OrderByTake10Query(IQueryable<ProjectModel> source)
 		{
 			return source
@@ -46,6 +52,7 @@ namespace Untech.SharePoint.Common.Test.Spec
 				.Take(10);
 		}
 
+		[QueryException(typeof(NotSupportedException))]
 		public IEnumerable<Tuple<string, string>> SelectOrderByQuery(IQueryable<ProjectModel> source)
 		{
 			return source
@@ -53,12 +60,14 @@ namespace Untech.SharePoint.Common.Test.Spec
 				.OrderBy(n => n.Item2);
 		}
 
+		[QueryComparer(typeof(EntityComparer))]
 		public IEnumerable<ProjectModel> OrderByDescQuery(IQueryable<ProjectModel> source)
 		{
 			return source
 				.OrderByDescending(n => n.Technology);
 		}
 
+		[QueryComparer(typeof(EntityComparer))]
 		public IEnumerable<ProjectModel> ThenByQuery(IQueryable<ProjectModel> source)
 		{
 			return source
@@ -66,6 +75,7 @@ namespace Untech.SharePoint.Common.Test.Spec
 				.ThenBy(n => n.Title);
 		}
 
+		[QueryComparer(typeof(EntityComparer))]
 		public IEnumerable<ProjectModel> ThenByDescQuery(IQueryable<ProjectModel> source)
 		{
 			return source
@@ -73,6 +83,7 @@ namespace Untech.SharePoint.Common.Test.Spec
 				.ThenByDescending(n => n.Title);
 		}
 
+		[QueryComparer(typeof(EntityComparer))]
 		public IEnumerable<ProjectModel> ReverseQuery(IQueryable<ProjectModel> source)
 		{
 			return source
@@ -81,24 +92,24 @@ namespace Untech.SharePoint.Common.Test.Spec
 				.Reverse();
 		}
 
-		public IEnumerable<QueryTest<ProjectModel>> GetQueryTests()
+		public IEnumerable<Func<IQueryable<ProjectModel>, object>> GetQueries()
 		{
-			return new[]
+			return new Func<IQueryable<ProjectModel>, object>[]
 			{
-				QueryTest<ProjectModel>.Functional(OrderByQuery, EntityComparer.Default),
+				OrderByQuery,
 
-				QueryTest<ProjectModel>.Functional(WhereOrderByQuery, EntityComparer.Default),
-				QueryTest<ProjectModel>.Functional(OrderByWhereQuery, EntityComparer.Default),
+				WhereOrderByQuery,
+				OrderByWhereQuery,
 
-				QueryTest<ProjectModel>.Functional(SelectOrderByQuery).Throws<NotSupportedException>(),
+				SelectOrderByQuery,
 
-				QueryTest<ProjectModel>.Functional(Take10OrderByQuery).Throws<NotSupportedException>(),
-				QueryTest<ProjectModel>.Functional(OrderByTake10Query, EntityComparer.Default),
+				Take10OrderByQuery,
+				OrderByTake10Query,
 
-				QueryTest<ProjectModel>.Functional(OrderByDescQuery, EntityComparer.Default),
-				QueryTest<ProjectModel>.Functional(ThenByQuery, EntityComparer.Default),
-				QueryTest<ProjectModel>.Functional(ThenByDescQuery, EntityComparer.Default),
-				QueryTest<ProjectModel>.Functional(ReverseQuery, EntityComparer.Default),
+				OrderByDescQuery,
+				ThenByQuery,
+				ThenByDescQuery,
+				ReverseQuery,
 			};
 		}
 	}

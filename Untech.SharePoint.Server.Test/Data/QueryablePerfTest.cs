@@ -3,6 +3,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Untech.SharePoint.Common.Extensions;
 using Untech.SharePoint.Common.Test.Spec;
 using Untech.SharePoint.Common.Test.Spec.Models;
+using Untech.SharePoint.Common.Test.Tools.QueryTests;
 using Untech.SharePoint.Server.Data;
 
 namespace Untech.SharePoint.Server.Test.Data
@@ -16,15 +17,18 @@ namespace Untech.SharePoint.Server.Test.Data
 			var site = new SPSite(@"http://sp2013dev/sites/orm-test", SPUserToken.SystemAccount);
 			var web = site.OpenWeb();
 			var ctx = GetContext(web);
-			var tests = new QueryablePerfomance().GetQueryTests();
-			var executor = new ServerQueryTestExecutor<NewsModel>
+			var queries = new QueryablePerfomance().GetQueries();
+			var executor = new ServerTestQueryExecutor<NewsModel>
 			{
 				List = ctx.News,
 				SpList = web.Lists["News"],
 				FilePath = @"C:\Perf-Server.csv"
 			};
 
-			tests.Each(executor.Execute);
+			foreach (var query in queries)
+			{
+				((TestQueryBuilder<NewsModel>)query).Accept(executor);
+			}
 		}
 
 		private static DataContext GetContext(SPWeb web)

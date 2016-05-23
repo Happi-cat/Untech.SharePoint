@@ -1,4 +1,5 @@
-﻿using System;
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -6,14 +7,15 @@ using System.Linq;
 using System.Reflection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Untech.SharePoint.Common.Data;
+using Untech.SharePoint.Common.Extensions;
 
 namespace Untech.SharePoint.Common.Test.Tools.QueryTests
 {
-	public class QueryTestExecutor<T>
+	public class PerfTestQueryExecutor<T> : ITestQueryExcecutor<T>
 	{
 		public const int Attempts = 1000;
 
-		public QueryTestExecutor()
+		public PerfTestQueryExecutor()
 		{
 			LinqQueryFetchTimer = new Stopwatch();
 			CamlQueryFetchTimer = new Stopwatch();
@@ -31,65 +33,19 @@ namespace Untech.SharePoint.Common.Test.Tools.QueryTests
 
 		public string FilePath { get; set; }
 
-		public static QueryTestExecutor<T> Functional(ISpList<T> list, IQueryable<T> alternateList)
+		public void Visit<TResult>(Func<IQueryable<T>, object> query, IEqualityComparer<TResult> comparer, Type exception, string caml)
 		{
-			return new QueryTestExecutor<T>
+			if (typeof (TResult).IsIEnumerable())
 			{
-				List = list,
-				AlternateList = alternateList
-			};
-		}
-
-		public void Execute(QueryTest<T> queryTest)
-		{
-			queryTest.Accept(this);
-		}
-
-		public void Execute<TException>(ExceptionQueryTest<T, TException> test)
-			where TException : Exception
-		{
-			CustomAssert.Throw<TException>(() => Execute(test.Inner));
-		}
-
-		public void Execute<TResult>(ObjectQueryTest<T, TResult> test)
-		{
-			try
-			{
-				var actual = test.Query(List);
-				var expected = test.Query(AlternateList);
-
-				var result = test.Comparer.Equals(actual, expected);
-				Assert.IsTrue(result, "Query '{0}' is not equal to expected data", test.Query.Method.Name);
+				ExecuteSequence(query, caml);
 			}
-			catch (Exception e)
+			else
 			{
-				e.Data["Query"] = test.Query;
-				e.Data["QueryName"] = test.Query.Method.Name;
-
-				throw;
+				ExecuteSingle(query, caml);
 			}
 		}
 
-		public void Execute<TResult>(SequenceQueryTest<T, TResult> test)
-		{
-			try
-			{
-				var actual = test.Query(List).ToList();
-				var expected = test.Query(AlternateList).ToList();
-
-				var result = test.Comparer.Equals(actual, expected);
-				Assert.IsTrue(result, "Query '{0}' is not equal to expected data", test.Query.Method.Name);
-			}
-			catch (Exception e)
-			{
-				e.Data["Query"] = test.Query;
-				e.Data["QueryName"] = test.Query.Method.Name;
-
-				throw;
-			}
-		}
-
-		public void Execute<TResult>(ObjectQueryPerfTest<T, TResult> test)
+		public void ExecuteSingle(Func<IQueryable<T>, object> query, string caml)
 		{
 			ItemsCounter = 0;
 			LinqQueryFetchTimer.Reset();
@@ -98,18 +54,18 @@ namespace Untech.SharePoint.Common.Test.Tools.QueryTests
 			var counter = Attempts;
 			while (counter-- > 0)
 			{
-				var result = MeasureQuery(test.Query);
+				var result = MeasureSingle(query);
 
 				Assert.IsNotNull(result);
 				ItemsCounter++;
 
-				MeasureCaml(test.Caml);
+				MeasureCaml(caml);
 			}
 
-			LogResult(test.Query.Method, ItemsCounter, LinqQueryFetchTimer.Elapsed, CamlQueryFetchTimer.Elapsed);
+			LogResult(query.Method, ItemsCounter, LinqQueryFetchTimer.Elapsed, CamlQueryFetchTimer.Elapsed);
 		}
 
-		public void Execute<TResult>(SequenceQueryPerfTest<T, TResult> test)
+		public void ExecuteSequence(Func<IQueryable<T>, object> query, string caml)
 		{
 			ItemsCounter = 0;
 			LinqQueryFetchTimer.Reset();
@@ -118,18 +74,18 @@ namespace Untech.SharePoint.Common.Test.Tools.QueryTests
 			var counter = Attempts;
 			while (counter-- > 0)
 			{
-				var result = MeasureQuery(test.Query);
+				var result = MeasureSequence(query);
 
 				Assert.IsNotNull(result);
 				ItemsCounter += result.Count;
 
-				MeasureCaml(test.Caml);
+				MeasureCaml(caml);
 			}
 
-			LogResult(test.Query.Method, ItemsCounter, LinqQueryFetchTimer.Elapsed, CamlQueryFetchTimer.Elapsed);
+			LogResult(query.Method, ItemsCounter, LinqQueryFetchTimer.Elapsed, CamlQueryFetchTimer.Elapsed);
 		}
 
-		public TResult MeasureQuery<TResult>(Func<IQueryable<T>, TResult> query)
+		public object MeasureSingle(Func<IQueryable<T>, object> query)
 		{
 			LinqQueryFetchTimer.Start();
 			var result = query(List);
@@ -138,13 +94,19 @@ namespace Untech.SharePoint.Common.Test.Tools.QueryTests
 			return result;
 		}
 
-		public List<TResult> MeasureQuery<TResult>(Func<IQueryable<T>, IEnumerable<TResult>> query)
+		public List<object> MeasureSequence(Func<IQueryable<T>, object> query)
 		{
+			var list = new List<object>();
+
 			LinqQueryFetchTimer.Start();
-			var result = query(List).ToList();
+			var enumerator = ((IEnumerable) query(List)).GetEnumerator();
+			while (enumerator.MoveNext())
+			{
+				list.Add(enumerator.Current);
+			}
 			LinqQueryFetchTimer.Stop();
 
-			return result;
+			return list;
 		}
 
 		public virtual void MeasureCaml(string caml)

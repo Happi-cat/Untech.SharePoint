@@ -4,7 +4,7 @@ using Untech.SharePoint.Common.Test.Tools.QueryTests;
 
 namespace Untech.SharePoint.Server.Test.Data
 {
-	public class ServerQueryTestExecutor<T> : QueryTestExecutor<T>
+	public class ServerTestQueryExecutor<T> : PerfTestQueryExecutor<T>
 	{
 		public SPList SpList { get; set; }
 

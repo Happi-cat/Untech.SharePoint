@@ -55,12 +55,12 @@ namespace Untech.SharePoint.Common.Test.Spec
 			Run(_dataContext.News, _dataManager.News, new ProjectionQuerySpec());
 		}
 
-		private void Run<T>(ISpList<T> list, IReadOnlyList<T> alternateList, IQueryTestsProvider<T> queryProvider)
+		private void Run<T>(ISpList<T> list, IReadOnlyList<T> alternateList, ITestQueryProvider<T> queryProvider)
 		{
-			var executor = QueryTestExecutor<T>.Functional(list, alternateList.AsQueryable());
-			foreach (var queryTest in queryProvider.GetQueryTests())
+			var executor = new SimpleTestQueryExecutor<T> { List = list, AlternateList = alternateList.AsQueryable() };
+			foreach (var query in queryProvider.GetQueries())
 			{
-				queryTest.Accept(executor);
+				((TestQueryBuilder<T>)query).Accept(executor);
 			}
 		}
 	}

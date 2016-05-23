@@ -103,8 +103,9 @@
     <Compile Include="Spec\ProjectionQuerySpec.cs" />
     <Compile Include="Spec\FilteringQuerySpec.cs" />
     <Compile Include="Tools\DataManagers\TestDataManager.cs" />
-    <Compile Include="Tools\QueryTests\IQueryTestsProvider.cs" />
-    <Compile Include="Tools\QueryTests\QueryTest.cs" />
+    <Compile Include="Tools\QueryTests\ITestQueryAcceptor.cs" />
+    <Compile Include="Tools\QueryTests\ITestQueryExcecutor.cs" />
+    <Compile Include="Tools\QueryTests\ITestQueryProvider.cs" />
     <Compile Include="Tools\Generators\Basic\ArrayGenerationOptions.cs" />
     <Compile Include="Spec\AggregateQuerySpec.cs" />
     <Compile Include="Tools\DataGenerators\Generators.cs" />
@@ -128,7 +129,13 @@
     <Compile Include="Tools\Generators\ObjectGenerator.cs" />
     <Compile Include="Tools\Generators\ObjectGeneratorExtensions.cs" />
     <Compile Include="Tools\Generators\IValueGenerator.cs" />
-    <Compile Include="Tools\QueryTests\QueryTestExecutor.cs" />
+    <Compile Include="Tools\QueryTests\PerfTestQueryExecutor.cs" />
+    <Compile Include="Tools\QueryTests\QueryComparerAttribute.cs" />
+    <Compile Include="Tools\QueryTests\QueryExceptionAttribute.cs" />
+    <Compile Include="Tools\QueryTests\QueryCamlAttribute.cs" />
+    <Compile Include="Tools\QueryTests\SimpleTestQueryExecutor.cs" />
+    <Compile Include="Tools\QueryTests\TestQuery.cs" />
+    <Compile Include="Tools\QueryTests\TestQueryBuilder.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Untech.SharePoint.Common\Untech.SharePoint.Common.csproj">

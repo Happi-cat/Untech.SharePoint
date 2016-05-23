@@ -12,42 +12,42 @@ namespace Untech.SharePoint.Common.Test.Spec
 	/// The aggregate methods are Aggregate, Average, Count, LongCount, Max, Min, and Sum.
 	/// </summary>
 	[SuppressMessage("ReSharper", "ReplaceWithSingleCallToCount")]
-	public class AggregateQuerySpec : IQueryTestsProvider<NewsModel>
+	public class AggregateQuerySpec : ITestQueryProvider<NewsModel>
 	{
 		#region [Count]
 
-		public int CountQuery(IQueryable<Entity> source)
+		public object CountQuery(IQueryable<Entity> source)
 		{
 			return source.Count();
 		}
 
-		public int CountPQuery(IQueryable<NewsModel> source)
+		public object CountPQuery(IQueryable<NewsModel> source)
 		{
 			return source.Count(n => n.Description.StartsWith("DESCRIPTION"));
 		}
 
-		public int WhereCountQuery(IQueryable<NewsModel> source)
+		public object WhereCountQuery(IQueryable<NewsModel> source)
 		{
 			return source
 				.Where(n => n.Description.Contains("DESCRIPTION"))
 				.Count();
 		}
 
-		public int WhereCountPQuery(IQueryable<NewsModel> source)
+		public object WhereCountPQuery(IQueryable<NewsModel> source)
 		{
 			return source
 				.Where(n => n.Description.Contains("DESCRIPTION"))
 				.Count(n => n.Title.Contains("lorem"));
 		}
 
-		public int SelectCountQuery(IQueryable<NewsModel> source)
+		public object SelectCountQuery(IQueryable<NewsModel> source)
 		{
 			return source
 				.Select(n => n.Description)
 				.Count();
 		}
 
-		public int Take10CountQuery(IQueryable<NewsModel> source)
+		public object Take10CountQuery(IQueryable<NewsModel> source)
 		{
 			return source
 				.Take(10)
@@ -59,33 +59,34 @@ namespace Untech.SharePoint.Common.Test.Spec
 
 		#region [Min]
 
-		public int MinPQuery(IQueryable<Entity> source)
+		public object MinPQuery(IQueryable<Entity> source)
 		{
 			return source.Min(n => n.Id);
 		}
 
-		public int WhereMinPQuery(IQueryable<Entity> source)
+		public object WhereMinPQuery(IQueryable<Entity> source)
 		{
 			return source
 				.Where(n => n.Title.Contains("lorem"))
 				.Min(n => n.Id);
 		}
 
-		public int SelectMinQuery(IQueryable<Entity> source)
+		public object SelectMinQuery(IQueryable<Entity> source)
 		{
 			return source
 				.Select(n => n.Id)
 				.Min();
 		}
 
-		public int SelectMinPQuery(IQueryable<Entity> source)
+		[QueryException(typeof(NotSupportedException))]
+		public object SelectMinPQuery(IQueryable<Entity> source)
 		{
 			return source
 				.Select(n => n.Id)
 				.Min(n => n);
 		}
 
-		public int Take10MinPQuery(IQueryable<Entity> source)
+		public object Take10MinPQuery(IQueryable<Entity> source)
 		{
 			return source
 				.Take(10)
@@ -97,33 +98,34 @@ namespace Untech.SharePoint.Common.Test.Spec
 
 		#region [Max]
 
-		public int MaxPQuery(IQueryable<Entity> source)
+		public object MaxPQuery(IQueryable<Entity> source)
 		{
 			return source.Max(n => n.Id);
 		}
 
-		public int WhereMaxPQuery(IQueryable<Entity> source)
+		public object WhereMaxPQuery(IQueryable<Entity> source)
 		{
 			return source
 				.Where(n => n.Title.Contains("lorem"))
 				.Max(n => n.Id);
 		}
 
-		public int SelectMaxQuery(IQueryable<Entity> source)
+		public object SelectMaxQuery(IQueryable<Entity> source)
 		{
 			return source
 				.Select(n => n.Id)
 				.Max();
 		}
 
-		public int SelectMaxPQuery(IQueryable<Entity> source)
+		[QueryException(typeof(NotSupportedException))]
+		public object SelectMaxPQuery(IQueryable<Entity> source)
 		{
 			return source
 				.Select(n => n.Id)
 				.Max(n => n);
 		}
 
-		public int Take10MaxPQuery(IQueryable<Entity> source)
+		public object Take10MaxPQuery(IQueryable<Entity> source)
 		{
 			return source
 				.Take(10)
@@ -133,29 +135,31 @@ namespace Untech.SharePoint.Common.Test.Spec
 		#endregion
 
 
-		public IEnumerable<QueryTest<NewsModel>> GetQueryTests()
+		public IEnumerable<Func<IQueryable<NewsModel>, object>> GetQueries()
 		{
-			return new[]
+			return new Func<IQueryable<NewsModel>, object>[]
 			{
-				QueryTest<NewsModel>.Functional(CountQuery),
-				QueryTest<NewsModel>.Functional(CountPQuery),
-				QueryTest<NewsModel>.Functional(WhereCountQuery),
-				QueryTest<NewsModel>.Functional(WhereCountPQuery),
-				QueryTest<NewsModel>.Functional(SelectCountQuery),
-				QueryTest<NewsModel>.Functional(Take10CountQuery), 
+				CountQuery,
+				CountPQuery,
+				WhereCountQuery,
+				WhereCountPQuery,
+				SelectCountQuery,
+				Take10CountQuery,
 
-				QueryTest<NewsModel>.Functional(MinPQuery),
-				QueryTest<NewsModel>.Functional(WhereMinPQuery),
-				QueryTest<NewsModel>.Functional(SelectMinQuery),
-				QueryTest<NewsModel>.Functional(SelectMinPQuery).Throws<NotSupportedException>(),
-				QueryTest<NewsModel>.Functional(Take10MinPQuery), 
+				MinPQuery,
+				WhereMinPQuery,
+				SelectMinQuery,
+				SelectMinPQuery,
+				Take10MinPQuery,
 
-				QueryTest<NewsModel>.Functional(MaxPQuery),
-				QueryTest<NewsModel>.Functional(WhereMaxPQuery),
-				QueryTest<NewsModel>.Functional(SelectMaxQuery),
-				QueryTest<NewsModel>.Functional(SelectMaxPQuery).Throws<NotSupportedException>(),
-				QueryTest<NewsModel>.Functional(Take10MaxPQuery), 
+				MaxPQuery,
+				WhereMaxPQuery,
+				SelectMaxQuery,
+				SelectMaxPQuery,
+				Take10MaxPQuery
 			};
 		}
+
+
 	}
 }

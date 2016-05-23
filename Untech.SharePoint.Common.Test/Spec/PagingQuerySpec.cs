@@ -15,10 +15,11 @@ namespace Untech.SharePoint.Common.Test.Spec
 	[SuppressMessage("ReSharper", "ReplaceWithSingleCallToSingleOrDefault")]
 	[SuppressMessage("ReSharper", "ReplaceWithSingleCallToFirst")]
 	[SuppressMessage("ReSharper", "ReplaceWithSingleCallToLast")]
-	public class PagingQuerySpec : IQueryTestsProvider<NewsModel>
+	public class PagingQuerySpec : ITestQueryProvider<NewsModel>
 	{
 		#region [Single]
 
+		[QueryComparer(typeof(EntityComparer))]
 		public NewsModel SingleQuery(IQueryable<NewsModel> source)
 		{
 			return source
@@ -34,6 +35,7 @@ namespace Untech.SharePoint.Common.Test.Spec
 				.Single();
 		}
 
+		[QueryComparer(typeof(EntityComparer))]
 		public NewsModel Take10SingleQuery(IQueryable<NewsModel> source)
 		{
 			return source
@@ -42,12 +44,14 @@ namespace Untech.SharePoint.Common.Test.Spec
 				.Single();
 		}
 
+		[QueryComparer(typeof(EntityComparer))]
 		public NewsModel SinglePQuery(IQueryable<NewsModel> source)
 		{
 			return source
 				.Single(n => n.Description == "SINGLETON");
 		}
 
+		[QueryException(typeof(NotSupportedException))]
 		public string SelectSinglePQuery(IQueryable<NewsModel> source)
 		{
 			return source
@@ -55,6 +59,8 @@ namespace Untech.SharePoint.Common.Test.Spec
 				.Single(n => n == "SINGLETON");
 		}
 
+		[QueryComparer(typeof(EntityComparer))]
+		[QueryException(typeof(NotSupportedException))]
 		public NewsModel Take10SinglePQuery(IQueryable<NewsModel> source)
 		{
 			return source
@@ -62,6 +68,7 @@ namespace Untech.SharePoint.Common.Test.Spec
 				.Single(n => n.Description == "SINGLETON");
 		}
 
+		[QueryComparer(typeof(EntityComparer))]
 		public NewsModel SingleOrDefaultQuery(IQueryable<NewsModel> source)
 		{
 			return source
@@ -69,6 +76,7 @@ namespace Untech.SharePoint.Common.Test.Spec
 				.SingleOrDefault();
 		}
 
+		[QueryComparer(typeof(EntityComparer))]
 		public NewsModel SingleOrDefaultPQuery(IQueryable<NewsModel> source)
 		{
 			return source
@@ -80,11 +88,14 @@ namespace Untech.SharePoint.Common.Test.Spec
 
 		#region [ElementAt]
 
+		[QueryComparer(typeof(EntityComparer))]
 		public NewsModel ElementAtQuery(IQueryable<NewsModel> source)
 		{
 			return source.ElementAt(2);
 		}
 
+		[QueryComparer(typeof(EntityComparer))]
+		[QueryException(typeof(NotSupportedException))]
 		public NewsModel Take10ElementAtQuery(IQueryable<NewsModel> source)
 		{
 			return source
@@ -99,6 +110,7 @@ namespace Untech.SharePoint.Common.Test.Spec
 				.ElementAt(2);
 		}
 
+		[QueryComparer(typeof(EntityComparer))]
 		public NewsModel ElementAtOrDefaultQuery(IQueryable<NewsModel> source)
 		{
 			return source.ElementAtOrDefault(1000);
@@ -109,11 +121,13 @@ namespace Untech.SharePoint.Common.Test.Spec
 
 		#region [First]
 
+		[QueryComparer(typeof(EntityComparer))]
 		public NewsModel FirstQuery(IQueryable<NewsModel> source)
 		{
 			return source.First();
 		}
 
+		[QueryComparer(typeof(EntityComparer))]
 		public NewsModel Take10FirstQuery(IQueryable<NewsModel> source)
 		{
 			return source
@@ -128,6 +142,7 @@ namespace Untech.SharePoint.Common.Test.Spec
 				.First();
 		}
 
+		[QueryComparer(typeof(EntityComparer))]
 		public NewsModel WhereFirstQuery(IQueryable<NewsModel> source)
 		{
 			return source
@@ -135,6 +150,7 @@ namespace Untech.SharePoint.Common.Test.Spec
 				.First();
 		}
 
+		[QueryComparer(typeof(EntityComparer))]
 		public NewsModel OrderByFirstQuery(IQueryable<NewsModel> source)
 		{
 			return source
@@ -142,16 +158,20 @@ namespace Untech.SharePoint.Common.Test.Spec
 				.First();
 		}
 
+		[QueryComparer(typeof(EntityComparer))]
 		public NewsModel FirstOrDefaultQuery(IQueryable<NewsModel> source)
 		{
 			return source.FirstOrDefault();
 		}
 
+		[QueryComparer(typeof(EntityComparer))]
 		public NewsModel FirstPQuery(IQueryable<NewsModel> source)
 		{
 			return source.First(n => n.Description == "DESCRIPTION 1" || n.Description == "DESCRIPTION 2");
 		}
 
+		[QueryComparer(typeof(EntityComparer))]
+		[QueryException(typeof(NotSupportedException))]
 		public NewsModel Take10FirstPQuery(IQueryable<NewsModel> source)
 		{
 			return source
@@ -159,13 +179,15 @@ namespace Untech.SharePoint.Common.Test.Spec
 				.First(n => n.Description == "DESCRIPTION 1" || n.Description == "DESCRIPTION 2");
 		}
 
+		[QueryComparer(typeof(EntityComparer))]
 		public NewsModel WhereFirstPQuery(IQueryable<NewsModel> source)
 		{
 			return source
-				.Where(n=> n.Description.StartsWith("DESCRIPTION"))
+				.Where(n => n.Description.StartsWith("DESCRIPTION"))
 				.First(n => n.Description.Contains("1") || n.Description.Contains("2"));
 		}
 
+		[QueryException(typeof(NotSupportedException))]
 		public string SelectFirstPQuery(IQueryable<NewsModel> source)
 		{
 			return source
@@ -173,6 +195,7 @@ namespace Untech.SharePoint.Common.Test.Spec
 				.First(n => n == "DESCRIPTION 1" || n == "DESCRIPTION 2");
 		}
 
+		[QueryComparer(typeof(EntityComparer))]
 		public NewsModel FirstPOrDefaultQuery(IQueryable<NewsModel> source)
 		{
 			return source.FirstOrDefault(n => n.Description == "UNKOWN DESCRIPTION");
@@ -183,11 +206,14 @@ namespace Untech.SharePoint.Common.Test.Spec
 
 		#region [Last]
 
+		[QueryComparer(typeof(EntityComparer))]
 		public NewsModel LastQuery(IQueryable<NewsModel> source)
 		{
 			return source.Last();
 		}
 
+		[QueryComparer(typeof(EntityComparer))]
+		[QueryException(typeof(NotSupportedException))]
 		public NewsModel Take10LastQuery(IQueryable<NewsModel> source)
 		{
 			return source
@@ -202,6 +228,7 @@ namespace Untech.SharePoint.Common.Test.Spec
 				.Last();
 		}
 
+		[QueryComparer(typeof(EntityComparer))]
 		public NewsModel WhereLastQuery(IQueryable<NewsModel> source)
 		{
 			return source
@@ -209,6 +236,7 @@ namespace Untech.SharePoint.Common.Test.Spec
 				.Last();
 		}
 
+		[QueryComparer(typeof(EntityComparer))]
 		public NewsModel OrderByLastQuery(IQueryable<NewsModel> source)
 		{
 			return source
@@ -216,16 +244,20 @@ namespace Untech.SharePoint.Common.Test.Spec
 				.Last();
 		}
 
+		[QueryComparer(typeof(EntityComparer))]
 		public NewsModel LastOrDefaultQuery(IQueryable<NewsModel> source)
 		{
 			return source.LastOrDefault();
 		}
 
+		[QueryComparer(typeof(EntityComparer))]
 		public NewsModel LastPQuery(IQueryable<NewsModel> source)
 		{
 			return source.Last(n => n.Description == "DESCRIPTION 1" || n.Description == "DESCRIPTION 2");
 		}
 
+		[QueryComparer(typeof(EntityComparer))]
+		[QueryException(typeof(NotSupportedException))]
 		public NewsModel Take10LastPQuery(IQueryable<NewsModel> source)
 		{
 			return source
@@ -233,6 +265,7 @@ namespace Untech.SharePoint.Common.Test.Spec
 				.Last(n => n.Description == "DESCRIPTION 1" || n.Description == "DESCRIPTION 2");
 		}
 
+		[QueryComparer(typeof(EntityComparer))]
 		public NewsModel WhereLastPQuery(IQueryable<NewsModel> source)
 		{
 			return source
@@ -240,6 +273,7 @@ namespace Untech.SharePoint.Common.Test.Spec
 				.Last(n => n.Description.Contains("1") || n.Description.Contains("2"));
 		}
 
+		[QueryException(typeof(NotSupportedException))]
 		public string SelectLastPQuery(IQueryable<NewsModel> source)
 		{
 			return source
@@ -247,6 +281,7 @@ namespace Untech.SharePoint.Common.Test.Spec
 				.Last(n => n == "DESCRIPTION 1" || n == "DESCRIPTION 2");
 		}
 
+		[QueryComparer(typeof(EntityComparer))]
 		public NewsModel LastPOrDefaultQuery(IQueryable<NewsModel> source)
 		{
 			return source.LastOrDefault(n => n.Description == "UNKOWN DESCRIPTION");
@@ -257,6 +292,7 @@ namespace Untech.SharePoint.Common.Test.Spec
 
 		#region [Take]
 
+		[QueryComparer(typeof(EntityComparer))]
 		public IEnumerable<NewsModel> TakeQuery(IQueryable<NewsModel> source)
 		{
 			return source
@@ -277,6 +313,7 @@ namespace Untech.SharePoint.Common.Test.Spec
 				.Select(n => n.Title);
 		}
 
+		[QueryComparer(typeof(EntityComparer))]
 		public IEnumerable<NewsModel> WhereTakeQuery(IQueryable<NewsModel> source)
 		{
 			return source
@@ -284,6 +321,8 @@ namespace Untech.SharePoint.Common.Test.Spec
 				.Take(10);
 		}
 
+		[QueryComparer(typeof(EntityComparer))]
+		[QueryException(typeof(NotSupportedException))]
 		public IEnumerable<NewsModel> TakeWhereQuery(IQueryable<NewsModel> source)
 		{
 			return source
@@ -291,6 +330,7 @@ namespace Untech.SharePoint.Common.Test.Spec
 				.Where(n => n.Description.Contains("DESCRIPTION"));
 		}
 
+		[QueryComparer(typeof(EntityComparer))]
 		public IEnumerable<NewsModel> OrderByTakeQuery(IQueryable<NewsModel> source)
 		{
 			return source
@@ -298,6 +338,8 @@ namespace Untech.SharePoint.Common.Test.Spec
 				.Take(10);
 		}
 
+		[QueryComparer(typeof(EntityComparer))]
+		[QueryException(typeof(NotSupportedException))]
 		public IEnumerable<NewsModel> TakeOrderByQuery(IQueryable<NewsModel> source)
 		{
 			return source
@@ -305,6 +347,8 @@ namespace Untech.SharePoint.Common.Test.Spec
 				.OrderBy(n => n.Title);
 		}
 
+		[QueryComparer(typeof(EntityComparer))]
+		[QueryException(typeof(NotSupportedException))]
 		public IEnumerable<NewsModel> TakeTakeQuery(IQueryable<NewsModel> source)
 		{
 			return source
@@ -315,59 +359,59 @@ namespace Untech.SharePoint.Common.Test.Spec
 		#endregion
 
 
-		public IEnumerable<QueryTest<NewsModel>> GetQueryTests()
+		public IEnumerable<Func<IQueryable<NewsModel>, object>> GetQueries()
 		{
-			return new[]
+			return new Func<IQueryable<NewsModel>, object>[]
 			{
-				QueryTest<NewsModel>.Functional(SingleQuery, EntityComparer.Default),
-				QueryTest<NewsModel>.Functional(SelectSingleQuery),
-				QueryTest<NewsModel>.Functional(Take10SingleQuery, EntityComparer.Default),
-				QueryTest<NewsModel>.Functional(SingleOrDefaultQuery, EntityComparer.Default),
+				SingleQuery,
+				SelectSingleQuery,
+				Take10SingleQuery,
+				SingleOrDefaultQuery,
 
-				QueryTest<NewsModel>.Functional(SinglePQuery, EntityComparer.Default),
-				QueryTest<NewsModel>.Functional(SelectSinglePQuery).Throws<NotSupportedException>(),
-				QueryTest<NewsModel>.Functional(Take10SinglePQuery).Throws<NotSupportedException>(),
-				QueryTest<NewsModel>.Functional(SingleOrDefaultPQuery, EntityComparer.Default),
+				SinglePQuery,
+				SelectSinglePQuery,
+				Take10SinglePQuery,
+				SingleOrDefaultPQuery,
 
-				QueryTest<NewsModel>.Functional(ElementAtQuery, EntityComparer.Default),
-				QueryTest<NewsModel>.Functional(Take10ElementAtQuery).Throws<NotSupportedException>(),
-				QueryTest<NewsModel>.Functional(SelectElementAtQuery),
-				QueryTest<NewsModel>.Functional(ElementAtOrDefaultQuery, EntityComparer.Default),
-				
-				QueryTest<NewsModel>.Functional(FirstQuery, EntityComparer.Default),
-				QueryTest<NewsModel>.Functional(Take10FirstQuery, EntityComparer.Default),
-				QueryTest<NewsModel>.Functional(SelectFirstQuery),
-				QueryTest<NewsModel>.Functional(WhereFirstQuery, EntityComparer.Default),
-				QueryTest<NewsModel>.Functional(OrderByFirstQuery, EntityComparer.Default),
-				QueryTest<NewsModel>.Functional(FirstOrDefaultQuery, EntityComparer.Default),
+				ElementAtQuery,
+				Take10ElementAtQuery,
+				SelectElementAtQuery,
+				ElementAtOrDefaultQuery,
 
-				QueryTest<NewsModel>.Functional(FirstPQuery, EntityComparer.Default),
-				QueryTest<NewsModel>.Functional(Take10FirstPQuery).Throws<NotSupportedException>(),
-				QueryTest<NewsModel>.Functional(SelectFirstPQuery).Throws<NotSupportedException>(),
-				QueryTest<NewsModel>.Functional(WhereFirstPQuery, EntityComparer.Default),
-				QueryTest<NewsModel>.Functional(FirstPOrDefaultQuery, EntityComparer.Default),
-				
-				QueryTest<NewsModel>.Functional(LastQuery, EntityComparer.Default),
-				QueryTest<NewsModel>.Functional(Take10LastQuery).Throws<NotSupportedException>(),
-				QueryTest<NewsModel>.Functional(SelectLastQuery),
-				QueryTest<NewsModel>.Functional(WhereLastQuery, EntityComparer.Default),
-				QueryTest<NewsModel>.Functional(OrderByLastQuery, EntityComparer.Default),
-				QueryTest<NewsModel>.Functional(LastOrDefaultQuery, EntityComparer.Default),
+				FirstQuery,
+				Take10FirstQuery,
+				SelectFirstQuery,
+				WhereFirstQuery,
+				OrderByFirstQuery,
+				FirstOrDefaultQuery,
 
-				QueryTest<NewsModel>.Functional(LastPQuery, EntityComparer.Default),
-				QueryTest<NewsModel>.Functional(Take10LastPQuery).Throws<NotSupportedException>(),
-				QueryTest<NewsModel>.Functional(SelectLastPQuery).Throws<NotSupportedException>(),
-				QueryTest<NewsModel>.Functional(WhereLastPQuery, EntityComparer.Default),
-				QueryTest<NewsModel>.Functional(LastPOrDefaultQuery, EntityComparer.Default),
+				FirstPQuery,
+				Take10FirstPQuery,
+				SelectFirstPQuery,
+				WhereFirstPQuery,
+				FirstPOrDefaultQuery,
 
-				QueryTest<NewsModel>.Functional(TakeQuery, EntityComparer.Default),
-				QueryTest<NewsModel>.Functional(SelectTakeQuery),
-				QueryTest<NewsModel>.Functional(TakeSelectQuery),
-				QueryTest<NewsModel>.Functional(WhereTakeQuery, EntityComparer.Default),
-				QueryTest<NewsModel>.Functional(TakeWhereQuery).Throws<NotSupportedException>(),
-				QueryTest<NewsModel>.Functional(OrderByTakeQuery, EntityComparer.Default),
-				QueryTest<NewsModel>.Functional(TakeOrderByQuery).Throws<NotSupportedException>(),
-				QueryTest<NewsModel>.Functional(TakeTakeQuery).Throws<NotSupportedException>(),
+				LastQuery,
+				Take10LastQuery,
+				SelectLastQuery,
+				WhereLastQuery,
+				OrderByLastQuery,
+				LastOrDefaultQuery,
+
+				LastPQuery,
+				Take10LastPQuery,
+				SelectLastPQuery,
+				WhereLastPQuery,
+				LastPOrDefaultQuery,
+
+				TakeQuery,
+				SelectTakeQuery,
+				TakeSelectQuery,
+				WhereTakeQuery,
+				TakeWhereQuery,
+				OrderByTakeQuery,
+				TakeOrderByQuery,
+				TakeTakeQuery,
 			};
 		}
 	}
