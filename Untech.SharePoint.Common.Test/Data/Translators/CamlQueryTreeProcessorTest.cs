@@ -605,13 +605,78 @@ namespace Untech.SharePoint.Common.Test.Data.Translators
 		}
 
 		[TestMethod]
+		public void SupportTake10Min()
+		{
+			Given(source => source.Take(10).Min(n => n.Int1))
+				.ExpectedCaml("<View>" +
+							  "<RowLimit>10</RowLimit>" +
+							  "<Query></Query>" +
+							  "<ViewFields><FieldRef Name='Int1' /></ViewFields>" +
+							  "</View>");
+		}
+
+
+		[TestMethod]
+		public void SupportSelectMin()
+		{
+			Given(source => source.Select(n => n.Int1).Min())
+				.ExpectedCaml("<View>" +
+							  "<Query></Query>" +
+							  "<ViewFields><FieldRef Name='Int1' /></ViewFields>" +
+							  "</View>");
+		}
+
+		[TestMethod]
+		public void SupportSelectTake10Min()
+		{
+			Given(source => source.Select(n => n.Int1).Take(10).Min())
+				.ExpectedCaml("<View>" +
+							  "<RowLimit>10</RowLimit>" +
+							  "<Query></Query>" +
+							  "<ViewFields><FieldRef Name='Int1' /></ViewFields>" +
+							  "</View>");
+		}
+
+		[TestMethod]
 		public void SupportMax()
 		{
 			Given(source => source.Max(n => n.Int1))
 				.ExpectedCaml("<View>" +
+							  "<Query></Query>" +
+							  "<ViewFields><FieldRef Name='Int1' /></ViewFields>" +
+							  "</View>");
+		}
+
+		[TestMethod]
+		public void SupportTake10Max()
+		{
+			Given(source => source.Take(10).Max(n => n.Int1))
+				.ExpectedCaml("<View>" +
+							  "<RowLimit>10</RowLimit>" +
+							  "<Query></Query>" +
+							  "<ViewFields><FieldRef Name='Int1' /></ViewFields>" +
+							  "</View>");
+		}
+
+		[TestMethod]
+		public void SupportSelectMax()
+		{
+			Given(source => source.Select(n => n.Int1).Max())
+				.ExpectedCaml("<View>" +
 				              "<Query></Query>" +
 				              "<ViewFields><FieldRef Name='Int1' /></ViewFields>" +
 				              "</View>");
+		}
+
+		[TestMethod]
+		public void SupportSelectTake10Max()
+		{
+			Given(source => source.Select(n => n.Int1).Take(10).Max())
+				.ExpectedCaml("<View>" +
+							  "<RowLimit>10</RowLimit>" +
+							  "<Query></Query>" +
+							  "<ViewFields><FieldRef Name='Int1' /></ViewFields>" +
+							  "</View>");
 		}
 
 		[TestMethod]

@@ -35,7 +35,9 @@ namespace Untech.SharePoint.Common.Data
 
 		public static readonly MethodInfo QSelect = GetMethodInfo(() => Queryable.Select(null, default(Expression<Func<int, int>>)));
 
+		public static readonly MethodInfo QMin = GetMethodInfo(() => Queryable.Min<int>(null));
 		public static readonly MethodInfo QMinP = GetMethodInfo(() => Queryable.Min(null, default(Expression<Func<int, int>>)));
+		public static readonly MethodInfo QMax = GetMethodInfo(() => Queryable.Max<int>(null));
 		public static readonly MethodInfo QMaxP = GetMethodInfo(() => Queryable.Max(null, default(Expression<Func<int, int>>)));
 
 		public static readonly MethodInfo QWhere = GetMethodInfo(() => Queryable.Where(null, default(Expression<Func<int, bool>>)));
@@ -85,9 +87,11 @@ namespace Untech.SharePoint.Common.Data
 		public static readonly MethodInfo SpqFetch = GetMethodInfo(() => SpQueryable.Fetch<int>(null, null));
 
 		public static readonly MethodInfo SpqSelect = GetMethodInfo(() => SpQueryable.Select<int, int>(null, null, null));
-		
-		public static readonly MethodInfo SpqMin = GetMethodInfo(() => SpQueryable.Min<int, int>(null, null, null));
-		public static readonly MethodInfo SpqMax = GetMethodInfo(() => SpQueryable.Max<int, int>(null, null, null));
+
+		public static readonly MethodInfo SpqMin = GetMethodInfo(() => SpQueryable.Min<int>(null, null));
+		public static readonly MethodInfo SpqMinP = GetMethodInfo(() => SpQueryable.Min<int, int>(null, null, null));
+		public static readonly MethodInfo SpqMax = GetMethodInfo(() => SpQueryable.Max<int>(null, null));
+		public static readonly MethodInfo SpqMaxP = GetMethodInfo(() => SpQueryable.Max<int, int>(null, null, null));
 
 		public static readonly MethodInfo SpqTake = GetMethodInfo(() => SpQueryable.Take<int>(null, null));
 		public static readonly MethodInfo SpqTakeP = GetMethodInfo(() => SpQueryable.Take<int, int>(null, null, null));
