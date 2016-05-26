@@ -12,25 +12,25 @@ namespace Untech.SharePoint.Common.Test.Tools.QueryTests
 
 		public IQueryable<T> AlternateList { get; set; }
 
-		public void Visit<TResult>(Func<IQueryable<T>, object> query, IEqualityComparer<TResult> comparer, Type exception, string caml)
+		public void Visit<TResult>(TestQuery<T, TResult> query)
 		{
 			try
 			{
-				var actual = (TResult)query(List);
-				var expected = (TResult)query(AlternateList);
+				var actual = (TResult)query.Query(List);
+				var expected = (TResult)query.Query(AlternateList);
 
-				var result = comparer.Equals(actual, expected);
-				Assert.IsTrue(result, "Query '{0}' is not equal to expected data", query.Method.Name);
+				var result = query.Comparer.Equals(actual, expected);
+				Assert.IsTrue(result, "Query '{0}' is not equal to expected data", query.Query.Method.Name);
 			}
 			catch (Exception e)
 			{
-				if (exception != null && exception.IsInstanceOfType(e))
+				if (query.Exception != null && query.Exception.IsInstanceOfType(e))
 				{
 					return;
 				}
 
 				e.Data["Query"] = query;
-				e.Data["QueryName"] = query.Method.Name;
+				e.Data["QueryName"] = query.Query.Method.Name;
 
 				throw;
 			}

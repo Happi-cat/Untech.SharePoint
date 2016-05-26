@@ -8,6 +8,7 @@ using System.Reflection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Untech.SharePoint.Common.Data;
 using Untech.SharePoint.Common.Extensions;
+using Untech.SharePoint.Common.MetaModels;
 
 namespace Untech.SharePoint.Common.Test.Tools.QueryTests
 {
@@ -15,37 +16,40 @@ namespace Untech.SharePoint.Common.Test.Tools.QueryTests
 	{
 		public const int Attempts = 1000;
 
-		public PerfTestQueryExecutor()
+		public PerfTestQueryExecutor(MetaList metaList)
 		{
 			LinqQueryFetchTimer = new Stopwatch();
 			CamlQueryFetchTimer = new Stopwatch();
+			ContentType = metaList.ContentTypes[typeof (T)].Id;
 		}
 
 		public ISpList<T> List { get; set; }
 
 		public IQueryable<T> AlternateList { get; set; }
 
-		public Stopwatch LinqQueryFetchTimer { get; set; }
+		public Stopwatch LinqQueryFetchTimer { get;  private set; }
 
-		public Stopwatch CamlQueryFetchTimer { get; set; }
+		public Stopwatch CamlQueryFetchTimer { get; private set; }
 
 		public int ItemsCounter { get; set; }
 
 		public string FilePath { get; set; }
 
-		public void Visit<TResult>(Func<IQueryable<T>, object> query, IEqualityComparer<TResult> comparer, Type exception, string caml)
+		public string ContentType { get; private set; }
+
+		public void Visit<TResult>(TestQuery<T, TResult> query)
 		{
 			if (typeof (TResult).IsIEnumerable())
 			{
-				ExecuteSequence(query, caml);
+				ExecuteSequence(query.Query, query.Caml, query.ViewFields);
 			}
 			else
 			{
-				ExecuteSingle(query, caml);
+				ExecuteSingle(query.Query, query.Caml, query.ViewFields);
 			}
 		}
 
-		public void ExecuteSingle(Func<IQueryable<T>, object> query, string caml)
+		public void ExecuteSingle(Func<IQueryable<T>, object> query, string caml, string[] viewFields)
 		{
 			ItemsCounter = 0;
 			LinqQueryFetchTimer.Reset();
@@ -59,13 +63,13 @@ namespace Untech.SharePoint.Common.Test.Tools.QueryTests
 				Assert.IsNotNull(result);
 				ItemsCounter++;
 
-				MeasureCaml(caml);
+				MeasureCaml(caml, viewFields);
 			}
 
 			LogResult(query.Method, ItemsCounter, LinqQueryFetchTimer.Elapsed, CamlQueryFetchTimer.Elapsed);
 		}
 
-		public void ExecuteSequence(Func<IQueryable<T>, object> query, string caml)
+		public void ExecuteSequence(Func<IQueryable<T>, object> query, string caml, string[] viewFields)
 		{
 			ItemsCounter = 0;
 			LinqQueryFetchTimer.Reset();
@@ -79,7 +83,7 @@ namespace Untech.SharePoint.Common.Test.Tools.QueryTests
 				Assert.IsNotNull(result);
 				ItemsCounter += result.Count;
 
-				MeasureCaml(caml);
+				MeasureCaml(caml, viewFields);
 			}
 
 			LogResult(query.Method, ItemsCounter, LinqQueryFetchTimer.Elapsed, CamlQueryFetchTimer.Elapsed);
@@ -109,9 +113,9 @@ namespace Untech.SharePoint.Common.Test.Tools.QueryTests
 			return list;
 		}
 
-		public virtual void MeasureCaml(string caml)
+		public virtual List<object> MeasureCaml(string caml, string[] viewFields)
 		{
-
+			return null;
 		}
 
 		private void LogResult(MethodInfo method, int itemsCount, TimeSpan elapsedLinqTime, TimeSpan elapsedCamlTime)

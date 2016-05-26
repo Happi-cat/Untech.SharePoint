@@ -1,6 +1,5 @@
 ﻿using Microsoft.SharePoint;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Untech.SharePoint.Common.Extensions;
 using Untech.SharePoint.Common.Test.Spec;
 using Untech.SharePoint.Common.Test.Spec.Models;
 using Untech.SharePoint.Common.Test.Tools.QueryTests;
@@ -11,14 +10,14 @@ namespace Untech.SharePoint.Server.Test.Data
 	[TestClass]
 	public class QueryablePerfTest
 	{
-		//[TestMethod]
+		[TestMethod]
 		public void Measure()
 		{
 			var site = new SPSite(@"http://sp2013dev/sites/orm-test", SPUserToken.SystemAccount);
 			var web = site.OpenWeb();
 			var ctx = GetContext(web);
 			var queries = new QueryablePerfomance().GetQueries();
-			var executor = new ServerTestQueryExecutor<NewsModel>
+			var executor = new ServerTestQueryExecutor<NewsModel>(ctx.Model.Lists["News"])
 			{
 				List = ctx.News,
 				SpList = web.Lists["News"],

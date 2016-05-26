@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using Untech.SharePoint.Common.CodeAnnotations;
 using Untech.SharePoint.Common.Data.QueryModels;
 using Untech.SharePoint.Common.Extensions;
@@ -131,6 +132,22 @@ namespace Untech.SharePoint.Common.Data.Mapper
 			return item;
 		}
 
+		public IEnumerable<T> CreateAndMap<T>([NotNull]IEnumerable<TSPItem> source, IReadOnlyCollection<MemberRefModel> viewFields = null)
+		{
+			Guard.CheckNotNull("source", source);
+			var mappers = GetMappers(viewFields).ToList();
+
+			foreach (var spItem in source)
+			{
+				var item = TypeCreator();
+				foreach (var mapper in mappers)
+				{
+					mapper.Map(spItem, item);
+				}
+				yield return (T)item;
+			}
+		}
+
 		/// <summary>
 		/// Sets current contnet type id for the specified SP list item.
 		/// </summary>
@@ -144,8 +161,10 @@ namespace Untech.SharePoint.Common.Data.Mapper
 		[NotNull]
 		protected IEnumerable<FieldMapper<TSPItem>> GetMappers()
 		{
-			return ContentType.Fields
-				.Select<MetaField, FieldMapper<TSPItem>>(n => n.GetMapper<TSPItem>());
+			foreach(var field in (IEnumerable<MetaField>)ContentType.Fields)
+			{
+				yield return field.GetMapper<TSPItem>();
+			}
 		}
 
 		/// <summary>
@@ -160,11 +179,18 @@ namespace Untech.SharePoint.Common.Data.Mapper
 				return GetMappers();
 			}
 
-			var viewMembers = viewFields.Select(n => n.Member).ToList();
+			return GetMappers(viewFields.Select(n => n.Member).ToList());
+		}
 
-			return ContentType.Fields
-				.Where<MetaField>(n =>  viewMembers.Contains(n.Member, MemberInfoComparer.Default))
-				.Select(n => n.GetMapper<TSPItem>());
+		private IEnumerable<FieldMapper<TSPItem>> GetMappers([NotNull]IReadOnlyCollection<MemberInfo> viewMembers)
+		{
+			foreach (var field in (IEnumerable<MetaField>)ContentType.Fields)
+			{
+				if (viewMembers.Contains(field.Member, MemberInfoComparer.Default))
+				{
+					yield return field.GetMapper<TSPItem>();
+				}
+			}
 		}
 	}
 }

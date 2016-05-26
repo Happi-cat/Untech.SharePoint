@@ -34,6 +34,7 @@ namespace Untech.SharePoint.Common.Test.Tools.QueryTests
 			if (camlAttribute != null)
 			{
 				Caml = camlAttribute.Caml;
+				ViewFields = camlAttribute.ViewFields;
 			}
 		}
 
@@ -52,11 +53,13 @@ namespace Untech.SharePoint.Common.Test.Tools.QueryTests
 
 		public string Caml { get; private set; }
 
+		public string[] ViewFields { get; private set; }
+
 		public void Accept(ITestQueryExcecutor<T> executor)
 		{
 			var testQueryType = typeof(TestQuery<,>).MakeGenericType(typeof(T), ResultType);
 			var comparer = Comparer != null ? Activator.CreateInstance(Comparer) : null;
-			var testQuery = (ITestQueryAcceptor<T>)Activator.CreateInstance(testQueryType, Query, comparer, Exception, Caml);
+			var testQuery = (ITestQueryAcceptor<T>)Activator.CreateInstance(testQueryType, Query, comparer, Exception, Caml, ViewFields);
 
 			testQuery.Accept(executor);
 		}

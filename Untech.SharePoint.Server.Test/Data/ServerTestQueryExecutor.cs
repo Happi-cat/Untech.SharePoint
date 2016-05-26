@@ -1,25 +1,43 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using Microsoft.SharePoint;
+using Untech.SharePoint.Common.MetaModels;
 using Untech.SharePoint.Common.Test.Tools.QueryTests;
 
 namespace Untech.SharePoint.Server.Test.Data
 {
 	public class ServerTestQueryExecutor<T> : PerfTestQueryExecutor<T>
 	{
+		public ServerTestQueryExecutor(MetaList metaList)
+			: base(metaList)
+		{
+		}
+
 		public SPList SpList { get; set; }
 
-		public override void MeasureCaml(string caml)
+		public override List<object> MeasureCaml(string caml, string[] viewFields)
 		{
-			var query = new SPQuery {ViewXml = caml};
-
+			var query = new SPQuery
+			{
+				ViewXml = string.Format(caml, ContentType),
+				QueryThrottleMode = SPQueryThrottleOption.Override
+			};
 			CamlQueryFetchTimer.Start();
 			
 			// ReSharper disable once UnusedVariable
-			var result = SpList.GetItems(query)
-				.OfType<SPListItem>()
-				.ToList();
+			var spItems = SpList.GetItems(query)
+				.Cast<SPListItem>();
+
+			var items = new List<object>();
+			foreach (var spItem in spItems)
+			{
+				var itemProps = viewFields.Select(viewField => spItem[viewField]).ToList();
+				items.Add(itemProps);
+			}
 
 			CamlQueryFetchTimer.Stop();
+
+			return items;
 		}
 	}
 }

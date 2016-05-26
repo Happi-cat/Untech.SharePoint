@@ -1,6 +1,6 @@
 namespace Untech.SharePoint.Common.Test.Tools.QueryTests
 {
-	public interface ITestQueryAcceptor<in T>
+	public interface ITestQueryAcceptor<T>
 	{
 		void Accept(ITestQueryExcecutor<T> excecutor);
 	}

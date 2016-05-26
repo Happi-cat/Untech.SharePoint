@@ -13,7 +13,7 @@ namespace Untech.SharePoint.Common.Test.Spec
 				<Where>
 				  <Eq>
 					<FieldRef Name='ContentTypeId' />
-					<Value>0x0100517159DC631A6D4CBD397E03E431C0C6</Value>
+					<Value>{0}</Value>
 				  </Eq>
 				</Where>
 			  </Query>
@@ -30,7 +30,7 @@ namespace Untech.SharePoint.Common.Test.Spec
 				<FieldRef Name='Editor' />
 				<FieldRef Name='ContentTypeId' />
 			  </ViewFields>
-			</View>")]
+			</View>", "Body,Description,HeadingImage,HeadingImage,ID,Title,Created,Author,Modified,Editor,ContentTypeId")]
 		public IEnumerable<NewsModel> FetchAll(IQueryable<NewsModel> source)
 		{
 			return source;
@@ -41,7 +41,7 @@ namespace Untech.SharePoint.Common.Test.Spec
 				<Where>
 				  <Eq>
 					<FieldRef Name='ContentTypeId' />
-					<Value>0x0100517159DC631A6D4CBD397E03E431C0C6</Value>
+					<Value>{0}</Value>
 				  </Eq>
 				</Where>
 			  </Query>
@@ -49,7 +49,7 @@ namespace Untech.SharePoint.Common.Test.Spec
 				<FieldRef Name='ID' />
 				<FieldRef Name='Title' />
 			  </ViewFields>
-			</View>")]
+			</View>", "ID,Title")]
 		public IEnumerable<Tuple<int, string>> SelectIdTitle(IQueryable<NewsModel> source)
 		{
 			return source.Select(n => new Tuple<int, string>(n.Id, n.Title));
@@ -71,7 +71,7 @@ namespace Untech.SharePoint.Common.Test.Spec
 					</Or>
 					<Eq>
 					  <FieldRef Name='ContentTypeId' />
-					  <Value>0x0100517159DC631A6D4CBD397E03E431C0C6</Value>
+					  <Value>{0}</Value>
 					</Eq>
 				  </And>
 				</Where>
@@ -89,7 +89,7 @@ namespace Untech.SharePoint.Common.Test.Spec
 				<FieldRef Name='Editor' />
 				<FieldRef Name='ContentTypeId' />
 			  </ViewFields>
-			</View>")]
+			</View>", "Body,Description,HeadingImage,HeadingImage,ID,Title,Created,Author,Modified,Editor,ContentTypeId")]
 		public IEnumerable<NewsModel> WhereQuery(IQueryable<NewsModel> source)
 		{
 			return source
@@ -102,7 +102,7 @@ namespace Untech.SharePoint.Common.Test.Spec
 				<Where>
 				  <Eq>
 					<FieldRef Name='ContentTypeId' />
-					<Value>0x0100517159DC631A6D4CBD397E03E431C0C6</Value>
+					<Value>{0}</Value>
 				  </Eq>
 				</Where>
 			  </Query>
@@ -119,7 +119,7 @@ namespace Untech.SharePoint.Common.Test.Spec
 				<FieldRef Name='Editor' />
 				<FieldRef Name='ContentTypeId' />
 			  </ViewFields>
-			</View>")]
+			</View>", "Body,Description,HeadingImage,HeadingImage,ID,Title,Created,Author,Modified,Editor,ContentTypeId")]
 		public IEnumerable<NewsModel> Take10(IQueryable<NewsModel> source)
 		{
 			return source
@@ -143,7 +143,7 @@ namespace Untech.SharePoint.Common.Test.Spec
 					</Or>
 					<Eq>
 					  <FieldRef Name='ContentTypeId' />
-					  <Value>0x0100517159DC631A6D4CBD397E03E431C0C6</Value>
+					  <Value>{0}</Value>
 					</Eq>
 				  </And>
 				</Where>
@@ -161,7 +161,7 @@ namespace Untech.SharePoint.Common.Test.Spec
 				<FieldRef Name='Editor' />
 				<FieldRef Name='ContentTypeId' />
 			  </ViewFields>
-			</View>")]
+			</View>", "Body,Description,HeadingImage,HeadingImage,ID,Title,Created,Author,Modified,Editor,ContentTypeId")]
 		public IEnumerable<NewsModel> WhereTake10Query(IQueryable<NewsModel> source)
 		{
 			return source
@@ -186,7 +186,7 @@ namespace Untech.SharePoint.Common.Test.Spec
 					</Or>
 					<Eq>
 					  <FieldRef Name='ContentTypeId' />
-					  <Value>0x0100517159DC631A6D4CBD397E03E431C0C6</Value>
+					  <Value>{0}</Value>
 					</Eq>
 				  </And>
 				</Where>
@@ -204,7 +204,7 @@ namespace Untech.SharePoint.Common.Test.Spec
 				<FieldRef Name='Editor' />
 				<FieldRef Name='ContentTypeId' />
 			  </ViewFields>
-			</View>")]
+			</View>", "Body,Description,HeadingImage,HeadingImage,ID,Title,Created,Author,Modified,Editor,ContentTypeId")]
 		public NewsModel WhereFirstQuery(IQueryable<NewsModel> source)
 		{
 			return source
@@ -228,7 +228,7 @@ namespace Untech.SharePoint.Common.Test.Spec
 					</Or>
 					<Eq>
 					  <FieldRef Name='ContentTypeId' />
-					  <Value>0x0100517159DC631A6D4CBD397E03E431C0C6</Value>
+					  <Value>{0}</Value>
 					</Eq>
 				  </And>
 				</Where>
@@ -249,7 +249,7 @@ namespace Untech.SharePoint.Common.Test.Spec
 				<FieldRef Name='Editor' />
 				<FieldRef Name='ContentTypeId' />
 			  </ViewFields>
-			</View>")]
+			</View>", "Body,Description,HeadingImage,HeadingImage,ID,Title,Created,Author,Modified,Editor,ContentTypeId")]
 		public NewsModel WhereLastQuery(IQueryable<NewsModel> source)
 		{
 			return source
