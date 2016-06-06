@@ -11,30 +11,32 @@ namespace Untech.SharePoint.Common.Test.Spec
 	/// The set methods are All, Any, Concat, Contains, DefaultIfEmpty, Distinct, EqualAll, Except, Intersect, and Union.
 	/// </summary>
 	[SuppressMessage("ReSharper", "ReplaceWithSingleCallToAny")]
-	public class SetQuerySpec : IQueryTestsProvider<NewsModel>
+	public class SetQuerySpec : ITestQueryProvider<NewsModel>
 	{
 		#region [All]
 
-		public bool AllQuery(IQueryable<NewsModel> source)
+		public object AllQuery(IQueryable<NewsModel> source)
 		{
 			return source.All(n => n.Created > DateTime.Now.AddMonths(-1));
 		}
 
-		public bool WhereAllQuery(IQueryable<NewsModel> source)
+		public object WhereAllQuery(IQueryable<NewsModel> source)
 		{
 			return source
 				.Where(n => n.Description.StartsWith("DESCRIPTION"))
 				.All(n => n.Created > DateTime.Now.AddMonths(-1));
 		}
 
-		public bool SelectAllQuery(IQueryable<NewsModel> source)
+		[NotSupportedQuery]
+		public object SelectAllQuery(IQueryable<NewsModel> source)
 		{
 			return source
 				.Select(n => n.Description)
 				.All(n => n.Contains("DESCRIPTION"));
 		}
 
-		public bool Take10AllQuery(IQueryable<NewsModel> source)
+		[NotSupportedQuery]
+		public object Take10AllQuery(IQueryable<NewsModel> source)
 		{
 			return source
 				.Take(10)
@@ -46,52 +48,54 @@ namespace Untech.SharePoint.Common.Test.Spec
 
 		#region [Any]
 
-		public bool AnyQuery(IQueryable<NewsModel> source)
+		public object AnyQuery(IQueryable<NewsModel> source)
 		{
 			return source.Any();
 		}
 
-		public bool WhereAnyQuery(IQueryable<NewsModel> source)
+		public object WhereAnyQuery(IQueryable<NewsModel> source)
 		{
 			return source
 				.Where(n => n.Description.StartsWith("DESCRIPTION"))
 				.Any();
 		}
 
-		public bool SelectAnyQuery(IQueryable<NewsModel> source)
+		public object SelectAnyQuery(IQueryable<NewsModel> source)
 		{
 			return source
 				.Select(n => n.Description)
 				.Any();
 		}
 
-		public bool Take10AnyQuery(IQueryable<NewsModel> source)
+		public object Take10AnyQuery(IQueryable<NewsModel> source)
 		{
 			return source
 				.Take(10)
 				.Any();
 		}
 
-		public bool AnyPQuery(IQueryable<NewsModel> source)
+		public object AnyPQuery(IQueryable<NewsModel> source)
 		{
 			return source.Any(n => n.Description.StartsWith("STATIC"));
 		}
 
-		public bool WhereAnyPQuery(IQueryable<NewsModel> source)
+		public object WhereAnyPQuery(IQueryable<NewsModel> source)
 		{
 			return source
 				.Where(n => n.Description.StartsWith("DESCRIPTION"))
 				.Any(n => n.Description.Contains("1") || n.Description.Contains("2"));
 		}
 
-		public bool SelectAnyPQuery(IQueryable<NewsModel> source)
+		[NotSupportedQuery]
+		public object SelectAnyPQuery(IQueryable<NewsModel> source)
 		{
 			return source
 				.Select(n => n.Description)
 				.Any(n => n.Contains("1") || n.Contains("2"));
 		}
 
-		public bool Take10AnyPQuery(IQueryable<NewsModel> source)
+		[NotSupportedQuery]
+		public object Take10AnyPQuery(IQueryable<NewsModel> source)
 		{
 			return source
 				.Take(10)
@@ -101,24 +105,24 @@ namespace Untech.SharePoint.Common.Test.Spec
 		#endregion
 
 
-		public IEnumerable<QueryTest<NewsModel>> GetQueryTests()
+		public IEnumerable<Func<IQueryable<NewsModel>, object>> GetQueries()
 		{
-			return new[]
+			return new Func<IQueryable<NewsModel>, object>[]
 			{
-				QueryTest<NewsModel>.Functional(AllQuery),
-				QueryTest<NewsModel>.Functional(WhereAllQuery),
-				QueryTest<NewsModel>.Functional(SelectAllQuery).Throws<NotSupportedException>(),
-				QueryTest<NewsModel>.Functional(Take10AllQuery).Throws<NotSupportedException>(),
+				AllQuery,
+				WhereAllQuery,
+				SelectAllQuery,
+				Take10AllQuery,
 
-				QueryTest<NewsModel>.Functional(AnyQuery),
-				QueryTest<NewsModel>.Functional(WhereAnyQuery),
-				QueryTest<NewsModel>.Functional(SelectAnyQuery),
-				QueryTest<NewsModel>.Functional(Take10AnyQuery),
+				AnyQuery,
+				WhereAnyQuery,
+				SelectAnyQuery,
+				Take10AnyQuery,
 
-				QueryTest<NewsModel>.Functional(AnyPQuery),
-				QueryTest<NewsModel>.Functional(WhereAnyPQuery),
-				QueryTest<NewsModel>.Functional(SelectAnyPQuery).Throws<NotSupportedException>(),
-				QueryTest<NewsModel>.Functional(Take10AnyPQuery).Throws<NotSupportedException>(),
+				AnyPQuery,
+				WhereAnyPQuery,
+				SelectAnyPQuery,
+				Take10AnyPQuery,
 			};
 		}
 	}

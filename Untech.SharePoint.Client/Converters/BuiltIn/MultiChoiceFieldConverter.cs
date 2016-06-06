@@ -33,7 +33,7 @@ namespace Untech.SharePoint.Client.Converters.BuiltIn
 		{
 			if (value == null) return null;
 
-			var lookupValues = (IEnumerable<string>)value;
+			var lookupValues = ((IEnumerable<string>)value).Distinct();
 
 			return _isArray ? (object)lookupValues.ToArray() : lookupValues.ToList();
 		}
@@ -57,7 +57,7 @@ namespace Untech.SharePoint.Client.Converters.BuiltIn
 				return string.Format(";#{0};#", singleValue);
 			}
 
-			var multiValue = ((IEnumerable<string>)value).ToList();
+			var multiValue = ((IEnumerable<string>)value).Distinct().ToList();
 			return multiValue.Any() ? string.Format(";#{0};#", multiValue.JoinToString(";#")) : "";
 		}
 	}

@@ -35,7 +35,7 @@ namespace Untech.SharePoint.Common.Models
 
 		public bool Equals(ObjectReference other)
 		{
-			return Id == other.Id && ListId == other.ListId;
+			return Id == other.Id;
 		}
 
 		public static bool operator ==(ObjectReference left, ObjectReference right)

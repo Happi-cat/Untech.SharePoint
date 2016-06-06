@@ -8,10 +8,31 @@ namespace Untech.SharePoint.Common.Test.Spec.Models
 	public class TeamModel : Entity
 	{
 		[SpField]
-		public UserInfo Manager { get; set; }
+		public UserInfo ProjectManager { get; set; }
 
 		[SpField]
-		public List<UserInfo> Developers { get; set; }
+		public UserInfo FinanceManager { get; set; }
+
+		[SpField]
+		public UserInfo BusinessAnalyst { get; set; }
+
+		[SpField]
+		public UserInfo SoftwareArchitect { get; set; }
+
+		[SpField]
+		public UserInfo DatabaseArchitect { get; set; }
+
+		[SpField]
+		public List<UserInfo> BackendDevelopers { get; set; }
+
+		[SpField]
+		public List<UserInfo> FrontendDevelopers { get; set; }
+
+		[SpField]
+		public List<UserInfo> Designers { get; set; }
+
+		[SpField]
+		public List<UserInfo> Testers { get; set; }
 
 		[SpField]
 		public UrlInfo Logo { get; set; }

@@ -245,34 +245,59 @@ namespace Untech.SharePoint.Common.Data
 			QueryModel queryModel, Func<TSource, TResult> selector)
 		{
 			return listItemsProvider.Fetch<TSource>(queryModel)
-				.Select(selector)
-				.Min();
+				.Min(selector);
 		}
 
 		internal static MethodCallExpression MakeMin(Type contentType, Type resulType, ISpListItemsProvider listItemsProvider,
 			QueryModel queryModel, LambdaExpression selector)
 		{
-			return Expression.Call(MethodUtils.SpqMin.MakeGenericMethod(contentType, resulType),
+			return Expression.Call(MethodUtils.SpqMinP.MakeGenericMethod(contentType, resulType),
 				Expression.Constant(listItemsProvider, typeof (ISpListItemsProvider)),
 				Expression.Constant(queryModel, typeof (QueryModel)),
 				Expression.Constant(selector.Compile()));
+		}
+
+		internal static TSource Min<TSource>(ISpListItemsProvider listItemsProvider, QueryModel queryModel)
+		{
+			return listItemsProvider.Fetch<TSource>(queryModel)
+				.Min();
+		}
+
+		internal static MethodCallExpression MakeMin(Type contentType, ISpListItemsProvider listItemsProvider,
+			QueryModel queryModel)
+		{
+			return Expression.Call(MethodUtils.SpqMin.MakeGenericMethod(contentType),
+				Expression.Constant(listItemsProvider, typeof(ISpListItemsProvider)),
+				Expression.Constant(queryModel, typeof(QueryModel)));
 		}
 
 		internal static TResult Max<TSource, TResult>(ISpListItemsProvider listItemsProvider,
 			QueryModel queryModel, Func<TSource, TResult> selector)
 		{
 			return listItemsProvider.Fetch<TSource>(queryModel)
-				.Select(selector)
-				.Max();
+				.Max(selector);
 		}
 
 		internal static MethodCallExpression MakeMax(Type contentType, Type resulType, ISpListItemsProvider listItemsProvider,
 			QueryModel queryModel, LambdaExpression selector)
 		{
-			return Expression.Call(MethodUtils.SpqMax.MakeGenericMethod(contentType, resulType),
+			return Expression.Call(MethodUtils.SpqMaxP.MakeGenericMethod(contentType, resulType),
 				Expression.Constant(listItemsProvider, typeof (ISpListItemsProvider)),
 				Expression.Constant(queryModel, typeof (QueryModel)),
 				Expression.Constant(selector.Compile()));
+		}
+
+		internal static TSource Max<TSource>(ISpListItemsProvider listItemsProvider, QueryModel queryModel)
+		{
+			return listItemsProvider.Fetch<TSource>(queryModel)
+				.Max();
+		}
+
+		internal static MethodCallExpression MakeMax(Type contentType, ISpListItemsProvider listItemsProvider, QueryModel queryModel)
+		{
+			return Expression.Call(MethodUtils.SpqMax.MakeGenericMethod(contentType),
+				Expression.Constant(listItemsProvider, typeof(ISpListItemsProvider)),
+				Expression.Constant(queryModel, typeof(QueryModel)));
 		}
 
 		#endregion

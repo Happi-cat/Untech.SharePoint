@@ -21,11 +21,10 @@ namespace Untech.SharePoint.Server.Data
 			_spList = web.Lists[list.Title];
 		}
 
-		protected override IList<SPListItem> FetchInternal(string caml)
+		protected override IEnumerable<SPListItem> FetchInternal(string caml)
 		{
 			return _spList.GetItems(CamlUtility.CamlStringToSPQuery(caml))
-				.Cast<SPListItem>()
-				.ToList();
+				.Cast<SPListItem>();
 		}
 
 		protected override SPListItem GetInternal(int id, MetaContentType contentType)

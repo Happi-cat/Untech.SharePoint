@@ -1,16 +1,12 @@
-﻿using Microsoft.SharePoint.Client;
-using Untech.SharePoint.Client.Data;
-using Untech.SharePoint.Common.Configuration;
+﻿using Untech.SharePoint.Common.Mappings.Annotation;
 using Untech.SharePoint.Common.Data;
-using Untech.SharePoint.Common.Mappings.Annotation;
-using Untech.SharePoint.Common.Test.Spec.Models;
 
-namespace Untech.SharePoint.Client.Test.Data
+namespace Untech.SharePoint.Common.Test.Spec.Models
 {
-	public class DataContext : SpClientContext<DataContext>, IDataContext
+	public class DataContext : SpContext<DataContext>
 	{
-		public DataContext(ClientContext context, Config config) 
-			: base(context, config)
+		public DataContext(ICommonService commonService)
+			: base(commonService)
 		{
 
 		}
@@ -38,6 +34,5 @@ namespace Untech.SharePoint.Client.Test.Data
 		{
 			get { return GetList(x => x.Projects); }
 		}
-
 	}
 }

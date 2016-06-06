@@ -25,7 +25,9 @@ namespace Untech.SharePoint.Common.Data.Translators
 
 				{MethodUtils.QSelect, new SelectCombineRule()},
 
+				{MethodUtils.QMin, new MinCombineRule()},
 				{MethodUtils.QMinP, new MinPCombineRule()},
+				{MethodUtils.QMax, new MaxCombineRule()},
 				{MethodUtils.QMaxP, new MaxPCombineRule()},
 
 				{MethodUtils.QWhere, new WhereCombineRule()},
@@ -293,6 +295,34 @@ namespace Untech.SharePoint.Common.Data.Translators
 			}
 		}
 
+		private class MinCombineRule : ICombineRule
+		{
+			public bool CanApplyAfterProjection(MethodCallExpression node)
+			{
+				return true;
+			}
+
+			public bool CanApplyAfterRowLimit(MethodCallExpression node)
+			{
+				return true;
+			}
+
+			public void Apply(RuleContext context, MethodCallExpression node)
+			{
+
+			}
+
+			public Expression Get(RuleContext context, MethodCallExpression node)
+			{
+				if (context.Projection != null)
+				{
+					return SpQueryable.MakeMin(context.EntityType, context.ProjectedType, context.ListItemsProvider, context.Query, context.Projection);
+				}
+
+				return SpQueryable.MakeMin(context.EntityType, context.ListItemsProvider, context.Query);
+			}
+		}
+
 		private class MinPCombineRule : ICombineRule
 		{
 			public bool CanApplyAfterProjection(MethodCallExpression node)
@@ -316,6 +346,35 @@ namespace Untech.SharePoint.Common.Data.Translators
 				var lambdaNode = (LambdaExpression)node.Arguments[1].StripQuotes();
 
 				return SpQueryable.MakeMin(context.EntityType, context.ProjectedType, context.ListItemsProvider, context.Query, lambdaNode);
+			}
+		}
+
+
+		private class MaxCombineRule : ICombineRule
+		{
+			public bool CanApplyAfterProjection(MethodCallExpression node)
+			{
+				return true;
+			}
+
+			public bool CanApplyAfterRowLimit(MethodCallExpression node)
+			{
+				return true;
+			}
+
+			public void Apply(RuleContext context, MethodCallExpression node)
+			{
+
+			}
+
+			public Expression Get(RuleContext context, MethodCallExpression node)
+			{
+				if (context.Projection != null)
+				{
+					return SpQueryable.MakeMax(context.EntityType, context.ProjectedType, context.ListItemsProvider, context.Query, context.Projection);
+				}
+
+				return SpQueryable.MakeMax(context.EntityType, context.ListItemsProvider, context.Query);
 			}
 		}
 

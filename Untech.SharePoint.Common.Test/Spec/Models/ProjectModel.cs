@@ -36,9 +36,6 @@ namespace Untech.SharePoint.Common.Test.Spec.Models
 		public string Status { get; set; }
 
 		[SpField]
-		public UserInfo FinanceManager { get; set; }
-
-		[SpField]
 		[Description("Calculated")]
 		public bool Over10Days { get; set; }
 

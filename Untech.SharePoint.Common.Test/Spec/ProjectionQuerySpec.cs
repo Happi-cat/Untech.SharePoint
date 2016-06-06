@@ -6,7 +6,7 @@ using Untech.SharePoint.Common.Test.Tools.QueryTests;
 
 namespace Untech.SharePoint.Common.Test.Spec
 {
-	public class ProjectionQuerySpec : IQueryTestsProvider<NewsModel>
+	public class ProjectionQuerySpec : ITestQueryProvider<NewsModel>
 	{
 		public IEnumerable<Tuple<string, string>> SelectQuery(IQueryable<NewsModel> source)
 		{
@@ -14,6 +14,7 @@ namespace Untech.SharePoint.Common.Test.Spec
 				.Select(n => new Tuple<string, string>(n.Title, n.Description));
 		}
 
+		[NotSupportedQuery]
 		public IEnumerable<string> SelectSelectQuery(IQueryable<NewsModel> source)
 		{
 			return source
@@ -21,12 +22,12 @@ namespace Untech.SharePoint.Common.Test.Spec
 				.Select(n => n.Item1);
 		}
 
-		public IEnumerable<QueryTest<NewsModel>> GetQueryTests()
+		public IEnumerable<Func<IQueryable<NewsModel>, object>> GetQueries()
 		{
-			return new[]
+			return new Func<IQueryable<NewsModel>, object>[]
 			{
-				QueryTest<NewsModel>.Functional(SelectQuery),
-				QueryTest<NewsModel>.Functional(SelectSelectQuery).Throws<NotSupportedException>()
+				SelectQuery,
+				SelectSelectQuery
 			};
 		}
 	}

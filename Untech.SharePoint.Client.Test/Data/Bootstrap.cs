@@ -1,5 +1,6 @@
 ﻿using Untech.SharePoint.Client.Configuration;
 using Untech.SharePoint.Common.Configuration;
+using Untech.SharePoint.Common.Test.Spec.Models;
 using Untech.SharePoint.Common.Utils;
 
 namespace Untech.SharePoint.Client.Test.Data

@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using Untech.SharePoint.Common.Models;
 using Untech.SharePoint.Common.Test.Spec.Models;
 using Untech.SharePoint.Common.Test.Tools.Generators;
@@ -12,13 +13,15 @@ namespace Untech.SharePoint.Common.Test.Tools.DataGenerators
 		private readonly ListTestDataGenerator<EventModel> _eventsData;
 		private readonly ListTestDataGenerator<TeamModel> _teamsData;
 		private readonly ListTestDataGenerator<ProjectModel> _projectsData;
+		private readonly IEnumerable<UserInfo> _allUsers;
 
-		public TestDataGenerator(IDataContext dataContext)
+		public TestDataGenerator(DataContext dataContext, IEnumerable<UserInfo> allUsers)
 		{
 			_newsData = new ListTestDataGenerator<NewsModel>(dataContext.News);
 			_eventsData = new ListTestDataGenerator<EventModel>(dataContext.Events);
 			_teamsData = new ListTestDataGenerator<TeamModel>(dataContext.Teams);
 			_projectsData = new ListTestDataGenerator<ProjectModel>(dataContext.Projects);
+			_allUsers = allUsers;
 		}
 
 		public void Generate()
@@ -54,7 +57,24 @@ namespace Untech.SharePoint.Common.Test.Tools.DataGenerators
 		private void GenerateTeams()
 		{
 			_teamsData
-				.WithArray(20, Generators.GetTeamGenerator())
+				.WithArray(10, Generators.GetTeamGenerator()
+					.With(n => n.ProjectManager, new RangeGenerator<UserInfo>(_allUsers))
+					.With(n => n.FinanceManager, new RangeGenerator<UserInfo>(_allUsers))
+					.With(n => n.BusinessAnalyst, new RangeGenerator<UserInfo>(_allUsers))
+					.With(n => n.SoftwareArchitect, new RangeGenerator<UserInfo>(_allUsers))
+					.With(n => n.DatabaseArchitect, new RangeGenerator<UserInfo>(_allUsers))
+					.WithArray(n => n.BackendDevelopers, 3, new RangeGenerator<UserInfo>(_allUsers))
+					.WithArray(n => n.FrontendDevelopers, 3, new RangeGenerator<UserInfo>(_allUsers))
+					.WithArray(n => n.Designers, 3, new RangeGenerator<UserInfo>(_allUsers))
+					.WithArray(n => n.Testers, 3, new RangeGenerator<UserInfo>(_allUsers))
+				)
+				.WithArray(5, Generators.GetTeamGenerator()
+					.With(n => n.ProjectManager, new RangeGenerator<UserInfo>(_allUsers))
+					.With(n => n.FinanceManager, new RangeGenerator<UserInfo>(_allUsers))
+					.WithArray(n => n.Designers, 3, new RangeGenerator<UserInfo>(_allUsers))
+					.WithArray(n => n.Testers, 3, new RangeGenerator<UserInfo>(_allUsers))
+				)
+				.WithArray(5, Generators.GetTeamGenerator())
 				.Generate();
 		}
 
@@ -72,6 +92,7 @@ namespace Untech.SharePoint.Common.Test.Tools.DataGenerators
 
 			_projectsData
 				.WithArray(100, Generators.GetProjectGenerator())
+				.WithArray(10, Generators.GetProjectGenerator().WithStatic(x => x.Team, new ObjectReference { Id = 1 }))
 				.WithArray(100, Generators.GetProjectGenerator().WithRange(x => x.Team, teamsRefs))
 				.Generate();
 		}

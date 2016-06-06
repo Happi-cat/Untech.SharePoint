@@ -61,11 +61,11 @@
   <ItemGroup>
     <Compile Include="Converters\BuiltIn\ContentTypeIdFieldConverterTest.cs" />
     <Compile Include="Converters\BuiltIn\UrlFieldConverterTest.cs" />
+    <Compile Include="DataGenerator.cs" />
     <Compile Include="Data\BasicOperationsTest.cs" />
     <Compile Include="Data\Bootstrap.cs" />
-    <Compile Include="Data\DataContext.cs" />
     <Compile Include="Data\QueryablePerfTest.cs" />
-    <Compile Include="Data\ServerQueryTestExecutor.cs" />
+    <Compile Include="Data\ServerTestQueryExecutor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Data\QueryableTest.cs" />
   </ItemGroup>

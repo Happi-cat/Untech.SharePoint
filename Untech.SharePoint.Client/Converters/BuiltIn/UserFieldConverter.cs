@@ -75,7 +75,7 @@ namespace Untech.SharePoint.Client.Converters.BuiltIn
 				return new FieldUserValue { LookupId = userValue.Id };
 			}
 
-			var userValues = ((IEnumerable<UserInfo>)value).ToList();
+			var userValues = ((IEnumerable<UserInfo>)value).Distinct().ToList();
 			if (!userValues.Any())
 			{
 				return null;
@@ -98,6 +98,7 @@ namespace Untech.SharePoint.Client.Converters.BuiltIn
 
 			var multiValue = (IEnumerable<UserInfo>)value;
 			return multiValue
+				.Distinct()
 				.Select(n => string.Format("{0};#{1}", n.Id, n.Login))
 				.JoinToString(";#");
 		}

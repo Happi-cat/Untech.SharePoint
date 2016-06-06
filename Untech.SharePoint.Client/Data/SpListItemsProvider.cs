@@ -26,14 +26,14 @@ namespace Untech.SharePoint.Client.Data
 		}
 
 
-		protected override IList<ListItem> FetchInternal(string caml)
+		protected override IEnumerable<ListItem> FetchInternal(string caml)
 		{
 			var listCollection = _spList.GetItems(CamlUtility.CamlStringToSPQuery(caml));
 
 			_clientContext.Load(listCollection);
 			_clientContext.ExecuteQuery();
 
-			return listCollection.Cast<ListItem>().ToList();
+			return listCollection.Cast<ListItem>();
 		}
 
 		protected override ListItem GetInternal(int id, MetaContentType contentType)

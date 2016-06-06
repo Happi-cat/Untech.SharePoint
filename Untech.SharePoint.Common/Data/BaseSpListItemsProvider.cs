@@ -60,7 +60,7 @@ namespace Untech.SharePoint.Common.Data
 			query.ReplaceSelectableFields(new[] { new KeyRefModel() });
 			var caml = ConvertToCamlString(query, contentType);
 
-			return FetchInternal(caml).Count;
+			return FetchInternal(caml).Count();
 		}
 
 		public T SingleOrDefault<T>(QueryModel query)
@@ -73,7 +73,7 @@ namespace Untech.SharePoint.Common.Data
 			var viewFields = query.SelectableKnownFields.EmptyIfNull().ToList();
 			var caml = ConvertToCamlString(query, contentType);
 
-			var foundItems = FetchInternal(caml);
+			var foundItems = FetchInternal(caml).ToList();
 			if (foundItems.Count > 1)
 			{
 				throw Error.MoreThanOneMatch();
@@ -93,7 +93,7 @@ namespace Untech.SharePoint.Common.Data
 			var viewFields = query.SelectableKnownFields.EmptyIfNull().ToList();
 			var caml = ConvertToCamlString(query, contentType);
 
-			var foundItems = FetchInternal(caml);
+			var foundItems = FetchInternal(caml).ToList();
 			return foundItems.Count == 1
 				? Materialize<T>(foundItems[0], contentType, viewFields)
 				: default(T);
@@ -313,7 +313,7 @@ namespace Untech.SharePoint.Common.Data
 		/// </summary>
 		/// <param name="caml">CAML query string.</param>
 		/// <returns>Loaded SP list items.</returns>
-		protected abstract IList<TSPListItem> FetchInternal(string caml);
+		protected abstract IEnumerable<TSPListItem> FetchInternal(string caml);
 
 		/// <summary>
 		/// Fetchs SP list item by specified ID.
@@ -391,7 +391,9 @@ namespace Untech.SharePoint.Common.Data
 		/// <returns>Collection of native object.</returns>
 		protected IEnumerable<T> Materialize<T>(IEnumerable<TSPListItem> spItems, MetaContentType contentType, IReadOnlyCollection<MemberRefModel> fields = null)
 		{
-			return spItems.Select(n => Materialize<T>(n, contentType, fields));
+			var mapper = contentType.GetMapper<TSPListItem>();
+
+			return mapper.CreateAndMap<T>(spItems, fields);
 		}
 	}
 }

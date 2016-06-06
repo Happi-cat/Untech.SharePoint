@@ -1,6 +1,8 @@
 using Microsoft.SharePoint.Client;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Untech.SharePoint.Client.Data;
 using Untech.SharePoint.Common.Test.Spec;
+using Untech.SharePoint.Common.Test.Spec.Models;
 
 namespace Untech.SharePoint.Client.Test.Data
 {
@@ -30,7 +32,7 @@ namespace Untech.SharePoint.Client.Test.Data
 		private static DataContext GetContext()
 		{
 			var ctx = new ClientContext(@"http://sp2013dev/sites/orm-test");
-			return new DataContext(ctx, Bootstrap.GetConfig());
+			return new DataContext(new SpClientCommonService(ctx, Bootstrap.GetConfig()));
 		}
 	}
 }

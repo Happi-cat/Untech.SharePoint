@@ -61,7 +61,7 @@
     <Compile Include="Data\Mapper\TypeMapper.cs" />
     <Compile Include="Extensions\ClientContextExtensions.cs" />
     <Compile Include="Data\SpClientContext.cs" />
-    <Compile Include="Data\SpCommonService.cs" />
+    <Compile Include="Data\SpClientCommonService.cs" />
     <Compile Include="Data\SpListItemsProvider.cs" />
     <Compile Include="Data\Mapper\MapperInitializer.cs" />
     <Compile Include="Data\RuntimeInfoLoader.cs" />
