@@ -51,7 +51,7 @@ namespace Untech.SharePoint.Common.Test.Spec
 				.Single(n => n.Description == "SINGLETON");
 		}
 
-		[QueryException(typeof(NotSupportedException))]
+		[NotSupportedQuery]
 		public string SelectSinglePQuery(IQueryable<NewsModel> source)
 		{
 			return source
@@ -60,7 +60,7 @@ namespace Untech.SharePoint.Common.Test.Spec
 		}
 
 		[QueryComparer(typeof(EntityComparer))]
-		[QueryException(typeof(NotSupportedException))]
+		[NotSupportedQuery]
 		public NewsModel Take10SinglePQuery(IQueryable<NewsModel> source)
 		{
 			return source
@@ -95,7 +95,7 @@ namespace Untech.SharePoint.Common.Test.Spec
 		}
 
 		[QueryComparer(typeof(EntityComparer))]
-		[QueryException(typeof(NotSupportedException))]
+		[NotSupportedQuery]
 		public NewsModel Take10ElementAtQuery(IQueryable<NewsModel> source)
 		{
 			return source
@@ -171,7 +171,7 @@ namespace Untech.SharePoint.Common.Test.Spec
 		}
 
 		[QueryComparer(typeof(EntityComparer))]
-		[QueryException(typeof(NotSupportedException))]
+		[NotSupportedQuery]
 		public NewsModel Take10FirstPQuery(IQueryable<NewsModel> source)
 		{
 			return source
@@ -187,7 +187,7 @@ namespace Untech.SharePoint.Common.Test.Spec
 				.First(n => n.Description.Contains("1") || n.Description.Contains("2"));
 		}
 
-		[QueryException(typeof(NotSupportedException))]
+		[NotSupportedQuery]
 		public string SelectFirstPQuery(IQueryable<NewsModel> source)
 		{
 			return source
@@ -213,7 +213,7 @@ namespace Untech.SharePoint.Common.Test.Spec
 		}
 
 		[QueryComparer(typeof(EntityComparer))]
-		[QueryException(typeof(NotSupportedException))]
+		[NotSupportedQuery]
 		public NewsModel Take10LastQuery(IQueryable<NewsModel> source)
 		{
 			return source
@@ -257,7 +257,7 @@ namespace Untech.SharePoint.Common.Test.Spec
 		}
 
 		[QueryComparer(typeof(EntityComparer))]
-		[QueryException(typeof(NotSupportedException))]
+		[NotSupportedQuery]
 		public NewsModel Take10LastPQuery(IQueryable<NewsModel> source)
 		{
 			return source
@@ -273,7 +273,7 @@ namespace Untech.SharePoint.Common.Test.Spec
 				.Last(n => n.Description.Contains("1") || n.Description.Contains("2"));
 		}
 
-		[QueryException(typeof(NotSupportedException))]
+		[NotSupportedQuery]
 		public string SelectLastPQuery(IQueryable<NewsModel> source)
 		{
 			return source
@@ -322,7 +322,7 @@ namespace Untech.SharePoint.Common.Test.Spec
 		}
 
 		[QueryComparer(typeof(EntityComparer))]
-		[QueryException(typeof(NotSupportedException))]
+		[NotSupportedQuery]
 		public IEnumerable<NewsModel> TakeWhereQuery(IQueryable<NewsModel> source)
 		{
 			return source
@@ -339,7 +339,7 @@ namespace Untech.SharePoint.Common.Test.Spec
 		}
 
 		[QueryComparer(typeof(EntityComparer))]
-		[QueryException(typeof(NotSupportedException))]
+		[NotSupportedQuery]
 		public IEnumerable<NewsModel> TakeOrderByQuery(IQueryable<NewsModel> source)
 		{
 			return source
@@ -348,7 +348,7 @@ namespace Untech.SharePoint.Common.Test.Spec
 		}
 
 		[QueryComparer(typeof(EntityComparer))]
-		[QueryException(typeof(NotSupportedException))]
+		[NotSupportedQuery]
 		public IEnumerable<NewsModel> TakeTakeQuery(IQueryable<NewsModel> source)
 		{
 			return source

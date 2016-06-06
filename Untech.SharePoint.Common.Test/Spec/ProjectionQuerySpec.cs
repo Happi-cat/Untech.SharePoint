@@ -14,7 +14,7 @@ namespace Untech.SharePoint.Common.Test.Spec
 				.Select(n => new Tuple<string, string>(n.Title, n.Description));
 		}
 
-		[QueryException(typeof(NotSupportedException))]
+		[NotSupportedQuery]
 		public IEnumerable<string> SelectSelectQuery(IQueryable<NewsModel> source)
 		{
 			return source

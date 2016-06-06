@@ -78,7 +78,7 @@ namespace Untech.SharePoint.Common.Test.Spec
 				.Min();
 		}
 
-		[QueryException(typeof(NotSupportedException))]
+		[NotSupportedQuery]
 		public object SelectMinPQuery(IQueryable<Entity> source)
 		{
 			return source
@@ -117,7 +117,7 @@ namespace Untech.SharePoint.Common.Test.Spec
 				.Max();
 		}
 
-		[QueryException(typeof(NotSupportedException))]
+		[NotSupportedQuery]
 		public object SelectMaxPQuery(IQueryable<Entity> source)
 		{
 			return source

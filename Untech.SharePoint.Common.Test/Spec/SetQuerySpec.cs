@@ -27,7 +27,7 @@ namespace Untech.SharePoint.Common.Test.Spec
 				.All(n => n.Created > DateTime.Now.AddMonths(-1));
 		}
 
-		[QueryException(typeof(NotSupportedException))]
+		[NotSupportedQuery]
 		public object SelectAllQuery(IQueryable<NewsModel> source)
 		{
 			return source
@@ -35,7 +35,7 @@ namespace Untech.SharePoint.Common.Test.Spec
 				.All(n => n.Contains("DESCRIPTION"));
 		}
 
-		[QueryException(typeof(NotSupportedException))]
+		[NotSupportedQuery]
 		public object Take10AllQuery(IQueryable<NewsModel> source)
 		{
 			return source
@@ -86,7 +86,7 @@ namespace Untech.SharePoint.Common.Test.Spec
 				.Any(n => n.Description.Contains("1") || n.Description.Contains("2"));
 		}
 
-		[QueryException(typeof(NotSupportedException))]
+		[NotSupportedQuery]
 		public object SelectAnyPQuery(IQueryable<NewsModel> source)
 		{
 			return source
@@ -94,7 +94,7 @@ namespace Untech.SharePoint.Common.Test.Spec
 				.Any(n => n.Contains("1") || n.Contains("2"));
 		}
 
-		[QueryException(typeof(NotSupportedException))]
+		[NotSupportedQuery]
 		public object Take10AnyPQuery(IQueryable<NewsModel> source)
 		{
 			return source

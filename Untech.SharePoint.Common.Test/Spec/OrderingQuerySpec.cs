@@ -36,7 +36,7 @@ namespace Untech.SharePoint.Common.Test.Spec
 		}
 
 		[QueryComparer(typeof(EntityComparer))]
-		[QueryException(typeof(NotSupportedException))]
+		[NotSupportedQuery]
 		public IEnumerable<ProjectModel> Take10OrderByQuery(IQueryable<ProjectModel> source)
 		{
 			return source
@@ -52,7 +52,7 @@ namespace Untech.SharePoint.Common.Test.Spec
 				.Take(10);
 		}
 
-		[QueryException(typeof(NotSupportedException))]
+		[NotSupportedQuery]
 		public IEnumerable<Tuple<string, string>> SelectOrderByQuery(IQueryable<ProjectModel> source)
 		{
 			return source

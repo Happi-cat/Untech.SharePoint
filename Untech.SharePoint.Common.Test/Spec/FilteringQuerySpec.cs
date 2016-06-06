@@ -35,7 +35,7 @@ namespace Untech.SharePoint.Common.Test.Spec
 				.Take(10);
 		}
 
-		[QueryException(typeof (NotSupportedException))]
+		[NotSupportedQuery]
 		[QueryComparer(typeof (EntityComparer))]
 		public IEnumerable<NewsModel> Take10WhereQuery(IQueryable<NewsModel> source)
 		{
@@ -62,7 +62,7 @@ namespace Untech.SharePoint.Common.Test.Spec
 		}
 
 		[QueryComparer(typeof (EntityComparer))]
-		[QueryException(typeof (NotSupportedException))]
+		[NotSupportedQuery]
 		public IEnumerable<NewsModel> WhereWhereFalseQuery(IQueryable<NewsModel> source)
 		{
 			var flag = false;
@@ -123,7 +123,7 @@ namespace Untech.SharePoint.Common.Test.Spec
 		}
 
 		[QueryComparer(typeof (EntityComparer))]
-		[QueryException(typeof (NotSupportedException))]
+		[NotSupportedQuery]
 		public IEnumerable<ProjectModel> WhereLookupMultiContains(IQueryable<ProjectModel> source)
 		{
 			var firstSubprojectRefs = source.Where(n => n.SubProjects != null).Select(n => n.SubProjects).First();
@@ -168,7 +168,7 @@ namespace Untech.SharePoint.Common.Test.Spec
 		}
 
 		[QueryComparer(typeof (EntityComparer))]
-		[QueryException(typeof (NotSupportedException))]
+		[NotSupportedQuery]
 		public IEnumerable<TeamModel> WhereUserMultiContains(IQueryable<TeamModel> source)
 		{
 			return source
