@@ -129,6 +129,7 @@
     <Compile Include="Tools\Generators\ObjectGenerator.cs" />
     <Compile Include="Tools\Generators\ObjectGeneratorExtensions.cs" />
     <Compile Include="Tools\Generators\IValueGenerator.cs" />
+    <Compile Include="Tools\QueryTests\NotSupportedQueryAttribute.cs" />
     <Compile Include="Tools\QueryTests\PerfTestQueryExecutor.cs" />
     <Compile Include="Tools\QueryTests\QueryComparerAttribute.cs" />
     <Compile Include="Tools\QueryTests\QueryExceptionAttribute.cs" />
