@@ -5,7 +5,6 @@ using Untech.SharePoint.Client.Extensions;
 using Untech.SharePoint.Common.CodeAnnotations;
 using Untech.SharePoint.Common.Configuration;
 using Untech.SharePoint.Common.Data;
-using Untech.SharePoint.Common.MetaModels;
 using Untech.SharePoint.Common.Utils;
 
 namespace Untech.SharePoint.Client.Data
@@ -34,7 +33,7 @@ namespace Untech.SharePoint.Client.Data
 		/// <summary>
 		/// Gets <see cref="ClientContext"/> that is associated with the current data context.
 		/// </summary>
-		public ClientContext ClientContext { get; private set; }
+		public ClientContext ClientContext { get; }
 
 		/// <summary>
 		/// Gets <see cref="List"/> instance by list accessor.

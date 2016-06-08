@@ -4,6 +4,11 @@ namespace Untech.SharePoint.Common.Test.Tools.QueryTests
 {
 	public interface ITestQueryAcceptor<T>
 	{
+		void Accept(ITestQueryExcecutor<T> excecutor);
+	}
+
+	public interface ITestQuery<T> : ITestQueryAcceptor<T>
+	{
 		Type Exception { get; set; }
 
 		string Caml { get; set; }
@@ -11,7 +16,5 @@ namespace Untech.SharePoint.Common.Test.Tools.QueryTests
 		string[] ViewFields { get; set; }
 
 		bool EmptyResult { get; set; }
-
-		void Accept(ITestQueryExcecutor<T> excecutor);
 	}
 }

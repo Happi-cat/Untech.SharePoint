@@ -15,7 +15,7 @@ namespace Untech.SharePoint.Common.Data.Translators.Predicate
 		}
 
 		[NotNull]
-		private List<MemberRefModel> SelectableFields { get; set; }
+		private List<MemberRefModel> SelectableFields { get; }
 
 		[NotNull]
 		public IEnumerable<MemberRefModel> Process([CanBeNull]Expression node)

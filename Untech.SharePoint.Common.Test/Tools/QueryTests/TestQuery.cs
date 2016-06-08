@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace Untech.SharePoint.Common.Test.Tools.QueryTests
 {
-	public class TestQuery<T, TResult> : ITestQueryAcceptor<T>
+	public class TestQuery<T, TResult> : ITestQuery<T>
 	{
 		public TestQuery(Func<IQueryable<T>, object> query, IEqualityComparer<TResult> comparer = null)
 		{

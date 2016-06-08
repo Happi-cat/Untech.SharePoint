@@ -30,19 +30,19 @@ namespace Untech.SharePoint.Common.Data.QueryModels
 		/// <summary>
 		/// Gets CAML logical operator type.
 		/// </summary>
-		public LogicalJoinOperator LogicalOperator { get; private set; }
+		public LogicalJoinOperator LogicalOperator { get; }
 
 		/// <summary>
 		/// Gets first operand.
 		/// </summary>
 		[NotNull]
-		public WhereModel First { get; private set; }
+		public WhereModel First { get; }
 
 		/// <summary>
 		/// Gets second operand.
 		/// </summary>
 		[NotNull]
-		public WhereModel Second { get; private set; }
+		public WhereModel Second { get; }
 
 
 		/// <summary>

@@ -27,15 +27,15 @@ namespace Untech.SharePoint.Common.Test.Tools.QueryTests
 
 		public IQueryable<T> AlternateList { get; set; }
 
-		public Stopwatch LinqQueryFetchTimer { get;  private set; }
+		public Stopwatch LinqQueryFetchTimer { get; }
 
-		public Stopwatch CamlQueryFetchTimer { get; private set; }
+		public Stopwatch CamlQueryFetchTimer { get; }
 
 		public int ItemsCounter { get; set; }
 
 		public string FilePath { get; set; }
 
-		public string ContentType { get; private set; }
+		public string ContentType { get; }
 
 		public void Visit<TResult>(TestQuery<T, TResult> query)
 		{
@@ -67,6 +67,9 @@ namespace Untech.SharePoint.Common.Test.Tools.QueryTests
 			}
 
 			LogResult(query.Method, ItemsCounter, LinqQueryFetchTimer.Elapsed, CamlQueryFetchTimer.Elapsed);
+
+			Assert.IsTrue(LinqQueryFetchTimer.ElapsedTicks > CamlQueryFetchTimer.ElapsedTicks, "LinqQueryFetchTimer.ElapsedTicks > CamlQueryFetchTimer.ElapsedTicks");
+			Assert.IsTrue(LinqQueryFetchTimer.ElapsedTicks < 2 * CamlQueryFetchTimer.ElapsedTicks, "LinqQueryFetchTimer.ElapsedTicks < 2 * CamlQueryFetchTimer.ElapsedTicks");
 		}
 
 		public void ExecuteSequence(Func<IQueryable<T>, object> query, string caml, string[] viewFields)

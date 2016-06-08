@@ -26,16 +26,13 @@ namespace Untech.SharePoint.Common.Diagnostics
 		/// <summary>
 		/// Gets singleton instance of the <see cref="Logger"/>
 		/// </summary>
-		public static Logger Instance
-		{
-			get { return Singleton<Logger>.GetInstance(); }
-		}
+		public static Logger Instance => Singleton<Logger>.GetInstance();
 
 		/// <summary>
 		/// Gets dicitonary with currently registered logging enpoints.
 		/// </summary>
 		[NotNull]
-		public Dictionary<Type, ILoggingEndpoint> Endpoints { get; private set; }
+		public Dictionary<Type, ILoggingEndpoint> Endpoints { get; }
 
 
 		/// <summary>

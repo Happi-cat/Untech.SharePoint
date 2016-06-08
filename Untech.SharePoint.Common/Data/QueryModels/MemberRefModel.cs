@@ -27,7 +27,7 @@ namespace Untech.SharePoint.Common.Data.QueryModels
 		/// Gets <see cref="MemberInfo"/> that associated with current FieldRef.
 		/// </summary>
 		[NotNull]
-		public MemberInfo Member { get; private set; }
+		public MemberInfo Member { get; }
 
 		/// <summary>
 		/// Returns a <see cref="String"/> which represents the object instance.
@@ -35,7 +35,7 @@ namespace Untech.SharePoint.Common.Data.QueryModels
 		/// <returns>CAML-like string.</returns>
 		public override string ToString()
 		{
-			return string.Format("<FieldRef Name='{0}' />", Member.Name);
+			return $"<FieldRef Name='{Member.Name}' />";
 		}
 	}
 }

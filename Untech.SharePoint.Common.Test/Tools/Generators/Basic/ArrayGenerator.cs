@@ -13,7 +13,7 @@ namespace Untech.SharePoint.Common.Test.Tools.Generators.Basic
 
 		public ArrayGenerationOptions Options { get; set; }
 
-		public IValueGenerator<T> ItemGenerator { get; private set; }
+		public IValueGenerator<T> ItemGenerator { get; }
 
 		public virtual List<T> Generate()
 		{

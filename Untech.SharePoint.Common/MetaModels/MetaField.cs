@@ -51,7 +51,7 @@ namespace Untech.SharePoint.Common.MetaModels
 		/// Gets SP Field internal name.
 		/// </summary>
 		[NotNull]
-		public string InternalName { get; private set; }
+		public string InternalName { get; }
 
 		/// <summary>
 		/// Gets or sets SP Field Type.
@@ -110,7 +110,7 @@ namespace Untech.SharePoint.Common.MetaModels
 		/// Gets associated <see cref="MemberInfo"/>.
 		/// </summary>
 		[NotNull]
-		public MemberInfo Member { get; private set; }
+		public MemberInfo Member { get; }
 
 		/// <summary>
 		/// Gets associated member name.

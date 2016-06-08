@@ -35,13 +35,13 @@ namespace Untech.SharePoint.Common.Data.Mapper
 		/// Gets assocaited SP ContentType metadata.
 		/// </summary>
 		[NotNull]
-		public MetaContentType ContentType { get; private set; }
+		public MetaContentType ContentType { get; }
 
 		/// <summary>
 		/// Gets .NET type creator.
 		/// </summary>
 		[NotNull]
-		public Func<object> TypeCreator { get; private set; }
+		public Func<object> TypeCreator { get; }
 
 		/// <summary>
 		/// Maps source entity to SP list item.

@@ -32,7 +32,7 @@ namespace Untech.SharePoint.Server.Data
 		/// <summary>
 		/// Gets <see cref="SPWeb"/> that is associated with the current data context.
 		/// </summary>
-		public SPWeb Web { get; private set; }
+		public SPWeb Web { get; }
 
 		/// <summary>
 		/// Gets <see cref="SPList"/> instance by list accessor.

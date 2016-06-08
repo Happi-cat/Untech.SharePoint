@@ -12,9 +12,9 @@ namespace Untech.SharePoint.Common.Data
 			ListItemsProvider = listItemsProvider;
 		}
 
-		private ISpListItemsProvider ListItemsProvider { get; set; }
+		private ISpListItemsProvider ListItemsProvider { get; }
 
-		public string Title { get { return ListItemsProvider.List.Title; } }
+		public string Title => ListItemsProvider.List.Title;
 
 		public T Get(int id)
 		{

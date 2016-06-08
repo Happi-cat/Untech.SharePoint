@@ -21,7 +21,7 @@ namespace Untech.SharePoint.Common.Data.Translators
 		}
 
 		[NotNull]
-		private MetaContentType ContentType { get; set; }
+		private MetaContentType ContentType { get; }
 
 		[NotNull]
 		public string Process([NotNull]QueryModel query)

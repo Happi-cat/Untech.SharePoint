@@ -152,10 +152,10 @@ namespace Untech.SharePoint.Client.Data
 			}
 
 			[NotNull]
-			public ListItem SpItem { get; private set; }
+			public ListItem SpItem { get; }
 
 			[NotNull]
-			public object Item { get; private set; }
+			public object Item { get; }
 		}
 	}
 }

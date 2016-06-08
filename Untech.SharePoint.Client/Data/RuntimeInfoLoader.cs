@@ -14,7 +14,7 @@ namespace Untech.SharePoint.Client.Data
 			ClientContext = clientContext;
 		}
 
-		private ClientContext ClientContext { get; set; }
+		private ClientContext ClientContext { get; }
 
 		public override void VisitList(MetaList list)
 		{
@@ -34,7 +34,7 @@ namespace Untech.SharePoint.Client.Data
 				SpList = spList;
 			}
 
-			private List SpList { get; set; }
+			private List SpList { get; }
 
 			public override void VisitContentType(MetaContentType contentType)
 			{
@@ -45,7 +45,7 @@ namespace Untech.SharePoint.Client.Data
 
 				if (spContentType == null)
 				{
-					throw new Exception(string.Format("Content type {0} wasn't found", contentType.Id));
+					throw new Exception($"Content type {contentType.Id} wasn't found");
 				}
 
 				contentType.Id = spContentType.Id.ToString();
