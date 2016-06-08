@@ -54,16 +54,18 @@ namespace Untech.SharePoint.Common.Test.Spec
 		public T Add<T>(ISpList<T> list, IValueGenerator<T> generator)
 			where T: Entity
 		{
+			var now = TrimMilliseconds(DateTime.Now);
+
 			var itemToAdd = generator.Generate();
 			var addedItem = list.Add(itemToAdd);
 
 			Assert.IsTrue(addedItem.Id > 0, "addedItem.Id > 0");
 			Assert.AreEqual(itemToAdd.Title, addedItem.Title, "Titles are not equal");
 
-			Assert.IsTrue(addedItem.Created > DateTime.Today, "addedItem.Created > DateTime.Today");
+			Assert.IsTrue(addedItem.Created.ToLocalTime() >= now, "addedItem.Created >= DateTime.Now");
 			Assert.IsTrue(addedItem.Author != null && addedItem.Author.Id > 0, "addedItem.Author.Id > 0");
 
-			Assert.IsTrue(addedItem.Modified > DateTime.Today, "addedItem.Modified > DateTime.Today");
+			Assert.IsTrue(addedItem.Modified.ToLocalTime() >= now, "addedItem.Modified >= DateTime.Now");
 			Assert.IsTrue(addedItem.Editor != null && addedItem.Editor.Id > 0, "addedItem.Editor.Id > 0");
 
 			return addedItem;
@@ -213,6 +215,11 @@ namespace Untech.SharePoint.Common.Test.Spec
 		private void AddToken(Entity model)
 		{
 			model.Title = "<" + _token + ">: " + model.Title;
+		}
+
+		private DateTime TrimMilliseconds(DateTime dateTime)
+		{
+			return dateTime.AddTicks(-dateTime.Ticks % 10000000);
 		}
 	}
 }

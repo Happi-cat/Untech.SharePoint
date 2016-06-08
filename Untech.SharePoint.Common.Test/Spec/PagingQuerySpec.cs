@@ -69,6 +69,7 @@ namespace Untech.SharePoint.Common.Test.Spec
 		}
 
 		[QueryComparer(typeof(EntityComparer))]
+		[EmptyResultQuery]
 		public NewsModel SingleOrDefaultQuery(IQueryable<NewsModel> source)
 		{
 			return source
@@ -77,6 +78,7 @@ namespace Untech.SharePoint.Common.Test.Spec
 		}
 
 		[QueryComparer(typeof(EntityComparer))]
+		[EmptyResultQuery]
 		public NewsModel SingleOrDefaultPQuery(IQueryable<NewsModel> source)
 		{
 			return source
@@ -111,6 +113,7 @@ namespace Untech.SharePoint.Common.Test.Spec
 		}
 
 		[QueryComparer(typeof(EntityComparer))]
+		[EmptyResultQuery]
 		public NewsModel ElementAtOrDefaultQuery(IQueryable<NewsModel> source)
 		{
 			return source.ElementAtOrDefault(1000);
@@ -196,6 +199,7 @@ namespace Untech.SharePoint.Common.Test.Spec
 		}
 
 		[QueryComparer(typeof(EntityComparer))]
+		[EmptyResultQuery]
 		public NewsModel FirstPOrDefaultQuery(IQueryable<NewsModel> source)
 		{
 			return source.FirstOrDefault(n => n.Description == "UNKOWN DESCRIPTION");
@@ -282,6 +286,7 @@ namespace Untech.SharePoint.Common.Test.Spec
 		}
 
 		[QueryComparer(typeof(EntityComparer))]
+		[EmptyResultQuery]
 		public NewsModel LastPOrDefaultQuery(IQueryable<NewsModel> source)
 		{
 			return source.LastOrDefault(n => n.Description == "UNKOWN DESCRIPTION");

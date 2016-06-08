@@ -36,6 +36,8 @@ namespace Untech.SharePoint.Common.Test.Tools.QueryTests
 				Caml = camlAttribute.Caml;
 				ViewFields = camlAttribute.ViewFields;
 			}
+
+			EmptyResult = query.Method.GetCustomAttribute<EmptyResultQueryAttribute>() != null;
 		}
 
 		public static implicit operator TestQueryBuilder<T>(Func<IQueryable<T>, object> query)
@@ -47,19 +49,25 @@ namespace Untech.SharePoint.Common.Test.Tools.QueryTests
 
 		public Type ResultType { get { return Query.Method.ReturnType; } }
 
-		public Type Comparer { get; private set; }
+		public Type Comparer { get; set; }
 
-		public Type Exception { get; private set; }
+		public Type Exception { get; set; }
 
-		public string Caml { get; private set; }
+		public string Caml { get; set; }
 
-		public string[] ViewFields { get; private set; }
+		public string[] ViewFields { get; set; }
+		public bool EmptyResult { get; set; }
 
 		public void Accept(ITestQueryExcecutor<T> executor)
 		{
 			var testQueryType = typeof(TestQuery<,>).MakeGenericType(typeof(T), ResultType);
 			var comparer = Comparer != null ? Activator.CreateInstance(Comparer) : null;
-			var testQuery = (ITestQueryAcceptor<T>)Activator.CreateInstance(testQueryType, Query, comparer, Exception, Caml, ViewFields);
+			var testQuery = (ITestQueryAcceptor<T>)Activator.CreateInstance(testQueryType, Query, comparer);
+
+			testQuery.Exception = Exception;
+			testQuery.Caml = Caml;
+			testQuery.ViewFields = ViewFields;
+			testQuery.EmptyResult = EmptyResult;
 
 			testQuery.Accept(executor);
 		}

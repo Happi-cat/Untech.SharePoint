@@ -15,4 +15,10 @@ namespace Untech.SharePoint.Common.Test.Tools.QueryTests
 
 		public string[] ViewFields { get; private set; }
 	}
+
+	[AttributeUsage(AttributeTargets.Method)]
+	public class EmptyResultQueryAttribute : Attribute
+	{
+
+	}
 }

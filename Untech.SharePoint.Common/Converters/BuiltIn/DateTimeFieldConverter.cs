@@ -54,9 +54,25 @@ namespace Untech.SharePoint.Common.Converters.BuiltIn
 			return sb.ToString();
 		}
 
+		private static DateTime ToLocalTime(DateTime dateTime)
+		{
+			return dateTime.Kind == DateTimeKind.Unspecified
+				? new DateTime(dateTime.Ticks, DateTimeKind.Local)
+				: dateTime.ToLocalTime();
+		}
+
+		private static DateTime? ToLocalTime(DateTime? dateTime)
+		{
+			return dateTime.HasValue
+				? dateTime.Value.Kind == DateTimeKind.Unspecified
+					? new DateTime(dateTime.Value.Ticks, DateTimeKind.Local)
+					: dateTime.Value.ToLocalTime()
+				: (DateTime?) null;
+		}
+
 		private class DateTimeTypeConverter : IFieldConverter
 		{
-			private static readonly DateTime Min = new DateTime(1900, 1, 1);
+			private static readonly DateTime Min = new DateTime(1900, 1, 1, 0, 0, 0, DateTimeKind.Local);
 
 			public void Initialize(MetaField field)
 			{
@@ -65,19 +81,19 @@ namespace Untech.SharePoint.Common.Converters.BuiltIn
 
 			public object FromSpValue(object value)
 			{
-				return (DateTime?) value ?? Min;
+				return ToLocalTime((DateTime?) value ?? Min);
 			}
 
 			public object ToSpValue(object value)
 			{
-				var dateValue = (DateTime)value;
+				var dateValue = ToLocalTime((DateTime)value);
 				return dateValue > Min ? dateValue : (object) null;
 			}
 
 			public string ToCamlValue(object value)
 			{
 				var dateValue = (DateTime)value;
-				return dateValue > Min ? CreateIsoDate(dateValue) : "";
+				return dateValue > Min ? CreateIsoDate(ToLocalTime(dateValue)) : "";
 			}
 		}
 
@@ -90,18 +106,18 @@ namespace Untech.SharePoint.Common.Converters.BuiltIn
 
 			public object FromSpValue(object value)
 			{
-				return (DateTime?)value;
+				return ToLocalTime((DateTime?)value);
 			}
 
 			public object ToSpValue(object value)
 			{
-				return (DateTime?)value;
+				return ToLocalTime((DateTime?)value);
 			}
 
 			public string ToCamlValue(object value)
 			{
 				var dateValue = (DateTime?)value;
-				return dateValue.HasValue ? CreateIsoDate(dateValue.Value) : "";
+				return dateValue.HasValue ? CreateIsoDate(ToLocalTime(dateValue.Value)) : "";
 			}
 		}
 	}

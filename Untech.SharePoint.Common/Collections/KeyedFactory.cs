@@ -20,7 +20,7 @@ namespace Untech.SharePoint.Common.Collections
 		public void Register<TConcreteObject>([NotNull]TKey key)
 			where TConcreteObject : TObject, new()
 		{
-			base.Register(key, () => new TConcreteObject());
+			Register(key, () => new TConcreteObject());
 		}
 
 		/// <summary>
