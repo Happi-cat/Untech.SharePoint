@@ -18,7 +18,7 @@ namespace Untech.SharePoint.Common.Data.QueryModels
 		public MemberRefModel([NotNull] MemberInfo member) 
 			: base(FieldRefType.KnownMember)
 		{
-			Guard.CheckNotNull("member", member);
+			Guard.CheckNotNull(nameof(member), member);
 
 			Member = member;
 		}

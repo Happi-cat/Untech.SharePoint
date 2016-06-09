@@ -25,9 +25,9 @@ namespace Untech.SharePoint.Common.MetaModels
 		/// <exception cref="ArgumentNullException">any parameter is null.</exception>
 		public MetaList([NotNull]MetaContext context, [NotNull]string listTitle, [NotNull]IReadOnlyCollection<IMetaContentTypeProvider> contentTypeProviders)
 		{
-			Guard.CheckNotNull("context", context);
-			Guard.CheckNotNull("listTitle", listTitle);
-			Guard.CheckNotNullOrEmpty("contentTypeProviders", contentTypeProviders);
+			Guard.CheckNotNull(nameof(context), context);
+			Guard.CheckNotNull(nameof(listTitle), listTitle);
+			Guard.CheckNotNullOrEmpty(nameof(contentTypeProviders), contentTypeProviders);
 
 			Context = context;
 			Title = listTitle;

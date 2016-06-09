@@ -19,8 +19,8 @@ namespace Untech.SharePoint.Common.Data.QueryModels
 		public LogicalJoinModel(LogicalJoinOperator logicalOperator, [NotNull]WhereModel first, [NotNull]WhereModel second)
 			: base(WhereType.LogicalJoin)
 		{
-			Guard.CheckNotNull("first", first);
-			Guard.CheckNotNull("second", second);
+			Guard.CheckNotNull(nameof(first), first);
+			Guard.CheckNotNull(nameof(second), second);
 
 			LogicalOperator = logicalOperator;
 			First = first;

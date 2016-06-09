@@ -34,7 +34,7 @@ namespace Untech.SharePoint.Common.Converters
 		/// <exception cref="ArgumentNullException"><paramref name="assembly"/> is null.</exception>
 		public void AddFromAssembly([NotNull]Assembly assembly)
 		{
-			Guard.CheckNotNull("assembly", assembly);
+			Guard.CheckNotNull(nameof(assembly), assembly);
 
 			assembly.GetTypes()
 				.Where(n => n.IsDefined(typeof(SpFieldConverterAttribute)))
@@ -61,7 +61,7 @@ namespace Untech.SharePoint.Common.Converters
 		/// <exception cref="ArgumentNullException"><paramref name="converterType"/> is null.</exception>
 		public void Add([NotNull]Type converterType)
 		{
-			Guard.CheckNotNull("converterType", converterType);
+			Guard.CheckNotNull(nameof(converterType), converterType);
 
 			Register(converterType, InstanceCreationUtility.GetCreator<IFieldConverter>(converterType));
 		}
@@ -73,7 +73,7 @@ namespace Untech.SharePoint.Common.Converters
 		/// <returns>true if can resovle the specified <paramref name="typeAsString"/>.</returns>
 		public bool CanResolve(string typeAsString)
 		{
-			Guard.CheckNotNull("typeAsString", typeAsString);
+			Guard.CheckNotNull(nameof(typeAsString), typeAsString);
 
 			return _fieldTypesMap.IsRegistered(typeAsString);
 		}
@@ -85,7 +85,7 @@ namespace Untech.SharePoint.Common.Converters
 		/// <returns>New instance of the <see cref="IFieldConverter"/> that matchs to the specified SP field type.</returns>
 		public IFieldConverter Resolve(string typeAsString)
 		{
-			Guard.CheckNotNull("typeAsString", typeAsString);
+			Guard.CheckNotNull(nameof(typeAsString), typeAsString);
 
 			return Resolve(_fieldTypesMap.Resolve(typeAsString));
 		}
@@ -97,7 +97,7 @@ namespace Untech.SharePoint.Common.Converters
 		/// <returns>true if can resovle the specified <paramref name="converterType"/>.</returns>
 		public bool CanResolve(Type converterType)
 		{
-			Guard.CheckNotNull("converterType", converterType);
+			Guard.CheckNotNull(nameof(converterType), converterType);
 
 			return _fieldConvertersBuilders.IsRegistered(converterType);
 		}
@@ -109,7 +109,7 @@ namespace Untech.SharePoint.Common.Converters
 		/// <returns>New instance of the <see cref="IFieldConverter"/>.</returns>
 		public IFieldConverter Resolve(Type converterType)
 		{
-			Guard.CheckNotNull("converterType", converterType);
+			Guard.CheckNotNull(nameof(converterType), converterType);
 
 			return new FieldConverterWrapper(converterType, _fieldConvertersBuilders.Create(converterType));
 		}

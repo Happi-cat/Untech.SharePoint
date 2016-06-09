@@ -22,7 +22,7 @@ namespace Untech.SharePoint.Common.MetaModels
 		/// <exception cref="ArgumentNullException"><paramref name="listProviders"/> is null.</exception>
 		public MetaContext([NotNull]IReadOnlyCollection<IMetaListProvider> listProviders)
 		{
-			Guard.CheckNotNull("listProviders", listProviders);
+			Guard.CheckNotNull(nameof(listProviders), listProviders);
 
 			Lists = new MetaListCollection(listProviders.Select(n => n.GetMetaList(this)));
 		}

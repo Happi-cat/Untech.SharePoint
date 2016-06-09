@@ -18,7 +18,7 @@ namespace Untech.SharePoint.Common.Data.Mapper
 		/// <exception cref="ArgumentNullException"><paramref name="field"/> is null.</exception>
 		protected StoreAccessor([NotNull]MetaField field)
 		{
-			Guard.CheckNotNull("field", field);
+			Guard.CheckNotNull(nameof(field), field);
 
 			Field = field;
 		}

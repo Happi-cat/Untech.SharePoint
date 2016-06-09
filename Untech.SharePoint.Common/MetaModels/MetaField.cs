@@ -24,9 +24,9 @@ namespace Untech.SharePoint.Common.MetaModels
 		/// <exception cref="ArgumentNullException">if any argument is null.</exception>
 		public MetaField([NotNull]MetaContentType contentType, [NotNull]MemberInfo member, [NotNull]string internalName)
 		{
-			Guard.CheckNotNull("contentType", contentType);
-			Guard.CheckNotNull("member", member);
-			Guard.CheckNotNullOrEmpty("internalName", internalName);
+			Guard.CheckNotNull(nameof(contentType), contentType);
+			Guard.CheckNotNull(nameof(member), member);
+			Guard.CheckNotNullOrEmpty(nameof(internalName), internalName);
 
 			ContentType = contentType;
 

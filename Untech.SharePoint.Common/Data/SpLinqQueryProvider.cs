@@ -16,12 +16,12 @@ namespace Untech.SharePoint.Common.Data
 
 		public IQueryable CreateQuery(Expression expression)
 		{
-			Guard.CheckNotNull("expression", expression);
+			Guard.CheckNotNull(nameof(expression), expression);
 
 			Type element;
 			if (!expression.Type.IsIEnumerable(out element))
 			{
-				throw new ArgumentException("Invalid expression type", "expression");
+				throw new ArgumentException("Invalid expression type", nameof(expression));
 			}
 
 			// ReSharper disable once PossibleNullReferenceException
@@ -32,7 +32,7 @@ namespace Untech.SharePoint.Common.Data
 
 		public IQueryable<TElement> CreateQuery<TElement>(Expression expression)
 		{
-			Guard.CheckNotNull("expression", expression);
+			Guard.CheckNotNull(nameof(expression), expression);
 
 			return new SpLinqQuery<TElement>(expression);
 		}
@@ -49,8 +49,8 @@ namespace Untech.SharePoint.Common.Data
 
 		private Func<T> RewriteAndCompile<T>(Expression expression)
 		{
-			Guard.CheckNotNull("expression", expression);
-			Guard.CheckIsTypeAssignableTo<T>("expression", expression.Type);
+			Guard.CheckNotNull(nameof(expression), expression);
+			Guard.CheckIsTypeAssignableTo<T>(nameof(expression), expression.Type);
 
 			return Compile<T>(Rewrite(expression));
 		}

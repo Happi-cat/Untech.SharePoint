@@ -33,27 +33,17 @@ namespace Untech.SharePoint.Common.Data.QueryModels
 		/// Gets collection of specific selectable fields.
 		/// </summary>
 		[CanBeNull]
-		public IEnumerable<FieldRefModel> SelectableFields
-		{
-			get
-			{
-				return _selectableFields.IsNullOrEmpty()
-					? null
-					: _selectableFields.Distinct(FieldRefModelComparer.Default);
-			}
-		}
+		public IEnumerable<FieldRefModel> SelectableFields => _selectableFields?.Distinct(FieldRefModelComparer.Default);
 
 		[CanBeNull]
 		public IEnumerable<MemberRefModel> SelectableKnownFields
 		{
 			get
 			{
-				return _selectableFields.IsNullOrEmpty()
-					? null
-					: _selectableFields
-						.Where(n => n.Type == FieldRefType.KnownMember)
-						.Cast<MemberRefModel>()
-						.Distinct(MemberRefModelComparer.Default);
+				return _selectableFields?
+					.Where(n => n.Type == FieldRefType.KnownMember)
+					.Cast<MemberRefModel>()
+					.Distinct(MemberRefModelComparer.Default);
 			}
 		}
 

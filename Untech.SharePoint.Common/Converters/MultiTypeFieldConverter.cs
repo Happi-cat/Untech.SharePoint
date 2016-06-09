@@ -23,7 +23,7 @@ namespace Untech.SharePoint.Common.Converters
 
 		public virtual void Initialize(MetaField field)
 		{
-			Guard.CheckNotNull("field", field);
+			Guard.CheckNotNull(nameof(field), field);
 
 			Field = field;
 		}

@@ -37,7 +37,7 @@ namespace Untech.SharePoint.Common.Data.QueryModels
 		public ComparisonModel(ComparisonOperator comparisonOperator, [NotNull]FieldRefModel field, [CanBeNull]object value)
 			: base (WhereType.Comparison)
 		{
-			Guard.CheckNotNull("field", field);
+			Guard.CheckNotNull(nameof(field), field);
 			
 			ComparisonOperator = comparisonOperator;
 			Field = field;

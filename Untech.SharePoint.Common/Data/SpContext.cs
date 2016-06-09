@@ -24,7 +24,7 @@ namespace Untech.SharePoint.Common.Data
 		/// <exception cref="InvalidOperationException">Cannot find mapping source for current context type in the config,</exception>
 		protected SpContext([NotNull]ICommonService commonService)
 		{
-			Guard.CheckNotNull("commonService", commonService);
+			Guard.CheckNotNull(nameof(commonService), commonService);
 
 			CommonService = commonService;
 

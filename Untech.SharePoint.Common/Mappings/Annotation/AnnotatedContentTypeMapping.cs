@@ -16,7 +16,7 @@ namespace Untech.SharePoint.Common.Mappings.Annotation
 
 		public AnnotatedContentTypeMapping(Type entityType)
 		{
-			Guard.CheckNotNull("entityType", entityType);
+			Guard.CheckNotNull(nameof(entityType), entityType);
 
 			_entityType = entityType;
 			_contentTypeAttrbiute = _entityType.GetCustomAttribute<SpContentTypeAttribute>() ?? new SpContentTypeAttribute();

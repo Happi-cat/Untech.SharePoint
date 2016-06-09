@@ -25,7 +25,7 @@ namespace Untech.SharePoint.Common.Data.Mapper
 		/// <exception cref="ArgumentNullException"><paramref name="contentType"/> is null.</exception>
 		protected TypeMapper([NotNull]MetaContentType contentType)
 		{
-			Guard.CheckNotNull("contentType", contentType);
+			Guard.CheckNotNull(nameof(contentType), contentType);
 
 			ContentType = contentType;
 			TypeCreator = InstanceCreationUtility.GetCreator<object>(contentType.EntityType);
@@ -51,8 +51,8 @@ namespace Untech.SharePoint.Common.Data.Mapper
 		/// <exception cref="ArgumentNullException"><paramref name="source"/> or <paramref name="dest"/> is null.</exception>
 		public void Map([NotNull]object source, [NotNull]TSPItem dest)
 		{
-			Guard.CheckNotNull("source", source);
-			Guard.CheckNotNull("dest", dest);
+			Guard.CheckNotNull(nameof(source), source);
+			Guard.CheckNotNull(nameof(dest), dest);
 
 			foreach (var mapper in GetMappers())
 			{
@@ -74,7 +74,7 @@ namespace Untech.SharePoint.Common.Data.Mapper
 		/// <exception cref="ArgumentNullException"><paramref name="source"/> is null.</exception>
 		public IReadOnlyDictionary<string, string> MapToCaml([NotNull] object source)
 		{
-			Guard.CheckNotNull("source", source);
+			Guard.CheckNotNull(nameof(source), source);
 
 			var fields = new Dictionary<string, string>();
 
@@ -105,8 +105,8 @@ namespace Untech.SharePoint.Common.Data.Mapper
 		/// <exception cref="ArgumentNullException"><paramref name="source"/> or <paramref name="dest"/> is null.</exception>
 		public void Map([NotNull]TSPItem source, [NotNull]object dest, IReadOnlyCollection<MemberRefModel> viewFields = null)
 		{
-			Guard.CheckNotNull("source", source);
-			Guard.CheckNotNull("dest", dest);
+			Guard.CheckNotNull(nameof(source), source);
+			Guard.CheckNotNull(nameof(dest), dest);
 
 			foreach (var mapper in GetMappers(viewFields))
 			{
@@ -115,7 +115,7 @@ namespace Untech.SharePoint.Common.Data.Mapper
 		}
 
 		/// <summary>
-		/// Create and maps SP list item to .NET entity.
+		/// Creates and maps SP list item to .NET entity.
 		/// </summary>
 		/// <param name="source">Souce SP list item to map.</param>
 		/// <param name="viewFields">Collection of fields internal names that should be mapped.</param>
@@ -123,7 +123,7 @@ namespace Untech.SharePoint.Common.Data.Mapper
 		/// <exception cref="ArgumentNullException"><paramref name="source"/> is null.</exception>
 		public object CreateAndMap([NotNull]TSPItem source, IReadOnlyCollection<MemberRefModel> viewFields = null)
 		{
-			Guard.CheckNotNull("source", source);
+			Guard.CheckNotNull(nameof(source), source);
 
 			var item = TypeCreator();
 
@@ -132,9 +132,16 @@ namespace Untech.SharePoint.Common.Data.Mapper
 			return item;
 		}
 
+		/// <summary>
+		/// Creates and maps SP list items to .NET entities.
+		/// </summary>
+		/// <param name="source">Souce SP list items to map.</param>
+		/// <param name="viewFields">Collection of fields internal names that should be mapped.</param>
+		/// <returns>New .NET entities.</returns>
+		/// <exception cref="ArgumentNullException"><paramref name="source"/> is null.</exception>
 		public IEnumerable<T> CreateAndMap<T>([NotNull]IEnumerable<TSPItem> source, IReadOnlyCollection<MemberRefModel> viewFields = null)
 		{
-			Guard.CheckNotNull("source", source);
+			Guard.CheckNotNull(nameof(source), source);
 			var mappers = GetMappers(viewFields).ToList();
 
 			foreach (var spItem in source)

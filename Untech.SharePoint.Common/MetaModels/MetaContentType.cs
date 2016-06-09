@@ -23,9 +23,9 @@ namespace Untech.SharePoint.Common.MetaModels
 		/// <exception cref="ArgumentNullException"><paramref name="list"/> or <paramref name="entityType"/> or <paramref name="fieldProviders"/> are null.</exception>
 		public MetaContentType([NotNull]MetaList list, [NotNull]Type entityType, [NotNull]IReadOnlyCollection<IMetaFieldProvider> fieldProviders)
 		{
-			Guard.CheckNotNull("list", list);
-			Guard.CheckNotNull("entityType", entityType);
-			Guard.CheckNotNull("fieldProviders", fieldProviders);
+			Guard.CheckNotNull(nameof(list), list);
+			Guard.CheckNotNull(nameof(entityType), entityType);
+			Guard.CheckNotNull(nameof(fieldProviders), fieldProviders);
 
 			List = list;
 			EntityType = entityType;

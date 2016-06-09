@@ -45,7 +45,7 @@ namespace Untech.SharePoint.Common.Data.Translators.Predicate
 
 		public WhereModel Process([NotNull]Expression predicate)
 		{
-			Guard.CheckNotNull("predicate", predicate);
+			Guard.CheckNotNull(nameof(predicate), predicate);
 
 			Logger.Trace(LogCategories.PredicateProcessor, "Orignal predicate:\n{0}", predicate);
 

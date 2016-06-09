@@ -57,7 +57,7 @@ namespace Untech.SharePoint.Common.Data
 
 		private static Expression MakeFakeFetch(ISpListItemsProvider listItemsProvider)
 		{
-			Guard.CheckNotNull("listItemsProvider", listItemsProvider);
+			Guard.CheckNotNull(nameof(listItemsProvider), listItemsProvider);
 
 			return SpQueryable.MakeFakeFetch(typeof(T), listItemsProvider);
 		}

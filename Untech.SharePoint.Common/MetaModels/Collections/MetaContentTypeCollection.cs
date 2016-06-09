@@ -30,7 +30,7 @@ namespace Untech.SharePoint.Common.MetaModels.Collections
 		[NotNull]
 		private static IDictionary<Type, MetaContentType> CreateDictionary([NotNull][ItemNotNull]IEnumerable<MetaContentType> source)
 		{
-			Guard.CheckNotNull("source", source);
+			Guard.CheckNotNull(nameof(source), source);
 
 			return source.ToDictionary(n => n.EntityType);
 		}

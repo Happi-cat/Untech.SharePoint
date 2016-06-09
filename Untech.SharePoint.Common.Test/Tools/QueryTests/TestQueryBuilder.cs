@@ -26,11 +26,11 @@ namespace Untech.SharePoint.Common.Test.Tools.QueryTests
 			return new TestQueryBuilder<T>(query);
 		}
 
-		protected Func<IQueryable<T>, object> Query { get; }
+		private Func<IQueryable<T>, object> Query { get; }
 
-		protected Type ResultType => Query.Method.ReturnType;
+		private Type ResultType => Query.Method.ReturnType;
 
-		protected Type Comparer
+		private Type Comparer
 		{
 			get
 			{
@@ -46,13 +46,13 @@ namespace Untech.SharePoint.Common.Test.Tools.QueryTests
 			}
 		}
 
-		protected Type Exception => _exceptionAttribute?.Exception;
+		private Type Exception => _exceptionAttribute?.Exception;
 
-		protected string Caml => _camlAttribute?.Caml;
+		private string Caml => _camlAttribute?.Caml;
 
-		protected string[] ViewFields => _camlAttribute?.ViewFields;
+		private string[] ViewFields => _camlAttribute?.ViewFields;
 
-		protected bool EmptyResult { get; }
+		private bool EmptyResult { get; }
 
 		public void Accept(ITestQueryExcecutor<T> executor)
 		{

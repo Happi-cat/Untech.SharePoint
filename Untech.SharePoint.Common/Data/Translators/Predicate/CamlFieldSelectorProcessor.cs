@@ -12,7 +12,7 @@ namespace Untech.SharePoint.Common.Data.Translators.Predicate
 		[NotNull]
 		public MemberRefModel Process([NotNull] Expression predicate)
 		{
-			Guard.CheckNotNull("predicate", predicate);
+			Guard.CheckNotNull(nameof(predicate), predicate);
 
 			Logger.Trace(LogCategories.FieldSelectorProcessor, "Original predicate:\n{0}", predicate);
 

@@ -54,7 +54,7 @@ namespace Untech.SharePoint.Common.Extensions
 		/// <exception cref="ArgumentNullException"><paramref name="source"/> is null.</exception>
 		public static bool IsIEnumerable([NotNull]this Type source, [CanBeNull]out Type element)
 		{
-			Guard.CheckNotNull("source", source);
+			Guard.CheckNotNull(nameof(source), source);
 
 			return IsISequence(typeof(IEnumerable<>), source, out element);
 		}
@@ -80,7 +80,7 @@ namespace Untech.SharePoint.Common.Extensions
 		/// <exception cref="ArgumentNullException"><paramref name="source"/> is null.</exception>
 		public static bool IsIQueryable([NotNull]this Type source, [CanBeNull]out Type element)
 		{
-			Guard.CheckNotNull("source", source);
+			Guard.CheckNotNull(nameof(source), source);
 
 			return IsISequence(typeof(IQueryable<>), source, out element);
 		}
@@ -110,7 +110,7 @@ namespace Untech.SharePoint.Common.Extensions
 			var methodInfo = member as MethodInfo;
 			if (methodInfo != null) return methodInfo.ReturnType;
 
-			throw new ArgumentException("Invalid memberinfo", "member");
+			throw new ArgumentException("Invalid memberinfo", nameof(member));
 		}
 
 		#region [Private Methods]

@@ -14,7 +14,7 @@ namespace Untech.SharePoint.Common.Mappings.Annotation
 
 		private AnnotatedFieldPart(MemberInfo member)
 		{
-			Guard.CheckNotNull("member", member);
+			Guard.CheckNotNull(nameof(member), member);
 
 			_member = member;
 			_fieldAttribute = member.GetCustomAttribute<SpFieldAttribute>(true);

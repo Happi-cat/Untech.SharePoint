@@ -21,8 +21,8 @@ namespace Untech.SharePoint.Common.Data.Mapper
 		/// <exception cref="ArgumentNullException"><paramref name="field"/> or <paramref name="storeAccessor"/> is null.</exception>
 		public FieldMapper([NotNull]MetaField field, [NotNull]IFieldAccessor<TSPItem> storeAccessor)
 		{
-			Guard.CheckNotNull("field", field);
-			Guard.CheckNotNull("storeAccessor", storeAccessor);
+			Guard.CheckNotNull(nameof(field), field);
+			Guard.CheckNotNull(nameof(storeAccessor), storeAccessor);
 
 			Field = field;
 			MemberAccessor = new MemberAccessor(field.Member);

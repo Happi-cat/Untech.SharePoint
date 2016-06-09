@@ -15,7 +15,7 @@ namespace Untech.SharePoint.Common.Data.QueryModels
 		/// <param name="ascending">Is ascending ordering.</param>
 		public OrderByModel([NotNull]FieldRefModel fieldRef, bool ascending)
 		{
-			Guard.CheckNotNull("fieldRef", fieldRef);
+			Guard.CheckNotNull(nameof(fieldRef), fieldRef);
 
 			FieldRef = fieldRef;
 			Ascending = ascending;

@@ -11,8 +11,8 @@ namespace Untech.SharePoint.Common.Data
 	{
 		public SpLinqQuery(Expression expression)
 		{
-			Guard.CheckNotNull("expression", expression);
-			Guard.CheckIsTypeAssignableTo<IQueryable<T>>("expression", expression.Type);
+			Guard.CheckNotNull(nameof(expression), expression);
+			Guard.CheckIsTypeAssignableTo<IQueryable<T>>(nameof(expression), expression.Type);
 
 			Expression = expression;
 		}

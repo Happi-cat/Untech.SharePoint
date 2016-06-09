@@ -38,7 +38,7 @@ namespace Untech.SharePoint.Common.MetaModels
 		[NotNull]
 		public virtual T GetAdditionalProperty<T>([NotNull]string key)
 		{
-			Guard.CheckNotNull("key", key);
+			Guard.CheckNotNull(nameof(key), key);
 
 			return (T) _additionalProperties.Resolve(key);
 		}
@@ -52,8 +52,8 @@ namespace Untech.SharePoint.Common.MetaModels
 		/// <exception cref="ArgumentNullException"><paramref name="key"/> or <paramref name="value"/> is null.</exception>
 		public virtual void SetAdditionalProperty<T>([NotNull]string key, [NotNull]T value)
 		{
-			Guard.CheckNotNull("key", key);
-			Guard.CheckNotNull("value", value);
+			Guard.CheckNotNull(nameof(key), key);
+			Guard.CheckNotNull(nameof(value), value);
 
 			_additionalProperties.Register(key, value);
 		}

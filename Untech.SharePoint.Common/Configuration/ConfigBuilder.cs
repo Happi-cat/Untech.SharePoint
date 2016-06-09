@@ -39,7 +39,7 @@ namespace Untech.SharePoint.Common.Configuration
 		public ConfigBuilder RegisterMappings<TContext>([NotNull]Func<Mappings.Mappings, MappingSource<TContext>> action)
 			where TContext: ISpContext
 		{
-			Guard.CheckNotNull("action", action);
+			Guard.CheckNotNull(nameof(action), action);
 
 			_mappingSourceBuilders.Register(typeof(TContext), action);
 			return this;
@@ -54,7 +54,7 @@ namespace Untech.SharePoint.Common.Configuration
 		[NotNull]
 		public ConfigBuilder RegisterConverters([NotNull]Action<FieldConverterContainer> action)
 		{
-			Guard.CheckNotNull("action", action);
+			Guard.CheckNotNull(nameof(action), action);
 
 			_converterRegistrators.Enqueue(action);
 			return this;

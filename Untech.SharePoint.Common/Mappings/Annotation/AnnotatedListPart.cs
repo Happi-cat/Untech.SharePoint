@@ -17,7 +17,7 @@ namespace Untech.SharePoint.Common.Mappings.Annotation
 
 		private AnnotatedListPart(string listTitle)
 		{
-			Guard.CheckNotNullOrEmpty("listTitle", listTitle);
+			Guard.CheckNotNullOrEmpty(nameof(listTitle), listTitle);
 
 			_title = listTitle;
 			_contentTypeProviders = new Dictionary<Type, AnnotatedContentTypeMapping>();

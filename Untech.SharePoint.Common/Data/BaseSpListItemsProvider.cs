@@ -23,7 +23,7 @@ namespace Untech.SharePoint.Common.Data
 		/// <param name="list">Meta models of the SP list.</param>
 		protected BaseSpListItemsProvider([NotNull] MetaList list)
 		{
-			Guard.CheckNotNull("list", list);
+			Guard.CheckNotNull(nameof(list), list);
 
 			List = list;
 		}

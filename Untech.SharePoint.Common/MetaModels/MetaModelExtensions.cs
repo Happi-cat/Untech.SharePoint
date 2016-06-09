@@ -22,7 +22,7 @@ namespace Untech.SharePoint.Common.MetaModels
 		/// <exception cref="ArgumentNullException"><paramref name="field"/> is null.</exception>
 		public static FieldMapper<TSPItem> GetMapper<TSPItem>([NotNull]this MetaField field)
 		{
-			Guard.CheckNotNull("field", field);
+			Guard.CheckNotNull(nameof(field), field);
 
 			return field.GetAdditionalProperty<FieldMapper<TSPItem>>(MapperProperty);
 		}
@@ -36,7 +36,7 @@ namespace Untech.SharePoint.Common.MetaModels
 		/// <exception cref="ArgumentNullException"><paramref name="contentType"/> is null.</exception>
 		public static TypeMapper<TSPItem> GetMapper<TSPItem>([NotNull]this MetaContentType contentType)
 		{
-			Guard.CheckNotNull("contentType", contentType);
+			Guard.CheckNotNull(nameof(contentType), contentType);
 
 			return contentType.GetAdditionalProperty<TypeMapper<TSPItem>>(MapperProperty);
 		}
@@ -50,8 +50,8 @@ namespace Untech.SharePoint.Common.MetaModels
 		/// <exception cref="ArgumentNullException"><paramref name="field"/> or <paramref name="mapper"/> is null.</exception>
 		public static void SetMapper<TSPItem>([NotNull]this MetaField field, [NotNull]FieldMapper<TSPItem> mapper)
 		{
-			Guard.CheckNotNull("field", field);
-			Guard.CheckNotNull("mapper", mapper);
+			Guard.CheckNotNull(nameof(field), field);
+			Guard.CheckNotNull(nameof(mapper), mapper);
 
 			field.SetAdditionalProperty(MapperProperty, mapper);
 		}
@@ -65,8 +65,8 @@ namespace Untech.SharePoint.Common.MetaModels
 		/// <exception cref="ArgumentNullException"><paramref name="contentType"/> or <paramref name="mapper"/> is null.</exception>
 		public static void SetMapper<TSPItem>([NotNull]this MetaContentType contentType, [NotNull]TypeMapper<TSPItem> mapper)
 		{
-			Guard.CheckNotNull("contentType", contentType);
-			Guard.CheckNotNull("mapper", mapper);
+			Guard.CheckNotNull(nameof(contentType), contentType);
+			Guard.CheckNotNull(nameof(mapper), mapper);
 
 			contentType.SetAdditionalProperty(MapperProperty, mapper);
 		}
@@ -79,7 +79,7 @@ namespace Untech.SharePoint.Common.MetaModels
 		[CanBeNull]
 		public static MetaField GetKeyField([NotNull]this MetaContentType contentType)
 		{
-			Guard.CheckNotNull("contentType", contentType);
+			Guard.CheckNotNull(nameof(contentType), contentType);
 
 			return contentType.List.IsExternal
 				? contentType.Fields.FirstOrDefault<MetaField>(n => n.InternalName == Fields.BdcIdentity)
