@@ -25,7 +25,7 @@ namespace Untech.SharePoint.Client.Data
 		protected SpClientContext([NotNull] ClientContext context, [NotNull] Config config)
 			: base(new SpClientCommonService(context, config))
 		{
-			Guard.CheckNotNull("context", context);
+			Guard.CheckNotNull(nameof(context), context);
 
 			ClientContext = context;
 		}

@@ -16,8 +16,8 @@ namespace Untech.SharePoint.Client.Data
 	{
 		public SpClientCommonService([NotNull]ClientContext clientContext, [NotNull]Config config)
 		{
-			Guard.CheckNotNull("clientContext", clientContext);
-			Guard.CheckNotNull("config", config);
+			Guard.CheckNotNull(nameof(clientContext), clientContext);
+			Guard.CheckNotNull(nameof(config), config);
 
 			ClientContext = clientContext;
 			Config = config;

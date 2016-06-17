@@ -31,12 +31,11 @@ namespace Untech.SharePoint.Common.Mappings.Annotation
 		{
 			if (!property.CanRead || !property.CanWrite)
 			{
-				throw new InvalidAnnotationException(string.Format("Property {1}.{0} should be readable and writable", property.Name, property.DeclaringType));
+				throw new InvalidAnnotationException(string.Format("Property {1}.{0} should be readable and writable", property.DeclaringType, property.Name));
 			}
 			if (property.GetIndexParameters().Any())
 			{
-				throw new InvalidAnnotationException(string.Format("Indexer in {0} cannot be annotated",
-					property.DeclaringType));
+				throw new InvalidAnnotationException($"Indexer in {property.DeclaringType} cannot be annotated");
 			}
 
 			return new AnnotatedFieldPart(property);

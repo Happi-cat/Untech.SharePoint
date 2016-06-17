@@ -24,7 +24,8 @@ namespace Untech.SharePoint.Common.Extensions
 		}
 
 		/// <summary>
-		/// Determines whether we can assign null to instance of <paramref name="type"/> <see cref="Type"/>(i.e. <paramref name="type"/> is <see cref="Nullable{T}"/> or is a class. 
+		/// Determines whether we can assign null to instance of <paramref name="type"/> <see cref="Type"/>
+		/// (i.e. <paramref name="type"/> is <see cref="Nullable{T}"/> or it's a class).
 		/// </summary>
 		/// <param name="type">Type to check</param>
 		/// <returns>true if <paramref name="type"/> is <see cref="Nullable{T}"/> or is a class.</returns>

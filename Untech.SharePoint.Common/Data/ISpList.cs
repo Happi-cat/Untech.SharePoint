@@ -24,6 +24,13 @@ namespace Untech.SharePoint.Common.Data
 		T Get(int id);
 
 		/// <summary>
+		/// Gets item attachments URLs by item id.
+		/// </summary>
+		/// <param name="id">Item id.</param>
+		/// <returns>Attachments URLs.</returns>
+		IEnumerable<string> GetAttachments(int id);
+
+		/// <summary>
 		/// Adds new item to SP list.
 		/// </summary>
 		/// <param name="item">Item to add.</param>

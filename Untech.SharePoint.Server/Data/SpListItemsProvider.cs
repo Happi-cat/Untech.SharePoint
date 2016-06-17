@@ -21,6 +21,16 @@ namespace Untech.SharePoint.Server.Data
 			_spList = web.Lists[list.Title];
 		}
 
+		public override IEnumerable<string> GetAttachments(int id)
+		{
+			var spItem = _spList.Items.GetItemById(id);
+			var urlPrefix = spItem.Attachments.UrlPrefix;
+			foreach (var attachmentName in spItem.Attachments)
+			{
+				yield return urlPrefix + attachmentName;
+			}
+		}
+
 		protected override IEnumerable<SPListItem> FetchInternal(string caml)
 		{
 			return _spList.GetItems(CamlUtility.CamlStringToSPQuery(caml))

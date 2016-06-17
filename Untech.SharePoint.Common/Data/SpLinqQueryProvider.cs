@@ -9,10 +9,7 @@ namespace Untech.SharePoint.Common.Data
 {
 	internal class SpLinqQueryProvider : IQueryProvider
 	{
-		public static SpLinqQueryProvider Instance
-		{
-			get { return Singleton<SpLinqQueryProvider>.GetInstance(); }
-		}
+		public static SpLinqQueryProvider Instance => Singleton<SpLinqQueryProvider>.GetInstance();
 
 		public IQueryable CreateQuery(Expression expression)
 		{

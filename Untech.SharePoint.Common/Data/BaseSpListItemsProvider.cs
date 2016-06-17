@@ -269,6 +269,8 @@ namespace Untech.SharePoint.Common.Data
 			}
 		}
 
+		public abstract IEnumerable<string> GetAttachments(int id);
+
 		/// <summary>
 		/// Converts query model to CAML-string in next format <![CDATA[<View><Query></Query></View>]]>.
 		/// </summary>

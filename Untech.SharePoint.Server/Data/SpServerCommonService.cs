@@ -15,8 +15,8 @@ namespace Untech.SharePoint.Server.Data
 	{
 		public SpServerCommonService([NotNull] SPWeb web, [NotNull] Config config)
 		{
-			Guard.CheckNotNull("web", web);
-			Guard.CheckNotNull("config", config);
+			Guard.CheckNotNull(nameof(web), web);
+			Guard.CheckNotNull(nameof(config), config);
 
 			Web = web;
 			Config = config;
@@ -34,7 +34,7 @@ namespace Untech.SharePoint.Server.Data
 			new MapperInitializer()
 		};
 
-		public ISpListItemsProvider GetItemsProvider([NotNull] MetaList list)
+		public ISpListItemsProvider GetItemsProvider(MetaList list)
 		{
 			return new SpListItemsProvider(Web, list);
 		}

@@ -26,6 +26,21 @@ namespace Untech.SharePoint.Client.Data
 		}
 
 
+		public override IEnumerable<string> GetAttachments(int id)
+		{
+			var spItemAttachments = _spList.GetItemById(id).AttachmentFiles;
+			
+			_clientContext.Load(spItemAttachments);
+			_clientContext.ExecuteQuery();
+			var urlPrefix = new Uri(_clientContext.Url)
+				.GetLeftPart(UriPartial.Authority);
+
+			foreach (var attachment in spItemAttachments)
+			{
+				yield return urlPrefix + attachment.ServerRelativeUrl;
+			}
+		}
+
 		protected override IEnumerable<ListItem> FetchInternal(string caml)
 		{
 			var listCollection = _spList.GetItems(CamlUtility.CamlStringToSPQuery(caml));

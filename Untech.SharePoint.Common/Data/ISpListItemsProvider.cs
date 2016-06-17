@@ -118,5 +118,12 @@ namespace Untech.SharePoint.Common.Data
 		/// <typeparam name="T">Type of entity to delete.</typeparam>
 		/// <param name="items">Items to delete.</param>
 		void Delete<T>(IEnumerable<T> items);
+
+		/// <summary>
+		/// Gets item attachment by item id.
+		/// </summary>
+		/// <param name="id"></param>
+		/// <returns></returns>
+		IEnumerable<string> GetAttachments(int id);
 	}
 }

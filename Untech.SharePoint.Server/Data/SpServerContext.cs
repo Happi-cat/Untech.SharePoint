@@ -24,7 +24,7 @@ namespace Untech.SharePoint.Server.Data
 		protected SpServerContext([NotNull] SPWeb web, [NotNull] Config config) 
 			: base(new SpServerCommonService(web, config))
 		{
-			Guard.CheckNotNull("web", web);
+			Guard.CheckNotNull(nameof(web), web);
 
 			Web = web;
 		}

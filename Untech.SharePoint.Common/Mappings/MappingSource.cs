@@ -17,7 +17,7 @@ namespace Untech.SharePoint.Common.Mappings
 		/// <summary>
 		/// Gets <see cref="Type"/> of the associated Data Context class.
 		/// </summary>
-		public Type ContextType { get { return typeof(TContext); } }
+		public Type ContextType => typeof(TContext);
 
 		/// <summary>
 		/// Returns instance of <see cref="MetaContext"/>.

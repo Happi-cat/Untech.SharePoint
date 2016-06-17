@@ -29,7 +29,7 @@ namespace Untech.SharePoint.Server.Data
 		{
 			public ListInfoLoader(SPList spList)
 			{
-				Guard.CheckNotNull("spList", spList);
+				Guard.CheckNotNull(nameof(spList), spList);
 
 				SpList = spList;
 			}

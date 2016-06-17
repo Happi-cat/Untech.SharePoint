@@ -106,8 +106,8 @@ namespace Untech.SharePoint.Common.Utils
 				{
 					return;
 				}
-				throw new ArgumentException(string.Format("Parameter '{0}' is null, but expected type '{1}' is not a System.Nullable`1 and is not a class type.",
-					paramName, expectedType), paramName);
+				throw new ArgumentException(
+					$"Parameter '{paramName}' is null, but expected type '{expectedType}' is not a System.Nullable`1 and is not a class type.", paramName);
 			}
 
 			if (expectedType.IsInstanceOfType(actualValue))
