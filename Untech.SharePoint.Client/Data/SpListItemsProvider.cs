@@ -22,7 +22,7 @@ namespace Untech.SharePoint.Client.Data
 		{
 			_clientContext = clientContext;
 
-			_spList = clientContext.GetList(list.Title);
+			_spList = clientContext.GetListByUrl(list.Url);
 		}
 
 

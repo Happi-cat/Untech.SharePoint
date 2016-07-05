@@ -43,7 +43,7 @@ namespace Untech.SharePoint.Client.Data
 		/// <returns>Instance of the <see cref="List"/>.</returns>
 		public List GetSPList<TEntity>(Expression<Func<TContext, ISpList<TEntity>>> listSelector)
 		{
-			return ClientContext.GetList(GetListTitle(listSelector));
+			return ClientContext.GetListByUrl(GetListUrl(listSelector));
 		}
 	}
 }

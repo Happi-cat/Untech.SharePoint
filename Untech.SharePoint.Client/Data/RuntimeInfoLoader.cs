@@ -18,8 +18,9 @@ namespace Untech.SharePoint.Client.Data
 
 		public override void VisitList(MetaList list)
 		{
-			var spList = ClientContext.GetList(list.Title);
+			var spList = ClientContext.GetListByUrl(list.Url);
 
+			list.Title = spList.Title;
 			list.IsExternal = spList.HasExternalDataSource;
 
 			new ListInfoLoader(spList).VisitList(list);
@@ -29,7 +30,7 @@ namespace Untech.SharePoint.Client.Data
 		{
 			public ListInfoLoader(List spList)
 			{
-				Common.Utils.Guard.CheckNotNull("spList", spList);
+				Common.Utils.Guard.CheckNotNull(nameof(spList), spList);
 
 				SpList = spList;
 			}
@@ -57,7 +58,7 @@ namespace Untech.SharePoint.Client.Data
 			public override void VisitField(MetaField field)
 			{
 				var spField = SpList.Fields.GetByInternalNameOrTitle(field.InternalName);
-
+				
 				SpList.Context.Load(spField);
 				SpList.Context.ExecuteQuery();
 

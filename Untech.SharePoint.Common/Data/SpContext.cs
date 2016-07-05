@@ -66,27 +66,27 @@ namespace Untech.SharePoint.Common.Data
 		/// <returns>Instance of the <see cref="ISpList{T}"/>.</returns>
 		protected ISpList<TEntity> GetList<TEntity>(Expression<Func<TContext, ISpList<TEntity>>> listSelector, SpListOptions options = SpListOptions.Default)
 		{
-			var listTitle = GetListTitle(listSelector);
+			var listUrl = GetListUrl(listSelector);
 
-			return GetList<TEntity>(Model.Lists[listTitle], options);
+			return GetList<TEntity>(Model.Lists[listUrl], options);
 		}
 
 		/// <summary>
-		/// Gets list title by list accessor.
+		/// Gets list URL by list accessor.
 		/// </summary>
 		/// <typeparam name="TEntity">Type of element.</typeparam>
 		/// <param name="listSelector">List property accessor.</param>
-		/// <returns>List title</returns>
-		protected string GetListTitle<TEntity>(Expression<Func<TContext, ISpList<TEntity>>> listSelector)
+		/// <returns>The site-relative URL at which the list was placed.</returns>
+		protected string GetListUrl<TEntity>(Expression<Func<TContext, ISpList<TEntity>>> listSelector)
 		{
 			var memberExp = (MemberExpression) listSelector.Body;
-			var listTitle = MappingSource.GetListTitleFromContextMember(memberExp.Member);
+			var listUrl = MappingSource.GetListUrlFromContextMember(memberExp.Member);
 
-			if (!Model.Lists.ContainsKey(listTitle))
+			if (!Model.Lists.ContainsKey(listUrl))
 			{
-				throw new InvalidOperationException($"Can't find meta-list with title '{listTitle}'");
+				throw new InvalidOperationException($"Can't find meta-list with url '{listUrl}'");
 			}
-			return listTitle;
+			return listUrl;
 		}
 
 		/// <summary>

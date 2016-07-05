@@ -20,26 +20,32 @@ namespace Untech.SharePoint.Common.MetaModels
 		/// Initializes new instance of <see cref="MetaList"/>
 		/// </summary>
 		/// <param name="context">Metadata of parent <see cref="ISpContext"/></param>
-		/// <param name="listTitle">Current list title</param>
+		/// <param name="listUrl">Current list url</param>
 		/// <param name="contentTypeProviders">Providers of <see cref="MetaContentType"/> that associated with current list.</param>
 		/// <exception cref="ArgumentNullException">any parameter is null.</exception>
-		public MetaList([NotNull]MetaContext context, [NotNull]string listTitle, [NotNull]IReadOnlyCollection<IMetaContentTypeProvider> contentTypeProviders)
+		public MetaList([NotNull]MetaContext context, [NotNull]string listUrl, [NotNull]IReadOnlyCollection<IMetaContentTypeProvider> contentTypeProviders)
 		{
 			Guard.CheckNotNull(nameof(context), context);
-			Guard.CheckNotNull(nameof(listTitle), listTitle);
+			Guard.CheckNotNull(nameof(listUrl), listUrl);
 			Guard.CheckNotNullOrEmpty(nameof(contentTypeProviders), contentTypeProviders);
 
 			Context = context;
-			Title = listTitle;
-			
+			Url = listUrl;
+
 			ContentTypes = new MetaContentTypeCollection(contentTypeProviders.Select(n => n.GetMetaContentType(this)));
 		}
 
 		/// <summary>
-		/// Gets current list title.
+		/// Gets the site-relative URL at which the list was placed. 
 		/// </summary>
 		[NotNull]
-		public string Title { get; private set; }
+		public string Url { get; private set; }
+
+		/// <summary>
+		/// Gets or sets current list title.
+		/// </summary>
+		[CanBeNull]
+		public string Title { get; set; }
 
 		/// <summary>
 		/// Gets or sets whether this list is external.

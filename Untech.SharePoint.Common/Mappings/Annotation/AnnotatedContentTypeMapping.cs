@@ -21,7 +21,7 @@ namespace Untech.SharePoint.Common.Mappings.Annotation
 			_entityType = entityType;
 			_contentTypeAttrbiute = _entityType.GetCustomAttribute<SpContentTypeAttribute>() ?? new SpContentTypeAttribute();
 			
-			_fieldParts = CreateFieldParts();
+			_fieldParts = CreateFieldParts().ToList();
 		}
 
 		private string ContentTypeId
@@ -45,17 +45,23 @@ namespace Untech.SharePoint.Common.Mappings.Annotation
 
 		#region [Private Methods]
 
-		private List<AnnotatedFieldPart> CreateFieldParts()
+		private IEnumerable<AnnotatedFieldPart> CreateFieldParts()
 		{
 			var props = _entityType.GetProperties(BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public)
-				.Where(AnnotatedFieldPart.IsAnnotated)
-				.Select(AnnotatedFieldPart.Create);
+				.Where(AnnotatedFieldPart.IsAnnotated);
+
+			foreach (var prop in props)
+			{
+				yield return AnnotatedFieldPart.Create(prop);
+			}
 
 			var fields = _entityType.GetFields(BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public)
-				.Where(AnnotatedFieldPart.IsAnnotated)
-				.Select(AnnotatedFieldPart.Create);
+				.Where(AnnotatedFieldPart.IsAnnotated);
 
-			return props.Concat(fields).ToList();
+			foreach (var field in fields)
+			{
+				yield return AnnotatedFieldPart.Create(field);
+			}
 		}
 
 		#endregion

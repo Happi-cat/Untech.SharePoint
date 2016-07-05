@@ -4,6 +4,7 @@ using Microsoft.SharePoint;
 using Untech.SharePoint.Common.MetaModels;
 using Untech.SharePoint.Common.MetaModels.Visitors;
 using Untech.SharePoint.Common.Utils;
+using Untech.SharePoint.Server.Extensions;
 
 namespace Untech.SharePoint.Server.Data
 {
@@ -18,8 +19,9 @@ namespace Untech.SharePoint.Server.Data
 
 		public override void VisitList(MetaList list)
 		{
-			var spList = SpWeb.Lists[list.Title];
+			var spList = SpWeb.GetListByUrl(list.Url);
 
+			list.Title = spList.Title;
 			list.IsExternal = spList.HasExternalDataSource;
 
 			new ListInfoLoader(spList).VisitList(list);

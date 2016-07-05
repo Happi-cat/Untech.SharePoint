@@ -98,7 +98,6 @@ namespace Untech.SharePoint.Common.Test.Mappings.Annotation
 		[TestMethod]
 		public void CanUsePrivateSetter()
 		{
-
 			var ct = GetContentType<PrivateSetter>();
 
 			Assert.AreEqual(3, ct.Fields.Count);
@@ -130,7 +129,7 @@ namespace Untech.SharePoint.Common.Test.Mappings.Annotation
 
 		public class Ctx<T> : ISpContext
 		{
-			[SpList]
+			[SpList("List")]
 			public ISpList<T> List { get; set; }
 
 			public Config Config { get; private set; }

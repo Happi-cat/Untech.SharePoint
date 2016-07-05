@@ -8,7 +8,7 @@ using Untech.SharePoint.Common.Utils;
 namespace Untech.SharePoint.Common.MetaModels.Collections
 {
 	/// <summary>
-	/// Represents collection of <see cref="MetaList"/> with fast access by <see cref="MetaList.Title"/>.
+	/// Represents collection of <see cref="MetaList"/> with fast access by <see cref="MetaList.Url"/>.
 	/// </summary>
 	public sealed class MetaListCollection : ReadOnlyDictionary<string, MetaList>, IReadOnlyCollection<MetaList>
 	{
@@ -32,7 +32,7 @@ namespace Untech.SharePoint.Common.MetaModels.Collections
 		{
 			Guard.CheckNotNull(nameof(source), source);
 
-			return source.ToDictionary(n => n.Title);
+			return source.ToDictionary(list => list.Url, SiteRelativeUrlComparer.Default);
 		}
 	}
 }

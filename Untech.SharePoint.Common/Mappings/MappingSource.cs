@@ -30,6 +30,6 @@ namespace Untech.SharePoint.Common.Mappings
 		/// </summary>
 		/// <param name="member">Member to resolve.</param>
 		/// <returns>List title that associated with <paramref name="member"/>.</returns>
-		public abstract string GetListTitleFromContextMember(MemberInfo member);
+		public abstract string GetListUrlFromContextMember(MemberInfo member);
 	}
 }

@@ -17,10 +17,10 @@ namespace Untech.SharePoint.Client.Test.Data
 			var context = new ClientContext(@"http://sp2013dev/sites/orm-test");
 			var ctx = GetContext(context);
 			var queries = new QueryablePerfomance().GetQueries();
-			var executor = new ClientTestQueryExecutor<NewsModel>(ctx.Model.Lists["News"])
+			var executor = new ClientTestQueryExecutor<NewsModel>(ctx.Model.Lists["Lists/News"])
 			{
 				List = ctx.News,
-				SpList = context.GetList("News"),
+				SpList = context.GetListByUrl("/Lists/News"),
 				FilePath = @"C:\Perf-Client.csv"
 			};
 

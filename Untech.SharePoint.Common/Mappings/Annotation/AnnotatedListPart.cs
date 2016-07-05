@@ -12,14 +12,14 @@ namespace Untech.SharePoint.Common.Mappings.Annotation
 {
 	internal class AnnotatedListPart : IMetaListProvider
 	{
-		private readonly string _title;
+		private readonly string _url;
 		private readonly Dictionary<Type, AnnotatedContentTypeMapping> _contentTypeProviders;
 
-		private AnnotatedListPart(string listTitle)
+		private AnnotatedListPart(string listUrl)
 		{
-			Guard.CheckNotNullOrEmpty(nameof(listTitle), listTitle);
+			Guard.CheckNotNullOrEmpty(nameof(listUrl), listUrl);
 
-			_title = listTitle;
+			_url = listUrl;
 			_contentTypeProviders = new Dictionary<Type, AnnotatedContentTypeMapping>();
 		}
 
@@ -30,9 +30,9 @@ namespace Untech.SharePoint.Common.Mappings.Annotation
 			return property.IsDefined(typeof (SpListAttribute));
 		}
 
-		public static AnnotatedListPart Create(string listTitle, IEnumerable<PropertyInfo> contextProperties)
+		public static AnnotatedListPart Create(string listUrl, IEnumerable<PropertyInfo> contextProperties)
 		{
-			var listMapping = new AnnotatedListPart(listTitle);
+			var listMapping = new AnnotatedListPart(listUrl);
 
 			contextProperties.Each(listMapping.RegisterContentType);
 
@@ -44,7 +44,7 @@ namespace Untech.SharePoint.Common.Mappings.Annotation
 
 		public MetaList GetMetaList(MetaContext parent)
 		{
-			return new MetaList(parent, _title, _contentTypeProviders.Values.ToList());
+			return new MetaList(parent, _url, _contentTypeProviders.Values.ToList());
 		}
 
 		#region [Private Methods]
@@ -53,21 +53,20 @@ namespace Untech.SharePoint.Common.Mappings.Annotation
 		{
 			if (!contextProperty.CanRead)
 			{
-				throw new InvalidAnnotationException(string.Format("Property {0} from {1} should be readable", contextProperty.Name,
-					contextProperty.DeclaringType));
+				throw new InvalidAnnotationException(
+					$"Property {contextProperty.Name} from {contextProperty.DeclaringType} should be readable");
 			}
 
 			if (!contextProperty.PropertyType.IsGenericType ||
 			    contextProperty.PropertyType.GetGenericTypeDefinition() != typeof (ISpList<>))
 			{
-				throw new InvalidAnnotationException(string.Format("Property {0} from {1} should have 'ISpList<T>' type",
-					contextProperty.Name, contextProperty.DeclaringType));
+				throw new InvalidAnnotationException(
+					$"Property {contextProperty.Name} from {contextProperty.DeclaringType} should have 'ISpList<T>' type");
 			}
 
 			if (contextProperty.GetIndexParameters().Any())
 			{
-				throw new InvalidAnnotationException(string.Format("Indexer in {0} cannot be annotated",
-					contextProperty.DeclaringType));
+				throw new InvalidAnnotationException($"Indexer in {contextProperty.DeclaringType} cannot be annotated");
 			}
 
 			var entityType = contextProperty.PropertyType.GetGenericArguments()[0];
