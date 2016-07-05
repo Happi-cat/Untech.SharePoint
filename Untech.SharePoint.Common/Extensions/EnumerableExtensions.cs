@@ -33,7 +33,7 @@ namespace Untech.SharePoint.Common.Extensions
 		/// <param name="action">Action that should be invoke for every item in the specified collection.</param>
 		public static void Each<T>([CanBeNull, InstantHandle]this IEnumerable<T> enumerable, [NotNull]Action<T> action)
 		{
-			Guard.CheckNotNull("action", action);
+			Guard.CheckNotNull(nameof(action), action);
 			if (enumerable == null) return;
 
 			foreach (var item in enumerable)
@@ -76,10 +76,10 @@ namespace Untech.SharePoint.Common.Extensions
 		[NotNull]
 		public static List<List<T>> ToPages<T>([NotNull, InstantHandle]this IEnumerable<T> enumerable, int pageSize)
 		{
-			Guard.CheckNotNull("enumerable", enumerable);
+			Guard.CheckNotNull(nameof(enumerable), enumerable);
 			if (pageSize < 1)
 			{
-				throw new ArgumentOutOfRangeException("pageSize", "Page size cannot be less than 1.");
+				throw new ArgumentOutOfRangeException(nameof(pageSize), "Page size cannot be less than 1.");
 			}
 
 			var pages = new List<List<T>>();

@@ -19,8 +19,8 @@ namespace Untech.SharePoint.Common.Data.QueryModels
 		public LogicalJoinModel(LogicalJoinOperator logicalOperator, [NotNull]WhereModel first, [NotNull]WhereModel second)
 			: base(WhereType.LogicalJoin)
 		{
-			Guard.CheckNotNull("first", first);
-			Guard.CheckNotNull("second", second);
+			Guard.CheckNotNull(nameof(first), first);
+			Guard.CheckNotNull(nameof(second), second);
 
 			LogicalOperator = logicalOperator;
 			First = first;
@@ -30,19 +30,19 @@ namespace Untech.SharePoint.Common.Data.QueryModels
 		/// <summary>
 		/// Gets CAML logical operator type.
 		/// </summary>
-		public LogicalJoinOperator LogicalOperator { get; private set; }
+		public LogicalJoinOperator LogicalOperator { get; }
 
 		/// <summary>
 		/// Gets first operand.
 		/// </summary>
 		[NotNull]
-		public WhereModel First { get; private set; }
+		public WhereModel First { get; }
 
 		/// <summary>
 		/// Gets second operand.
 		/// </summary>
 		[NotNull]
-		public WhereModel Second { get; private set; }
+		public WhereModel Second { get; }
 
 
 		/// <summary>

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Untech.SharePoint.Common.CodeAnnotations;
@@ -22,7 +23,7 @@ namespace Untech.SharePoint.Common.MetaModels
 		/// <exception cref="ArgumentNullException"><paramref name="listProviders"/> is null.</exception>
 		public MetaContext([NotNull]IReadOnlyCollection<IMetaListProvider> listProviders)
 		{
-			Guard.CheckNotNull("listProviders", listProviders);
+			Guard.CheckNotNull(nameof(listProviders), listProviders);
 
 			Lists = new MetaListCollection(listProviders.Select(n => n.GetMetaList(this)));
 		}
@@ -31,7 +32,7 @@ namespace Untech.SharePoint.Common.MetaModels
 		/// Gets collection of child <see cref="MetaList"/>.
 		/// </summary>
 		[NotNull]
-		public MetaListCollection Lists { get; private set; }
+		public MetaListCollection Lists { get; }
 
 		/// <summary>
 		/// Accepts <see cref="IMetaModelVisitor"/> instance.

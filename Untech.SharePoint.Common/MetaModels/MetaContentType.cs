@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Untech.SharePoint.Common.CodeAnnotations;
@@ -23,9 +24,9 @@ namespace Untech.SharePoint.Common.MetaModels
 		/// <exception cref="ArgumentNullException"><paramref name="list"/> or <paramref name="entityType"/> or <paramref name="fieldProviders"/> are null.</exception>
 		public MetaContentType([NotNull]MetaList list, [NotNull]Type entityType, [NotNull]IReadOnlyCollection<IMetaFieldProvider> fieldProviders)
 		{
-			Guard.CheckNotNull("list", list);
-			Guard.CheckNotNull("entityType", entityType);
-			Guard.CheckNotNull("fieldProviders", fieldProviders);
+			Guard.CheckNotNull(nameof(list), list);
+			Guard.CheckNotNull(nameof(entityType), entityType);
+			Guard.CheckNotNull(nameof(fieldProviders), fieldProviders);
 
 			List = list;
 			EntityType = entityType;
@@ -49,19 +50,19 @@ namespace Untech.SharePoint.Common.MetaModels
 		/// Gets parent <see cref="MetaList"/>
 		/// </summary>
 		[NotNull]
-		public MetaList List { get; private set; }
+		public MetaList List { get; }
 
 		/// <summary>
 		/// Gets collection of child <see cref="MetaField"/>
 		/// </summary>
 		[NotNull]
-		public MetaFieldCollection Fields { get; private set; }
+		public MetaFieldCollection Fields { get; }
 
 		/// <summary>
 		/// Gets <see cref="Type"/> of associated entity.
 		/// </summary>
 		[NotNull]
-		public Type EntityType { get; private set; }
+		public Type EntityType { get; }
 
 		/// <summary>
 		/// Accepts <see cref="IMetaModelVisitor"/> instance.

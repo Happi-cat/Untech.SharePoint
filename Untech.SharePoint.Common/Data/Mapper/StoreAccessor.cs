@@ -18,7 +18,7 @@ namespace Untech.SharePoint.Common.Data.Mapper
 		/// <exception cref="ArgumentNullException"><paramref name="field"/> is null.</exception>
 		protected StoreAccessor([NotNull]MetaField field)
 		{
-			Guard.CheckNotNull("field", field);
+			Guard.CheckNotNull(nameof(field), field);
 
 			Field = field;
 		}
@@ -27,23 +27,17 @@ namespace Untech.SharePoint.Common.Data.Mapper
 		/// Gets <see cref="MetaField"/> associated with current accessor.
 		/// </summary>
 		[NotNull]
-		protected MetaField Field { get;  private set; }
+		protected MetaField Field { get; }
 
 		/// <summary>
 		/// Gets a value indicating whether the value can be read by <see cref="IFieldAccessor{T}.GetValue"/> method.
 		/// </summary>
-		public bool CanGetValue
-		{
-			get { return true; }
-		}
+		public bool CanGetValue => true;
 
 		/// <summary>
 		/// Gets a value indicating whether the value can be set by <see cref="IFieldAccessor{T}.SetValue"/> method.
 		/// </summary>
-		public bool CanSetValue
-		{
-			get { return !Field.ReadOnly && !Field.IsCalculated; }
-		}
+		public bool CanSetValue => !Field.ReadOnly && !Field.IsCalculated;
 
 		/// <summary>
 		/// Gets the value from the specified instance.

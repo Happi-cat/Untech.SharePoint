@@ -4,7 +4,7 @@ $domain = "SP2013Dev"
 
 $lists = @( "Events", "News", "Teams", "Projects" );
 
-$msbuild = "C:\Windows\Microsoft.NET\Framework\v4.0.30319\MSBuild.exe"
+$msbuild = "C:\Program Files (x86)\MSBuild\14.0\bin\amd64\MSBuild.exe"
 $csproj = "..\Untech.SharePoint.sln"
 
 

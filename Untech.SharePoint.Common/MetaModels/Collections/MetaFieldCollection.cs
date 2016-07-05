@@ -30,7 +30,7 @@ namespace Untech.SharePoint.Common.MetaModels.Collections
 		[NotNull]
 		private static IDictionary<string, MetaField> CreateDictionary([NotNull][ItemNotNull]IEnumerable<MetaField> source)
 		{
-			Guard.CheckNotNull("source", source);
+			Guard.CheckNotNull(nameof(source), source);
 
 			return source.ToDictionary(n => n.MemberName);
 		}

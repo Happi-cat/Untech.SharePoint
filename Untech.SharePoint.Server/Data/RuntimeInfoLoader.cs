@@ -4,6 +4,7 @@ using Microsoft.SharePoint;
 using Untech.SharePoint.Common.MetaModels;
 using Untech.SharePoint.Common.MetaModels.Visitors;
 using Untech.SharePoint.Common.Utils;
+using Untech.SharePoint.Server.Extensions;
 
 namespace Untech.SharePoint.Server.Data
 {
@@ -14,12 +15,13 @@ namespace Untech.SharePoint.Server.Data
 			SpWeb = spWeb;
 		}
 
-		private SPWeb SpWeb { get; set; }
+		private SPWeb SpWeb { get; }
 
 		public override void VisitList(MetaList list)
 		{
-			var spList = SpWeb.Lists[list.Title];
+			var spList = SpWeb.GetListByUrl(list.Url);
 
+			list.Title = spList.Title;
 			list.IsExternal = spList.HasExternalDataSource;
 
 			new ListInfoLoader(spList).VisitList(list);
@@ -29,12 +31,12 @@ namespace Untech.SharePoint.Server.Data
 		{
 			public ListInfoLoader(SPList spList)
 			{
-				Guard.CheckNotNull("spList", spList);
+				Guard.CheckNotNull(nameof(spList), spList);
 
 				SpList = spList;
 			}
 
-			private SPList SpList { get; set; }
+			private SPList SpList { get; }
 
 			public override void VisitContentType(MetaContentType contentType)
 			{
@@ -48,7 +50,7 @@ namespace Untech.SharePoint.Server.Data
 
 				if (spContentType == null)
 				{
-					throw new Exception(string.Format("Content type {0} wasn't found", contentType.Id));
+					throw new Exception($"Content type {contentType.Id} wasn't found");
 				}
 
 				contentType.Id = spContentType.Id.ToString();

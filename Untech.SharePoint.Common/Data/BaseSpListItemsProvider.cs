@@ -23,7 +23,7 @@ namespace Untech.SharePoint.Common.Data
 		/// <param name="list">Meta models of the SP list.</param>
 		protected BaseSpListItemsProvider([NotNull] MetaList list)
 		{
-			Guard.CheckNotNull("list", list);
+			Guard.CheckNotNull(nameof(list), list);
 
 			List = list;
 		}
@@ -31,7 +31,7 @@ namespace Untech.SharePoint.Common.Data
 		/// <summary>
 		/// Gets list associated with this instance of the <see cref="BaseSpListItemsProvider{T}"/>.
 		/// </summary>
-		public MetaList List { get; private set; }
+		public MetaList List { get; }
 
 		public bool FilterByContentType { get; set; }
 
@@ -268,6 +268,8 @@ namespace Untech.SharePoint.Common.Data
 				DeleteInternal(batch);
 			}
 		}
+
+		public abstract IEnumerable<string> GetAttachments(int id);
 
 		/// <summary>
 		/// Converts query model to CAML-string in next format <![CDATA[<View><Query></Query></View>]]>.

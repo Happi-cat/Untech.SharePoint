@@ -41,7 +41,7 @@ namespace Untech.SharePoint.Common.Utils
 		/// <exception cref="ArgumentNullException"><paramref name="initializer"/> is null.</exception>
 		public static T GetInstance(Action<T> initializer)
 		{
-			Guard.CheckNotNull("initializer", initializer);
+			Guard.CheckNotNull(nameof(initializer), initializer);
 
 			if (_object == null)
 			{

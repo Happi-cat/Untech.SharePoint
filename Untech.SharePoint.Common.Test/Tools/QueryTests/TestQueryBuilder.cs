@@ -8,34 +8,17 @@ namespace Untech.SharePoint.Common.Test.Tools.QueryTests
 {
 	public class TestQueryBuilder<T> : ITestQueryAcceptor<T>
 	{
+		private readonly QueryComparerAttribute _comparerAttribute;
+		private readonly QueryExceptionAttribute _exceptionAttribute;
+		private readonly QueryCamlAttribute _camlAttribute;
+
 		public TestQueryBuilder(Func<IQueryable<T>, object> query)
 		{
 			Query = query;
-			var comparerAttribute = query.Method.GetCustomAttribute<QueryComparerAttribute>();
-			if (comparerAttribute != null)
-			{
-				Comparer = comparerAttribute.Comparer;
-			}
-			else
-			{
-				Type element;
-				Comparer = ResultType.IsIEnumerable(out element)
-					? typeof(SequenceComparer<>).MakeGenericType(element)
-					: null;
-			}
-
-			var exceptionAttribute = query.Method.GetCustomAttribute<QueryExceptionAttribute>();
-			if (exceptionAttribute != null)
-			{
-				Exception = exceptionAttribute.Exception;
-			}
-
-			var camlAttribute = query.Method.GetCustomAttribute<QueryCamlAttribute>();
-			if (camlAttribute != null)
-			{
-				Caml = camlAttribute.Caml;
-				ViewFields = camlAttribute.ViewFields;
-			}
+			_comparerAttribute = query.Method.GetCustomAttribute<QueryComparerAttribute>();
+			_exceptionAttribute = query.Method.GetCustomAttribute<QueryExceptionAttribute>();
+			_camlAttribute = query.Method.GetCustomAttribute<QueryCamlAttribute>();
+			EmptyResult = query.Method.GetCustomAttribute<EmptyResultQueryAttribute>() != null;
 		}
 
 		public static implicit operator TestQueryBuilder<T>(Func<IQueryable<T>, object> query)
@@ -43,23 +26,44 @@ namespace Untech.SharePoint.Common.Test.Tools.QueryTests
 			return new TestQueryBuilder<T>(query);
 		}
 
-		public Func<IQueryable<T>, object> Query { get; private set; }
+		private Func<IQueryable<T>, object> Query { get; }
 
-		public Type ResultType { get { return Query.Method.ReturnType; } }
+		private Type ResultType => Query.Method.ReturnType;
 
-		public Type Comparer { get; private set; }
+		private Type Comparer
+		{
+			get
+			{
+				if (_comparerAttribute != null)
+				{
+					return _comparerAttribute.Comparer;
+				}
 
-		public Type Exception { get; private set; }
+				Type element;
+				return ResultType.IsIEnumerable(out element)
+					? typeof(SequenceComparer<>).MakeGenericType(element)
+					: null;
+			}
+		}
 
-		public string Caml { get; private set; }
+		private Type Exception => _exceptionAttribute?.Exception;
 
-		public string[] ViewFields { get; private set; }
+		private string Caml => _camlAttribute?.Caml;
+
+		private string[] ViewFields => _camlAttribute?.ViewFields;
+
+		private bool EmptyResult { get; }
 
 		public void Accept(ITestQueryExcecutor<T> executor)
 		{
 			var testQueryType = typeof(TestQuery<,>).MakeGenericType(typeof(T), ResultType);
 			var comparer = Comparer != null ? Activator.CreateInstance(Comparer) : null;
-			var testQuery = (ITestQueryAcceptor<T>)Activator.CreateInstance(testQueryType, Query, comparer, Exception, Caml, ViewFields);
+			var testQuery = (ITestQuery<T>)Activator.CreateInstance(testQueryType, Query, comparer);
+
+			testQuery.Exception = Exception;
+			testQuery.Caml = Caml;
+			testQuery.ViewFields = ViewFields;
+			testQuery.EmptyResult = EmptyResult;
 
 			testQuery.Accept(executor);
 		}

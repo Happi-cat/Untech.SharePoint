@@ -13,7 +13,7 @@ namespace Untech.SharePoint.Common.Converters
 			Converters = new List<Type>();
 		}
 
-		private List<Type> Converters { get; set; }
+		private List<Type> Converters { get; }
 
 		[NotNull]
 		public static IEnumerable<Type> Find([CanBeNull]IMetaModel model)

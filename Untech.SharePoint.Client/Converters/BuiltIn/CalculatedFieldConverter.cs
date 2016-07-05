@@ -31,7 +31,7 @@ namespace Untech.SharePoint.Client.Converters.BuiltIn
 
 			if (!ValueConverters.ContainsKey(field.OutputType))
 			{
-				throw new ArgumentException(string.Format("Output type '{0}' is invalid.", field.OutputType));
+				throw new ArgumentException($"Output type '{field.OutputType}' is invalid.");
 			}
 
 			Internal = ValueConverters[field.OutputType]();
@@ -47,7 +47,7 @@ namespace Untech.SharePoint.Client.Converters.BuiltIn
 				throw new ArgumentException("Calculated field value is an error: " + errValue.ErrorMessage);
 			}
 
-			Guard.CheckIsObjectAssignableTo<T>("value", value);
+			Guard.CheckIsObjectAssignableTo<T>(nameof(value), value);
 			return (T)value;
 		}
 

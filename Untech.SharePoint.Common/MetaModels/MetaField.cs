@@ -24,9 +24,9 @@ namespace Untech.SharePoint.Common.MetaModels
 		/// <exception cref="ArgumentNullException">if any argument is null.</exception>
 		public MetaField([NotNull]MetaContentType contentType, [NotNull]MemberInfo member, [NotNull]string internalName)
 		{
-			Guard.CheckNotNull("contentType", contentType);
-			Guard.CheckNotNull("member", member);
-			Guard.CheckNotNullOrEmpty("internalName", internalName);
+			Guard.CheckNotNull(nameof(contentType), contentType);
+			Guard.CheckNotNull(nameof(member), member);
+			Guard.CheckNotNullOrEmpty(nameof(internalName), internalName);
 
 			ContentType = contentType;
 
@@ -51,7 +51,7 @@ namespace Untech.SharePoint.Common.MetaModels
 		/// Gets SP Field internal name.
 		/// </summary>
 		[NotNull]
-		public string InternalName { get; private set; }
+		public string InternalName { get; }
 
 		/// <summary>
 		/// Gets or sets SP Field Type.
@@ -110,7 +110,7 @@ namespace Untech.SharePoint.Common.MetaModels
 		/// Gets associated <see cref="MemberInfo"/>.
 		/// </summary>
 		[NotNull]
-		public MemberInfo Member { get; private set; }
+		public MemberInfo Member { get; }
 
 		/// <summary>
 		/// Gets associated member name.

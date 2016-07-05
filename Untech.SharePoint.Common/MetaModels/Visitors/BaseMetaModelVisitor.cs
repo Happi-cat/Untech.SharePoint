@@ -13,10 +13,7 @@ namespace Untech.SharePoint.Common.MetaModels.Visitors
 		/// <param name="model">Model to visit.</param>
 		public virtual void Visit(IMetaModel model)
 		{
-			if (model != null)
-			{
-				model.Accept(this);
-			}
+			model?.Accept(this);
 		}
 
 		/// <summary>

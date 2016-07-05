@@ -23,8 +23,8 @@ namespace Untech.SharePoint.Common.Converters
 
 		private static string GetMessage(Type converterType, MetaField field)
 		{
-			var fieldMember = field != null ? field.Member : null;
-			return string.Format("Field converter '{0}' cannot be initialized for field '{1}'", converterType, fieldMember);
+			var fieldMember = field?.Member;
+			return $"Field converter '{converterType}' cannot be initialized for field '{fieldMember}'";
 		}
 	}
 }

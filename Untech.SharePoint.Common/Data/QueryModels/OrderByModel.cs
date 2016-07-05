@@ -15,7 +15,7 @@ namespace Untech.SharePoint.Common.Data.QueryModels
 		/// <param name="ascending">Is ascending ordering.</param>
 		public OrderByModel([NotNull]FieldRefModel fieldRef, bool ascending)
 		{
-			Guard.CheckNotNull("fieldRef", fieldRef);
+			Guard.CheckNotNull(nameof(fieldRef), fieldRef);
 
 			FieldRef = fieldRef;
 			Ascending = ascending;
@@ -24,13 +24,13 @@ namespace Untech.SharePoint.Common.Data.QueryModels
 		/// <summary>
 		/// Determines whether ordering ascending or not.
 		/// </summary>
-		public bool Ascending { get; private set; }
+		public bool Ascending { get; }
 
 		/// <summary>
 		/// Gets associated FieldRef.
 		/// </summary>
 		[NotNull]
-		public FieldRefModel FieldRef { get; private set; }
+		public FieldRefModel FieldRef { get; }
 
 		/// <summary>
 		/// Returns reversed ordering.
@@ -51,15 +51,14 @@ namespace Untech.SharePoint.Common.Data.QueryModels
 			switch (FieldRef.Type)
 			{
 				case FieldRefType.Key:
-					return string.Format("<FieldRef Name='ID' Ascending='{0}' />", Ascending.ToString().ToUpper());
+					return $"<FieldRef Name='ID' Ascending='{Ascending.ToString().ToUpper()}' />";
 				case FieldRefType.ContentTypeId:
-					return string.Format("<FieldRef Name='ContentTypeId' Ascending='{0}' />", Ascending.ToString().ToUpper());
+					return $"<FieldRef Name='ContentTypeId' Ascending='{Ascending.ToString().ToUpper()}' />";
 				case FieldRefType.KnownMember:
 					var memberRef = (MemberRefModel) FieldRef;
-					return string.Format("<FieldRef Name='{0}' Ascending='{1}' />", memberRef.Member.Name,
-						Ascending.ToString().ToUpper());
+					return $"<FieldRef Name='{memberRef.Member.Name}' Ascending='{Ascending.ToString().ToUpper()}' />";
 			}
-			return string.Format("<InvalidFieldRef Name='' Ascending='{0}' />", Ascending.ToString().ToUpper());
+			return $"<InvalidFieldRef Name='' Ascending='{Ascending.ToString().ToUpper()}' />";
 		}
 	}
 }

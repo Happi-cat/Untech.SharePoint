@@ -19,7 +19,7 @@ namespace Untech.SharePoint.Common.Converters
 			Resolver = resolver;
 		}
 
-		private IFieldConverterResolver Resolver { get; set; }
+		private IFieldConverterResolver Resolver { get; }
 
 		/// <summary>
 		/// Visit <see cref="MetaField"/>

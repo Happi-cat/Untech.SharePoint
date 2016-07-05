@@ -12,7 +12,7 @@ namespace Untech.SharePoint.Common.Data.Translators.Predicate
 		}
 
 		[NotNull]
-		private Nominator Nominator { get; set; }
+		private Nominator Nominator { get; }
 
 		public override Expression Visit(Expression node)
 		{

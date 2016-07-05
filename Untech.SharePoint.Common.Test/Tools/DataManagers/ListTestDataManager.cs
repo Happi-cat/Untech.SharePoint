@@ -17,7 +17,7 @@ namespace Untech.SharePoint.Common.Test.Tools.DataManagers
 			_list = list;
 		}
 
-		public IReadOnlyList<T> GeneratedItems { get { return _items; } }
+		public IReadOnlyList<T> GeneratedItems => _items;
 
 		public void Load()
 		{

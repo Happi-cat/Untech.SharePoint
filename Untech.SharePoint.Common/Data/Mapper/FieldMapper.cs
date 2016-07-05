@@ -21,8 +21,8 @@ namespace Untech.SharePoint.Common.Data.Mapper
 		/// <exception cref="ArgumentNullException"><paramref name="field"/> or <paramref name="storeAccessor"/> is null.</exception>
 		public FieldMapper([NotNull]MetaField field, [NotNull]IFieldAccessor<TSPItem> storeAccessor)
 		{
-			Guard.CheckNotNull("field", field);
-			Guard.CheckNotNull("storeAccessor", storeAccessor);
+			Guard.CheckNotNull(nameof(field), field);
+			Guard.CheckNotNull(nameof(storeAccessor), storeAccessor);
 
 			Field = field;
 			MemberAccessor = new MemberAccessor(field.Member);
@@ -33,27 +33,24 @@ namespace Untech.SharePoint.Common.Data.Mapper
 		/// Gets <see cref="MetaField"/> that is associated with current mapper.
 		/// </summary>
 		[NotNull]
-		public MetaField Field { get; private set; }
+		public MetaField Field { get; }
 
 		/// <summary>
 		/// Gets field or property accessor.
 		/// </summary>
 		[NotNull]
-		public IFieldAccessor<object>  MemberAccessor { get; private set; }
+		public IFieldAccessor<object>  MemberAccessor { get; }
 
 		/// <summary>
 		/// Gets SP list field accessor.
 		/// </summary>
 		[NotNull]
-		public IFieldAccessor<TSPItem> StoreAccessor { get; private set; }
+		public IFieldAccessor<TSPItem> StoreAccessor { get; }
 
 		/// <summary>
 		/// Gets <see cref="IFieldConverter"/> associated with current <see cref="Field"/>.
 		/// </summary>
-		public IFieldConverter Converter
-		{
-			get { return Field.Converter; }
-		}
+		public IFieldConverter Converter => Field.Converter;
 
 		/// <summary>
 		/// Maps entity member to SP list field.

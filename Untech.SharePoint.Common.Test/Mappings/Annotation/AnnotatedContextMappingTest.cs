@@ -20,7 +20,7 @@ namespace Untech.SharePoint.Common.Test.Mappings.Annotation
 			var model = GetCtx<Ctx>();
 
 			Assert.AreEqual(1, model.Lists.Count);
-			Assert.AreEqual("List1", model.Lists["List1"].Title);
+			Assert.AreEqual("List1", model.Lists["List1"].Url);
 		}
 
 		[TestMethod]
@@ -29,7 +29,7 @@ namespace Untech.SharePoint.Common.Test.Mappings.Annotation
 			var model = GetCtx<InheritedAnnotationCtx>();
 
 			Assert.AreEqual(1, model.Lists.Count);
-			Assert.AreEqual("List1", model.Lists["List1"].Title);
+			Assert.AreEqual("List1", model.Lists["List1"].Url);
 		}
 
 		[TestMethod]
@@ -38,7 +38,7 @@ namespace Untech.SharePoint.Common.Test.Mappings.Annotation
 			var model = GetCtx<OverwrittenAnnotationCtx>();
 
 			Assert.AreEqual(1, model.Lists.Count);
-			Assert.AreEqual("ListTitle", model.Lists["ListTitle"].Title);
+			Assert.AreEqual("ListTitle", model.Lists["ListTitle"].Url);
 		}
 
 		[TestMethod]
@@ -47,7 +47,7 @@ namespace Untech.SharePoint.Common.Test.Mappings.Annotation
 			var model = GetCtx<MultipleContentTypesCtx>();
 
 			Assert.AreEqual(1, model.Lists.Count);
-			Assert.AreEqual(2, model.Lists["Title"].ContentTypes.Count);
+			Assert.AreEqual(2, model.Lists["Url"].ContentTypes.Count);
 		}
 
 		[TestMethod]
@@ -78,7 +78,7 @@ namespace Untech.SharePoint.Common.Test.Mappings.Annotation
 
 		public class Ctx : ISpContext
 		{
-			[SpList]
+			[SpList("List1")]
 			public virtual ISpList<Entity> List1 { get; set; }
 
 			public Config Config { get; private set; }
@@ -95,19 +95,19 @@ namespace Untech.SharePoint.Common.Test.Mappings.Annotation
 
 		public class OverwrittenAnnotationCtx : Ctx
 		{
-			[SpList(Title = "ListTitle")]
+			[SpList("ListTitle")]
 			public override ISpList<Entity> List1 { get; set; }
 		}
 
 		public class InvalidPropertyTypeCtx : Ctx
 		{
-			[SpList]
+			[SpList("List2")]
 			public string List2 { get; set; }
 		}
 
 		public class WriteOnlyPropertyCtx : Ctx
 		{
-			[SpList]
+			[SpList("List2")]
 			public ISpList<Entity> List2
 			{
 				set { throw new NotImplementedException(); }
@@ -116,7 +116,7 @@ namespace Untech.SharePoint.Common.Test.Mappings.Annotation
 
 		public class IndexerPropertyCtx : Ctx
 		{
-			[SpList]
+			[SpList("List")]
 			public ISpList<Entity> this[string title]
 			{
 				get { throw new NotImplementedException(); }
@@ -126,10 +126,10 @@ namespace Untech.SharePoint.Common.Test.Mappings.Annotation
 
 		public class MultipleContentTypesCtx : Ctx
 		{
-			[SpList(Title = "Title")]
+			[SpList("Url")]
 			public override ISpList<Entity> List1 { get; set; }
 
-			[SpList(Title = "Title")]
+			[SpList("Url")]
 			public ISpList<ChildEntity> List2 { get; set; }
 		}
 

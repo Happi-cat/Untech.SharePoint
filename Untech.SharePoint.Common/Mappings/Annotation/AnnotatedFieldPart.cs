@@ -14,7 +14,7 @@ namespace Untech.SharePoint.Common.Mappings.Annotation
 
 		private AnnotatedFieldPart(MemberInfo member)
 		{
-			Guard.CheckNotNull("member", member);
+			Guard.CheckNotNull(nameof(member), member);
 
 			_member = member;
 			_fieldAttribute = member.GetCustomAttribute<SpFieldAttribute>(true);
@@ -31,12 +31,11 @@ namespace Untech.SharePoint.Common.Mappings.Annotation
 		{
 			if (!property.CanRead || !property.CanWrite)
 			{
-				throw new InvalidAnnotationException(string.Format("Property {1}.{0} should be readable and writable", property.Name, property.DeclaringType));
+				throw new InvalidAnnotationException(string.Format("Property {1}.{0} should be readable and writable", property.DeclaringType, property.Name));
 			}
 			if (property.GetIndexParameters().Any())
 			{
-				throw new InvalidAnnotationException(string.Format("Indexer in {0} cannot be annotated",
-					property.DeclaringType));
+				throw new InvalidAnnotationException($"Indexer in {property.DeclaringType} cannot be annotated");
 			}
 
 			return new AnnotatedFieldPart(property);
@@ -54,27 +53,16 @@ namespace Untech.SharePoint.Common.Mappings.Annotation
 
 		#endregion
 
-		private string InternalName
-		{
-			get { return string.IsNullOrEmpty(_fieldAttribute.Name) ? _member.Name : _fieldAttribute.Name; }
-		}
-
-		private string TypeAsString
-		{
-			get { return _fieldAttribute.FieldType; }
-		}
-
-		private Type CustomConverterType
-		{
-			get { return _fieldAttribute.CustomConverterType; }
-		}
-
 		public MetaField GetMetaField(MetaContentType parent)
 		{
-			return new MetaField(parent, _member, InternalName)
+			var internalName = string.IsNullOrEmpty(_fieldAttribute.Name) 
+				? _member.Name 
+				: _fieldAttribute.Name;
+
+			return new MetaField(parent, _member, internalName)
 			{
-				CustomConverterType = CustomConverterType,
-				TypeAsString = TypeAsString
+				CustomConverterType = _fieldAttribute.CustomConverterType,
+				TypeAsString = _fieldAttribute.FieldType
 			};
 		}
 	}

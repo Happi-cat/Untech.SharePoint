@@ -19,6 +19,17 @@ namespace Untech.SharePoint.Common.Test.Spec
 				.Where(n => n.Description.StartsWith("DESCRIPTION"));
 		}
 
+		[QueryComparer(typeof(EntityComparer))]
+		public IEnumerable<NewsModel> WhereDateQuery(IQueryable<NewsModel> source)
+		{
+			var minDate = source.Min(n => n.Modified).ToLocalTime();
+			var maxDate = source.Max(n => n.Modified).ToLocalTime();
+			var middleDate = new DateTime(minDate.Ticks + ((maxDate.Ticks - minDate.Ticks)/2), DateTimeKind.Local);
+
+			return source
+				.Where(n => n.Modified > middleDate);
+		}
+
 		[QueryComparer(typeof (EntityComparer))]
 		public IEnumerable<ProjectModel> WhereQuery(IQueryable<ProjectModel> source)
 		{
@@ -62,7 +73,7 @@ namespace Untech.SharePoint.Common.Test.Spec
 		}
 
 		[QueryComparer(typeof (EntityComparer))]
-		[NotSupportedQuery]
+		[EmptyResultQuery]
 		public IEnumerable<NewsModel> WhereWhereFalseQuery(IQueryable<NewsModel> source)
 		{
 			var flag = false;
@@ -180,6 +191,7 @@ namespace Untech.SharePoint.Common.Test.Spec
 			return new Func<IQueryable<NewsModel>, object>[]
 			{
 				WhereQuery,
+				WhereDateQuery,
 
 				WhereTake10Query,
 				Take10WhereQuery,

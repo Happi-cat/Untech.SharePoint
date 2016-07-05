@@ -19,9 +19,9 @@ namespace Untech.SharePoint.Common.Mappings.Annotation
 			return _contextMapping.GetMetaContext();
 		}
 
-		public override string GetListTitleFromContextMember(MemberInfo member)
+		public override string GetListUrlFromContextMember(MemberInfo member)
 		{
-			return _contextMapping.GetListTitleFromContextMember(member);
+			return _contextMapping.GetListUrlFromContextMember(member);
 		}
 	}
 }

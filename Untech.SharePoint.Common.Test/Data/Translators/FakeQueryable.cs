@@ -29,9 +29,9 @@ namespace Untech.SharePoint.Common.Test.Data.Translators
 			return GetEnumerator();
 		}
 
-		public Expression Expression { get; private set; }
+		public Expression Expression { get; }
 
-		public Type ElementType { get { return typeof(T); } }
+		public Type ElementType => typeof(T);
 
 		public Action<Expression>  ExpressionExecutor { private get; set; }
 

@@ -61,8 +61,8 @@ namespace Untech.SharePoint.Common.Utils
 		/// <exception cref="ArgumentException"><paramref name="actualType"/> cannot be assinged to <paramref name="expectedType"/>.</exception>
 		public static void CheckIsTypeAssignableTo([InvokerParameterName][CanBeNull]string paramName, [NotNull]Type actualType, [NotNull]Type expectedType)
 		{
-			CheckNotNull("actualType", actualType);
-			CheckNotNull("expectedType", expectedType);
+			CheckNotNull(nameof(actualType), actualType);
+			CheckNotNull(nameof(expectedType), expectedType);
 
 			if (expectedType.IsAssignableFrom(actualType))
 			{
@@ -98,7 +98,7 @@ namespace Untech.SharePoint.Common.Utils
 		/// <exception cref="ArgumentException"><paramref name="actualValue"/> cannot be assinged to <paramref name="expectedType"/>.</exception>
 		public static void CheckIsObjectAssignableTo([InvokerParameterName][CanBeNull]string paramName, [CanBeNull]object actualValue, [NotNull]Type expectedType)
 		{
-			CheckNotNull("expectedType", expectedType);
+			CheckNotNull(nameof(expectedType), expectedType);
 
 			if (actualValue == null)
 			{
@@ -106,8 +106,8 @@ namespace Untech.SharePoint.Common.Utils
 				{
 					return;
 				}
-				throw new ArgumentException(string.Format("Parameter '{0}' is null, but expected type '{1}' is not a System.Nullable`1 and is not a class type.",
-					paramName, expectedType), paramName);
+				throw new ArgumentException(
+					$"Parameter '{paramName}' is null, but expected type '{expectedType}' is not a System.Nullable`1 and is not a class type.", paramName);
 			}
 
 			if (expectedType.IsInstanceOfType(actualValue))

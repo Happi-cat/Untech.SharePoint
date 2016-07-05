@@ -109,7 +109,7 @@ namespace Untech.SharePoint.Common.Test.Converters
 		[SuppressMessage("ReSharper", "UnusedAutoPropertyAccessor.Local")]
 		public class Context<T> : ISpContext
 		{
-			[SpList]
+			[SpList("List")]
 			public ISpList<Entity<T>> List { get; set; }
 
 			public Config Config { get; private set; }

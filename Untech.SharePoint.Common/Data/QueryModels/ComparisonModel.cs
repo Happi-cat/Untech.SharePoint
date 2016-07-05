@@ -37,7 +37,7 @@ namespace Untech.SharePoint.Common.Data.QueryModels
 		public ComparisonModel(ComparisonOperator comparisonOperator, [NotNull]FieldRefModel field, [CanBeNull]object value)
 			: base (WhereType.Comparison)
 		{
-			Guard.CheckNotNull("field", field);
+			Guard.CheckNotNull(nameof(field), field);
 			
 			ComparisonOperator = comparisonOperator;
 			Field = field;
@@ -47,13 +47,13 @@ namespace Untech.SharePoint.Common.Data.QueryModels
 		/// <summary>
 		/// Gets the operator type of CAML comparison operation.
 		/// </summary>
-		public ComparisonOperator ComparisonOperator { get; private set; }
+		public ComparisonOperator ComparisonOperator { get; }
 
 		/// <summary>
 		/// Gets comparable FieldRef.
 		/// </summary>
 		[NotNull]
-		public FieldRefModel Field { get; private set; }
+		public FieldRefModel Field { get; }
 
 		/// <summary>
 		/// Determines whether <see cref="Value"/> is already converted to CAML string.
@@ -64,7 +64,7 @@ namespace Untech.SharePoint.Common.Data.QueryModels
 		/// Gets comparable value.
 		/// </summary>
 		[CanBeNull]
-		public object Value { get; private set; }
+		public object Value { get; }
 
 		/// <summary>
 		/// Returns inverted comparison.
@@ -78,7 +78,7 @@ namespace Untech.SharePoint.Common.Data.QueryModels
 			{
 				return new ComparisonModel(NegateMap[ComparisonOperator], Field, Value);
 			}
-			throw new NotSupportedException(string.Format("Unable to negate: {0}", ComparisonOperator));
+			throw new NotSupportedException($"Unable to negate: {ComparisonOperator}");
 		}
 
 		/// <summary>
@@ -90,7 +90,7 @@ namespace Untech.SharePoint.Common.Data.QueryModels
 			var valueString = "";
 			if (ComparisonOperator != ComparisonOperator.IsNull && ComparisonOperator != ComparisonOperator.IsNotNull)
 			{
-				valueString = string.Format("<Value>{0}</Value>", Convert.ToString(Value));
+				valueString = $"<Value>{Convert.ToString(Value)}</Value>";
 			}
 
 			return string.Format("<{0}>{1}{2}</{0}>", ComparisonOperator, Field, valueString);

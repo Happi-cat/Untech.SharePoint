@@ -5,6 +5,7 @@ using Microsoft.SharePoint;
 using Untech.SharePoint.Common.Data;
 using Untech.SharePoint.Common.Data.Mapper;
 using Untech.SharePoint.Common.MetaModels;
+using Untech.SharePoint.Server.Extensions;
 using Untech.SharePoint.Server.Utils;
 
 namespace Untech.SharePoint.Server.Data
@@ -18,7 +19,17 @@ namespace Untech.SharePoint.Server.Data
 			: base(list)
 		{
 			_spWeb = web;
-			_spList = web.Lists[list.Title];
+			_spList = web.GetListByUrl(list.Url);
+		}
+
+		public override IEnumerable<string> GetAttachments(int id)
+		{
+			var spItem = _spList.Items.GetItemById(id);
+			var urlPrefix = spItem.Attachments.UrlPrefix;
+			foreach (var attachmentName in spItem.Attachments)
+			{
+				yield return urlPrefix + attachmentName;
+			}
 		}
 
 		protected override IEnumerable<SPListItem> FetchInternal(string caml)

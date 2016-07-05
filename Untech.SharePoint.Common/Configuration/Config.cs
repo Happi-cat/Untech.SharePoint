@@ -21,8 +21,8 @@ namespace Untech.SharePoint.Common.Configuration
 		/// <exception cref="ArgumentNullException"><paramref name="fieldConverters"/> or <paramref name="mappings"/> is null.</exception>
 		public Config([NotNull] IFieldConverterResolver fieldConverters, [NotNull] IMappingSourceResolver mappings)
 		{
-			Guard.CheckNotNull("fieldConverters", fieldConverters);
-			Guard.CheckNotNull("mappings", mappings);
+			Guard.CheckNotNull(nameof(fieldConverters), fieldConverters);
+			Guard.CheckNotNull(nameof(mappings), mappings);
 
 			FieldConverters = fieldConverters;
 			Mappings = mappings;

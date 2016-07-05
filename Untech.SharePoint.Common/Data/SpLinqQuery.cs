@@ -11,8 +11,8 @@ namespace Untech.SharePoint.Common.Data
 	{
 		public SpLinqQuery(Expression expression)
 		{
-			Guard.CheckNotNull("expression", expression);
-			Guard.CheckIsTypeAssignableTo<IQueryable<T>>("expression", expression.Type);
+			Guard.CheckNotNull(nameof(expression), expression);
+			Guard.CheckIsTypeAssignableTo<IQueryable<T>>(nameof(expression), expression.Type);
 
 			Expression = expression;
 		}
@@ -27,8 +27,8 @@ namespace Untech.SharePoint.Common.Data
 			return GetEnumerator();
 		}
 
-		public Expression Expression { get; private set; }
-		public Type ElementType { get { return typeof(T); } }
-		public IQueryProvider Provider { get { return SpLinqQueryProvider.Instance; } }
+		public Expression Expression { get; }
+		public Type ElementType => typeof(T);
+		public IQueryProvider Provider => SpLinqQueryProvider.Instance;
 	}
 }

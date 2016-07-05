@@ -24,7 +24,7 @@ namespace Untech.SharePoint.Server.Data
 		protected SpServerContext([NotNull] SPWeb web, [NotNull] Config config) 
 			: base(new SpServerCommonService(web, config))
 		{
-			Guard.CheckNotNull("web", web);
+			Guard.CheckNotNull(nameof(web), web);
 
 			Web = web;
 		}
@@ -32,7 +32,7 @@ namespace Untech.SharePoint.Server.Data
 		/// <summary>
 		/// Gets <see cref="SPWeb"/> that is associated with the current data context.
 		/// </summary>
-		public SPWeb Web { get; private set; }
+		public SPWeb Web { get; }
 
 		/// <summary>
 		/// Gets <see cref="SPList"/> instance by list accessor.
@@ -42,7 +42,7 @@ namespace Untech.SharePoint.Server.Data
 		/// <returns>Instance of the <see cref="SPList"/>.</returns>
 		public SPList GetSPList<TEntity>(Expression<Func<TContext, ISpList<TEntity>>> listSelector)
 		{
-			return Web.Lists[GetListTitle(listSelector)];
+			return Web.GetList(GetListUrl(listSelector));
 		}
 	}
 }

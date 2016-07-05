@@ -11,7 +11,7 @@ namespace Untech.SharePoint.Server.Data
 			SpWeb = web;
 		}
 
-		private SPWeb SpWeb { get; set; }
+		private SPWeb SpWeb { get; }
 
 		public override void VisitField(MetaField field)
 		{

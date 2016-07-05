@@ -72,7 +72,7 @@ namespace Untech.SharePoint.Common.Converters.BuiltIn
 			public string ToCamlValue(object value)
 			{
 				var guidValue = (Guid?)value;
-				return guidValue.HasValue ? guidValue.Value.ToString("D") : "";
+				return guidValue?.ToString("D") ?? "";
 			}
 		}
 	}
