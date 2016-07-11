@@ -1,5 +1,6 @@
 ﻿using Untech.SharePoint.Common.Data;
 using Untech.SharePoint.Common.Mappings.Annotation;
+using Untech.SharePoint.Common.Mappings.ClassLike;
 
 namespace Untech.SharePoint.Common.Mappings
 {
@@ -17,6 +18,12 @@ namespace Untech.SharePoint.Common.Mappings
 			where TContext : ISpContext
 		{
 			return new AnnotatedMappingSource<TContext>();
+		}
+
+		public MappingSource<TContext> ClassLike<TContext>(ContextMap<TContext> contextMap)
+		   where TContext : ISpContext
+		{
+			return new ClassLikeMappingSource<TContext>(contextMap);
 		}
 	}
 }

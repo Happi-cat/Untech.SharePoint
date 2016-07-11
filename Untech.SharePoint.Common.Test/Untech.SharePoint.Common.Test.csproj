@@ -88,6 +88,12 @@
     <Compile Include="Mappings\Annotation\AnnotatedFieldPartTest.cs" />
     <Compile Include="CustomAssert.cs" />
     <Compile Include="Mappings\Annotation\AnnotatedContextMappingTest.cs" />
+    <Compile Include="Mappings\ClassLike\ClassLikeMappingTest.cs" />
+    <Compile Include="Mappings\ClassLike\EventItem.cs" />
+    <Compile Include="Mappings\ClassLike\SmallDataContextMap.cs" />
+    <Compile Include="Mappings\ClassLike\AnnouncmentItem.cs" />
+    <Compile Include="Mappings\ClassLike\SmallDataContext.cs" />
+    <Compile Include="Mappings\ClassLike\MenuItem.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Spec\BasicOperationsSpec.cs" />
     <Compile Include="Spec\QueryablePerfomance.cs" />

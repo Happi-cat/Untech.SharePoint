@@ -29,24 +29,14 @@ namespace Untech.SharePoint.Common.Mappings.Annotation
 
 		public static AnnotatedFieldPart Create(PropertyInfo property)
 		{
-			if (!property.CanRead || !property.CanWrite)
-			{
-				throw new InvalidAnnotationException(string.Format("Property {1}.{0} should be readable and writable", property.DeclaringType, property.Name));
-			}
-			if (property.GetIndexParameters().Any())
-			{
-				throw new InvalidAnnotationException($"Indexer in {property.DeclaringType} cannot be annotated");
-			}
+			Rules.CheckContentTypeField(property);
 
 			return new AnnotatedFieldPart(property);
 		}
 
 		public static AnnotatedFieldPart Create(FieldInfo field)
 		{
-			if (field.IsInitOnly || field.IsLiteral)
-			{
-				throw new InvalidAnnotationException(string.Format("Field {1}.{0} cannot be readonly or const", field.Name, field.DeclaringType));
-			}
+			Rules.CheckContentTypeField(field);
 
 			return new AnnotatedFieldPart(field);
 		}

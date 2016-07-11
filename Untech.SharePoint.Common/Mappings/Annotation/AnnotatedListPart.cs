@@ -51,28 +51,14 @@ namespace Untech.SharePoint.Common.Mappings.Annotation
 
 		private void RegisterContentType(PropertyInfo contextProperty)
 		{
-			if (!contextProperty.CanRead)
-			{
-				throw new InvalidAnnotationException(
-					$"Property {contextProperty.Name} from {contextProperty.DeclaringType} should be readable");
-			}
-
-			if (!contextProperty.PropertyType.IsGenericType ||
-			    contextProperty.PropertyType.GetGenericTypeDefinition() != typeof (ISpList<>))
-			{
-				throw new InvalidAnnotationException(
-					$"Property {contextProperty.Name} from {contextProperty.DeclaringType} should have 'ISpList<T>' type");
-			}
-
-			if (contextProperty.GetIndexParameters().Any())
-			{
-				throw new InvalidAnnotationException($"Indexer in {contextProperty.DeclaringType} cannot be annotated");
-			}
+			Rules.CheckContextList(contextProperty);
 
 			var entityType = contextProperty.PropertyType.GetGenericArguments()[0];
 
 			RegisterContentType(entityType);
 		}
+
+		
 
 		private void RegisterContentType(Type entityType)
 		{
