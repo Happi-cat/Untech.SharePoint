@@ -17,10 +17,10 @@ namespace Untech.SharePoint.Server.Test.Data
 			var web = site.OpenWeb();
 			var ctx = GetContext(web);
 			var queries = new QueryablePerfomance().GetQueries();
-			var executor = new ServerTestQueryExecutor<NewsModel>(ctx.Model.Lists["News"])
+			var executor = new ServerTestQueryExecutor<NewsModel>(ctx.Model.Lists["Lists/News"])
 			{
 				List = ctx.News,
-				SpList = web.Lists["News"],
+				SpList = web.GetList(web.ServerRelativeUrl + "/Lists/News"),
 				FilePath = @"C:\Perf-Server.csv"
 			};
 

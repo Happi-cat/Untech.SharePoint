@@ -6,8 +6,8 @@ namespace Untech.SharePoint.Common.Converters
 {
 	internal class FieldConverterWrapper : IFieldConverter
 	{
-		private Type ConverterType { get; set; }
-		private IFieldConverter ConverterInstance { get; set; }
+		private Type ConverterType { get; }
+		private IFieldConverter ConverterInstance { get; }
 
 		public FieldConverterWrapper(Type converterType, IFieldConverter converterInstance)
 		{

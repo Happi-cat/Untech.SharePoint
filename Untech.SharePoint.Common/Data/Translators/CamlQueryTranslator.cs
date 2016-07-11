@@ -15,18 +15,18 @@ namespace Untech.SharePoint.Common.Data.Translators
 	{
 		public CamlQueryTranslator([NotNull]MetaContentType contentType)
 		{
-			Guard.CheckNotNull("contentType", contentType);
+			Guard.CheckNotNull(nameof(contentType), contentType);
 
 			ContentType = contentType;
 		}
 
 		[NotNull]
-		private MetaContentType ContentType { get; set; }
+		private MetaContentType ContentType { get; }
 
 		[NotNull]
 		public string Process([NotNull]QueryModel query)
 		{
-			Guard.CheckNotNull("query", query);
+			Guard.CheckNotNull(nameof(query), query);
 
 			Logger.Trace(LogCategories.QueryTranslator, "Original QueryModel:\n{0}", query);
 

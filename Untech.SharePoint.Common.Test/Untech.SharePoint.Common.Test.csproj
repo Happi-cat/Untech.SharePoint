@@ -88,6 +88,12 @@
     <Compile Include="Mappings\Annotation\AnnotatedFieldPartTest.cs" />
     <Compile Include="CustomAssert.cs" />
     <Compile Include="Mappings\Annotation\AnnotatedContextMappingTest.cs" />
+    <Compile Include="Mappings\ClassLike\ClassLikeMappingTest.cs" />
+    <Compile Include="Mappings\ClassLike\EventItem.cs" />
+    <Compile Include="Mappings\ClassLike\SmallDataContextMap.cs" />
+    <Compile Include="Mappings\ClassLike\AnnouncmentItem.cs" />
+    <Compile Include="Mappings\ClassLike\SmallDataContext.cs" />
+    <Compile Include="Mappings\ClassLike\MenuItem.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Spec\BasicOperationsSpec.cs" />
     <Compile Include="Spec\QueryablePerfomance.cs" />
@@ -103,6 +109,7 @@
     <Compile Include="Spec\ProjectionQuerySpec.cs" />
     <Compile Include="Spec\FilteringQuerySpec.cs" />
     <Compile Include="Tools\DataManagers\TestDataManager.cs" />
+    <Compile Include="Tools\QueryTests\Attributes.cs" />
     <Compile Include="Tools\QueryTests\ITestQueryAcceptor.cs" />
     <Compile Include="Tools\QueryTests\ITestQueryExcecutor.cs" />
     <Compile Include="Tools\QueryTests\ITestQueryProvider.cs" />
@@ -129,11 +136,7 @@
     <Compile Include="Tools\Generators\ObjectGenerator.cs" />
     <Compile Include="Tools\Generators\ObjectGeneratorExtensions.cs" />
     <Compile Include="Tools\Generators\IValueGenerator.cs" />
-    <Compile Include="Tools\QueryTests\NotSupportedQueryAttribute.cs" />
     <Compile Include="Tools\QueryTests\PerfTestQueryExecutor.cs" />
-    <Compile Include="Tools\QueryTests\QueryComparerAttribute.cs" />
-    <Compile Include="Tools\QueryTests\QueryExceptionAttribute.cs" />
-    <Compile Include="Tools\QueryTests\QueryCamlAttribute.cs" />
     <Compile Include="Tools\QueryTests\SimpleTestQueryExecutor.cs" />
     <Compile Include="Tools\QueryTests\TestQuery.cs" />
     <Compile Include="Tools\QueryTests\TestQueryBuilder.cs" />

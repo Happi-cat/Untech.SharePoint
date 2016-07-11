@@ -11,25 +11,25 @@ namespace Untech.SharePoint.Common.Test.Spec.Models
 
 		}
 
-		[SpList]
+		[SpList("/Lists/News")]
 		public ISpList<NewsModel> News
 		{
 			get { return GetList(x => x.News); }
 		}
 
-		[SpList]
+		[SpList("/Lists/Events")]
 		public ISpList<EventModel> Events
 		{
 			get { return GetList(x => x.Events); }
 		}
 
-		[SpList]
+		[SpList("/Lists/Teams")]
 		public ISpList<TeamModel> Teams
 		{
 			get { return GetList(x => x.Teams); }
 		}
 
-		[SpList]
+		[SpList("/Lists/Projects")]
 		public ISpList<ProjectModel> Projects
 		{
 			get { return GetList(x => x.Projects); }

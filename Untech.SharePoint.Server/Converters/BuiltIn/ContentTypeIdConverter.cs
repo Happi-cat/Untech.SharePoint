@@ -17,7 +17,7 @@ namespace Untech.SharePoint.Server.Converters.BuiltIn
 
 		public object FromSpValue(object value)
 		{
-			return value != null ? value.ToString() : null;
+			return value?.ToString();
 		}
 
 		public object ToSpValue(object value)
@@ -27,7 +27,7 @@ namespace Untech.SharePoint.Server.Converters.BuiltIn
 
 		public string ToCamlValue(object value)
 		{
-			return value != null ? value.ToString() : null;
+			return value?.ToString();
 		}
 	}
 }

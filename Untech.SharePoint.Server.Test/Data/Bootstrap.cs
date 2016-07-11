@@ -14,7 +14,7 @@ namespace Untech.SharePoint.Server.Test.Data
 				.BuildConfig();
 		}
 
-		private Config Config { get; set; }
+		private Config Config { get; }
 
 		public static Config GetConfig()
 		{

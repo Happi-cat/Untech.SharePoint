@@ -14,7 +14,7 @@ namespace Untech.SharePoint.Common.Mappings.Annotation
 
 		private AnnotatedFieldPart(MemberInfo member)
 		{
-			Guard.CheckNotNull("member", member);
+			Guard.CheckNotNull(nameof(member), member);
 
 			_member = member;
 			_fieldAttribute = member.GetCustomAttribute<SpFieldAttribute>(true);
@@ -29,52 +29,30 @@ namespace Untech.SharePoint.Common.Mappings.Annotation
 
 		public static AnnotatedFieldPart Create(PropertyInfo property)
 		{
-			if (!property.CanRead || !property.CanWrite)
-			{
-				throw new InvalidAnnotationException(string.Format("Property {1}.{0} should be readable and writable", property.Name, property.DeclaringType));
-			}
-			if (property.GetIndexParameters().Any())
-			{
-				throw new InvalidAnnotationException(string.Format("Indexer in {0} cannot be annotated",
-					property.DeclaringType));
-			}
+			Rules.CheckContentTypeField(property);
 
 			return new AnnotatedFieldPart(property);
 		}
 
 		public static AnnotatedFieldPart Create(FieldInfo field)
 		{
-			if (field.IsInitOnly || field.IsLiteral)
-			{
-				throw new InvalidAnnotationException(string.Format("Field {1}.{0} cannot be readonly or const", field.Name, field.DeclaringType));
-			}
+			Rules.CheckContentTypeField(field);
 
 			return new AnnotatedFieldPart(field);
 		}
 
 		#endregion
 
-		private string InternalName
-		{
-			get { return string.IsNullOrEmpty(_fieldAttribute.Name) ? _member.Name : _fieldAttribute.Name; }
-		}
-
-		private string TypeAsString
-		{
-			get { return _fieldAttribute.FieldType; }
-		}
-
-		private Type CustomConverterType
-		{
-			get { return _fieldAttribute.CustomConverterType; }
-		}
-
 		public MetaField GetMetaField(MetaContentType parent)
 		{
-			return new MetaField(parent, _member, InternalName)
+			var internalName = string.IsNullOrEmpty(_fieldAttribute.Name) 
+				? _member.Name 
+				: _fieldAttribute.Name;
+
+			return new MetaField(parent, _member, internalName)
 			{
-				CustomConverterType = CustomConverterType,
-				TypeAsString = TypeAsString
+				CustomConverterType = _fieldAttribute.CustomConverterType,
+				TypeAsString = _fieldAttribute.FieldType
 			};
 		}
 	}

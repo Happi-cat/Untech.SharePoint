@@ -41,7 +41,7 @@ namespace Untech.SharePoint.Common.Test.Spec.Models
 
 		[SpField]
 		[Description("Calculated")]
-		public string Definition{ get; set; }
+		public string Definition{ get; private set; }
 
 		[SpField]
 		[Description("Calculated")]

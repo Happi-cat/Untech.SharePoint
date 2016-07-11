@@ -18,10 +18,10 @@ namespace Untech.SharePoint.Common.Test.Tools.DataManagers
 			_projectsData = new ListTestDataManager<ProjectModel>(dataContext.Projects);
 		}
 
-		public IReadOnlyList<NewsModel> News { get { return _newsData.GeneratedItems; } }
-		public IReadOnlyList<EventModel> Events { get { return _eventsData.GeneratedItems; } }
-		public IReadOnlyList<TeamModel> Teams { get { return _teamsData.GeneratedItems; } }
-		public IReadOnlyList<ProjectModel> Projects { get { return _projectsData.GeneratedItems; } }
+		public IReadOnlyList<NewsModel> News => _newsData.GeneratedItems;
+		public IReadOnlyList<EventModel> Events => _eventsData.GeneratedItems;
+		public IReadOnlyList<TeamModel> Teams => _teamsData.GeneratedItems;
+		public IReadOnlyList<ProjectModel> Projects => _projectsData.GeneratedItems;
 
 		public void Init()
 		{

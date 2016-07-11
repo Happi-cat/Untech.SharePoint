@@ -13,7 +13,7 @@ namespace Untech.SharePoint.Common.Converters.BuiltIn
 	{
 		public void Initialize(MetaField field)
 		{
-			Guard.CheckNotNull("field", field);
+			Guard.CheckNotNull(nameof(field), field);
 
 			if (field.MemberType != typeof(string))
 			{

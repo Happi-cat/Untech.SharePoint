@@ -1,5 +1,6 @@
 ﻿using System;
 using Untech.SharePoint.Common.CodeAnnotations;
+using Untech.SharePoint.Common.Utils;
 
 namespace Untech.SharePoint.Common.Mappings.Annotation
 {
@@ -13,19 +14,17 @@ namespace Untech.SharePoint.Common.Mappings.Annotation
 		/// <summary>
 		/// Initializes new instance of the <see cref="SpListAttribute"/>
 		/// </summary>
-		public SpListAttribute() { }
-
-		/// <summary>
-		/// Initializes new instance of the <see cref="SpListAttribute"/>
-		/// </summary>
-		public SpListAttribute(string title)
+		/// <param name="url">The site-relative URL at which the list was placed.</param>
+		public SpListAttribute([NotNull]string url)
 		{
-			Title = title;
+			Guard.CheckNotNull(nameof(url), url);
+
+			Url = url;
 		}
 
 		/// <summary>
-		/// Gets or sets SP list title.
+		/// Gets or sets the site-relative URL at which the list was placed.
 		/// </summary>
-		public string Title { get; set; }
+		public string Url { get; private set; }
 	}
 }

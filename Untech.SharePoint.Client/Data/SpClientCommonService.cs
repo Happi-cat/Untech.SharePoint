@@ -16,33 +16,27 @@ namespace Untech.SharePoint.Client.Data
 	{
 		public SpClientCommonService([NotNull]ClientContext clientContext, [NotNull]Config config)
 		{
-            Guard.CheckNotNull("clientContext", clientContext);
-            Guard.CheckNotNull("config", config);
+			Guard.CheckNotNull(nameof(clientContext), clientContext);
+			Guard.CheckNotNull(nameof(config), config);
 
 			ClientContext = clientContext;
 			Config = config;
 		}
 
-		private ClientContext ClientContext { get; set; }
+		private ClientContext ClientContext { get; }
 
-		public Config Config { get; private set; }
+		public Config Config { get; }
 
-		public IReadOnlyCollection<IMetaModelVisitor> MetaModelProcessors
+		public IReadOnlyCollection<IMetaModelVisitor> MetaModelProcessors => new List<IMetaModelVisitor>
 		{
-			get
-			{
-				return new List<IMetaModelVisitor>
-				{
-					new RuntimeInfoLoader(ClientContext),
-					new FieldConverterCreator(Config.FieldConverters),
-					new MapperInitializer()
-				};
-			}
-		}
+			new RuntimeInfoLoader(ClientContext),
+			new FieldConverterCreator(Config.FieldConverters),
+			new MapperInitializer()
+		};
 
-        public ISpListItemsProvider GetItemsProvider([NotNull] MetaList list)
-        {
-            return new SpListItemsProvider(ClientContext, list);
-        }
-    }
+		public ISpListItemsProvider GetItemsProvider([NotNull] MetaList list)
+		{
+			return new SpListItemsProvider(ClientContext, list);
+		}
+	}
 }

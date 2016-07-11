@@ -15,32 +15,26 @@ namespace Untech.SharePoint.Server.Data
 	{
 		public SpServerCommonService([NotNull] SPWeb web, [NotNull] Config config)
 		{
-			Guard.CheckNotNull("web", web);
-			Guard.CheckNotNull("config", config);
+			Guard.CheckNotNull(nameof(web), web);
+			Guard.CheckNotNull(nameof(config), config);
 
 			Web = web;
 			Config = config;
 		}
 
-		private SPWeb Web { get; set; }
+		private SPWeb Web { get; }
 
-		public Config Config { get; private set; }
+		public Config Config { get; }
 
-		public IReadOnlyCollection<IMetaModelVisitor> MetaModelProcessors
+		public IReadOnlyCollection<IMetaModelVisitor> MetaModelProcessors => new List<IMetaModelVisitor>
 		{
-			get
-			{
-				return new List<IMetaModelVisitor>
-				{
-					new RuntimeInfoLoader(Web),
-					new MetaFieldWebInitilizer(Web),
-					new FieldConverterCreator(Config.FieldConverters),
-					new MapperInitializer()
-				};
-			}
-		}
+			new RuntimeInfoLoader(Web),
+			new MetaFieldWebInitilizer(Web),
+			new FieldConverterCreator(Config.FieldConverters),
+			new MapperInitializer()
+		};
 
-		public ISpListItemsProvider GetItemsProvider([NotNull] MetaList list)
+		public ISpListItemsProvider GetItemsProvider(MetaList list)
 		{
 			return new SpListItemsProvider(Web, list);
 		}

@@ -32,9 +32,9 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("0.9.13.0")]
-[assembly: AssemblyFileVersion("0.9.13.0")]
-[assembly: AssemblyInformationalVersion("RC - 1")]
+[assembly: AssemblyVersion("1.0.0.0")]
+[assembly: AssemblyFileVersion("1.0.0.0")]
+[assembly: AssemblyInformationalVersion("1.0-a")]
 
 [assembly: InternalsVisibleTo("Untech.SharePoint.Client.Test, PublicKey="+
 "0024000004800000940000000602000000240000525341310004000001000100c74a375f89b379"+

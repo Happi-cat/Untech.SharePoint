@@ -11,16 +11,16 @@ namespace Untech.SharePoint.Common.MetaModels
 	/// </summary>
 	public abstract class BaseMetaModel : IMetaModel
 	{
+		[NotNull]
+		private readonly Container<string, object> _additionalProperties;
+
 		/// <summary>
 		/// Initializes base meta model instance.
 		/// </summary>
 		protected BaseMetaModel()
 		{
-			AdditionalProperties  = new Container<string, object>();
+			_additionalProperties  = new Container<string, object>();
 		}
-
-		[NotNull]
-		private Container<string, object> AdditionalProperties { get; set; }
 
 		/// <summary>
 		/// Accepts <see cref="IMetaModelVisitor"/> instance.
@@ -38,9 +38,9 @@ namespace Untech.SharePoint.Common.MetaModels
 		[NotNull]
 		public virtual T GetAdditionalProperty<T>([NotNull]string key)
 		{
-			Guard.CheckNotNull("key", key);
+			Guard.CheckNotNull(nameof(key), key);
 
-			return (T) AdditionalProperties.Resolve(key);
+			return (T) _additionalProperties.Resolve(key);
 		}
 
 		/// <summary>
@@ -52,10 +52,10 @@ namespace Untech.SharePoint.Common.MetaModels
 		/// <exception cref="ArgumentNullException"><paramref name="key"/> or <paramref name="value"/> is null.</exception>
 		public virtual void SetAdditionalProperty<T>([NotNull]string key, [NotNull]T value)
 		{
-			Guard.CheckNotNull("key", key);
-			Guard.CheckNotNull("value", value);
+			Guard.CheckNotNull(nameof(key), key);
+			Guard.CheckNotNull(nameof(value), value);
 
-			AdditionalProperties.Register(key, value);
+			_additionalProperties.Register(key, value);
 		}
 	}
 }

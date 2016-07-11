@@ -17,7 +17,7 @@ namespace Untech.SharePoint.Common.Mappings
 		/// <summary>
 		/// Gets <see cref="Type"/> of the associated Data Context class.
 		/// </summary>
-		public Type ContextType { get { return typeof(TContext); } }
+		public Type ContextType => typeof(TContext);
 
 		/// <summary>
 		/// Returns instance of <see cref="MetaContext"/>.
@@ -30,6 +30,6 @@ namespace Untech.SharePoint.Common.Mappings
 		/// </summary>
 		/// <param name="member">Member to resolve.</param>
 		/// <returns>List title that associated with <paramref name="member"/>.</returns>
-		public abstract string GetListTitleFromContextMember(MemberInfo member);
+		public abstract string GetListUrlFromContextMember(MemberInfo member);
 	}
 }

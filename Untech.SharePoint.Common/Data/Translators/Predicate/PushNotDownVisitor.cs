@@ -18,7 +18,7 @@ namespace Untech.SharePoint.Common.Data.Translators.Predicate
 			};
 		}
 
-		private IReadOnlyCollection<INegateRule> NegateRules { get; set; }
+		private IReadOnlyCollection<INegateRule> NegateRules { get; }
 
 		protected override Expression VisitUnary(UnaryExpression node)
 		{

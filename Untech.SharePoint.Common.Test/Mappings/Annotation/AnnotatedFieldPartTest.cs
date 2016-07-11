@@ -96,6 +96,17 @@ namespace Untech.SharePoint.Common.Test.Mappings.Annotation
 		}
 
 		[TestMethod]
+		public void CanUsePrivateSetter()
+		{
+			var ct = GetContentType<PrivateSetter>();
+
+			Assert.AreEqual(3, ct.Fields.Count);
+			Assert.AreEqual("OriginalName", ct.Fields["Field1"].InternalName);
+			Assert.AreEqual("Field2", ct.Fields["Field2"].InternalName);
+			Assert.AreEqual("Field3", ct.Fields["Field3"].InternalName);
+		}
+
+		[TestMethod]
 		public void ThrowIfPropertyIsWriteOnly()
 		{
 			CustomAssert.Throw<InvalidAnnotationException>(() => { GetContentType<WriteOnlyProperty>(); });
@@ -118,7 +129,7 @@ namespace Untech.SharePoint.Common.Test.Mappings.Annotation
 
 		public class Ctx<T> : ISpContext
 		{
-			[SpList]
+			[SpList("List")]
 			public ISpList<T> List { get; set; }
 
 			public Config Config { get; private set; }
@@ -171,6 +182,12 @@ namespace Untech.SharePoint.Common.Test.Mappings.Annotation
 			{
 				get { throw new NotImplementedException(); }
 			}
+		}
+
+		public class PrivateSetter : Entity
+		{
+			[SpField]
+			public string Field3 { get; private set; }
 		}
 
 		public class WriteOnlyProperty : Entity

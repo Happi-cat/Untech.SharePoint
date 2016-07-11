@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq.Expressions;
 using Untech.SharePoint.Common.CodeAnnotations;
-using Untech.SharePoint.Common.Configuration;
 using Untech.SharePoint.Common.Extensions;
 using Untech.SharePoint.Common.Mappings;
 using Untech.SharePoint.Common.MetaModels;
@@ -20,13 +19,12 @@ namespace Untech.SharePoint.Common.Data
 		/// <summary>
 		/// Initializes a new instance of the <see cref="SpContext{TContext}"/> with the specified config and services.
 		/// </summary>
-		/// <param name="config">Configuration.</param>
 		/// <param name="commonService">Instance of the commen services.</param>
-		/// <exception cref="ArgumentNullException"><paramref name="config"/> or <paramref name="commonService"/> is null.</exception>
+		/// <exception cref="ArgumentNullException"><paramref name="commonService"/> is null.</exception>
 		/// <exception cref="InvalidOperationException">Cannot find mapping source for current context type in the config,</exception>
 		protected SpContext([NotNull]ICommonService commonService)
 		{
-			Guard.CheckNotNull("commonService", commonService);
+			Guard.CheckNotNull(nameof(commonService), commonService);
 
 			CommonService = commonService;
 
@@ -47,17 +45,17 @@ namespace Untech.SharePoint.Common.Data
 		/// Gets <see cref="ICommonService"/> instance that used by this data context instance.
 		/// </summary>
 		[NotNull]
-		public ICommonService CommonService { get; private set; }
+		public ICommonService CommonService { get; }
 
 		/// <summary>
 		/// Gets <see cref="IMappingSource"/> that is used by this instance of the <see cref="ISpContext"/>
 		/// </summary>
-		public IMappingSource MappingSource { get; private set; }
+		public IMappingSource MappingSource { get; }
 
 		/// <summary>
 		/// Gets <see cref="MetaContext"/> that is used by this instance of the <see cref="ISpContext"/>
 		/// </summary>
-		public MetaContext Model { get; private set; }
+		public MetaContext Model { get; }
 
 		/// <summary>
 		/// Gets <see cref="ISpList{T}"/> instance by list accessor.
@@ -68,27 +66,27 @@ namespace Untech.SharePoint.Common.Data
 		/// <returns>Instance of the <see cref="ISpList{T}"/>.</returns>
 		protected ISpList<TEntity> GetList<TEntity>(Expression<Func<TContext, ISpList<TEntity>>> listSelector, SpListOptions options = SpListOptions.Default)
 		{
-			var listTitle = GetListTitle(listSelector);
+			var listUrl = GetListUrl(listSelector);
 
-			return GetList<TEntity>(Model.Lists[listTitle], options);
+			return GetList<TEntity>(Model.Lists[listUrl], options);
 		}
 
 		/// <summary>
-		/// Gets list title by list accessor.
+		/// Gets list URL by list accessor.
 		/// </summary>
 		/// <typeparam name="TEntity">Type of element.</typeparam>
 		/// <param name="listSelector">List property accessor.</param>
-		/// <returns>List title</returns>
-		protected string GetListTitle<TEntity>(Expression<Func<TContext, ISpList<TEntity>>> listSelector)
+		/// <returns>The site-relative URL at which the list was placed.</returns>
+		protected string GetListUrl<TEntity>(Expression<Func<TContext, ISpList<TEntity>>> listSelector)
 		{
 			var memberExp = (MemberExpression) listSelector.Body;
-			var listTitle = MappingSource.GetListTitleFromContextMember(memberExp.Member);
+			var listUrl = MappingSource.GetListUrlFromContextMember(memberExp.Member);
 
-			if (!Model.Lists.ContainsKey(listTitle))
+			if (!Model.Lists.ContainsKey(listUrl))
 			{
-				throw new InvalidOperationException(string.Format("Can't find meta-list with title '{0}'", listTitle));
+				throw new InvalidOperationException($"Can't find meta-list with url '{listUrl}'");
 			}
-			return listTitle;
+			return listUrl;
 		}
 
 		/// <summary>

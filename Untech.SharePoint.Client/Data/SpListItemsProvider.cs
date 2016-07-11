@@ -22,9 +22,24 @@ namespace Untech.SharePoint.Client.Data
 		{
 			_clientContext = clientContext;
 
-			_spList = clientContext.GetList(list.Title);
+			_spList = clientContext.GetListByUrl(list.Url);
 		}
 
+
+		public override IEnumerable<string> GetAttachments(int id)
+		{
+			var spItemAttachments = _spList.GetItemById(id).AttachmentFiles;
+			
+			_clientContext.Load(spItemAttachments);
+			_clientContext.ExecuteQuery();
+			var urlPrefix = new Uri(_clientContext.Url)
+				.GetLeftPart(UriPartial.Authority);
+
+			foreach (var attachment in spItemAttachments)
+			{
+				yield return urlPrefix + attachment.ServerRelativeUrl;
+			}
+		}
 
 		protected override IEnumerable<ListItem> FetchInternal(string caml)
 		{
@@ -152,10 +167,10 @@ namespace Untech.SharePoint.Client.Data
 			}
 
 			[NotNull]
-			public ListItem SpItem { get; private set; }
+			public ListItem SpItem { get; }
 
 			[NotNull]
-			public object Item { get; private set; }
+			public object Item { get; }
 		}
 	}
 }

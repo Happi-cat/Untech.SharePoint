@@ -7,7 +7,7 @@ using Untech.SharePoint.Common.MetaModels.Providers;
 
 namespace Untech.SharePoint.Common.Mappings.Annotation
 {
-	internal class AnnotatedContextMapping<T> : IMetaContextProvider, IListTitleResolver
+	internal class AnnotatedContextMapping<T> : IMetaContextProvider, IListUrlResolver
 	{
 		private readonly Type _contextType;
 		private readonly List<AnnotatedListPart> _listProviders;
@@ -18,11 +18,11 @@ namespace Untech.SharePoint.Common.Mappings.Annotation
 			_listProviders = CreateListParts();
 		}
 
-		public string GetListTitleFromContextMember(MemberInfo member)
+		public string GetListUrlFromContextMember(MemberInfo member)
 		{
 			var listAttribute = member.GetCustomAttribute<SpListAttribute>(true);
 
-			return string.IsNullOrEmpty(listAttribute.Title) ? member.Name : listAttribute.Title;
+			return listAttribute.Url;
 		}
 
 		public MetaContext GetMetaContext()
@@ -36,7 +36,7 @@ namespace Untech.SharePoint.Common.Mappings.Annotation
 		{
 			return _contextType.GetProperties(BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public)
 				.Where(AnnotatedListPart.IsAnnotated)
-				.GroupBy(GetListTitleFromContextMember)
+				.GroupBy(GetListUrlFromContextMember, SiteRelativeUrlComparer.Default)
 				.Select(CreateListPart)
 				.ToList();
 		}

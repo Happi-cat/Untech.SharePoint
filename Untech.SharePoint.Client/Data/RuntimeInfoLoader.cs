@@ -14,12 +14,13 @@ namespace Untech.SharePoint.Client.Data
 			ClientContext = clientContext;
 		}
 
-		private ClientContext ClientContext { get; set; }
+		private ClientContext ClientContext { get; }
 
 		public override void VisitList(MetaList list)
 		{
-			var spList = ClientContext.GetList(list.Title);
+			var spList = ClientContext.GetListByUrl(list.Url);
 
+			list.Title = spList.Title;
 			list.IsExternal = spList.HasExternalDataSource;
 
 			new ListInfoLoader(spList).VisitList(list);
@@ -29,12 +30,12 @@ namespace Untech.SharePoint.Client.Data
 		{
 			public ListInfoLoader(List spList)
 			{
-				Common.Utils.Guard.CheckNotNull("spList", spList);
+				Common.Utils.Guard.CheckNotNull(nameof(spList), spList);
 
 				SpList = spList;
 			}
 
-			private List SpList { get; set; }
+			private List SpList { get; }
 
 			public override void VisitContentType(MetaContentType contentType)
 			{
@@ -45,7 +46,7 @@ namespace Untech.SharePoint.Client.Data
 
 				if (spContentType == null)
 				{
-					throw new Exception(string.Format("Content type {0} wasn't found", contentType.Id));
+					throw new Exception($"Content type {contentType.Id} wasn't found");
 				}
 
 				contentType.Id = spContentType.Id.ToString();
@@ -57,7 +58,7 @@ namespace Untech.SharePoint.Client.Data
 			public override void VisitField(MetaField field)
 			{
 				var spField = SpList.Fields.GetByInternalNameOrTitle(field.InternalName);
-
+				
 				SpList.Context.Load(spField);
 				SpList.Context.ExecuteQuery();
 

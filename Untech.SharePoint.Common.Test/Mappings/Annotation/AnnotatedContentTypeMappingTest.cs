@@ -57,7 +57,7 @@ namespace Untech.SharePoint.Common.Test.Mappings.Annotation
 
 		public class Ctx<T> : ISpContext
 		{
-			[SpList]
+			[SpList("List")]
 			public ISpList<T> List { get; set; }
 
 			public Config Config { get; private set; }

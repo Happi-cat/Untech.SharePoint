@@ -110,7 +110,15 @@
     <Compile Include="Data\Translators\Predicate\SwapComparisonVisitor.cs" />
     <Compile Include="Data\Translators\CamlQueryTranslator.cs" />
     <Compile Include="Data\Translators\Predicate\XorRewriter.cs" />
+    <Compile Include="Mappings\ClassLike\ContentTypeMap.cs" />
+    <Compile Include="Mappings\ClassLike\ContextMap.cs" />
+    <Compile Include="Mappings\ClassLike\EntityContentTypeMap.cs" />
+    <Compile Include="Mappings\ClassLike\FieldPart.cs" />
+    <Compile Include="Mappings\ClassLike\ListPart.cs" />
+    <Compile Include="Mappings\ClassLike\MappingSource.cs" />
     <Compile Include="Mappings\IMappingSource.cs" />
+    <Compile Include="Mappings\Rules.cs" />
+    <Compile Include="MetaModels\SiteRelativeUrlComparer.cs" />
     <Compile Include="Tags.cs" />
     <Compile Include="Diagnostics\ILoggingEndpoint.cs" />
     <Compile Include="Diagnostics\LogLevel.cs" />
@@ -166,7 +174,7 @@
     <Compile Include="MetaModels\Providers\IMetaListProvider.cs" />
     <Compile Include="MetaModels\Providers\IMetaFieldProvider.cs" />
     <Compile Include="Models\Entity.cs" />
-    <Compile Include="Mappings\IListTitleResolver.cs" />
+    <Compile Include="Mappings\IListUrlResolver.cs" />
     <Compile Include="Mappings\MappingSource.cs" />
     <Compile Include="Utils\Reflection\InstanceCreationUtility.cs" />
     <Compile Include="Utils\Reflection\MemberAccessUtility.cs" />

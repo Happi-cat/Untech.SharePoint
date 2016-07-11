@@ -12,13 +12,18 @@ namespace Untech.SharePoint.Common.Data
 			ListItemsProvider = listItemsProvider;
 		}
 
-		private ISpListItemsProvider ListItemsProvider { get; set; }
+		private ISpListItemsProvider ListItemsProvider { get; }
 
-		public string Title { get { return ListItemsProvider.List.Title; } }
+		public string Title => ListItemsProvider.List.Title;
 
 		public T Get(int id)
 		{
 			return ListItemsProvider.Get<T>(id);
+		}
+
+		public IEnumerable<string> GetAttachments(int id)
+		{
+			return ListItemsProvider.GetAttachments(id);
 		}
 
 		public T Add(T item)
@@ -57,9 +62,11 @@ namespace Untech.SharePoint.Common.Data
 
 		private static Expression MakeFakeFetch(ISpListItemsProvider listItemsProvider)
 		{
-			Guard.CheckNotNull("listItemsProvider", listItemsProvider);
+			Guard.CheckNotNull(nameof(listItemsProvider), listItemsProvider);
 
 			return SpQueryable.MakeFakeFetch(typeof(T), listItemsProvider);
 		}
+
+		
 	}
 }
