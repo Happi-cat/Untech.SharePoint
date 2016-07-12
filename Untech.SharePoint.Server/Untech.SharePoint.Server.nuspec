@@ -1,18 +1,18 @@
 <?xml version="1.0"?>
 <package >
-  <metadata>
-    <id>$id$</id>
-    <version>$version$</version>
-    <title>$title$</title>
-    <authors>$author$</authors>
-    <owners>$author$</owners>
-	<licenseUrl>https://github.com/Happi-cat/Untech.SharePoint/blob/master/LICENSE</licenseUrl>
-	<projectUrl>https://github.com/Happi-cat/Untech.SharePoint</projectUrl>
-    <iconUrl>https://raw.githubusercontent.com/Happi-cat/Untech.SharePoint/master/linq-sharepoint-logo-64.png</iconUrl>
-    <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>$description$</description>
-    <releaseNotes>Alpha Build</releaseNotes>
-    <copyright>Copyright 2015</copyright>
-    <tags>SharePoint Data SSOM</tags>
-  </metadata>
+	<metadata>
+		<id>$id$</id>
+		<version>$version$</version>
+		<title>$title$</title>
+		<authors>$author$</authors>
+		<owners>$author$</owners>
+		<licenseUrl>https://github.com/Happi-cat/Untech.SharePoint/blob/master/LICENSE</licenseUrl>
+		<projectUrl>https://github.com/Happi-cat/Untech.SharePoint</projectUrl>
+		<iconUrl>https://raw.githubusercontent.com/Happi-cat/Untech.SharePoint/master/linq-sharepoint-logo-64.png</iconUrl>
+		<requireLicenseAcceptance>false</requireLicenseAcceptance>
+		<description>$description$</description>
+		<releaseNotes>Relese 1</releaseNotes>
+		<copyright>Copyright 2016</copyright>
+		<tags>SharePoint Data SSOM</tags>
+	</metadata>
 </package>
