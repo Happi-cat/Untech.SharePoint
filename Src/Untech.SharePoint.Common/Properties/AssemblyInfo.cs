@@ -31,14 +31,11 @@ using System.Runtime.InteropServices;
 //
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
-// [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.0.0.1")]
-[assembly: AssemblyFileVersion("1.0.0.1")]
-[assembly: AssemblyInformationalVersion("1.0.0")]
+// [assembly: AssemblyVersion("1.0.1.0")]
+[assembly: AssemblyVersion("1.0.1.0")]
+[assembly: AssemblyFileVersion("1.0.1.0")]
+[assembly: AssemblyInformationalVersion("1.0.1")]
 
-[assembly: InternalsVisibleTo("Untech.SharePoint.Common.Test, PublicKey=" +
-	"0024000004800000940000000602000000240000525341310004000001000100d9e78bfa445366" +
-	"c9fef1a274110c728aefe0be8d0aa815aa139977340a2ca2c236527b39f1d161748dce1a392b59" +
-	"4b7bb81a2da3aa47e2a0b51442f4f05381998622283bcd789306bfcf8dd7a1c61e62a4b167bafd" +
-	"53b7b2483ca6fd3f108bec3a306ec7c8b119f6a750a59a1db5c8df351291cc9c5f0454f9b56e89" +
-	"b591c6ac")]
+#if !SIGNED
+[assembly: InternalsVisibleTo("Untech.SharePoint.Common.Test")]
+#endif
