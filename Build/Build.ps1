@@ -11,6 +11,7 @@ $signAssemblies = $true
 $signKeyPath = "C:\Untech.SharePoint.pfx"
 
 $msbuild = "C:\Program Files (x86)\MSBuild\14.0\bin\amd64\MSBuild.exe";
+$mstest = "C:\Program Files (x86)\Microsoft Visual Studio 14.0\Common7\IDE\MSTest.exe"
 $nuget = "$toolsDir\NuGet\NuGet.exe";
 
 
@@ -18,11 +19,10 @@ $builds = @(
     @{
         Name = "Untech.SharePoint"; 
         Packages=@("Untech.SharePoint.Common", "Untech.SharePoint.Client", "Untech.SharePoint.Server"); 
-        Constants = "PUBLISH"; 
     }
     @{
         Name = "Untech.SharePoint.All"; 
-        TestsName = "Untech.SharePoint.Common.Tests"; 
+        Tests = @("Untech.SharePoint.Common.Test", "Untech.SharePoint.Client.Test", "Untech.SharePoint.Server.Test"); 
     }
 );
 
@@ -48,8 +48,9 @@ function Update-AssemblyInfoFiles {
     }
 }
 
-function Build-MSBuild($build)
-{
+function Restore-Packages {
+    param($build)
+
     $name = $build.Name
 
     Write-Host
@@ -59,7 +60,14 @@ function Build-MSBuild($build)
     & $nuget restore $sourceDir\$name.sln `
         -verbosity detailed `
         -source "https://www.nuget.org/api/v2;https://www.myget.org/F/nuget"
+}
+
+function Build-MSBuild {
+    param($build)
+
+    Restore-Packages $build
     
+    $name = $build.Name
 
     $constants = Get-Constants $build.Constants $signAssemblies
 
@@ -76,10 +84,14 @@ function Build-MSBuild($build)
         /p:VisualStudioVersion=14.0 `
         /p:DefineConstants=`"$constants`" `
         $sourceDir\$name.sln
-    
+}
 
+function Create-NugetPackages {
+    param($build)
 
-    $build.Packages | %{
+    $name = $build.Name
+
+     $build.Packages | %{
         Write-Host
         Write-Host "Packing $_" -ForegroundColor Green
 
@@ -90,12 +102,43 @@ function Build-MSBuild($build)
     }
 }
 
-function Get-Constants($constants, $includeSigned)
-{
-  $signed = if ($includeSigned) { ";SIGNED" }
+function Test-MSTest {
+    param($build)
 
-  return "$constants$signed"
+    Restore-Packages $build
+
+    $name = $build.Name
+
+    Write-Host
+    Write-Host "Building $sourceDir\$name.sln" -ForegroundColor Green
+
+    & $msbuild "/t:Clean;Rebuild" `
+        /p:Configuration=Release `
+        "/p:Platform=Any CPU" `
+        /p:PlatformTarget=AnyCPU `
+        /p:TreatWarningsAsErrors=$treatWarningsAsErrors `
+        /p:VisualStudioVersion=14.0 `
+        /p:DefineConstants=`"$constants`" `
+        $sourceDir\$name.sln
+    
+    Write-Host
+    Write-Host "Testing $sourceDir\$name.sln" -ForegroundColor Green
+
+    $build.Tests | %{
+        & $mstest /testcontainer:$sourceDir\$_\bin\Release\$_.dll /Platform:x64
+    }
+}
+
+function Get-Constants {
+    param($constants, $includeSigned)
+    $signed = if ($includeSigned) { ";SIGNED" }
+
+    return "$constants$signed"
 }
 
 Update-AssemblyInfoFiles $sourceDir $version $version $infoVersion
+
+Test-MSTest $builds[1]
+
 Build-MSBuild $builds[0]
+Create-NugetPackages $builds[0]
