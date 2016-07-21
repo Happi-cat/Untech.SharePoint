@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
 using Microsoft.SharePoint;
 using Untech.SharePoint.Common.MetaModels;
@@ -61,7 +62,7 @@ namespace Untech.SharePoint.Server.Data
 
 			public override void VisitField(MetaField field)
 			{
-				var spField = SpList.Fields.GetFieldByInternalName(field.InternalName);
+				var spField = GetField(field);
 
 				field.Id = spField.Id;
 				field.Title = spField.Title;
@@ -96,6 +97,18 @@ namespace Untech.SharePoint.Server.Data
 				{
 					var spCalculatedField = (SPFieldCalculated) spField;
 					field.OutputType = spCalculatedField.OutputType.ToString();
+				}
+			}
+
+			private SPField GetField(MetaField field)
+			{
+				try
+				{
+					return SpList.Fields.GetFieldByInternalName(field.InternalName);
+				}
+				catch (Exception e)
+				{
+					throw new InvalidDataException($"Unable to find field by internal name: ${field.InternalName}", e);
 				}
 			}
 		}

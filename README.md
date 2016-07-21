@@ -29,13 +29,13 @@ They can be installed using NuGet in Visual Studio:
 
 * for Client
 
-```
+```powershell
 	Install-Package Untech.SharePoint.Client 
 ```
 
 * for Server
 
-```
+```powershell
 	Install-Package Untech.SharePoint.Server
 ```
 
@@ -46,17 +46,19 @@ They can be installed using NuGet in Visual Studio:
 
 ```cs
 	var cfg = ServerConfig.Begin()
-		.RegisterMappings(n => n.Annotated<InvestmenFrameworkContext>())
+		.RegisterMappings(n => n.Annotated<ServerDataContext>())
+		.RegisterMappings(n => n.ClassLike(new FlexibleDataContextMap()))
 		.BuildConfig();
 
 	// ...
 
 	var web = new SPSite("http://localhost/sites/some").OpenWeb();
-	var ctx = new InvestmenFrameworkContext(web, cfg);
+	var ctx = new ServerDataContext(web, cfg);
+	var ctx2 = new FlexibleDataContext(new SpServerCommonService(web, cfg))
 
 	// ...
 
-	var result = ctx.InvestmentProjects
+	var result = ctx.Projects
 		.Where(n => n.ProjectUniqueId.StartsWith("TTT") && n.Status == "Approved")
 		.Where(n => n.Title.Contains("LALA"))
 		.ToList();
@@ -67,17 +69,19 @@ They can be installed using NuGet in Visual Studio:
 
 ```cs
 	var cfg = ClientConfig.Begin()
-		.RegisterMappings(n => n.Annotated<InvestmenFrameworkContext>())
+		.RegisterMappings(n => n.Annotated<ClientDataContext>())
+		.RegisterMappings(n => n.ClassLike(new FlexibleDataContextMap()))
 		.BuildConfig();
 
 	// ...
 
 	var clientCtx = new ClientContext("http://spserver/sites/some");
-	var ctx = new InvestmenFrameworkContext(clientCtx, cfg);
+	var ctx = new ClientDataContext(clientCtx, cfg);
+	var ctx2 = new FlexibleDataContext(new SpClientCommonService(clientCtx, cfg))
 
 	// ...
 
-	var result = ctx.InvestmentProjects
+	var result = ctx.Projects
 		.Where(n => n.ProjectUniqueId.StartsWith("TTT") && n.Status == "Approved")
 		.Where(n => n.Title.Contains("LALA"))
 		.ToList();
@@ -86,16 +90,49 @@ They can be installed using NuGet in Visual Studio:
 * Models & Context
 
 ```cs
-	public class WebDataContext : SpServerContext<WebDataContext>
+	// Server-only data context
+	public class ServerDataContext : SpServerContext<ServerDataContext>
 	{
-		public WebDataContext(SPWeb web, Config config) 
-			: base(web, config)
-		{
+		public ServerDataContext(SPWeb web, Config config) 
+			: base(web, config) {  }
 
-		}
-
-		[SpList(Title = "Test List")]
+		[SpList(Title = "/Lists/Test%20List")]
 		public ISpList<TestListItem> TestList { get { return GetList(x => x.TestList); }}
+	}
+
+	// Client-only data context
+	public class ClientDataContext : SpServerContext<ClientDataContext>
+	{
+		public ClientDataContext(ClientContext ctx, Config config) 
+			: base(ctx, config) {  }
+
+		[SpList(Title = "/Lists/Test%20List")]
+		public ISpList<TestListItem> TestList { get { return GetList(x => x.TestList); } }
+
+		// etc.
+	}
+
+	// More flexible data context (i.e. can be used on server & client)
+	public class FlexibleDataContext : SpContext<FlexibleDataContext>
+	{
+		public FlexibleDataContext(ICommonService commonService)
+			: base(commonService) {  }
+
+		public ISpList<TestListItem> TestList { get { return GetList(x => x.TestList); }}
+
+		// etc.
+	}
+
+	// Class-like map for flexible data context.
+	public class FlexibleDataContextMap : ContextMap<FlexibleDataContext>
+	{
+		public FlexibleDataContextMap()
+		{
+			List("/Lists/Test%20List")
+				.AnnotatedContentType(n => n.TestList);
+
+			// etc.
+		}
 	}
 
 	[SpContentType]

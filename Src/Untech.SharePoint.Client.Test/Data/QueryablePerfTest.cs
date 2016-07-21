@@ -8,7 +8,9 @@ using Untech.SharePoint.Common.Test.Tools.QueryTests;
 
 namespace Untech.SharePoint.Client.Test.Data
 {
+#if PERF_TEST
 	[TestClass]
+#endif
 	public class QueryablePerfTest
 	{
 		[TestMethod]
