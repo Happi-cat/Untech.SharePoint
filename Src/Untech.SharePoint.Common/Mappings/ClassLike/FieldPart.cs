@@ -28,7 +28,8 @@ namespace Untech.SharePoint.Common.Mappings.ClassLike
 		/// </summary>
 		/// <param name="internalName">The internal name of the current SP field.</param>
 		/// <returns>Current instance.</returns>
-		public FieldPart InternalName(string internalName)
+		[NotNull]
+		public FieldPart InternalName([CanBeNull]string internalName)
 		{
 			_internalName = internalName;
 			return this;
@@ -39,7 +40,8 @@ namespace Untech.SharePoint.Common.Mappings.ClassLike
 		/// </summary>
 		/// <param name="typeAsString">The type of the current SP field.</param>
 		/// <returns>Current instance.</returns>
-		public FieldPart TypeAsString(string typeAsString)
+		[NotNull]
+		public FieldPart TypeAsString([CanBeNull]string typeAsString)
 		{
 			_typeAsString = typeAsString;
 			return this;
@@ -50,6 +52,7 @@ namespace Untech.SharePoint.Common.Mappings.ClassLike
 		/// </summary>
 		/// <typeparam name="TConverter">Type of SP field converter.</typeparam>
 		/// <returns>Current instance.</returns>
+		[NotNull]
 		public FieldPart CustomConverter<TConverter>()
 			where TConverter : IFieldConverter, new()
 		{

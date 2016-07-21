@@ -8,6 +8,7 @@ using Untech.SharePoint.Common.Data;
 using Untech.SharePoint.Common.Extensions;
 using Untech.SharePoint.Common.MetaModels;
 using Untech.SharePoint.Common.MetaModels.Providers;
+using Untech.SharePoint.Common.Utils;
 
 namespace Untech.SharePoint.Common.Mappings.ClassLike
 {
@@ -33,7 +34,7 @@ namespace Untech.SharePoint.Common.Mappings.ClassLike
 		/// Sets content type id of the current or parent content type.
 		/// </summary>
 		/// <param name="contentTypeId"></param>
-		public void ContentTypeId(string contentTypeId)
+		public void ContentTypeId([CanBeNull]string contentTypeId)
 		{
 			_contentTypeId = contentTypeId;
 		}
@@ -43,8 +44,11 @@ namespace Untech.SharePoint.Common.Mappings.ClassLike
 		/// </summary>
 		/// <param name="propertyAccessor">Field or property accessor.</param>
 		/// <returns>Instance of the <see cref="FieldPart"/> that allows to configure content type's field mapping.</returns>
-		public FieldPart Field(Expression<Func<TEntity, object>> propertyAccessor)
+		[NotNull]
+		public FieldPart Field([NotNull]Expression<Func<TEntity, object>> propertyAccessor)
 		{
+			Guard.CheckNotNull(nameof(propertyAccessor), propertyAccessor);
+
 			var member = GetMemberInfo(propertyAccessor);
 
 			if (!_fieldParts.ContainsKey(member))

@@ -20,6 +20,12 @@ namespace Untech.SharePoint.Common.Mappings
 			return new AnnotatedMappingSource<TContext>();
 		}
 
+		/// <summary>
+		/// Creates <see cref="MappingSource{TContext}"/> based on <see cref="ContextMap{TContext}"/>.
+		/// </summary>
+		/// <param name="contextMap">Instance of context mapping</param>
+		/// <typeparam name="TContext">Type of <see cref="ISpContext"/></typeparam>
+		/// <returns>Mapping source for the specified <typeparamref name="TContext"/>.</returns>
 		public MappingSource<TContext> ClassLike<TContext>(ContextMap<TContext> contextMap)
 		   where TContext : ISpContext
 		{

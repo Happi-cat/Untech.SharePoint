@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using Untech.SharePoint.Common.CodeAnnotations;
 using Untech.SharePoint.Common.Data;
 using Untech.SharePoint.Common.Extensions;
 using Untech.SharePoint.Common.Mappings.Annotation;
 using Untech.SharePoint.Common.MetaModels;
 using Untech.SharePoint.Common.MetaModels.Providers;
+using Untech.SharePoint.Common.Utils;
 
 namespace Untech.SharePoint.Common.Mappings.ClassLike
 {
@@ -38,8 +40,13 @@ namespace Untech.SharePoint.Common.Mappings.ClassLike
 		///		that will be associated with <typeparamref name="TEntity"/> type and with specified member of data context.</param>
 		/// <returns>Current instance.</returns>
 		/// <exception cref="ArgumentException">Invalid member was selected or mapping for type <typeparamref name="TEntity"/> was added earlier to that or another list.</exception>
-		public ListPart<TContext> ContentType<TEntity>(Expression<Func<TContext, ISpList<TEntity>>> propertyAccessor, ContentTypeMap<TEntity> contentTypeMap)
+		/// <exception cref="ArgumentNullException">Thrown if <paramref name="propertyAccessor"/> or <paramref name="contentTypeMap"/> is null.</exception>
+		[NotNull]
+		public ListPart<TContext> ContentType<TEntity>([NotNull]Expression<Func<TContext, ISpList<TEntity>>> propertyAccessor, [NotNull] ContentTypeMap<TEntity> contentTypeMap)
 		{
+			Guard.CheckNotNull(nameof(propertyAccessor), propertyAccessor);
+			Guard.CheckNotNull(nameof(contentTypeMap), contentTypeMap);
+
 			RegisterContentTypeMap(propertyAccessor, contentTypeMap);
 
 			return this;
@@ -51,8 +58,12 @@ namespace Untech.SharePoint.Common.Mappings.ClassLike
 		/// <param name="propertyAccessor">Field or property accessor.</param>
 		/// <returns>Current instance.</returns>
 		/// <exception cref="ArgumentException">Invalid member was selected or mapping for type <typeparamref name="TEntity"/> was added earlier to that or another list.</exception>
-		public ListPart<TContext> AnnotatedContentType<TEntity>(Expression<Func<TContext, ISpList<TEntity>>> propertyAccessor)
+		/// <exception cref="ArgumentNullException">Thrown if <paramref name="propertyAccessor"/> is null.</exception>
+		[NotNull]
+		public ListPart<TContext> AnnotatedContentType<TEntity>([NotNull]Expression<Func<TContext, ISpList<TEntity>>> propertyAccessor)
 		{
+			Guard.CheckNotNull(nameof(propertyAccessor), propertyAccessor);
+
 			RegisterContentTypeMap(propertyAccessor, new AnnotatedContentTypeMapping(typeof(TEntity)));
 
 			return this;

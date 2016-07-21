@@ -23,9 +23,10 @@ namespace Untech.SharePoint.Common.Collections
 		/// <exception cref="ArgumentNullException"><paramref name="key"/> or <paramref name="obj"/> is null.</exception>
 		public void Register([NotNull]TKey key, [NotNull] TObject obj)
 		{
+			Guard.CheckNotNull(nameof(key), key);
 			Guard.CheckNotNull(nameof(obj), obj);
 
-			if (IsRegistered(key))
+			if (_registeredObjects.ContainsKey(key))
 			{
 				_registeredObjects[key] = obj;
 			}
@@ -44,7 +45,9 @@ namespace Untech.SharePoint.Common.Collections
 		[NotNull]
 		public TObject Resolve([NotNull]TKey key)
 		{
-			if (IsRegistered(key))
+			Guard.CheckNotNull(nameof(key), key);
+
+			if (_registeredObjects.ContainsKey(key))
 			{
 				return _registeredObjects[key];
 			}

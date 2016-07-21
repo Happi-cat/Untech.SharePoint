@@ -1,9 +1,12 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Untech.SharePoint.Common.CodeAnnotations;
 using Untech.SharePoint.Common.Data;
 using Untech.SharePoint.Common.MetaModels;
 using Untech.SharePoint.Common.MetaModels.Providers;
+using Untech.SharePoint.Common.Utils;
 
 namespace Untech.SharePoint.Common.Mappings.ClassLike
 {
@@ -31,8 +34,12 @@ namespace Untech.SharePoint.Common.Mappings.ClassLike
 		/// </summary>
 		/// <param name="url">Site-relative URL of the desirable list.</param>
 		/// <returns>Instance of the <see cref="ListPart{TContext}"/> that allows to configure list mapping.</returns>
-		public ListPart<TContext> List(string url)
+		/// <exception cref="ArgumentNullException"><paramref name="url"/> is null or empty.</exception>
+		[NotNull]
+		public ListPart<TContext> List([NotNull]string url)
 		{
+			Guard.CheckNotNullOrEmpty(nameof(url), url);
+
 			if (!_listParts.ContainsKey(url))
 			{
 				_listParts.Add(url, new ListPart<TContext>(this, url));
