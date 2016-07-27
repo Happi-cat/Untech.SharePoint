@@ -61,7 +61,7 @@
     <Otherwise>
       <ItemGroup>
         <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework">
-          <Private>False</Private>
+          <Private>True</Private>
         </Reference>
       </ItemGroup>
     </Otherwise>

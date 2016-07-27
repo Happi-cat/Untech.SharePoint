@@ -35,6 +35,12 @@ namespace Untech.SharePoint.Common.MetaModels
 		public MetaListCollection Lists { get; }
 
 		/// <summary>
+		/// Gets or sets SP Web Url.
+		/// </summary>
+		[CanBeNull]
+		public string Url { get; set; }
+
+		/// <summary>
 		/// Accepts <see cref="IMetaModelVisitor"/> instance.
 		/// </summary>
 		/// <param name="visitor">Visitor to accept.</param>

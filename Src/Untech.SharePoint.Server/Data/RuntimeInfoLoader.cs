@@ -2,6 +2,7 @@
 using System.IO;
 using System.Linq;
 using Microsoft.SharePoint;
+using Untech.SharePoint.Common.Data;
 using Untech.SharePoint.Common.MetaModels;
 using Untech.SharePoint.Common.MetaModels.Visitors;
 using Untech.SharePoint.Common.Utils;
@@ -18,14 +19,32 @@ namespace Untech.SharePoint.Server.Data
 
 		private SPWeb SpWeb { get; }
 
+		public override void VisitContext(MetaContext context)
+		{
+			context.Url = SpWeb.Url;
+			base.VisitContext(context);
+		}
+
 		public override void VisitList(MetaList list)
 		{
-			var spList = SpWeb.GetListByUrl(list.Url);
+			var spList = GetList(list);
 
 			list.Title = spList.Title;
 			list.IsExternal = spList.HasExternalDataSource;
 
 			new ListInfoLoader(spList).VisitList(list);
+		}
+
+		private SPList GetList(MetaList list)
+		{
+			try
+			{
+				return SpWeb.GetListByUrl(list.Url);
+			}
+			catch (Exception e)
+			{
+				throw new ListNotFoundException(list, e);
+			}
 		}
 
 		private class ListInfoLoader : BaseMetaModelVisitor
@@ -51,7 +70,7 @@ namespace Untech.SharePoint.Server.Data
 
 				if (spContentType == null)
 				{
-					throw new Exception($"Content type {contentType.Id} wasn't found");
+					throw new ContentTypeNotFoundException(contentType);
 				}
 
 				contentType.Id = spContentType.Id.ToString();
@@ -108,7 +127,7 @@ namespace Untech.SharePoint.Server.Data
 				}
 				catch (Exception e)
 				{
-					throw new InvalidDataException($"Unable to find field by internal name: ${field.InternalName}", e);
+					throw new FieldNotFoundException(field, e);
 				}
 			}
 		}
