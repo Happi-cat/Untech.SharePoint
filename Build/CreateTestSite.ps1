@@ -5,7 +5,7 @@ $domain = "SP2013Dev"
 $lists = @( "Events", "News", "Teams", "Projects" );
 
 $msbuild = "C:\Program Files (x86)\MSBuild\14.0\bin\amd64\MSBuild.exe"
-$csproj = "..\Untech.SharePoint.sln"
+$csproj = "..\Src\Untech.SharePoint.sln"
 
 
 function Drop-SiteCollection {
@@ -44,7 +44,7 @@ function Upload-ListTemplates {
     $lists | %{ 
         Write-Host "`tUploading $_"
 
-        $templateFile = gi ".\ListTemplates\$_ List.stp"
+        $templateFile = gi ".\SP\ListTemplates\$_ List.stp"
 
         $templateGalleryFiles.Add("_catalogs/lt/$_ List.stp", $templateFile.OpenRead(), $true) >> $null
     }

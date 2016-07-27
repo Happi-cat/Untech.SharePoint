@@ -11,7 +11,7 @@ $signAssemblies = $true
 $signKeyPath = "C:\Untech.SharePoint.pfx"
 
 $msbuild = "C:\Program Files (x86)\MSBuild\14.0\bin\amd64\MSBuild.exe";
-$mstest = "C:\Program Files (x86)\Microsoft Visual Studio 14.0\Common7\IDE\MSTest.exe"
+$vstest = "C:\Program Files (x86)\Microsoft Visual Studio 14.0\Common7\IDE\CommonExtensions\Microsoft\TestWindow\vstest.console.exe"
 $nuget = "$toolsDir\NuGet\NuGet.exe";
 
 
@@ -22,7 +22,7 @@ $builds = @(
     }
     @{
         Name = "Untech.SharePoint.All"; 
-        Tests = @("Untech.SharePoint.Common.Test", "Untech.SharePoint.Client.Test", "Untech.SharePoint.Server.Test"); 
+        Tests = @("Untech.SharePoint.Common.Test", "Untech.SharePoint.Client.Test", "Untech.SharePoint.Server.Test");
     }
 );
 
@@ -103,7 +103,7 @@ function Create-NugetPackages {
 }
 
 function Test-MSTest {
-    param($build)
+    param($build, $erfomance)
 
     Restore-Packages $build
 
@@ -120,14 +120,16 @@ function Test-MSTest {
         /p:VisualStudioVersion=14.0 `
         /p:DefineConstants=`"$constants`" `
         $sourceDir\$name.sln
-    
+
     Write-Host
     Write-Host "Testing $sourceDir\$name.sln" -ForegroundColor Green
 
     $build.Tests | %{
-        & $mstest /testcontainer:$sourceDir\$_\bin\Release\$_.dll /Platform:x64
+        & $vstest $sourceDir\$_\bin\Release\$_.dll /Platform:x64 /TestCaseFilter:TestCategory!=Perfomance
     }
 }
+
+
 
 function Get-Constants {
     param($constants, $includeSigned)
