@@ -5,7 +5,10 @@ $baseDir  = resolve-path ..
 $buildDir = "$baseDir\Build"
 $sourceDir = "$baseDir\Src"
 $toolsDir = "$baseDir\Tools"
+
+$testDir = "$baseDir\Test"
 $releaseDir = "$baseDir\Release"
+
 
 $signAssemblies = $true
 $signKeyPath = "C:\Untech.SharePoint.pfx"
@@ -83,6 +86,7 @@ function Build-MSBuild {
         /p:TreatWarningsAsErrors=$treatWarningsAsErrors `
         /p:VisualStudioVersion=14.0 `
         /p:DefineConstants=`"$constants`" `
+        /verbosity:q `
         $sourceDir\$name.sln
 }
 
@@ -119,13 +123,23 @@ function Test-MSTest {
         /p:TreatWarningsAsErrors=$treatWarningsAsErrors `
         /p:VisualStudioVersion=14.0 `
         /p:DefineConstants=`"$constants`" `
+        /p:OutputPath=$testDir `
+        /verbosity:q `
         $sourceDir\$name.sln
 
-    Write-Host
-    Write-Host "Testing $sourceDir\$name.sln" -ForegroundColor Green
-
+    $failed = $false;
     $build.Tests | %{
-        & $vstest $sourceDir\$_\bin\Release\$_.dll /Platform:x64 /TestCaseFilter:TestCategory!=Perfomance
+        Write-Host
+        Write-Host "Testing $_" -ForegroundColor Green
+
+        & $vstest $testDir\$_.dll /Platform:x64 /TestCaseFilter:TestCategory!=Perfomance
+        if (-not $? -or $lastexitcode -ne 0) {
+            $failed = $true
+        }
+    }
+
+    if ($failed) {
+        throw "Testing failed"
     }
 }
 
@@ -142,5 +156,7 @@ Update-AssemblyInfoFiles $sourceDir $version $version $infoVersion
 
 Test-MSTest $builds[1]
 
-Build-MSBuild $builds[0]
-Create-NugetPackages $builds[0]
+if ($?) { 
+    Build-MSBuild $builds[0]
+    Create-NugetPackages $builds[0]
+}

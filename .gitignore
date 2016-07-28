@@ -31,3 +31,4 @@ src/packages/**
 !src/packages/*.config
 NuGet/**/*.nupkg
 *.pfx
+[Tt]est*/
