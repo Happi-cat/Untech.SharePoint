@@ -13,6 +13,7 @@ namespace Untech.SharePoint.Common.Converters.Custom
 	/// Represents field converter that can convert string to <see cref="Enum"/> and vice versa.
 	/// </summary>
 	[PublicAPI]
+	[SpFieldConverter("_Enum_")]
 	public sealed class EnumFieldConverter : IFieldConverter
 	{
 		private bool _isNullableMemberType;

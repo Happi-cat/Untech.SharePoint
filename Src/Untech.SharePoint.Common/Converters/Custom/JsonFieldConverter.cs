@@ -7,6 +7,7 @@ namespace Untech.SharePoint.Common.Converters.Custom
 	/// <summary>
 	/// Represents field converter that can convert JSON string to object and vice versa.
 	/// </summary>
+	[SpFieldConverter("_Json_")]
 	public sealed class JsonFieldConverter : IFieldConverter
 	{
 		private MetaField Field { get; set; }
