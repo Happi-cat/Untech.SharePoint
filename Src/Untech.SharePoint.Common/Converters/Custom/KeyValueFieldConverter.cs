@@ -11,6 +11,7 @@ namespace Untech.SharePoint.Common.Converters.Custom
 	/// Represetns field converter that can convert string to <see cref="Dictionary{String,String}"/> and vice versa.
 	/// This converter use next notation for string: Key1 : Value1 ;  Key2 : Value2
 	/// </summary>
+	[SpFieldConverter("_KeyValue_")]
 	public class KeyValueFieldConverter : IFieldConverter
 	{
 		private const string PairDelimiter = ";";

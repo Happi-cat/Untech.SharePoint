@@ -12,6 +12,7 @@ namespace Untech.SharePoint.Common.Converters.Custom
 	/// Represents field converter that can convert XML to object and vice versa.
 	/// </summary>
 	[PublicAPI]
+	[SpFieldConverter("_Xml_")]
 	public sealed class XmlFieldConverter : IFieldConverter
 	{
 		private MetaField Field { get; set; }
