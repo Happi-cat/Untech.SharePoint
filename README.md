@@ -1,9 +1,13 @@
 # Untech.SharePoint
 
 
-[![Build status](https://ci.appveyor.com/api/projects/status/efr87iaha2dg98aw/branch/master?svg=true&passingText=master%20-%20OK)](https://ci.appveyor.com/project/Happi-cat/untech-sharepoint/branch/master)
-[![Build status](https://ci.appveyor.com/api/projects/status/efr87iaha2dg98aw/branch/develop?svg=true&passingText=develop%20-%20OK)](https://ci.appveyor.com/project/Happi-cat/untech-sharepoint/branch/develop)
+[![Master build status](https://ci.appveyor.com/api/projects/status/efr87iaha2dg98aw/branch/master?svg=true&passingText=master%20-%20OK&pendingText=master%20-%20Pending&failingText=master%20-%20Failing)](https://ci.appveyor.com/project/Happi-cat/untech-sharepoint/branch/master)
+[![Develop build status](https://ci.appveyor.com/api/projects/status/efr87iaha2dg98aw/branch/develop?svg=true&passingText=develop%20-%20OK&pendingText=develop%20-%20Pending&failingText=develop%20-%20Failing)](https://ci.appveyor.com/project/Happi-cat/untech-sharepoint/branch/develop)
+[![GitHub issues](https://img.shields.io/github/issues-raw/Happi-cat/Untech.SharePoint.svg)](https://github.com/Happi-cat/Untech.SharePoint/issues)
+[![GitHub closed issues](https://img.shields.io/github/issues-closed-raw/Happi-cat/Untech.SharePoint.svg)](https://github.com/Happi-cat/Untech.SharePoint/issues?q=is%3Aissue+is%3Aclosed)
+[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/Happi-cat/Untech.SharePoint/master/LICENSE)
 [![Join the chat at https://gitter.im/Happi-cat/Untech.SharePoint](https://badges.gitter.im/Happi-cat/Untech.SharePoint.svg)](https://gitter.im/Happi-cat/Untech.SharePoint?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 
 * **Untech.SharePoint.Common**: 
 	[![NuGet version](https://badge.fury.io/nu/Untech.SharePoint.Common.svg)](https://badge.fury.io/nu/Untech.SharePoint.Common) 
