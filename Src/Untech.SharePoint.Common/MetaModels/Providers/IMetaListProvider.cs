@@ -1,4 +1,6 @@
-﻿namespace Untech.SharePoint.Common.MetaModels.Providers
+﻿using Untech.SharePoint.Common.CodeAnnotations;
+
+namespace Untech.SharePoint.Common.MetaModels.Providers
 {
 	/// <summary>
 	/// Represents interface of <see cref="MetaList"/> provider.
@@ -10,6 +12,6 @@
 		/// </summary>
 		/// <param name="parent">Parent <see cref="MetaContext"/>.</param>
 		/// <returns>New instance of <see cref="MetaList"/></returns>
-		MetaList GetMetaList(MetaContext parent);
+		MetaList GetMetaList([NotNull]MetaContext parent);
 	}
 }
