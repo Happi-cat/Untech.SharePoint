@@ -1,0 +1,15 @@
+version: 1.0.{build}
+branches:
+  only:
+  - develop
+  - master
+build_script:
+- ps: >-
+    cd c:\projects\untech-sharepoint\build
+
+    .\Build.ps1 -BuildNo 2 -BuildPhase
+test_script:
+- ps: >-
+    cd c:\projects\untech-sharepoint\build
+
+    .\Build.ps1 -BuildNo 2 -TestPhase
