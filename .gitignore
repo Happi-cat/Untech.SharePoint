@@ -29,4 +29,5 @@ _ReSharper*/
 [Tt]est[Rr]esult*
 /packages/**
 !/packages/*.config
-NuGet/*.nupkg
+NuGet/**/*.nupkg
+*.pfx
