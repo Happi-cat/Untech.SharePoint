@@ -1,7 +1,8 @@
 # Untech.SharePoint
 
 
-[![Build status](https://ci.appveyor.com/api/projects/status/efr87iaha2dg98aw/branch/master?svg=true)](https://ci.appveyor.com/project/Happi-cat/untech-sharepoint/branch/master)
+[![Build status](https://ci.appveyor.com/api/projects/status/efr87iaha2dg98aw/branch/master?svg=true&passingText=master%20-%20OK)](https://ci.appveyor.com/project/Happi-cat/untech-sharepoint/branch/master)
+[![Build status](https://ci.appveyor.com/api/projects/status/efr87iaha2dg98aw/branch/develop?svg=true&passingText=develop%20-%20OK)](https://ci.appveyor.com/project/Happi-cat/untech-sharepoint/branch/develop)
 [![Join the chat at https://gitter.im/Happi-cat/Untech.SharePoint](https://badges.gitter.im/Happi-cat/Untech.SharePoint.svg)](https://gitter.im/Happi-cat/Untech.SharePoint?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 * **Untech.SharePoint.Common**: 
