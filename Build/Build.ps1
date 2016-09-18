@@ -1,3 +1,11 @@
+param(
+    [int]$BuildNo,
+
+    [switch]$BuildPhase,
+    [switch]$TestPhase,
+    [switch]$PackagePhase
+)
+
 $version = "1.0.1.0"
 $infoVersion = "1.0.1"
 
@@ -9,8 +17,6 @@ $toolsDir = "$baseDir\Tools"
 $testDir = "$baseDir\Test"
 $releaseDir = "$baseDir\Release"
 
-
-$signAssemblies = $true
 $signKeyPath = "C:\Untech.SharePoint.pfx"
 
 $msbuild = "C:\Program Files (x86)\MSBuild\14.0\bin\amd64\MSBuild.exe";
@@ -21,11 +27,21 @@ $nuget = "$toolsDir\NuGet\NuGet.exe";
 $builds = @(
     @{
         Name = "Untech.SharePoint"; 
+        SignAssemblies = $true;
         Packages=@("Untech.SharePoint.Common", "Untech.SharePoint.Client", "Untech.SharePoint.Server"); 
     }
     @{
         Name = "Untech.SharePoint.All"; 
+        SignAssemblies = $false;
         Tests = @("Untech.SharePoint.Common.Test", "Untech.SharePoint.Client.Test", "Untech.SharePoint.Server.Test");
+    }
+    @{
+        # AppVeyor config (includes only Common Tests)
+        Name = "Untech.SharePoint.All";
+        SignAssemblies = $false;
+        MSBuildLogger = "C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
+        Tests = @("Untech.SharePoint.Common.Test");
+        VSTestLogger = "Appveyor"
     }
 );
 
@@ -72,30 +88,47 @@ function Build-MSBuild {
     
     $name = $build.Name
 
-    $constants = Get-Constants $build.Constants $signAssemblies
+    $constants = Get-Constants $build.Constants $build.SignAssemblies
 
     Write-Host
     Write-Host "Building $sourceDir\$name.sln" -ForegroundColor Green
+
+    $args = ""
+
+    if ($build.MSBuildLogger) {
+        $args += "/logger:$($build.MSBuildLogger) "
+    }
 
     & $msbuild "/t:Clean;Rebuild" `
         /p:Configuration=Release `
         "/p:Platform=Any CPU" `
         /p:PlatformTarget=AnyCPU `
         /p:AssemblyOriginatorKeyFile=$signKeyPath `
-        /p:SignAssembly=$signAssemblies `
+        /p:SignAssembly=$($build.SignAssemblies) `
         /p:TreatWarningsAsErrors=$treatWarningsAsErrors `
         /p:VisualStudioVersion=14.0 `
         /p:DefineConstants=`"$constants`" `
         /verbosity:q `
-        $sourceDir\$name.sln
+        /p:OutputPath=$testDir `
+        $args `
+        "$sourceDir\$name.sln"
+
+    if (-not $? -or $lastexitcode -ne 0) {
+        throw "Build failed"
+    }
 }
 
 function Create-NugetPackages {
     param($build)
 
+    if (-not (Test-Path $releaseDir)) {
+        mkdir $releaseDir
+    }
+
     $name = $build.Name
 
-     $build.Packages | %{
+    $failed = $false;
+    $build.Packages | %{
         Write-Host
         Write-Host "Packing $_" -ForegroundColor Green
 
@@ -103,36 +136,37 @@ function Create-NugetPackages {
             -IncludeReferencedProjects `
             -Prop Configuration=Release `
             -OutputDirectory $releaseDir
+
+        if (-not $? -or $lastexitcode -ne 0) {
+            $failed = $true
+        }
+    }
+
+    if ($failed) {
+        throw "Packing failed"
     }
 }
 
 function Test-MSTest {
-    param($build, $erfomance)
-
-    Restore-Packages $build
+    param($build, $perfomance)
 
     $name = $build.Name
 
-    Write-Host
-    Write-Host "Building $sourceDir\$name.sln" -ForegroundColor Green
+    $args = ""
 
-    & $msbuild "/t:Clean;Rebuild" `
-        /p:Configuration=Release `
-        "/p:Platform=Any CPU" `
-        /p:PlatformTarget=AnyCPU `
-        /p:TreatWarningsAsErrors=$treatWarningsAsErrors `
-        /p:VisualStudioVersion=14.0 `
-        /p:DefineConstants=`"$constants`" `
-        /p:OutputPath=$testDir `
-        /verbosity:q `
-        $sourceDir\$name.sln
+    if ($build.VSTestLogger) {
+        $args += "/Logger:$build.VSTestLogger "
+    }
+    if (-not $perfomance) {
+        $args += "/TestCaseFilter:TestCategory!=Perfomance "
+    }
 
     $failed = $false;
     $build.Tests | %{
         Write-Host
         Write-Host "Testing $_" -ForegroundColor Green
 
-        & $vstest $testDir\$_.dll /Platform:x64 /TestCaseFilter:TestCategory!=Perfomance
+        & $vstest $testDir\$_.dll $args /Platform:x64
         if (-not $? -or $lastexitcode -ne 0) {
             $failed = $true
         }
@@ -143,8 +177,6 @@ function Test-MSTest {
     }
 }
 
-
-
 function Get-Constants {
     param($constants, $includeSigned)
     $signed = if ($includeSigned) { ";SIGNED" }
@@ -152,11 +184,47 @@ function Get-Constants {
     return "$constants$signed"
 }
 
-Update-AssemblyInfoFiles $sourceDir $version $version $infoVersion
+function Write-Status {
+    param($msg, $status)
 
-Test-MSTest $builds[1]
-
-if ($?) { 
-    Build-MSBuild $builds[0]
-    Create-NugetPackages $builds[0]
+    if ($status) {
+        Write-Host $msg -ForegroundColor:Green
+    } else {
+        Write-Host $msg -ForegroundColor:Red
+    }
 }
+
+function Main {
+    Update-AssemblyInfoFiles $sourceDir $version $version $infoVersion
+
+    $builded = $false;
+    $tested = $false;
+    $packaged = $false;
+
+    if ($BuildPhase) {
+        Build-MSBuild $builds[$BuildNo]
+
+        $builded = ($? -and $lastexitcode -eq 0)
+    }
+
+    if ($TestPhase -and ($builded -or $env:APPVEYOR)) {
+        Test-MSTest $builds[$BuildNo]
+
+        $tested = ($? -and $lastexitcode -eq 0)
+    }
+
+    if ($PackagePhase -and ($tested -or $env:APPVEYOR)) { 
+        Create-NugetPackages $builds[$BuildNo]
+
+        $packaged = ($? -and $lastexitcode -eq 0)
+    }
+
+    Write-Host "Build Config No: $BuildNo" -ForegroundColor:Green
+
+    Write-Status "`tBuilded: $builded" $builded
+    Write-Status "`tTested: $tested" $tested
+    Write-Status "`tPackaged: $packaged" $packaged
+}
+
+
+Main;
