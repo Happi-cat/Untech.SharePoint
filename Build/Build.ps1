@@ -148,17 +148,17 @@ function Create-NugetPackages {
 }
 
 function Test-MSTest {
-    param($build, $perfomance)
+    param($build, [switch]$perfomance)
 
     $name = $build.Name
 
-    $args = ""
+    $additionalArgs = @()
 
     if ($build.VSTestLogger) {
-        $args += "/Logger:$build.VSTestLogger "
+        $additionalArgs += "/Logger:$($build.VSTestLogger)"
     }
     if (-not $perfomance) {
-        $args += "/TestCaseFilter:TestCategory!=Perfomance "
+        $additionalArgs += "/TestCaseFilter:TestCategory!=Perfomance"
     }
 
     $failed = $false;
@@ -166,7 +166,7 @@ function Test-MSTest {
         Write-Host
         Write-Host "Testing $_" -ForegroundColor Green
 
-        & $vstest $testDir\$_.dll $args /Platform:x64
+        & $vstest $testDir\$_.dll $additionalArgs /Platform:x64
         if (-not $? -or $lastexitcode -ne 0) {
             $failed = $true
         }
