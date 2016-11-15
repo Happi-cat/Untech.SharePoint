@@ -10,11 +10,11 @@
 
 
 * **Untech.SharePoint.Common**: 
-	[![NuGet version](https://badge.fury.io/nu/Untech.SharePoint.Common.svg)](https://badge.fury.io/nu/Untech.SharePoint.Common) 
+	[![NuGet version](https://buildstats.info/nuget/Untech.SharePoint.Common)](https://www.nuget.org/packages/Untech.SharePoint.Common) 
 * **Untech.SharePoint.Server**:
-	[![NuGet version](https://badge.fury.io/nu/Untech.SharePoint.Server.svg)](https://badge.fury.io/nu/Untech.SharePoint.Server)
+	[![NuGet version](https://buildstats.info/nuget/Untech.SharePoint.Server)](https://www.nuget.org/packages/Untech.SharePoint.Server)
 * **Untech.SharePoint.Client**:
-	[![NuGet version](https://badge.fury.io/nu/Untech.SharePoint.Client.svg)](https://badge.fury.io/nu/Untech.SharePoint.Client) 
+	[![NuGet version](https://buildstats.info/nuget/Untech.SharePoint.Client)](https://www.nuget.org/packages/Untech.SharePoint.Client) 
 
 Untech.SharePoint - library that will improve your work with Lists in SharePoint (can be used with SSOM and CSOM).
 
