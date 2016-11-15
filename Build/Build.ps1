@@ -6,8 +6,8 @@ param(
     [switch]$PackagePhase
 )
 
-$version = "1.0.1.0"
-$infoVersion = "1.0.1"
+$version = "1.0.2.0"
+$infoVersion = "1.0.2"
 
 $baseDir  = resolve-path ..
 $buildDir = "$baseDir\Build"
@@ -34,6 +34,7 @@ $builds = @(
         Name = "Untech.SharePoint.All"; 
         SignAssemblies = $false;
         Tests = @("Untech.SharePoint.Common.Test", "Untech.SharePoint.Client.Test", "Untech.SharePoint.Server.Test");
+        VSTestLogger = "trx"
     }
     @{
         # AppVeyor config (includes only Common Tests)
@@ -133,6 +134,7 @@ function Create-NugetPackages {
         Write-Host "Packing $_" -ForegroundColor Green
 
         & $nuget pack $sourceDir\$_\$_.csproj `
+            -Build `
             -IncludeReferencedProjects `
             -Prop Configuration=Release `
             -OutputDirectory $releaseDir
@@ -197,7 +199,7 @@ function Write-Status {
 function Main {
     Update-AssemblyInfoFiles $sourceDir $version $version $infoVersion
 
-    $builded = $false;
+    $builded = $true; # $false;
     $tested = $false;
     $packaged = $false;
 
@@ -208,13 +210,17 @@ function Main {
     }
 
     if ($TestPhase -and ($builded -or $env:APPVEYOR)) {
-        Test-MSTest $builds[$BuildNo]
+        if ($builds[$BuildNo].Tests) {
+            Test-MSTest $builds[$BuildNo]
+        }
 
         $tested = ($? -and $lastexitcode -eq 0)
     }
 
     if ($PackagePhase -and ($tested -or $env:APPVEYOR)) { 
-        Create-NugetPackages $builds[$BuildNo]
+        if ($builds[$BuildNo].Packages) {
+            Create-NugetPackages $builds[$BuildNo]
+        }
 
         $packaged = ($? -and $lastexitcode -eq 0)
     }
