@@ -62,14 +62,14 @@ namespace Untech.SharePoint.Common.Data.Translators.Predicate
 
 			private static readonly IReadOnlyDictionary<ExpressionType, ExpressionType> NegateMap = new Dictionary
 				<ExpressionType, ExpressionType>
-		{
-			{ExpressionType.Equal, ExpressionType.NotEqual},
-			{ExpressionType.NotEqual, ExpressionType.Equal},
-			{ExpressionType.LessThan, ExpressionType.GreaterThanOrEqual},
-			{ExpressionType.LessThanOrEqual, ExpressionType.GreaterThan},
-			{ExpressionType.GreaterThan, ExpressionType.LessThanOrEqual},
-			{ExpressionType.GreaterThanOrEqual, ExpressionType.LessThan}
-		};
+			{
+				{ExpressionType.Equal, ExpressionType.NotEqual},
+				{ExpressionType.NotEqual, ExpressionType.Equal},
+				{ExpressionType.LessThan, ExpressionType.GreaterThanOrEqual},
+				{ExpressionType.LessThanOrEqual, ExpressionType.GreaterThan},
+				{ExpressionType.GreaterThan, ExpressionType.LessThanOrEqual},
+				{ExpressionType.GreaterThanOrEqual, ExpressionType.LessThan}
+			};
 
 			public bool CanNegate(Expression node)
 			{
@@ -89,12 +89,12 @@ namespace Untech.SharePoint.Common.Data.Translators.Predicate
 		{
 			private static readonly IReadOnlyDictionary<ExpressionType, ExpressionType> NegateMap = new Dictionary
 				<ExpressionType, ExpressionType>
-		{
-			{ExpressionType.And, ExpressionType.Or},
-			{ExpressionType.AndAlso, ExpressionType.OrElse},
-			{ExpressionType.Or, ExpressionType.And},
-			{ExpressionType.OrElse, ExpressionType.AndAlso}
-		};
+			{
+				{ExpressionType.And, ExpressionType.Or},
+				{ExpressionType.AndAlso, ExpressionType.OrElse},
+				{ExpressionType.Or, ExpressionType.And},
+				{ExpressionType.OrElse, ExpressionType.AndAlso}
+			};
 
 			public bool CanNegate(Expression node)
 			{
