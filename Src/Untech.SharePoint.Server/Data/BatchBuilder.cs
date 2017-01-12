@@ -11,7 +11,6 @@ namespace Untech.SharePoint.Server.Data
 	internal class BatchBuilder
 	{
 		private readonly StringBuilder _sb;
-		private readonly StringWriter _sw;
 		private readonly XmlTextWriter _xmlWriter;
 		private int _counter;
 
@@ -19,58 +18,57 @@ namespace Untech.SharePoint.Server.Data
 		{
 			_counter = 0;
 			_sb = new StringBuilder();
-			_sw = new StringWriter(_sb);
-			_xmlWriter = new XmlTextWriter(_sw);
+			_xmlWriter = new XmlTextWriter(new StringWriter(_sb));
 		}
 
 		public void Begin()
 		{
-			_sw.Write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
-			_sw.Write("<Batch OnError=\"Return\">");
+			_xmlWriter.WriteRaw("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
+			_xmlWriter.WriteRaw("<Batch OnError=\"Return\">");
 		}
 
 		public void NewItem(SPList list, IEnumerable<KeyValuePair<string, string>> fields)
 		{
 			_counter++;
-			_sw.Write("<Method ID=\"{0}\">", _counter);
-			_sw.Write("<SetList Scope=\"Request\">{0:D}</SetList>", list.ID);
-			_sw.Write("<SetVar Name=\"ID\">{0}</SetVar>", "New");
-			_sw.Write("<GetVar Name=\"ID\"></GetVar>");
-			_sw.Write("<SetVar Name=\"Cmd\">Save</SetVar>");
+			_xmlWriter.WriteRaw($"<Method ID=\"{_counter}\">");
+			_xmlWriter.WriteRaw($"<SetList Scope=\"Request\">{list.ID:D}</SetList>");
+			_xmlWriter.WriteRaw("<SetVar Name=\"ID\">New</SetVar>");
+			_xmlWriter.WriteRaw("<GetVar Name=\"ID\"></GetVar>");
+			_xmlWriter.WriteRaw("<SetVar Name=\"Cmd\">Save</SetVar>");
 			
 			fields.Where(n=> n.Key != "ID")
 				.Each(WriteField);
 
-			_sw.Write("</Method>");
+			_xmlWriter.WriteRaw("</Method>");
 		}
 
 		public void UpdateItem(SPList list, IEnumerable<KeyValuePair<string, string>> fields)
 		{
 			_counter++;
-			_sw.Write("<Method ID=\"{0}\">", _counter);
-			_sw.Write("<SetList Scope=\"Request\">{0:D}</SetList>", list.ID);
-			_sw.Write("<SetVar Name=\"Cmd\">Save</SetVar>");
+			_xmlWriter.WriteRaw($"<Method ID=\"{_counter}\">");
+			_xmlWriter.WriteRaw($"<SetList Scope=\"Request\">{list.ID:D}</SetList>");
+			_xmlWriter.WriteRaw("<SetVar Name=\"Cmd\">Save</SetVar>");
 
 			fields.Each(WriteField);
 
-			_sw.Write("</Method>");
+			_xmlWriter.WriteRaw("</Method>");
 		}
 
 		public void DeleteItem(SPList list, string id)
 		{
 			_counter++;
-			_sw.Write("<Method ID=\"{0}\">", _counter);
-			_sw.Write("<SetList Scope=\"Request\">{0:D}</SetList>", list.ID);
-			_sw.Write("<SetVar Name=\"Cmd\">Delete</SetVar>");
+			_xmlWriter.WriteRaw($"<Method ID=\"{_counter}\">");
+			_xmlWriter.WriteRaw($"<SetList Scope=\"Request\">{list.ID:D}</SetList>");
+			_xmlWriter.WriteRaw("<SetVar Name=\"Cmd\">Delete</SetVar>");
 
 			WriteField("ID", id);
 
-			_sw.Write("</Method>");
+			_xmlWriter.WriteRaw("</Method>");
 		}
 
 		public void End()
 		{
-			_sw.Write("</Batch>");
+			_xmlWriter.WriteRaw("</Batch>");
 		}
 
 		public override string ToString()
@@ -90,9 +88,9 @@ namespace Untech.SharePoint.Server.Data
 				fieldInternalName = "urn:schemas-microsoft-com:office:office#" + fieldInternalName;
 			}
 
-			_sw.Write("<SetVar Name=\"{0}\">", fieldInternalName);
+			_xmlWriter.WriteRaw($"<SetVar Name=\"{fieldInternalName}\">");
 			_xmlWriter.WriteString(value);
-			_sw.Write("</SetVar>");
+			_xmlWriter.WriteRaw("</SetVar>");
 		}
 	}
 }
