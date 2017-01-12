@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq.Expressions;
 using Untech.SharePoint.Common.Utils;
 
@@ -28,22 +29,30 @@ namespace Untech.SharePoint.Common.Data
 
 		public T Add(T item)
 		{
+			ThrowIfFilterByContentTypeDisabled();
+
 			return item == null ? default(T) : ListItemsProvider.Add(item);
 		}
 
 		public void Add(IEnumerable<T> items)
 		{
+			ThrowIfFilterByContentTypeDisabled();
+
 			if (items == null) return;
 			ListItemsProvider.Add(items);
 		}
 
 		public T Update(T item)
 		{
+			ThrowIfFilterByContentTypeDisabled();
+
 			return item == null ? default(T) : ListItemsProvider.Update(item);
 		}
 
 		public void Update(IEnumerable<T> items)
 		{
+			ThrowIfFilterByContentTypeDisabled();
+
 			if (items == null) return;
 			ListItemsProvider.Update(items);
 		}
@@ -67,6 +76,11 @@ namespace Untech.SharePoint.Common.Data
 			return SpQueryable.MakeFakeFetch(typeof(T), listItemsProvider);
 		}
 
-		
+		private void ThrowIfFilterByContentTypeDisabled()
+		{
+			if (ListItemsProvider.FilterByContentType) return;
+
+			throw new InvalidOperationException("This operation cannot be perfomed when SpListOptions.NoFilteringByContentType was specified");
+		}
 	}
 }
