@@ -82,17 +82,17 @@ namespace Untech.SharePoint.Common.Data.Translators
 		#region [Where]
 
 		[NotNull]
-		private XElement Where([NotNull] WhereModel @where)
+		private XElement Where([NotNull] WhereModel where)
 		{
-			switch (@where.Type)
+			switch (where.Type)
 			{
 				case WhereType.LogicalJoin:
-					return Where((LogicalJoinModel) @where);
+					return Where((LogicalJoinModel) where);
 				case WhereType.Comparison:
-					return Where((ComparisonModel) @where);
+					return Where((ComparisonModel) where);
 			}
 
-			throw new NotSupportedException(string.Format("'{0}' is not supported", @where));
+			throw new NotSupportedException($"'{where}' is not supported");
 		}
 
 		[NotNull]
@@ -140,12 +140,6 @@ namespace Untech.SharePoint.Common.Data.Translators
 
 
 		#region [FieldRef]
-
-		[NotNull]
-		private XElement FieldRef(string internalName)
-		{
-			return new XElement(Tags.FieldRef, new XAttribute(Tags.Name, internalName));
-		}
 
 		[NotNull]
 		private XElement FieldRef([NotNull] FieldRefModel fieldRef)
@@ -293,7 +287,7 @@ namespace Untech.SharePoint.Common.Data.Translators
 			var member = memberRef.Member;
 			if (!ContentType.Fields.ContainsKey(member.Name))
 			{
-				throw new InvalidOperationException(string.Format("'{0}' wasn't mapped and cannot be used in CAML query.", member));
+				throw new InvalidOperationException($"'{member}' wasn't mapped and cannot be used in CAML query.");
 			}
 
 			return ContentType.Fields[member.Name];
@@ -304,7 +298,7 @@ namespace Untech.SharePoint.Common.Data.Translators
 			var converter = field.Converter;
 			if (converter == null)
 			{
-				throw new InvalidOperationException(string.Format("Converter wasn't initialized for '{0}' field", field.MemberName));
+				throw new InvalidOperationException($"Converter wasn't initialized for '{field.MemberName}' field");
 			}
 			return converter;
 		}

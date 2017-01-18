@@ -121,7 +121,7 @@ function Generate-Data {
     try {
         Write-Host "Generating Test Data:" -ForegroundColor:Cyan    
 
-        $testLib = (gi "..\Untech.SharePoint.Server.Test\bin\Debug\Untech.SharePoint.Server.Test.dll").FullName
+        $testLib = (gi "..\Src\Untech.SharePoint.Server.Test\bin\Debug\Untech.SharePoint.Server.Test.dll").FullName
         [Reflection.Assembly]::LoadFrom($testLib) | ft
         [Untech.SharePoint.Server.Test.DataGenerator]::Generate()
 

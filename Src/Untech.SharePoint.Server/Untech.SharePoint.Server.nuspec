@@ -11,7 +11,7 @@
 		<iconUrl>https://raw.githubusercontent.com/Happi-cat/Untech.SharePoint/master/linq-sharepoint-logo-64.png</iconUrl>
 		<requireLicenseAcceptance>false</requireLicenseAcceptance>
 		<description>$description$</description>
-		<releaseNotes>Relese 1</releaseNotes>
+		<releaseNotes>Release 1</releaseNotes>
 		<copyright>Copyright 2016</copyright>
 		<tags>SharePoint Data SSOM</tags>
 	</metadata>
