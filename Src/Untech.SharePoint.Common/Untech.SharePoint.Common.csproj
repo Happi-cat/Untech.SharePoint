@@ -65,6 +65,7 @@
     <Compile Include="Converters\Custom\XmlFieldConverter.cs" />
     <Compile Include="Data\BaseSpListItemsProvider.cs" />
     <Compile Include="Data\Exceptions.cs" />
+    <Compile Include="Data\FieldRefModelComparer.cs" />
     <Compile Include="Data\MemberRefModelComparer.cs" />
     <Compile Include="Data\GenericMethodDefinitionComparer.cs" />
     <Compile Include="Data\ICommonService.cs" />

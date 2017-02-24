@@ -46,7 +46,5 @@ namespace Untech.SharePoint.Common.Test.Tools.QueryTests
 				throw;
 			}
 		}
-
-
 	}
 }

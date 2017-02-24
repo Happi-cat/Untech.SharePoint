@@ -23,9 +23,9 @@ namespace Untech.SharePoint.Common.Diagnostics
 				return;
 			}
 
-			var logMessage = string.Format("[Thread: {0}, Level: {1}, Category: {2}]\n{3}\n\n", 
+			var logMessage = string.Format("[Thread: {0}, Level: {1}, Category: {2}]\n{3}\n\n",
 				Thread.CurrentThread.ManagedThreadId, level, category, message);
-			
+
 			Debugger.Log(0, category, logMessage);
 		}
 	}

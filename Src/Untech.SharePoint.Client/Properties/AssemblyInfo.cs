@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Sergey Svirsky")]
 [assembly: AssemblyProduct("Untech.SharePoint.Client")]
-[assembly: AssemblyCopyright("Copyright © Sergey Svirsky 2015")]
+[assembly: AssemblyCopyright("Copyright \u00A9 Sergey Svirsky 2015")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

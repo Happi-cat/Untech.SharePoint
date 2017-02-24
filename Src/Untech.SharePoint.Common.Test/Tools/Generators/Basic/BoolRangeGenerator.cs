@@ -1,6 +1,6 @@
 ﻿namespace Untech.SharePoint.Common.Test.Tools.Generators.Basic
 {
-	public class BoolGenerator :BaseRandomGenerator, IValueGenerator<bool>, IValueGenerator<bool?>
+	public class BoolGenerator : BaseRandomGenerator, IValueGenerator<bool>, IValueGenerator<bool?>
 	{
 		public bool Generate()
 		{

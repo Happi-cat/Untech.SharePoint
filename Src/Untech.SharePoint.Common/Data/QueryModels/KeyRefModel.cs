@@ -8,7 +8,7 @@
 		/// <summary>
 		/// Initializes a new instance of the <see cref="KeyRefModel"/>.
 		/// </summary>
-		public KeyRefModel() : 
+		public KeyRefModel() :
 			base(FieldRefType.Key)
 		{
 		}

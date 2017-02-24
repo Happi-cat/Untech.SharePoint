@@ -32,7 +32,7 @@ namespace Untech.SharePoint.Common.Data.Mapper
 		}
 
 		/// <summary>
-		/// Gets assocaited SP ContentType metadata.
+		/// Gets associated SP ContentType meta-data.
 		/// </summary>
 		[NotNull]
 		public MetaContentType ContentType { get; }
@@ -99,7 +99,7 @@ namespace Untech.SharePoint.Common.Data.Mapper
 		/// <summary>
 		/// Maps SP list item to destination entity.
 		/// </summary>
-		/// <param name="source">Souce SP list item to map.</param>
+		/// <param name="source">Source SP list item to map.</param>
 		/// <param name="dest">Destination object.</param>
 		/// <param name="viewFields">Collection of fields internal names that should be mapped.</param>
 		/// <exception cref="ArgumentNullException"><paramref name="source"/> or <paramref name="dest"/> is null.</exception>
@@ -117,7 +117,7 @@ namespace Untech.SharePoint.Common.Data.Mapper
 		/// <summary>
 		/// Creates and maps SP list item to .NET entity.
 		/// </summary>
-		/// <param name="source">Souce SP list item to map.</param>
+		/// <param name="source">Source SP list item to map.</param>
 		/// <param name="viewFields">Collection of fields internal names that should be mapped.</param>
 		/// <returns>New .NET entity.</returns>
 		/// <exception cref="ArgumentNullException"><paramref name="source"/> is null.</exception>
@@ -135,7 +135,7 @@ namespace Untech.SharePoint.Common.Data.Mapper
 		/// <summary>
 		/// Creates and maps SP list items to .NET entities.
 		/// </summary>
-		/// <param name="source">Souce SP list items to map.</param>
+		/// <param name="source">Source SP list items to map.</param>
 		/// <param name="viewFields">Collection of fields internal names that should be mapped.</param>
 		/// <returns>New .NET entities.</returns>
 		/// <exception cref="ArgumentNullException"><paramref name="source"/> is null.</exception>
@@ -156,7 +156,7 @@ namespace Untech.SharePoint.Common.Data.Mapper
 		}
 
 		/// <summary>
-		/// Sets current contnet type id for the specified SP list item.
+		/// Sets current content type id for the specified SP list item.
 		/// </summary>
 		/// <param name="spItem">SP list item</param>
 		protected abstract void SetContentType([NotNull]TSPItem spItem);
@@ -168,7 +168,7 @@ namespace Untech.SharePoint.Common.Data.Mapper
 		[NotNull]
 		protected IEnumerable<FieldMapper<TSPItem>> GetMappers()
 		{
-			foreach(var field in (IEnumerable<MetaField>)ContentType.Fields)
+			foreach (var field in (IEnumerable<MetaField>)ContentType.Fields)
 			{
 				yield return field.GetMapper<TSPItem>();
 			}
@@ -181,12 +181,9 @@ namespace Untech.SharePoint.Common.Data.Mapper
 		[NotNull]
 		protected IEnumerable<FieldMapper<TSPItem>> GetMappers([CanBeNull]IReadOnlyCollection<MemberRefModel> viewFields)
 		{
-			if (viewFields.IsNullOrEmpty())
-			{
-				return GetMappers();
-			}
-
-			return GetMappers(viewFields.Select(n => n.Member).ToList());
+			return viewFields.IsNullOrEmpty()
+				? GetMappers()
+				: GetMappers(viewFields.Select(n => n.Member).ToList());
 		}
 
 		private IEnumerable<FieldMapper<TSPItem>> GetMappers([NotNull]IReadOnlyCollection<MemberInfo> viewMembers)

@@ -8,7 +8,7 @@ namespace Untech.SharePoint.Common.Data.Translators.Predicate
 		protected override Expression VisitBinary(BinaryExpression node)
 		{
 			var resultNode = base.VisitBinary(node);
-			
+
 			if (resultNode.NodeType == ExpressionType.Or || resultNode.NodeType == ExpressionType.OrElse)
 			{
 				return RemoveReduntantOrCondition((BinaryExpression)resultNode);

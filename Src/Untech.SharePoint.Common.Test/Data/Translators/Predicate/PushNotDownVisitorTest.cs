@@ -22,13 +22,12 @@ namespace Untech.SharePoint.Common.Test.Data.Translators.Predicate
 		[TestMethod]
 		public void CanPushOneNot()
 		{
-			Given(obj => !obj.Bool1).Expected(obj => !obj.Bool1); 
+			Given(obj => !obj.Bool1).Expected(obj => !obj.Bool1);
 
 			Given(obj => !(obj.Bool1 && obj.Bool2)).Expected(obj => !obj.Bool1 || !obj.Bool2);
 
 			Given(obj => !(obj.Bool1 && obj.Int1 > 1)).Expected(obj => !obj.Bool1 || obj.Int1 <= 1);
 		}
-
 
 		[TestMethod]
 		public void CanPushMultipleNot()

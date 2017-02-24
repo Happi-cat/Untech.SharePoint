@@ -5,7 +5,7 @@ using Untech.SharePoint.Common.CodeAnnotations;
 namespace Untech.SharePoint.Common.Models
 {
 	/// <summary>
-	/// Represents geo info data.
+	/// Represents Geo info data.
 	/// </summary>
 	[PublicAPI]
 	[DataContract]

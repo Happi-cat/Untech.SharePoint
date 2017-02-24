@@ -11,7 +11,6 @@ namespace Untech.SharePoint.Server.Test
 {
 	public class DataGenerator
 	{
-
 		public static void Generate()
 		{
 			var site = new SPSite(@"http://sp2013dev/sites/orm-test", SPUserToken.SystemAccount);

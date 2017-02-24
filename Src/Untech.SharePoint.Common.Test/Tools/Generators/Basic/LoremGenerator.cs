@@ -5,7 +5,7 @@ namespace Untech.SharePoint.Common.Test.Tools.Generators.Basic
 {
 	public class LoremGenerator : BaseRandomGenerator, IValueGenerator<string>
 	{
-		private static readonly string[] Words = {
+		private static readonly string[] s_words = {
 			"lorem", "ipsum", "dolor", "sit", "amet", "consectetuer",
 			"adipiscing", "elit", "sed", "diam", "nonummy", "nibh", "euismod",
 			"tincidunt", "ut", "laoreet", "dolore", "magna", "aliquam", "erat"
@@ -63,7 +63,7 @@ namespace Untech.SharePoint.Common.Test.Tools.Generators.Basic
 				{
 					sb.Append(" ");
 				}
-				sb.Append(Words[Rand.Next(Words.Length)]);
+				sb.Append(s_words[Rand.Next(s_words.Length)]);
 			}
 			sb.Append(". ");
 		}

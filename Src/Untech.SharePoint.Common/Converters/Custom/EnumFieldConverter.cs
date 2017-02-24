@@ -20,7 +20,7 @@ namespace Untech.SharePoint.Common.Converters.Custom
 		private Type _enumType;
 
 		/// <summary>
-		/// Initialzes current instance with the specified <see cref="MetaField"/>
+		/// Initializes current instance with the specified <see cref="MetaField"/>
 		/// </summary>
 		/// <param name="field"></param>
 		public void Initialize(MetaField field)
@@ -37,7 +37,7 @@ namespace Untech.SharePoint.Common.Converters.Custom
 				throw new ArgumentException("This converter can be used only with Enum member types");
 
 			if (!Enum.IsDefined(memberType, 0))
-				throw new ArgumentException(string.Format("Enum {0} should have default value (i.e. 0)", field.MemberType));
+				throw new ArgumentException($"Enum {field.MemberType} should have default value (i.e. 0)");
 
 			_enumType = memberType;
 		}
@@ -52,10 +52,8 @@ namespace Untech.SharePoint.Common.Converters.Custom
 			if (_isNullableMemberType && value == null)
 				return null;
 
-			return ConvertToEnum(_enumType, (string) value);
+			return ConvertToEnum(_enumType, (string)value);
 		}
-
-		
 
 		/// <summary>
 		/// Converts <see cref="MetaField.Member"/> value to SP field value.
@@ -87,8 +85,8 @@ namespace Untech.SharePoint.Common.Converters.Custom
 			{
 				var enumMemberAttribute = enumType.GetField(enumName).GetCustomAttribute<EnumMemberAttribute>();
 
-				if (enumMemberAttribute != null &&
-					string.Compare(enumMemberAttribute.Value, value, StringComparison.InvariantCultureIgnoreCase) == 0)
+				if (enumMemberAttribute != null
+					&& string.Compare(enumMemberAttribute.Value, value, StringComparison.InvariantCultureIgnoreCase) == 0)
 				{
 					return Enum.Parse(enumType, enumName);
 				}

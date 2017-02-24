@@ -20,5 +20,4 @@ namespace Untech.SharePoint.Common.Test.Mappings.ClassLike
 
 		public ISpList<Entity> Entities { get; set; }
 	}
-
 }

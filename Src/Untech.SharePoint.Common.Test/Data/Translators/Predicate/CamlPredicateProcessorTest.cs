@@ -84,7 +84,7 @@ namespace Untech.SharePoint.Common.Test.Data.Translators.Predicate
 		public void SupportEnumerableAndListContains()
 		{
 			var possibleValues1 = new List<int> { 1, 2, 3 };
-			var possibleValues2 = (IEnumerable<int>) possibleValues1;
+			var possibleValues2 = (IEnumerable<int>)possibleValues1;
 
 			Given(n => possibleValues1.Contains(n.Int1) && !possibleValues2.Contains(n.Int2))
 				.Expected("<And>" +

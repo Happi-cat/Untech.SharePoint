@@ -6,7 +6,7 @@ using Untech.SharePoint.Common.Data.Translators.Predicate;
 namespace Untech.SharePoint.Common.Test.Data.Translators.Predicate
 {
 	[TestClass]
-	public class RedundantConditionRemoverTest :BaseExpressionVisitorTest
+	public class RedundantConditionRemoverTest : BaseExpressionVisitorTest
 	{
 		[TestMethod]
 		[SuppressMessage("ReSharper", "RedundantLogicalConditionalExpressionOperand")]

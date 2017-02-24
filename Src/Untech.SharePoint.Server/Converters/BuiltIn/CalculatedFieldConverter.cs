@@ -7,15 +7,16 @@ using Untech.SharePoint.Common.MetaModels;
 namespace Untech.SharePoint.Server.Converters.BuiltIn
 {
 	[SpFieldConverter("Calculated")]
-	public class CalculatedFieldConverter : MultiTypeFieldConverter
+	internal class CalculatedFieldConverter : MultiTypeFieldConverter
 	{
-		private static readonly IReadOnlyDictionary<string, Func<IFieldConverter>> ValueConverters = new Dictionary<string, Func<IFieldConverter>>
+		private static readonly IReadOnlyDictionary<string, Func<IFieldConverter>> s_valueConverters = new Dictionary
+			<string, Func<IFieldConverter>>
 		{
-			{"Text", () => new TextValueConverter()},
-			{"Number", () => new NumberValueConverter()},
-			{"Currency", () => new NumberValueConverter()},
-			{"DateTime", () => new DateTimeValueConverter()},
-			{"Boolean", () => new BoolValueConverter()}
+			["Text"] = () => new TextValueConverter(),
+			["Number"] = () => new NumberValueConverter(),
+			["Currency"] = () => new NumberValueConverter(),
+			["DateTime"] = () => new DateTimeValueConverter(),
+			["Boolean"] = () => new BoolValueConverter()
 		};
 
 		public override void Initialize(MetaField field)
@@ -27,12 +28,12 @@ namespace Untech.SharePoint.Server.Converters.BuiltIn
 				throw new ArgumentException("This field is not a calculated.");
 			}
 
-			if (!ValueConverters.ContainsKey(field.OutputType))
+			if (!s_valueConverters.ContainsKey(field.OutputType))
 			{
 				throw new ArgumentException(string.Format("Output type '{0}' is invalid.", field.OutputType));
 			}
 
-			Internal = ValueConverters[field.OutputType]();
+			Internal = s_valueConverters[field.OutputType]();
 		}
 
 		private static string ExtractValue(string str, string expectedPrefix)
@@ -49,11 +50,11 @@ namespace Untech.SharePoint.Server.Converters.BuiltIn
 			throw new ArgumentException(string.Format("Calculated field value '{0}' has an invalid type: ", str));
 		}
 
-		private class TextValueConverter : IFieldConverter 
+		private class TextValueConverter : IFieldConverter
 		{
 			public void Initialize(MetaField field)
 			{
-				if (field.MemberType != typeof (string))
+				if (field.MemberType != typeof(string))
 				{
 					throw new ArgumentException("Only string member type is allowed.");
 				}
@@ -94,12 +95,12 @@ namespace Untech.SharePoint.Server.Converters.BuiltIn
 
 			public object ToSpValue(object value)
 			{
-				return "float;#" + (double) value;
+				return "float;#" + (double)value;
 			}
 
 			public string ToCamlValue(object value)
 			{
-				return ((double) value).ToString(CultureInfo.InvariantCulture);
+				return ((double)value).ToString(CultureInfo.InvariantCulture);
 			}
 		}
 
@@ -127,7 +128,7 @@ namespace Untech.SharePoint.Server.Converters.BuiltIn
 
 			public string ToCamlValue(object value)
 			{
-				return ((DateTime) value).ToString("u");
+				return ((DateTime)value).ToString("u");
 			}
 		}
 
@@ -150,13 +151,13 @@ namespace Untech.SharePoint.Server.Converters.BuiltIn
 
 			public object ToSpValue(object value)
 			{
-				var boolValue = (bool) value;
+				var boolValue = (bool)value;
 				return "boolean;#" + (boolValue ? "1" : "0");
 			}
 
 			public string ToCamlValue(object value)
 			{
-				return (bool) value ? "1" : "0";
+				return (bool)value ? "1" : "0";
 			}
 		}
 	}

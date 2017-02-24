@@ -22,7 +22,7 @@ namespace Untech.SharePoint.Common.Data.QueryModels
 		/// <summary>
 		/// Gets 'where' model type.
 		/// </summary>
-		public WhereType Type { get; private set; }
+		public WhereType Type { get; }
 
 		/// <summary>
 		/// Creates logical 'And' operation between operands.
@@ -65,14 +65,13 @@ namespace Untech.SharePoint.Common.Data.QueryModels
 		[CanBeNull]
 		public static WhereModel In([NotNull]FieldRefModel field, [CanBeNull]IEnumerable<object> values)
 		{
-			values = values ?? new object [0];
+			values = values ?? new object[0];
 			return values.Aggregate<object, WhereModel>(null, (where, value) =>
 			{
 				var spDataComparison = new ComparisonModel(ComparisonOperator.Eq, field, value);
 				return Or(@where, spDataComparison);
 			});
 		}
-
 
 		/// <summary>
 		/// Returns inverted comparison.

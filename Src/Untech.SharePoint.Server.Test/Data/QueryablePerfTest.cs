@@ -7,13 +7,12 @@ using Untech.SharePoint.Server.Data;
 
 namespace Untech.SharePoint.Server.Test.Data
 {
-
 	[TestClass]
 
 	public class QueryablePerfTest
 	{
 		[TestMethod]
-		[TestCategory("Perfomance")]
+		[TestCategory("Performance")]
 		public void Measure()
 		{
 			var site = new SPSite(@"http://sp2013dev/sites/orm-test", SPUserToken.SystemAccount);

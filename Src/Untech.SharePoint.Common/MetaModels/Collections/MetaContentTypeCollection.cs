@@ -17,7 +17,7 @@ namespace Untech.SharePoint.Common.MetaModels.Collections
 		/// </summary>
 		/// <param name="source">Collection of <see cref="MetaContentType"/>.</param>
 		/// <exception cref="ArgumentNullException"><paramref name="source"/> is null.</exception>
-		public MetaContentTypeCollection([NotNull][ItemNotNull]IEnumerable<MetaContentType> source) 
+		public MetaContentTypeCollection([NotNull][ItemNotNull]IEnumerable<MetaContentType> source)
 			: base(CreateDictionary(source))
 		{
 		}

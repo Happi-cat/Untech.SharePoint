@@ -34,7 +34,7 @@ namespace Untech.SharePoint.Common.Converters.BuiltIn
 			if (_isNullableMemberType)
 				return (double?)value;
 
-			return (double?) value ?? 0;
+			return (double?)value ?? 0;
 		}
 
 		public object ToSpValue(object value)

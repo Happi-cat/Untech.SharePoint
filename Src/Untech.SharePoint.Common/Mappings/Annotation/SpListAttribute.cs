@@ -25,6 +25,6 @@ namespace Untech.SharePoint.Common.Mappings.Annotation
 		/// <summary>
 		/// Gets or sets the site-relative URL at which the list was placed.
 		/// </summary>
-		public string Url { get; private set; }
+		public string Url { get; }
 	}
 }

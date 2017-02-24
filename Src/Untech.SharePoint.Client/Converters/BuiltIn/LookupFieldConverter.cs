@@ -22,14 +22,14 @@ namespace Untech.SharePoint.Client.Converters.BuiltIn
 
 		public void Initialize(MetaField field)
 		{
-			Guard.CheckNotNull("field", field);
+			Guard.CheckNotNull(nameof(field), field);
 
 			Field = field;
 
 			if (field.AllowMultipleValues)
 			{
-				if (field.MemberType != typeof (ObjectReference[]) &&
-				    !field.MemberType.IsAssignableFrom(typeof (List<ObjectReference>)))
+				if (field.MemberType != typeof(ObjectReference[])
+					&& !field.MemberType.IsAssignableFrom(typeof(List<ObjectReference>)))
 				{
 					throw new ArgumentException(
 						"Only ObjectReference[] or any class assignable from List<ObjectReference> can be used as a member type.");
@@ -40,7 +40,7 @@ namespace Untech.SharePoint.Client.Converters.BuiltIn
 			}
 			else
 			{
-				if (field.MemberType != typeof (ObjectReference))
+				if (field.MemberType != typeof(ObjectReference))
 				{
 					throw new ArgumentException(
 						"Only ObjectReference can be used as a member type.");
@@ -54,17 +54,17 @@ namespace Untech.SharePoint.Client.Converters.BuiltIn
 
 			if (!IsMulti)
 			{
-				return ConvertToObjRef((FieldLookupValue) value);
+				return ConvertToObjRef((FieldLookupValue)value);
 			}
 
-			var fieldValues = (IEnumerable<FieldLookupValue>) value;
+			var fieldValues = (IEnumerable<FieldLookupValue>)value;
 			var lookupValues = fieldValues.Select(ConvertToObjRef).ToList();
 
 			if (!lookupValues.Any())
 			{
 				return null;
 			}
-			return IsArray ? (object) lookupValues.ToArray() : lookupValues;
+			return IsArray ? (object)lookupValues.ToArray() : lookupValues;
 		}
 
 		public object ToSpValue(object value)
@@ -99,7 +99,7 @@ namespace Untech.SharePoint.Client.Converters.BuiltIn
 				return singleValue.Id.ToString();
 			}
 
-			var multiValue = (IEnumerable<ObjectReference>) value;
+			var multiValue = (IEnumerable<ObjectReference>)value;
 			return multiValue
 				.Distinct()
 				.Select(n => string.Format("{0};#{1}", n.Id, n.Value))

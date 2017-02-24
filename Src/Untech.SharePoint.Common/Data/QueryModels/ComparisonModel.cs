@@ -10,7 +10,7 @@ namespace Untech.SharePoint.Common.Data.QueryModels
 	/// </summary>
 	public sealed class ComparisonModel : WhereModel
 	{
-		private static readonly Dictionary<ComparisonOperator, ComparisonOperator> NegateMap = new Dictionary
+		private static readonly Dictionary<ComparisonOperator, ComparisonOperator> s_negateMap = new Dictionary
 			<ComparisonOperator, ComparisonOperator>
 		{
 			{ComparisonOperator.Eq, ComparisonOperator.Neq},
@@ -35,10 +35,10 @@ namespace Untech.SharePoint.Common.Data.QueryModels
 		/// <param name="value">Value that is expected. Can be null.</param>
 		/// <exception cref="ArgumentNullException"><paramref name="field"/> is null.</exception>
 		public ComparisonModel(ComparisonOperator comparisonOperator, [NotNull]FieldRefModel field, [CanBeNull]object value)
-			: base (WhereType.Comparison)
+			: base(WhereType.Comparison)
 		{
 			Guard.CheckNotNull(nameof(field), field);
-			
+
 			ComparisonOperator = comparisonOperator;
 			Field = field;
 			Value = value;
@@ -74,9 +74,9 @@ namespace Untech.SharePoint.Common.Data.QueryModels
 		[NotNull]
 		public override WhereModel Negate()
 		{
-			if (NegateMap.ContainsKey(ComparisonOperator))
+			if (s_negateMap.ContainsKey(ComparisonOperator))
 			{
-				return new ComparisonModel(NegateMap[ComparisonOperator], Field, Value);
+				return new ComparisonModel(s_negateMap[ComparisonOperator], Field, Value);
 			}
 			throw new NotSupportedException($"Unable to negate: {ComparisonOperator}");
 		}

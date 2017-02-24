@@ -49,13 +49,13 @@ namespace Untech.SharePoint.Common.Test.Tools.DataGenerators
 			return GetBaseEntityGenerator<ProjectModel>()
 				.WithActualDate(n => n.ProjectStart)
 				.WithActualDate(n => n.ProjectEnd)
-				.With(n => n.OSes, new ArrayGenerator<string>(new RangeGenerator<string>(new[] {"Linux", "MacOS", "Windows"}))
+				.With(n => n.OSes, new ArrayGenerator<string>(new RangeGenerator<string>(new[] { "Linux", "MacOS", "Windows" }))
 				{
 					Size = 3,
 					Options = ArrayGenerationOptions.RandomSize
 				})
-				.WithRange(n => n.Status, new[] {"Approved", "Cancelled", "Completed", "Rejected"})
-				.WithRange(n => n.Technology, new[] {".NET", "NodeJS", "Java"});
+				.WithRange(n => n.Status, new[] { "Approved", "Cancelled", "Completed", "Rejected" })
+				.WithRange(n => n.Technology, new[] { ".NET", "NodeJS", "Java" });
 		}
 
 		private static ObjectGenerator<EventModel> GetBaseEventGenerator()
@@ -67,11 +67,10 @@ namespace Untech.SharePoint.Common.Test.Tools.DataGenerators
 		}
 
 		private static ObjectGenerator<T> GetBaseEntityGenerator<T>()
-			where T: Entity
+			where T : Entity
 		{
 			return new ObjectGenerator<T>()
 				.WithShortLorem(n => n.Title);
 		}
-
 	}
 }

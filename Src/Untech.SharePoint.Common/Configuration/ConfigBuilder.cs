@@ -37,7 +37,7 @@ namespace Untech.SharePoint.Common.Configuration
 		/// <exception cref="ArgumentNullException"><paramref name="action"/> is null.</exception>
 		[NotNull]
 		public ConfigBuilder RegisterMappings<TContext>([NotNull]Func<Mappings.Mappings, MappingSource<TContext>> action)
-			where TContext: ISpContext
+			where TContext : ISpContext
 		{
 			Guard.CheckNotNull(nameof(action), action);
 

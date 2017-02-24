@@ -14,7 +14,7 @@ namespace Untech.SharePoint.Common.Data.Mapper
 		/// <summary>
 		/// Initializes a new instance of the <see cref="StoreAccessor{TSPItem}"/>
 		/// </summary>
-		/// <param name="field">Metadata of the field that should be associated with that accessor.</param>
+		/// <param name="field">Meta-data of the field that should be associated with that accessor.</param>
 		/// <exception cref="ArgumentNullException"><paramref name="field"/> is null.</exception>
 		protected StoreAccessor([NotNull]MetaField field)
 		{

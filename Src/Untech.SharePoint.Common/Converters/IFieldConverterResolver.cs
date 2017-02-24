@@ -12,14 +12,14 @@ namespace Untech.SharePoint.Common.Converters
 		/// Determines whether <paramref name="typeAsString"/> can be resolved by current resolver.
 		/// </summary>
 		/// <param name="typeAsString">SP field type as string.</param>
-		/// <returns>true if can resovle the specified <paramref name="typeAsString"/>.</returns>
+		/// <returns>true if can resolve the specified <paramref name="typeAsString"/>.</returns>
 		bool CanResolve([NotNull]string typeAsString);
 
 		/// <summary>
 		/// Resolves <paramref name="typeAsString"/> and returns new instance of the associated <see cref="IFieldConverter"/>.
 		/// </summary>
 		/// <param name="typeAsString">SP field type as string.</param>
-		/// <returns>New instance of the <see cref="IFieldConverter"/> that matchs to the specified SP field type.</returns>
+		/// <returns>New instance of the <see cref="IFieldConverter"/> that matches to the specified SP field type.</returns>
 		[NotNull]
 		IFieldConverter Resolve([NotNull]string typeAsString);
 
@@ -27,7 +27,7 @@ namespace Untech.SharePoint.Common.Converters
 		/// Determines whether <paramref name="converterType"/> can be resolved by current resolver.
 		/// </summary>
 		/// <param name="converterType">SP field converter type to check.</param>
-		/// <returns>true if can resovle the specified <paramref name="converterType"/>.</returns>
+		/// <returns>true if can resolve the specified <paramref name="converterType"/>.</returns>
 		bool CanResolve([NotNull]Type converterType);
 
 		/// <summary>

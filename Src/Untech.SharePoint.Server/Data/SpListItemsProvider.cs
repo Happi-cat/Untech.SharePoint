@@ -69,7 +69,7 @@ namespace Untech.SharePoint.Server.Data
 
 			foreach (var item in items)
 			{
-				batchBuilder.NewItem(_spList,  mapper.MapToCaml(item));
+				batchBuilder.NewItem(_spList, mapper.MapToCaml(item));
 			}
 
 			batchBuilder.End();

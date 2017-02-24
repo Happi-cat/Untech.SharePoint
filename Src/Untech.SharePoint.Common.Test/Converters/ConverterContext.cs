@@ -22,9 +22,9 @@ namespace Untech.SharePoint.Common.Test.Converters
 		[SpList("Test")]
 		public ISpList<ConverterDataEntity> Test { get; set; }
 
-		public Config Config { get; private set; }
-		public IMappingSource MappingSource { get; private set; }
-		public MetaContext Model { get; private set; }
+		public Config Config { get; }
+		public IMappingSource MappingSource { get; }
+		public MetaContext Model { get; }
 	}
 
 	[SpContentType]

@@ -19,7 +19,7 @@ namespace Untech.SharePoint.Common.MetaModels
 		/// </summary>
 		protected BaseMetaModel()
 		{
-			_additionalProperties  = new Container<string, object>();
+			_additionalProperties = new Container<string, object>();
 		}
 
 		/// <summary>
@@ -40,7 +40,7 @@ namespace Untech.SharePoint.Common.MetaModels
 		{
 			Guard.CheckNotNull(nameof(key), key);
 
-			return (T) _additionalProperties.Resolve(key);
+			return (T)_additionalProperties.Resolve(key);
 		}
 
 		/// <summary>

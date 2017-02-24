@@ -10,33 +10,34 @@ namespace Untech.SharePoint.Server.Test.Data
 	[TestClass]
 	public class BasicOperationsTest
 	{
-		private static BasicOperationsSpec _spec;
-		private static DataContext _dataContext;
+		private static BasicOperationsSpec s_spec;
+		private static DataContext s_dataContext;
 
 		[ClassInitialize]
 		public static void Init(TestContext ctx)
 		{
-			_dataContext = GetContext();
-			_spec = new BasicOperationsSpec("SERVER_BASIC_OPS", _dataContext);
+			s_dataContext = GetContext();
+			s_spec = new BasicOperationsSpec("SERVER_BASIC_OPS", s_dataContext);
 		}
 
 		[TestMethod]
 		public void AddUpdateDelete()
 		{
-			_spec.AddUpdateDelete();
+			s_spec.AddUpdateDelete();
 		}
 
 		[TestMethod]
 		public void BatchAddUpdateDelete()
 		{
-			_spec.BatchAddUpdateDelete();
+			s_spec.BatchAddUpdateDelete();
 		}
 
 		[TestMethod]
 		public void GetAttachments()
 		{
-			var result = _dataContext.News.GetAttachments(1).ToList();
+			var result = s_dataContext.News.GetAttachments(1).ToList();
 		}
+
 		private static DataContext GetContext()
 		{
 			var site = new SPSite(@"http://sp2013dev/sites/orm-test", SPUserToken.SystemAccount);

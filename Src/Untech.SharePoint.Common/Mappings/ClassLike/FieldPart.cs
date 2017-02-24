@@ -48,7 +48,7 @@ namespace Untech.SharePoint.Common.Mappings.ClassLike
 		}
 
 		/// <summary>
-		/// Sets custome converter <see cref="IFieldConverter"/> for the specified SP field.
+		/// Sets custom converter <see cref="IFieldConverter"/> for the specified SP field.
 		/// </summary>
 		/// <typeparam name="TConverter">Type of SP field converter.</typeparam>
 		/// <returns>Current instance.</returns>
@@ -56,7 +56,7 @@ namespace Untech.SharePoint.Common.Mappings.ClassLike
 		public FieldPart CustomConverter<TConverter>()
 			where TConverter : IFieldConverter, new()
 		{
-			_customConverterType = typeof (TConverter);
+			_customConverterType = typeof(TConverter);
 			return this;
 		}
 

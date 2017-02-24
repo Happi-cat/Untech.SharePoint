@@ -7,7 +7,6 @@ namespace Untech.SharePoint.Client.Data.Mapper
 {
 	internal class MapperInitializer : BaseMetaModelVisitor
 	{
-
 		public override void VisitContentType(MetaContentType contentType)
 		{
 			contentType.SetMapper(new TypeMapper(contentType));
@@ -19,6 +18,5 @@ namespace Untech.SharePoint.Client.Data.Mapper
 		{
 			field.SetMapper(new FieldMapper<ListItem>(field, new StoreAccessor(field)));
 		}
-		
 	}
 }

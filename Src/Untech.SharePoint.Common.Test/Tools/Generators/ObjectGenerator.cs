@@ -25,7 +25,7 @@ namespace Untech.SharePoint.Common.Test.Tools.Generators
 
 		public ObjectGenerator<T> With<TProp>([NotNull] Expression<Func<T, TProp>> selector, [NotNull] IValueGenerator<TProp> valueGenerator, GeneratorBehaviour behaviour = GeneratorBehaviour.IfNull)
 		{
-			var member = ((MemberExpression) selector.Body).Member;
+			var member = ((MemberExpression)selector.Body).Member;
 			if (_memberFillers.ContainsKey(member))
 			{
 				_memberFillers[member] = new MemberGeneratorWrapper<TProp>(member, valueGenerator, behaviour);
@@ -37,7 +37,6 @@ namespace Untech.SharePoint.Common.Test.Tools.Generators
 
 			return this;
 		}
-
 
 		public T Generate()
 		{
@@ -86,6 +85,5 @@ namespace Untech.SharePoint.Common.Test.Tools.Generators
 		}
 
 		#endregion
-
 	}
 }

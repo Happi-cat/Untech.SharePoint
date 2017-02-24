@@ -28,11 +28,11 @@ namespace Untech.SharePoint.Common.Test.Data.Translators
 		{
 			Given(source => source.Where(n => n.Bool1 && n.Int1 > 10 || n.String1.StartsWith("TEST")))
 				.ExpectedCaml("<View>" +
-				              "<Query>" +
-				              "<Where><Or><And><Eq><FieldRef Name='Bool1' /><Value>True</Value></Eq><Gt><FieldRef Name='Int1' /><Value>10</Value></Gt></And>" +
-				              "<BeginsWith><FieldRef Name='String1' /><Value>TEST</Value></BeginsWith></Or></Where>" +
-				              "</Query>" +
-				              "</View>");
+							  "<Query>" +
+							  "<Where><Or><And><Eq><FieldRef Name='Bool1' /><Value>True</Value></Eq><Gt><FieldRef Name='Int1' /><Value>10</Value></Gt></And>" +
+							  "<BeginsWith><FieldRef Name='String1' /><Value>TEST</Value></BeginsWith></Or></Where>" +
+							  "</Query>" +
+							  "</View>");
 		}
 
 		[TestMethod]
@@ -43,11 +43,11 @@ namespace Untech.SharePoint.Common.Test.Data.Translators
 				.Where(n => n.Int1 > 10)
 				.Where(n => n.String1.StartsWith("TEST")))
 				.ExpectedCaml("<View>" +
-				              "<Query>" +
-				              "<Where><And><And><Eq><FieldRef Name='Bool1' /><Value>True</Value></Eq><Gt><FieldRef Name='Int1' /><Value>10</Value></Gt></And>" +
-				              "<BeginsWith><FieldRef Name='String1' /><Value>TEST</Value></BeginsWith></And></Where>" +
-				              "</Query>" +
-				              "</View>");
+							  "<Query>" +
+							  "<Where><And><And><Eq><FieldRef Name='Bool1' /><Value>True</Value></Eq><Gt><FieldRef Name='Int1' /><Value>10</Value></Gt></And>" +
+							  "<BeginsWith><FieldRef Name='String1' /><Value>TEST</Value></BeginsWith></And></Where>" +
+							  "</Query>" +
+							  "</View>");
 		}
 
 		[TestMethod]
@@ -57,11 +57,11 @@ namespace Untech.SharePoint.Common.Test.Data.Translators
 				.Where(n => true)
 				.Where(n => n.String1.StartsWith("TEST")))
 				.ExpectedCaml("<View>" +
-				              "<Query>" +
-				              "<Where><And><IsNotNull><FieldRef Name='ID' /></IsNotNull>" +
-				              "<BeginsWith><FieldRef Name='String1' /><Value>TEST</Value></BeginsWith></And></Where>" +
-				              "</Query>" +
-				              "</View>");
+							  "<Query>" +
+							  "<Where><And><IsNotNull><FieldRef Name='ID' /></IsNotNull>" +
+							  "<BeginsWith><FieldRef Name='String1' /><Value>TEST</Value></BeginsWith></And></Where>" +
+							  "</Query>" +
+							  "</View>");
 		}
 
 		[TestMethod]
@@ -69,11 +69,11 @@ namespace Untech.SharePoint.Common.Test.Data.Translators
 		{
 			Given(source => source.Where(n => false).Where(n => n.String1.StartsWith("TEST")))
 				.ExpectedCaml("<View>" +
-				              "<Query>" +
-				              "<Where><And><IsNull><FieldRef Name='ID' /></IsNull>" +
-				              "<BeginsWith><FieldRef Name='String1' /><Value>TEST</Value></BeginsWith></And></Where>" +
-				              "</Query>" +
-				              "</View>");
+							  "<Query>" +
+							  "<Where><And><IsNull><FieldRef Name='ID' /></IsNull>" +
+							  "<BeginsWith><FieldRef Name='String1' /><Value>TEST</Value></BeginsWith></And></Where>" +
+							  "</Query>" +
+							  "</View>");
 		}
 
 		[TestMethod]
@@ -83,18 +83,18 @@ namespace Untech.SharePoint.Common.Test.Data.Translators
 				.Where(n => n.Bool1 ^ n.Bool2)
 				.Where(n => n.String1.StartsWith("TEST")))
 				.ExpectedCaml("<View>" +
-				              "<Query>" +
-				              "<Where><And>" +
-				              "<Or><And>" +
-				              "<Eq><FieldRef Name='Bool1' /><Value>True</Value></Eq>" +
-				              "<Neq><FieldRef Name='Bool2' /><Value>True</Value></Neq>" +
-				              "</And><And>" +
-				              "<Neq><FieldRef Name='Bool1' /><Value>True</Value></Neq>" +
-				              "<Eq><FieldRef Name='Bool2' /><Value>True</Value></Eq>" +
-				              "</And></Or>" +
-				              "<BeginsWith><FieldRef Name='String1' /><Value>TEST</Value></BeginsWith></And></Where>" +
-				              "</Query>" +
-				              "</View>");
+							  "<Query>" +
+							  "<Where><And>" +
+							  "<Or><And>" +
+							  "<Eq><FieldRef Name='Bool1' /><Value>True</Value></Eq>" +
+							  "<Neq><FieldRef Name='Bool2' /><Value>True</Value></Neq>" +
+							  "</And><And>" +
+							  "<Neq><FieldRef Name='Bool1' /><Value>True</Value></Neq>" +
+							  "<Eq><FieldRef Name='Bool2' /><Value>True</Value></Eq>" +
+							  "</And></Or>" +
+							  "<BeginsWith><FieldRef Name='String1' /><Value>TEST</Value></BeginsWith></And></Where>" +
+							  "</Query>" +
+							  "</View>");
 		}
 
 		[TestMethod]
@@ -103,9 +103,9 @@ namespace Untech.SharePoint.Common.Test.Data.Translators
 			Given(source => source
 				.Where(n => n.StringCollection1.Contains("TEST")))
 				.ExpectedCaml("<View><Query><Where>" +
-				              "<ContainsOrIncludes><FieldRef Name='StringCollection1' /><Value>TEST</Value></ContainsOrIncludes>" +
-				              "</Where></Query>" +
-				              "</View>");
+							  "<ContainsOrIncludes><FieldRef Name='StringCollection1' /><Value>TEST</Value></ContainsOrIncludes>" +
+							  "</Where></Query>" +
+							  "</View>");
 		}
 
 		[TestMethod]
@@ -114,9 +114,9 @@ namespace Untech.SharePoint.Common.Test.Data.Translators
 			Given(source => source
 				.Where(n => n.StringCollection2.Contains("TEST")))
 				.ExpectedCaml("<View><Query><Where>" +
-				              "<ContainsOrIncludes><FieldRef Name='StringCollection2' /><Value>TEST</Value></ContainsOrIncludes>" +
-				              "</Where></Query>" +
-				              "</View>");
+							  "<ContainsOrIncludes><FieldRef Name='StringCollection2' /><Value>TEST</Value></ContainsOrIncludes>" +
+							  "</Where></Query>" +
+							  "</View>");
 		}
 
 		[TestMethod]
@@ -125,10 +125,9 @@ namespace Untech.SharePoint.Common.Test.Data.Translators
 			Given(source => source
 				.Where(n => n.StringCollection3.Contains("TEST")))
 				.ExpectedCaml("<View><Query><Where>" +
-				              "<ContainsOrIncludes><FieldRef Name='StringCollection3' /><Value>TEST</Value></ContainsOrIncludes>" +
-				              "</Where></Query>" +
-				              "</View>");
-
+							  "<ContainsOrIncludes><FieldRef Name='StringCollection3' /><Value>TEST</Value></ContainsOrIncludes>" +
+							  "</Where></Query>" +
+							  "</View>");
 		}
 
 		[TestMethod]
@@ -137,9 +136,9 @@ namespace Untech.SharePoint.Common.Test.Data.Translators
 			Given(source => source
 				.Where(n => n.StringCollection4.Contains("TEST")))
 				.ExpectedCaml("<View><Query><Where>" +
-				              "<ContainsOrIncludes><FieldRef Name='StringCollection4' /><Value>TEST</Value></ContainsOrIncludes>" +
-				              "</Where></Query>" +
-				              "</View>");
+							  "<ContainsOrIncludes><FieldRef Name='StringCollection4' /><Value>TEST</Value></ContainsOrIncludes>" +
+							  "</Where></Query>" +
+							  "</View>");
 		}
 
 		[TestMethod]
@@ -151,12 +150,12 @@ namespace Untech.SharePoint.Common.Test.Data.Translators
 				.Where(n => n.String1.StartsWith("TEST"))
 				.Take(10))
 				.ExpectedCaml("<View>" +
-				              "<RowLimit>10</RowLimit>" +
-				              "<Query>" +
-				              "<Where><And><And><Eq><FieldRef Name='Bool1' /><Value>True</Value></Eq><Gt><FieldRef Name='Int1' /><Value>10</Value></Gt></And>" +
-				              "<BeginsWith><FieldRef Name='String1' /><Value>TEST</Value></BeginsWith></And></Where>" +
-				              "</Query>" +
-				              "</View>");
+							  "<RowLimit>10</RowLimit>" +
+							  "<Query>" +
+							  "<Where><And><And><Eq><FieldRef Name='Bool1' /><Value>True</Value></Eq><Gt><FieldRef Name='Int1' /><Value>10</Value></Gt></And>" +
+							  "<BeginsWith><FieldRef Name='String1' /><Value>TEST</Value></BeginsWith></And></Where>" +
+							  "</Query>" +
+							  "</View>");
 		}
 
 		#endregion
@@ -171,10 +170,10 @@ namespace Untech.SharePoint.Common.Test.Data.Translators
 				.OrderBy(n => n.Bool1)
 				.ThenBy(n => n.String1))
 				.ExpectedCaml("<View>" +
-				              "<Query>" +
-				              "<OrderBy><FieldRef Name='Bool1' Ascending='TRUE' /><FieldRef Name='String1' Ascending='TRUE' /></OrderBy>" +
-				              "</Query>" +
-				              "</View>");
+							  "<Query>" +
+							  "<OrderBy><FieldRef Name='Bool1' Ascending='TRUE' /><FieldRef Name='String1' Ascending='TRUE' /></OrderBy>" +
+							  "</Query>" +
+							  "</View>");
 		}
 
 		[TestMethod]
@@ -184,10 +183,10 @@ namespace Untech.SharePoint.Common.Test.Data.Translators
 				.OrderByDescending(n => n.Bool1)
 				.ThenByDescending(n => n.String1))
 				.ExpectedCaml("<View>" +
-				              "<Query>" +
-				              "<OrderBy><FieldRef Name='Bool1' Ascending='FALSE' /><FieldRef Name='String1' Ascending='FALSE' /></OrderBy>" +
-				              "</Query>" +
-				              "</View>");
+							  "<Query>" +
+							  "<OrderBy><FieldRef Name='Bool1' Ascending='FALSE' /><FieldRef Name='String1' Ascending='FALSE' /></OrderBy>" +
+							  "</Query>" +
+							  "</View>");
 		}
 
 		[TestMethod]
@@ -198,10 +197,10 @@ namespace Untech.SharePoint.Common.Test.Data.Translators
 				.ThenBy(n => n.String1)
 				.Reverse())
 				.ExpectedCaml("<View>" +
-				              "<Query>" +
-				              "<OrderBy><FieldRef Name='Bool1' Ascending='FALSE' /><FieldRef Name='String1' Ascending='FALSE' /></OrderBy>" +
-				              "</Query>" +
-				              "</View>");
+							  "<Query>" +
+							  "<OrderBy><FieldRef Name='Bool1' Ascending='FALSE' /><FieldRef Name='String1' Ascending='FALSE' /></OrderBy>" +
+							  "</Query>" +
+							  "</View>");
 		}
 
 		[TestMethod]
@@ -209,12 +208,12 @@ namespace Untech.SharePoint.Common.Test.Data.Translators
 		{
 			Given(source => source.OrderBy(n => n.String1).Last(n => n.String2 == "TEST"))
 				.ExpectedCaml("<View>" +
-				              "<RowLimit>1</RowLimit>" +
-				              "<Query>" +
-				              "<Where><Eq><FieldRef Name='String2' /><Value>TEST</Value></Eq></Where>" +
-				              "<OrderBy><FieldRef Name='String1' Ascending='FALSE' /></OrderBy>" +
-				              "</Query>" +
-				              "</View>");
+							  "<RowLimit>1</RowLimit>" +
+							  "<Query>" +
+							  "<Where><Eq><FieldRef Name='String2' /><Value>TEST</Value></Eq></Where>" +
+							  "<OrderBy><FieldRef Name='String1' Ascending='FALSE' /></OrderBy>" +
+							  "</Query>" +
+							  "</View>");
 		}
 
 		#endregion
@@ -230,10 +229,10 @@ namespace Untech.SharePoint.Common.Test.Data.Translators
 				.Where(n => n.Int1 > 10)
 				.Any())
 				.ExpectedCaml("<View>" +
-				              "<Query>" +
-				              "<Where><And><Eq><FieldRef Name='Bool1' /><Value>True</Value></Eq><Gt><FieldRef Name='Int1' /><Value>10</Value></Gt></And></Where>" +
-				              "</Query>" +
-				              "</View>");
+							  "<Query>" +
+							  "<Where><And><Eq><FieldRef Name='Bool1' /><Value>True</Value></Eq><Gt><FieldRef Name='Int1' /><Value>10</Value></Gt></And></Where>" +
+							  "</Query>" +
+							  "</View>");
 		}
 
 		[TestMethod]
@@ -243,10 +242,10 @@ namespace Untech.SharePoint.Common.Test.Data.Translators
 				.Where(n => n.Bool1)
 				.Any(n => n.Int1 > 10))
 				.ExpectedCaml("<View>" +
-				              "<Query>" +
-				              "<Where><And><Eq><FieldRef Name='Bool1' /><Value>True</Value></Eq><Gt><FieldRef Name='Int1' /><Value>10</Value></Gt></And></Where>" +
-				              "</Query>" +
-				              "</View>");
+							  "<Query>" +
+							  "<Where><And><Eq><FieldRef Name='Bool1' /><Value>True</Value></Eq><Gt><FieldRef Name='Int1' /><Value>10</Value></Gt></And></Where>" +
+							  "</Query>" +
+							  "</View>");
 		}
 
 		#endregion
@@ -262,11 +261,11 @@ namespace Untech.SharePoint.Common.Test.Data.Translators
 				.Where(n => n.Int1 > 10)
 				.All(n => n.String1 == "TEST"))
 				.ExpectedCaml("<View>" +
-				              "<Query>" +
-				              "<Where><And><And><Eq><FieldRef Name='Bool1' /><Value>True</Value></Eq><Gt><FieldRef Name='Int1' /><Value>10</Value></Gt></And>" +
-				              "<Neq><FieldRef Name='String1' /><Value>TEST</Value></Neq></And></Where>" +
-				              "</Query>" +
-				              "</View>");
+							  "<Query>" +
+							  "<Where><And><And><Eq><FieldRef Name='Bool1' /><Value>True</Value></Eq><Gt><FieldRef Name='Int1' /><Value>10</Value></Gt></And>" +
+							  "<Neq><FieldRef Name='String1' /><Value>TEST</Value></Neq></And></Where>" +
+							  "</Query>" +
+							  "</View>");
 		}
 
 		#endregion
@@ -279,13 +278,13 @@ namespace Untech.SharePoint.Common.Test.Data.Translators
 		{
 			Given(source => source
 				.Where(n => n.Bool1)
-				.Select(n => new {Result = n.Int1, Result2 = n.String1, Result3 = n.Int1 + n.String1}))
+				.Select(n => new { Result = n.Int1, Result2 = n.String1, Result3 = n.Int1 + n.String1 }))
 				.ExpectedCaml("<View>" +
-				              "<Query>" +
-				              "<Where><Eq><FieldRef Name='Bool1' /><Value>True</Value></Eq></Where>" +
-				              "</Query>" +
-				              "<ViewFields><FieldRef Name='Int1' /><FieldRef Name='String1' /></ViewFields>" +
-				              "</View>");
+							  "<Query>" +
+							  "<Where><Eq><FieldRef Name='Bool1' /><Value>True</Value></Eq></Where>" +
+							  "</Query>" +
+							  "<ViewFields><FieldRef Name='Int1' /><FieldRef Name='String1' /></ViewFields>" +
+							  "</View>");
 		}
 
 		[TestMethod]
@@ -297,11 +296,11 @@ namespace Untech.SharePoint.Common.Test.Data.Translators
 				.Select(n => n.String1)
 				.Any())
 				.ExpectedCaml("<View>" +
-				              "<Query>" +
-				              "<Where><And><Eq><FieldRef Name='Bool1' /><Value>True</Value></Eq><Gt><FieldRef Name='Int1' /><Value>10</Value></Gt></And></Where>" +
-				              "</Query>" +
-				              "<ViewFields><FieldRef Name='String1' /></ViewFields>" +
-				              "</View>");
+							  "<Query>" +
+							  "<Where><And><Eq><FieldRef Name='Bool1' /><Value>True</Value></Eq><Gt><FieldRef Name='Int1' /><Value>10</Value></Gt></And></Where>" +
+							  "</Query>" +
+							  "<ViewFields><FieldRef Name='String1' /></ViewFields>" +
+							  "</View>");
 		}
 
 		[TestMethod]
@@ -309,15 +308,15 @@ namespace Untech.SharePoint.Common.Test.Data.Translators
 		{
 			Given(source => source
 				.Where(n => n.Bool1)
-				.Select(n => new {Result = n.Int1, Result2 = n.String1, Result3 = n.Int1 + n.String1})
+				.Select(n => new { Result = n.Int1, Result2 = n.String1, Result3 = n.Int1 + n.String1 })
 				.Take(10))
 				.ExpectedCaml("<View>" +
-				              "<RowLimit>10</RowLimit>" +
-				              "<Query>" +
-				              "<Where><Eq><FieldRef Name='Bool1' /><Value>True</Value></Eq></Where>" +
-				              "</Query>" +
-				              "<ViewFields><FieldRef Name='Int1' /><FieldRef Name='String1' /></ViewFields>" +
-				              "</View>");
+							  "<RowLimit>10</RowLimit>" +
+							  "<Query>" +
+							  "<Where><Eq><FieldRef Name='Bool1' /><Value>True</Value></Eq></Where>" +
+							  "</Query>" +
+							  "<ViewFields><FieldRef Name='Int1' /><FieldRef Name='String1' /></ViewFields>" +
+							  "</View>");
 		}
 
 		[TestMethod]
@@ -325,7 +324,7 @@ namespace Untech.SharePoint.Common.Test.Data.Translators
 		{
 			CustomAssert.Throw<NotSupportedException>(
 				() => Given(source => source
-					.Select(n => new {Value = n.Int1})
+					.Select(n => new { Value = n.Int1 })
 					.Select(n => n.Value)));
 		}
 
@@ -365,15 +364,15 @@ namespace Untech.SharePoint.Common.Test.Data.Translators
 		{
 			Given(source => source
 				.Where(n => n.Bool1)
-				.Select(n => new {Result = n.Int1, Result2 = n.String1, Result3 = n.Int1 + n.String1})
+				.Select(n => new { Result = n.Int1, Result2 = n.String1, Result3 = n.Int1 + n.String1 })
 				.First())
 				.ExpectedCaml("<View>" +
-				              "<RowLimit>1</RowLimit>" +
-				              "<Query>" +
-				              "<Where><Eq><FieldRef Name='Bool1' /><Value>True</Value></Eq></Where>" +
-				              "</Query>" +
-				              "<ViewFields><FieldRef Name='Int1' /><FieldRef Name='String1' /></ViewFields>" +
-				              "</View>");
+							  "<RowLimit>1</RowLimit>" +
+							  "<Query>" +
+							  "<Where><Eq><FieldRef Name='Bool1' /><Value>True</Value></Eq></Where>" +
+							  "</Query>" +
+							  "<ViewFields><FieldRef Name='Int1' /><FieldRef Name='String1' /></ViewFields>" +
+							  "</View>");
 		}
 
 		[TestMethod]
@@ -381,7 +380,7 @@ namespace Untech.SharePoint.Common.Test.Data.Translators
 		{
 			CustomAssert.Throw<NotSupportedException>(() =>
 				Given(source => source
-					.Select(n => new {Result = n.Int1})
+					.Select(n => new { Result = n.Int1 })
 					.First(n => n.Result > 10)));
 		}
 
@@ -390,15 +389,15 @@ namespace Untech.SharePoint.Common.Test.Data.Translators
 		{
 			Given(source => source
 				.Where(n => n.Bool1)
-				.Select(n => new {Result = n.Int1, Result2 = n.String1, Result3 = n.Int1 + n.String1})
+				.Select(n => new { Result = n.Int1, Result2 = n.String1, Result3 = n.Int1 + n.String1 })
 				.FirstOrDefault())
 				.ExpectedCaml("<View>" +
-				              "<RowLimit>1</RowLimit>" +
-				              "<Query>" +
-				              "<Where><Eq><FieldRef Name='Bool1' /><Value>True</Value></Eq></Where>" +
-				              "</Query>" +
-				              "<ViewFields><FieldRef Name='Int1' /><FieldRef Name='String1' /></ViewFields>" +
-				              "</View>");
+							  "<RowLimit>1</RowLimit>" +
+							  "<Query>" +
+							  "<Where><Eq><FieldRef Name='Bool1' /><Value>True</Value></Eq></Where>" +
+							  "</Query>" +
+							  "<ViewFields><FieldRef Name='Int1' /><FieldRef Name='String1' /></ViewFields>" +
+							  "</View>");
 		}
 
 		[TestMethod]
@@ -406,7 +405,7 @@ namespace Untech.SharePoint.Common.Test.Data.Translators
 		{
 			CustomAssert.Throw<NotSupportedException>(() =>
 				Given(source => source
-					.Select(n => new {Result = n.Int1})
+					.Select(n => new { Result = n.Int1 })
 					.FirstOrDefault(n => n.Result > 10)));
 		}
 
@@ -416,16 +415,16 @@ namespace Untech.SharePoint.Common.Test.Data.Translators
 		{
 			Given(source => source
 				.Where(n => n.Bool1)
-				.Select(n => new {Result = n.Int1, Result2 = n.String1, Result3 = n.Int1 + n.String1})
+				.Select(n => new { Result = n.Int1, Result2 = n.String1, Result3 = n.Int1 + n.String1 })
 				.Last())
 				.ExpectedCaml("<View>" +
-				              "<RowLimit>1</RowLimit>" +
-				              "<Query>" +
-				              "<Where><Eq><FieldRef Name='Bool1' /><Value>True</Value></Eq></Where>" +
+							  "<RowLimit>1</RowLimit>" +
+							  "<Query>" +
+							  "<Where><Eq><FieldRef Name='Bool1' /><Value>True</Value></Eq></Where>" +
 							  "<OrderBy><FieldRef Name='ID' Ascending='FALSE' /></OrderBy>" +
 							  "</Query>" +
-				              "<ViewFields><FieldRef Name='Int1' /><FieldRef Name='String1' /></ViewFields>" +
-				              "</View>");
+							  "<ViewFields><FieldRef Name='Int1' /><FieldRef Name='String1' /></ViewFields>" +
+							  "</View>");
 		}
 
 		[TestMethod]
@@ -433,7 +432,7 @@ namespace Untech.SharePoint.Common.Test.Data.Translators
 		{
 			CustomAssert.Throw<NotSupportedException>(() =>
 				Given(source => source
-					.Select(n => new {Result = n.Int1})
+					.Select(n => new { Result = n.Int1 })
 					.Last(n => n.Result > 10)));
 		}
 
@@ -443,7 +442,7 @@ namespace Untech.SharePoint.Common.Test.Data.Translators
 		{
 			CustomAssert.Throw<NotSupportedException>(() =>
 				Given(source => source
-					.Select(n => new {Result = n.Int1})
+					.Select(n => new { Result = n.Int1 })
 					.Where(n => n.Result > 10)));
 		}
 
@@ -452,16 +451,16 @@ namespace Untech.SharePoint.Common.Test.Data.Translators
 		{
 			Given(source => source
 				.Where(n => n.Bool1)
-				.Select(n => new {Result = n.Int1, Result2 = n.String1, Result3 = n.Int1 + n.String1})
+				.Select(n => new { Result = n.Int1, Result2 = n.String1, Result3 = n.Int1 + n.String1 })
 				.LastOrDefault())
 				.ExpectedCaml("<View>" +
-				              "<RowLimit>1</RowLimit>" +
-				              "<Query>" +
-				              "<Where><Eq><FieldRef Name='Bool1' /><Value>True</Value></Eq></Where>" +
+							  "<RowLimit>1</RowLimit>" +
+							  "<Query>" +
+							  "<Where><Eq><FieldRef Name='Bool1' /><Value>True</Value></Eq></Where>" +
 							  "<OrderBy><FieldRef Name='ID' Ascending='FALSE' /></OrderBy>" +
-				              "</Query>" +
-				              "<ViewFields><FieldRef Name='Int1' /><FieldRef Name='String1' /></ViewFields>" +
-				              "</View>");
+							  "</Query>" +
+							  "<ViewFields><FieldRef Name='Int1' /><FieldRef Name='String1' /></ViewFields>" +
+							  "</View>");
 		}
 
 		[TestMethod]
@@ -469,7 +468,7 @@ namespace Untech.SharePoint.Common.Test.Data.Translators
 		{
 			CustomAssert.Throw<NotSupportedException>(() =>
 				Given(source => source
-					.Select(n => new {Result = n.Int1})
+					.Select(n => new { Result = n.Int1 })
 					.LastOrDefault(n => n.Result > 10)));
 		}
 
@@ -486,11 +485,11 @@ namespace Untech.SharePoint.Common.Test.Data.Translators
 				.Where(n => n.Int1 > 10)
 				.Take(10))
 				.ExpectedCaml("<View>" +
-				              "<RowLimit>10</RowLimit>" +
-				              "<Query>" +
-				              "<Where><And><Eq><FieldRef Name='Bool1' /><Value>True</Value></Eq><Gt><FieldRef Name='Int1' /><Value>10</Value></Gt></And></Where>" +
-				              "</Query>" +
-				              "</View>");
+							  "<RowLimit>10</RowLimit>" +
+							  "<Query>" +
+							  "<Where><And><Eq><FieldRef Name='Bool1' /><Value>True</Value></Eq><Gt><FieldRef Name='Int1' /><Value>10</Value></Gt></And></Where>" +
+							  "</Query>" +
+							  "</View>");
 		}
 
 		[TestMethod]
@@ -502,11 +501,11 @@ namespace Untech.SharePoint.Common.Test.Data.Translators
 				.Take(10)
 				.Any())
 				.ExpectedCaml("<View>" +
-				              "<RowLimit>10</RowLimit>" +
-				              "<Query>" +
-				              "<Where><And><Eq><FieldRef Name='Bool1' /><Value>True</Value></Eq><Gt><FieldRef Name='Int1' /><Value>10</Value></Gt></And></Where>" +
-				              "</Query>" +
-				              "</View>");
+							  "<RowLimit>10</RowLimit>" +
+							  "<Query>" +
+							  "<Where><And><Eq><FieldRef Name='Bool1' /><Value>True</Value></Eq><Gt><FieldRef Name='Int1' /><Value>10</Value></Gt></And></Where>" +
+							  "</Query>" +
+							  "</View>");
 		}
 
 		[TestMethod]
@@ -518,11 +517,11 @@ namespace Untech.SharePoint.Common.Test.Data.Translators
 				.Take(10)
 				.First())
 				.ExpectedCaml("<View>" +
-				              "<RowLimit>1</RowLimit>" +
-				              "<Query>" +
-				              "<Where><And><Eq><FieldRef Name='Bool1' /><Value>True</Value></Eq><Gt><FieldRef Name='Int1' /><Value>10</Value></Gt></And></Where>" +
-				              "</Query>" +
-				              "</View>");
+							  "<RowLimit>1</RowLimit>" +
+							  "<Query>" +
+							  "<Where><And><Eq><FieldRef Name='Bool1' /><Value>True</Value></Eq><Gt><FieldRef Name='Int1' /><Value>10</Value></Gt></And></Where>" +
+							  "</Query>" +
+							  "</View>");
 		}
 
 		[TestMethod]
@@ -563,12 +562,11 @@ namespace Untech.SharePoint.Common.Test.Data.Translators
 				.Reverse()
 				.Where(n => n.String2 == "TEST"))
 				.ExpectedCaml("<View>" +
-				              "<Query>" +
-				              "<Where><Eq><FieldRef Name='String2' /><Value>TEST</Value></Eq></Where>" +
-				              "<OrderBy><FieldRef Name='String1' Ascending='FALSE' /><FieldRef Name='String2' Ascending='TRUE' /></OrderBy>" +
-				              "</Query>" +
-				              "</View>");
-
+							  "<Query>" +
+							  "<Where><Eq><FieldRef Name='String2' /><Value>TEST</Value></Eq></Where>" +
+							  "<OrderBy><FieldRef Name='String1' Ascending='FALSE' /><FieldRef Name='String2' Ascending='TRUE' /></OrderBy>" +
+							  "</Query>" +
+							  "</View>");
 		}
 
 		[TestMethod]
@@ -580,12 +578,11 @@ namespace Untech.SharePoint.Common.Test.Data.Translators
 				.ThenByDescending(n => n.String2)
 				.Where(n => n.String2 == "TEST"))
 				.ExpectedCaml("<View>" +
-				              "<Query>" +
-				              "<Where><Eq><FieldRef Name='String2' /><Value>TEST</Value></Eq></Where>" +
-				              "<OrderBy><FieldRef Name='String1' Ascending='TRUE' /><FieldRef Name='String2' Ascending='FALSE' /></OrderBy>" +
-				              "</Query>" +
-				              "</View>");
-
+							  "<Query>" +
+							  "<Where><Eq><FieldRef Name='String2' /><Value>TEST</Value></Eq></Where>" +
+							  "<OrderBy><FieldRef Name='String1' Ascending='TRUE' /><FieldRef Name='String2' Ascending='FALSE' /></OrderBy>" +
+							  "</Query>" +
+							  "</View>");
 		}
 
 		#endregion
@@ -599,9 +596,9 @@ namespace Untech.SharePoint.Common.Test.Data.Translators
 		{
 			Given(source => source.Min(n => n.Int1))
 				.ExpectedCaml("<View>" +
-				              "<Query></Query>" +
-				              "<ViewFields><FieldRef Name='Int1' /></ViewFields>" +
-				              "</View>");
+							  "<Query></Query>" +
+							  "<ViewFields><FieldRef Name='Int1' /></ViewFields>" +
+							  "</View>");
 		}
 
 		[TestMethod]
@@ -663,9 +660,9 @@ namespace Untech.SharePoint.Common.Test.Data.Translators
 		{
 			Given(source => source.Select(n => n.Int1).Max())
 				.ExpectedCaml("<View>" +
-				              "<Query></Query>" +
-				              "<ViewFields><FieldRef Name='Int1' /></ViewFields>" +
-				              "</View>");
+							  "<Query></Query>" +
+							  "<ViewFields><FieldRef Name='Int1' /></ViewFields>" +
+							  "</View>");
 		}
 
 		[TestMethod]
@@ -724,7 +721,7 @@ namespace Untech.SharePoint.Common.Test.Data.Translators
 			Expression queryTree = null;
 			query(new FakeQueryable<Entity>
 			{
-				ExpressionExecutor = node => { queryTree = node; }
+				ExpressionExecutor = node => queryTree = node
 			});
 			return queryTree;
 		}
@@ -791,11 +788,11 @@ namespace Untech.SharePoint.Common.Test.Data.Translators
 
 			protected override Expression VisitMethodCall(MethodCallExpression node)
 			{
-				if (node.Method.DeclaringType == typeof (SpQueryable))
+				if (node.Method.DeclaringType == typeof(SpQueryable))
 				{
 					if (!MethodUtils.IsOperator(node.Method, MethodUtils.SpqFakeFetch))
 					{
-						Query = (QueryModel) ((ConstantExpression) node.Arguments[1].StripQuotes()).Value;
+						Query = (QueryModel)((ConstantExpression)node.Arguments[1].StripQuotes()).Value;
 					}
 					else
 					{
@@ -810,9 +807,9 @@ namespace Untech.SharePoint.Common.Test.Data.Translators
 		{
 			protected override Expression VisitMethodCall(MethodCallExpression node)
 			{
-				if (node.Method.DeclaringType == typeof (SpQueryable))
+				if (node.Method.DeclaringType == typeof(SpQueryable))
 				{
-					if (node.Type == typeof (bool))
+					if (node.Type == typeof(bool))
 					{
 						return Expression.Constant(true);
 					}
@@ -827,12 +824,11 @@ namespace Untech.SharePoint.Common.Test.Data.Translators
 				var source = Visit(node.Arguments[0]);
 
 				return source.IsConstant(null)
-					? (Expression) Expression.Constant(null, node.Type)
-					: node.Update(null, new[] {source});
+					? (Expression)Expression.Constant(null, node.Type)
+					: node.Update(null, new[] { source });
 			}
 		}
 
 		#endregion
-
 	}
 }

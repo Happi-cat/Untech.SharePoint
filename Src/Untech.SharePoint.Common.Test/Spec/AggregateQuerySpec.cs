@@ -56,7 +56,6 @@ namespace Untech.SharePoint.Common.Test.Spec
 
 		#endregion
 
-
 		#region [Min]
 
 		public object MinPQuery(IQueryable<Entity> source)
@@ -94,7 +93,6 @@ namespace Untech.SharePoint.Common.Test.Spec
 		}
 
 		#endregion
-
 
 		#region [Max]
 
@@ -134,7 +132,6 @@ namespace Untech.SharePoint.Common.Test.Spec
 
 		#endregion
 
-
 		public IEnumerable<Func<IQueryable<NewsModel>, object>> GetQueries()
 		{
 			return new Func<IQueryable<NewsModel>, object>[]
@@ -159,7 +156,5 @@ namespace Untech.SharePoint.Common.Test.Spec
 				Take10MaxPQuery
 			};
 		}
-
-
 	}
 }

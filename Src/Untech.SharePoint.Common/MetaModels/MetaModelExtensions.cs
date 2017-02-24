@@ -75,7 +75,7 @@ namespace Untech.SharePoint.Common.MetaModels
 		/// Finds key field of the content type.
 		/// </summary>
 		/// <param name="contentType">Content type to get key field.</param>
-		/// <returns>Metadata of the key field or null.</returns>
+		/// <returns>Meta-data of the key field or null.</returns>
 		[CanBeNull]
 		public static MetaField GetKeyField([NotNull]this MetaContentType contentType)
 		{

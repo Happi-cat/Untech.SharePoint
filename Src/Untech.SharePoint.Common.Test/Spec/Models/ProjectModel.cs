@@ -12,7 +12,6 @@ namespace Untech.SharePoint.Common.Test.Spec.Models
 		[SpField]
 		public ObjectReference Team { get; set; }
 
-
 		[SpField]
 		public DateTime? ProjectStart { get; set; }
 
@@ -41,11 +40,10 @@ namespace Untech.SharePoint.Common.Test.Spec.Models
 
 		[SpField]
 		[Description("Calculated")]
-		public string Definition{ get; private set; }
+		public string Definition { get; }
 
 		[SpField]
 		[Description("Calculated")]
 		public DateTime ProjectLaunch { get; set; }
-
 	}
 }

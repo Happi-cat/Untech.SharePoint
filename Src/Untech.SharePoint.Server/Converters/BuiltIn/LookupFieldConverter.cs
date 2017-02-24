@@ -22,14 +22,14 @@ namespace Untech.SharePoint.Server.Converters.BuiltIn
 
 		public void Initialize(MetaField field)
 		{
-			Guard.CheckNotNull("field", field);
+			Guard.CheckNotNull(nameof(field), field);
 
 			Field = field;
 
 			if (field.AllowMultipleValues)
 			{
-				if (field.MemberType != typeof(ObjectReference[]) &&
-					!field.MemberType.IsAssignableFrom(typeof(List<ObjectReference>)))
+				if (field.MemberType != typeof(ObjectReference[])
+					&& !field.MemberType.IsAssignableFrom(typeof(List<ObjectReference>)))
 				{
 					throw new ArgumentException(
 						"Only ObjectReference[] or any class assignable from List<ObjectReference> can be used as a member type.");
@@ -64,7 +64,7 @@ namespace Untech.SharePoint.Server.Converters.BuiltIn
 				return null;
 			}
 
-			return IsArray ? (object) lookupValues.ToArray() : lookupValues;
+			return IsArray ? (object)lookupValues.ToArray() : lookupValues;
 		}
 
 		public object ToSpValue(object value)

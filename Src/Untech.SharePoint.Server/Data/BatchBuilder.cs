@@ -36,8 +36,8 @@ namespace Untech.SharePoint.Server.Data
 			_sw.Write("<SetVar Name=\"ID\">{0}</SetVar>", "New");
 			_sw.Write("<GetVar Name=\"ID\"></GetVar>");
 			_sw.Write("<SetVar Name=\"Cmd\">Save</SetVar>");
-			
-			fields.Where(n=> n.Key != "ID")
+
+			fields.Where(n => n.Key != "ID")
 				.Each(WriteField);
 
 			_sw.Write("</Method>");

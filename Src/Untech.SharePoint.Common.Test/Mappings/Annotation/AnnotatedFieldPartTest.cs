@@ -12,7 +12,7 @@ namespace Untech.SharePoint.Common.Test.Mappings.Annotation
 {
 	[TestClass]
 	[SuppressMessage("ReSharper", "UnusedAutoPropertyAccessor.Local")]
-	public class AnnotatedFieldPartTest 
+	public class AnnotatedFieldPartTest
 	{
 		[TestMethod]
 		public void CanDefineFieldAnnotation()
@@ -86,13 +86,19 @@ namespace Untech.SharePoint.Common.Test.Mappings.Annotation
 		[TestMethod]
 		public void ThrowIfFieldIsReadOnly()
 		{
-			CustomAssert.Throw<InvalidAnnotationException>(() => { GetContentType<ReadOnlyField>(); });
+			CustomAssert.Throw<InvalidAnnotationException>(() => GetContentType<ReadOnlyField>());
 		}
 
 		[TestMethod]
 		public void ThrowIfPropertyIsReadOnly()
 		{
-			CustomAssert.Throw<InvalidAnnotationException>(() => { GetContentType<ReadOnlyProperty>(); });
+			CustomAssert.Throw<InvalidAnnotationException>(() => GetContentType<ReadOnlyProperty>());
+		}
+
+		[TestMethod]
+		public void ThrowIfAutoPropertyIsReadOnly()
+		{
+			CustomAssert.Throw<InvalidAnnotationException>(() => GetContentType<ReadOnlyAutoProperty>());
 		}
 
 		[TestMethod]
@@ -109,20 +115,20 @@ namespace Untech.SharePoint.Common.Test.Mappings.Annotation
 		[TestMethod]
 		public void ThrowIfPropertyIsWriteOnly()
 		{
-			CustomAssert.Throw<InvalidAnnotationException>(() => { GetContentType<WriteOnlyProperty>(); });
+			CustomAssert.Throw<InvalidAnnotationException>(() => GetContentType<WriteOnlyProperty>());
 		}
 
 		[TestMethod]
 		public void ThrowIfIndexer()
 		{
-			CustomAssert.Throw<InvalidAnnotationException>(() => { GetContentType<Indexer>(); });
+			CustomAssert.Throw<InvalidAnnotationException>(() => GetContentType<Indexer>());
 		}
 
 		private MetaContentType GetContentType<T>()
 		{
 			var metaContext = new AnnotatedContextMapping<Ctx<T>>().GetMetaContext();
 
-			return metaContext.Lists["List"].ContentTypes[typeof (T)];
+			return metaContext.Lists["List"].ContentTypes[typeof(T)];
 		}
 
 		#region [Nested Classes]
@@ -132,11 +138,11 @@ namespace Untech.SharePoint.Common.Test.Mappings.Annotation
 			[SpList("List")]
 			public ISpList<T> List { get; set; }
 
-			public Config Config { get; private set; }
+			public Config Config { get; }
 
-			public IMappingSource MappingSource { get; private set; }
+			public IMappingSource MappingSource { get; }
 
-			public MetaContext Model { get; private set; }
+			public MetaContext Model { get; }
 		}
 
 		[UsedImplicitly(ImplicitUseTargetFlags.WithMembers)]
@@ -187,7 +193,15 @@ namespace Untech.SharePoint.Common.Test.Mappings.Annotation
 		public class PrivateSetter : Entity
 		{
 			[SpField]
+#pragma warning disable RCS1170 // Use read-only auto-implemented property.
 			public string Field3 { get; private set; }
+#pragma warning restore RCS1170 // Use read-only auto-implemented property.
+		}
+
+		public class ReadOnlyAutoProperty : Entity
+		{
+			[SpField]
+			public string Field3 { get; }
 		}
 
 		public class WriteOnlyProperty : Entity
@@ -201,15 +215,17 @@ namespace Untech.SharePoint.Common.Test.Mappings.Annotation
 
 		public class ReadOnlyField : Entity
 		{
-			[SpField] public readonly string Field3 = "Test";
+			[SpField]
+			public readonly string Field3 = "Test";
 		}
 
 		public class ConstField : Entity
 		{
-			[SpField] public const string Field3 = null;
+			[SpField]
+			public const string Field3 = null;
 		}
 
-		public class StaticProperty: Entity
+		public class StaticProperty : Entity
 		{
 			[SpField]
 			public static string Field3 { get; set; }
@@ -226,7 +242,5 @@ namespace Untech.SharePoint.Common.Test.Mappings.Annotation
 		}
 
 		#endregion
-
-		
 	}
 }

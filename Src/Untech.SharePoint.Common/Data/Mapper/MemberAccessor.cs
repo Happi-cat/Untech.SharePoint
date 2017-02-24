@@ -16,7 +16,6 @@ namespace Untech.SharePoint.Common.Data.Mapper
 
 		private Action<object, object> MemberSetter { get; }
 
-
 		public bool CanGetValue => MemberGetter != null;
 
 		public bool CanSetValue => MemberSetter != null;

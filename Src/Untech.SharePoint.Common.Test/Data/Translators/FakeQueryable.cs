@@ -33,7 +33,7 @@ namespace Untech.SharePoint.Common.Test.Data.Translators
 
 		public Type ElementType => typeof(T);
 
-		public Action<Expression>  ExpressionExecutor { private get; set; }
+		public Action<Expression> ExpressionExecutor { private get; set; }
 
 		public IQueryProvider Provider
 		{

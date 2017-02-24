@@ -7,6 +7,7 @@ namespace Untech.SharePoint.Common.Data
 	/// <summary>
 	/// Represents errors that occurs during <see cref="MetaField"/> mapping.
 	/// </summary>
+	[Serializable]
 	public class DataMappingException : Exception
 	{
 		/// <summary>
@@ -14,17 +15,17 @@ namespace Untech.SharePoint.Common.Data
 		/// and a reference to the inner exception that is the cause of this exception.
 		/// </summary>
 		/// <param name="message">Message of the exception.</param>
-		/// <param name="innerException">The exception that is the casue of this exception.</param>
+		/// <param name="innerException">The exception that is the cause of this exception.</param>
 		public DataMappingException(string message, Exception innerException)
 			: base(message, innerException)
 		{
-
 		}
 	}
 
 	/// <summary>
 	/// Represents errors when <see cref="MetaField"/> wasn't found or loaded.
 	/// </summary>
+	[Serializable]
 	public class FieldNotFoundException : Exception
 	{
 		/// <summary>
@@ -32,9 +33,8 @@ namespace Untech.SharePoint.Common.Data
 		/// </summary>
 		/// <param name="field">Meta field that wasn't found or loaded.</param>
 		public FieldNotFoundException(MetaField field)
-			:base(GetMessage(field))
+			: base(GetMessage(field))
 		{
-			
 		}
 
 		/// <summary>
@@ -42,11 +42,10 @@ namespace Untech.SharePoint.Common.Data
 		/// and a reference to the inner exception that is the cause of this exception.
 		/// </summary>
 		/// <param name="field">Meta field that wasn't found or loaded.</param>
-		/// <param name="innerException">The exception that is the casue of this exception.</param>
+		/// <param name="innerException">The exception that is the cause of this exception.</param>
 		public FieldNotFoundException(MetaField field, Exception innerException)
 			: base(GetMessage(field), innerException)
 		{
-
 		}
 
 		private static string GetMessage(MetaField field)
@@ -69,7 +68,6 @@ namespace Untech.SharePoint.Common.Data
 		public ContentTypeNotFoundException(MetaContentType contentType)
 			: base(GetMessage(contentType))
 		{
-
 		}
 
 		/// <summary>
@@ -77,11 +75,10 @@ namespace Untech.SharePoint.Common.Data
 		/// and a reference to the inner exception that is the cause of this exception.
 		/// </summary>
 		/// <param name="contentType">Meta content type that wasn't found or loaded.</param>
-		/// <param name="innerException">The exception that is the casue of this exception.</param>
+		/// <param name="innerException">The exception that is the cause of this exception.</param>
 		public ContentTypeNotFoundException(MetaContentType contentType, Exception innerException)
 			: base(GetMessage(contentType), innerException)
 		{
-
 		}
 
 		private static string GetMessage(MetaContentType contentType)
@@ -95,6 +92,7 @@ namespace Untech.SharePoint.Common.Data
 	/// <summary>
 	/// Represents errors when <see cref="MetaList"/> wasn't found or loaded.
 	/// </summary>
+	[Serializable]
 	public class ListNotFoundException : Exception
 	{
 		/// <summary>
@@ -104,7 +102,6 @@ namespace Untech.SharePoint.Common.Data
 		public ListNotFoundException(MetaList list)
 			: base(GetMessage(list))
 		{
-
 		}
 
 		/// <summary>
@@ -112,18 +109,17 @@ namespace Untech.SharePoint.Common.Data
 		/// and a reference to the inner exception that is the cause of this exception.
 		/// </summary>
 		/// <param name="list">Meta list that wasn't found or loaded.</param>
-		/// <param name="innerException">The exception that is the casue of this exception.</param>
+		/// <param name="innerException">The exception that is the cause of this exception.</param>
 		public ListNotFoundException(MetaList list, Exception innerException)
 			: base(GetMessage(list), innerException)
 		{
-
 		}
 
 		private static string GetMessage(MetaList list)
 		{
 			Guard.CheckNotNull(nameof(list), list);
 
-			return $"Unable to find or load list by url ${list.Url} that located in SP site ${list.Context.Url}";
+			return $"Unable to find or load list by URL ${list.Url} that located in SP site ${list.Context.Url}";
 		}
 	}
 }

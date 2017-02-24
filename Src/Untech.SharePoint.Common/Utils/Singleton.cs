@@ -8,56 +8,58 @@ namespace Untech.SharePoint.Common.Utils
 	/// </summary>
 	/// <typeparam name="T">Type of singleton instance</typeparam>
 	[PublicAPI]
-	public static class Singleton<T> where T : new()
+	public static class Singleton<T> where T : class, new()
 	{
 		// ReSharper disable once StaticMemberInGenericType
-		[NotNull] private static readonly object Sync = new object();
-		[CanBeNull] private static T _object;
+		[NotNull]
+		private static readonly object s_sync = new object();
+		[CanBeNull]
+		private static T s_object;
 
 		/// <summary>
-		/// Gets signleton instance
+		/// Gets singleton instance
 		/// </summary>
-		/// <returns>Intance of type <typeparamref name="T"/></returns>
+		/// <returns>Instance of type <typeparamref name="T"/></returns>
 		public static T GetInstance()
 		{
-			if (_object == null)
+			if (ReferenceEquals(s_object, null))
 			{
-				lock (Sync)
+				lock (s_sync)
 				{
-					if (_object == null)
+					if (ReferenceEquals(s_object, null))
 					{
-						_object = new T();
+						s_object = new T();
 					}
 				}
 			}
-			return _object;
+			return s_object;
 		}
 
 		/// <summary>
-		/// Gets signleton instance
+		/// Gets singleton instance
 		/// </summary>
 		/// <param name="initializer">Instance initializer, i.e. action that will be called on first object access.</param>
-		/// <returns>Intance of type <typeparamref name="T"/></returns>
+		/// <returns>Instance of type <typeparamref name="T"/></returns>
 		/// <exception cref="ArgumentNullException"><paramref name="initializer"/> is null.</exception>
 		public static T GetInstance(Action<T> initializer)
 		{
 			Guard.CheckNotNull(nameof(initializer), initializer);
 
-			if (_object == null)
+			if (ReferenceEquals(s_object, null))
 			{
-				lock (Sync)
+				lock (s_sync)
 				{
-					if (_object == null)
+					if (ReferenceEquals(s_object, null))
 					{
 						var obj = new T();
 
 						initializer(obj);
 
-						_object = obj;
+						s_object = obj;
 					}
 				}
 			}
-			return _object;
+			return s_object;
 		}
 	}
 }

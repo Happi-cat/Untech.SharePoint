@@ -36,7 +36,7 @@ namespace Untech.SharePoint.Common.Utils.Reflection
 		public static Func<TArg1, TArg2, TArg3, TResult> GetCreator<TArg1, TArg2, TArg3, TResult>(Type type)
 		{
 			Guard.CheckNotNull(nameof(type), type);
-			Guard.CheckIsTypeAssignableTo<TResult>(nameof(type), type);	
+			Guard.CheckIsTypeAssignableTo<TResult>(nameof(type), type);
 
 			return GetCreator<Func<TArg1, TArg2, TArg3, TResult>>(type, new[] { typeof(TArg1), typeof(TArg2), typeof(TArg3) });
 		}

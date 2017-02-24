@@ -27,7 +27,7 @@ namespace Untech.SharePoint.Common.Mappings.Annotation
 
 		public static bool IsAnnotated(PropertyInfo property)
 		{
-			return property.IsDefined(typeof (SpListAttribute));
+			return property.IsDefined(typeof(SpListAttribute));
 		}
 
 		public static AnnotatedListPart Create(string listUrl, IEnumerable<PropertyInfo> contextProperties)
@@ -40,7 +40,6 @@ namespace Untech.SharePoint.Common.Mappings.Annotation
 		}
 
 		#endregion
-
 
 		public MetaList GetMetaList(MetaContext parent)
 		{
@@ -58,8 +57,6 @@ namespace Untech.SharePoint.Common.Mappings.Annotation
 			RegisterContentType(entityType);
 		}
 
-		
-
 		private void RegisterContentType(Type entityType)
 		{
 			if (!_contentTypeProviders.ContainsKey(entityType))
@@ -69,6 +66,5 @@ namespace Untech.SharePoint.Common.Mappings.Annotation
 		}
 
 		#endregion
-
 	}
 }

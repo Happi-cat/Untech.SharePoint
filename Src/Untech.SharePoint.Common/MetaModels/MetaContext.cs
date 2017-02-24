@@ -35,7 +35,7 @@ namespace Untech.SharePoint.Common.MetaModels
 		public MetaListCollection Lists { get; }
 
 		/// <summary>
-		/// Gets or sets SP Web Url.
+		/// Gets or sets SP Web URL.
 		/// </summary>
 		[CanBeNull]
 		public string Url { get; set; }

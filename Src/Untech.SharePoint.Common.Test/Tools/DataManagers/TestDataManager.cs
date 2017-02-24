@@ -30,7 +30,5 @@ namespace Untech.SharePoint.Common.Test.Tools.DataManagers
 			_teamsData.Load();
 			_projectsData.Load();
 		}
-
-		
 	}
 }

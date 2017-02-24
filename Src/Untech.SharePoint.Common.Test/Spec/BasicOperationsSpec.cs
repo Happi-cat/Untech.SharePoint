@@ -52,7 +52,7 @@ namespace Untech.SharePoint.Common.Test.Spec
 		}
 
 		public T Add<T>(ISpList<T> list, IValueGenerator<T> generator)
-			where T: Entity
+			where T : Entity
 		{
 			var now = TrimMilliseconds(DateTime.Now);
 
@@ -197,7 +197,7 @@ namespace Untech.SharePoint.Common.Test.Spec
 		private IValueGenerator<ProjectModel> GetProjectGenerator()
 		{
 			return Generators.GetProjectGenerator()
-				.WithStatic( n=> n.Team, new ObjectReference { Id = 1 });
+				.WithStatic(n => n.Team, new ObjectReference { Id = 1 });
 		}
 
 		private IValueGenerator<NewsModel> GetNewsGenerator()

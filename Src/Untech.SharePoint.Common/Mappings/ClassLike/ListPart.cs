@@ -115,7 +115,7 @@ namespace Untech.SharePoint.Common.Mappings.ClassLike
 			}
 			if (body.NodeType == ExpressionType.MemberAccess)
 			{
-				return ((MemberExpression) body).Member;
+				return ((MemberExpression)body).Member;
 			}
 			throw new ArgumentException($"{lambda} is not a valid field or property accessor.");
 		}

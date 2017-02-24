@@ -22,8 +22,8 @@ namespace Untech.SharePoint.Common.Data
 			unchecked
 			{
 				var hash = 17;
-				hash = hash*37 + obj.MetadataToken;
-				hash = hash*37 + obj.Module.GetHashCode();
+				hash = hash * 37 + obj.MetadataToken;
+				hash = hash * 37 + obj.Module.GetHashCode();
 				return hash;
 			}
 		}

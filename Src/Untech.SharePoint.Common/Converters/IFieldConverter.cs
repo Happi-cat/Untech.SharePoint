@@ -9,7 +9,7 @@ namespace Untech.SharePoint.Common.Converters
 	public interface IFieldConverter
 	{
 		/// <summary>
-		/// Initialzes current instance with the specified <see cref="MetaField"/>
+		/// Initializes current instance with the specified <see cref="MetaField"/>
 		/// </summary>
 		/// <param name="field"></param>
 		void Initialize([NotNull] MetaField field);

@@ -45,7 +45,6 @@ namespace Untech.SharePoint.Common.Test.Spec
 
 		#endregion
 
-
 		#region [Any]
 
 		public object AnyQuery(IQueryable<NewsModel> source)
@@ -103,7 +102,6 @@ namespace Untech.SharePoint.Common.Test.Spec
 		}
 
 		#endregion
-
 
 		public IEnumerable<Func<IQueryable<NewsModel>, object>> GetQueries()
 		{

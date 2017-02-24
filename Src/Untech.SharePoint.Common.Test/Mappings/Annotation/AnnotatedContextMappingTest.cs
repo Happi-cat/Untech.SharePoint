@@ -47,26 +47,25 @@ namespace Untech.SharePoint.Common.Test.Mappings.Annotation
 			var model = GetCtx<MultipleContentTypesCtx>();
 
 			Assert.AreEqual(1, model.Lists.Count);
-			Assert.AreEqual(2, model.Lists["Url"].ContentTypes.Count);
+			Assert.AreEqual(2, model.Lists["URL"].ContentTypes.Count);
 		}
 
 		[TestMethod]
 		public void ThrowIfIndexer()
 		{
-			CustomAssert.Throw<InvalidAnnotationException>(() => { GetCtx<IndexerPropertyCtx>(); });
+			CustomAssert.Throw<InvalidAnnotationException>(() => GetCtx<IndexerPropertyCtx>());
 		}
-
 
 		[TestMethod]
 		public void ThrowIfTypeIsInvalid()
 		{
-			CustomAssert.Throw<InvalidAnnotationException>(() => { GetCtx<InvalidPropertyTypeCtx>(); });
+			CustomAssert.Throw<InvalidAnnotationException>(() => GetCtx<InvalidPropertyTypeCtx>());
 		}
 
 		[TestMethod]
 		public void ThrowIfPropertyIsWriteOnly()
 		{
-			CustomAssert.Throw<InvalidAnnotationException>(() => { GetCtx<WriteOnlyPropertyCtx>(); });
+			CustomAssert.Throw<InvalidAnnotationException>(() => GetCtx<WriteOnlyPropertyCtx>());
 		}
 
 		private MetaContext GetCtx<T>()
@@ -81,11 +80,11 @@ namespace Untech.SharePoint.Common.Test.Mappings.Annotation
 			[SpList("List1")]
 			public virtual ISpList<Entity> List1 { get; set; }
 
-			public Config Config { get; private set; }
+			public Config Config { get; }
 
-			public IMappingSource MappingSource { get; private set; }
+			public IMappingSource MappingSource { get; }
 
-			public MetaContext Model { get; private set; }
+			public MetaContext Model { get; }
 		}
 
 		public class InheritedAnnotationCtx : Ctx
@@ -126,10 +125,10 @@ namespace Untech.SharePoint.Common.Test.Mappings.Annotation
 
 		public class MultipleContentTypesCtx : Ctx
 		{
-			[SpList("Url")]
+			[SpList("URL")]
 			public override ISpList<Entity> List1 { get; set; }
 
-			[SpList("Url")]
+			[SpList("URL")]
 			public ISpList<ChildEntity> List2 { get; set; }
 		}
 
@@ -145,10 +144,8 @@ namespace Untech.SharePoint.Common.Test.Mappings.Annotation
 
 		public class ChildEntity : Entity
 		{
-			
 		}
 
 		#endregion
-
 	}
 }

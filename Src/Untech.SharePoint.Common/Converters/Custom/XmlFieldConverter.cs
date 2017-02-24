@@ -18,7 +18,7 @@ namespace Untech.SharePoint.Common.Converters.Custom
 		private MetaField Field { get; set; }
 
 		/// <summary>
-		/// Initialzes current instance with the specified <see cref="MetaField"/>
+		/// Initializes current instance with the specified <see cref="MetaField"/>
 		/// </summary>
 		/// <param name="field"></param>
 		public void Initialize(MetaField field)
@@ -35,14 +35,14 @@ namespace Untech.SharePoint.Common.Converters.Custom
 		/// <returns>Member value.</returns>
 		public object FromSpValue(object value)
 		{
-			var stringValue = (string) value;
+			var stringValue = (string)value;
 			if (string.IsNullOrEmpty(stringValue))
 			{
 				return null;
 			}
 
 			var serializer = new XmlSerializer(Field.MemberType);
-			
+
 			using (var reader = XmlReader.Create(new StringReader(stringValue)))
 			{
 				return serializer.Deserialize(reader);
@@ -86,7 +86,7 @@ namespace Untech.SharePoint.Common.Converters.Custom
 		/// <returns>Caml value.</returns>
 		public string ToCamlValue(object value)
 		{
-			return (string) ToSpValue(value);
+			return (string)ToSpValue(value);
 		}
 	}
 }

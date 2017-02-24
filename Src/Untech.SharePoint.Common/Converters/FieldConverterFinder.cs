@@ -19,7 +19,7 @@ namespace Untech.SharePoint.Common.Converters
 		public static IEnumerable<Type> Find([CanBeNull]IMetaModel model)
 		{
 			var finder = new FieldConverterFinder();
-			
+
 			finder.Visit(model);
 
 			return finder.Converters;

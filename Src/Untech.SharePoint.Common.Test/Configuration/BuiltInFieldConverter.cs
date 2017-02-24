@@ -5,7 +5,6 @@ namespace Untech.SharePoint.Common.Test.Configuration
 	[SpFieldConverter("BUILT_IN_TEST_CONVERTER")]
 	public class BuiltInFieldConverter : IFieldConverter
 	{
-
 		public void Initialize(MetaModels.MetaField field)
 		{
 		}

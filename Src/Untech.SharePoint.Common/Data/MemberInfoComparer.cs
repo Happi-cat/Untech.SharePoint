@@ -11,8 +11,8 @@ namespace Untech.SharePoint.Common.Data
 		{
 			if (x == y) return true;
 			if (x == null || y == null) return false;
-			return x.MetadataToken == y.MetadataToken &&
-				x.Module == y.Module;
+			return x.MetadataToken == y.MetadataToken
+				&& x.Module == y.Module;
 		}
 
 		public int GetHashCode(MemberInfo obj)
@@ -21,8 +21,8 @@ namespace Untech.SharePoint.Common.Data
 			unchecked
 			{
 				var hash = 17;
-				hash = hash*37 + obj.MetadataToken;
-				hash = hash*37 + obj.Module.GetHashCode();
+				hash = hash * 37 + obj.MetadataToken;
+				hash = hash * 37 + obj.Module.GetHashCode();
 				return hash;
 			}
 		}

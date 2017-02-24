@@ -16,7 +16,7 @@ namespace Untech.SharePoint.Common.Data.Mapper
 		/// <summary>
 		/// Initializes a new instance of the <see cref="FieldMapper{TSPItem}"/>.
 		/// </summary>
-		/// <param name="field">Field metadata.</param>
+		/// <param name="field">Field meta-data.</param>
 		/// <param name="storeAccessor">SP list field accessor.</param>
 		/// <exception cref="ArgumentNullException"><paramref name="field"/> or <paramref name="storeAccessor"/> is null.</exception>
 		public FieldMapper([NotNull]MetaField field, [NotNull]IFieldAccessor<TSPItem> storeAccessor)
@@ -39,7 +39,7 @@ namespace Untech.SharePoint.Common.Data.Mapper
 		/// Gets field or property accessor.
 		/// </summary>
 		[NotNull]
-		public IFieldAccessor<object>  MemberAccessor { get; }
+		public IFieldAccessor<object> MemberAccessor { get; }
 
 		/// <summary>
 		/// Gets SP list field accessor.

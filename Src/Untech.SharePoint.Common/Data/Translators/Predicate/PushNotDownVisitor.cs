@@ -59,53 +59,52 @@ namespace Untech.SharePoint.Common.Data.Translators.Predicate
 
 		private class ComparisonNegateRule : INegateRule
 		{
-
-			private static readonly IReadOnlyDictionary<ExpressionType, ExpressionType> NegateMap = new Dictionary
+			private static readonly IReadOnlyDictionary<ExpressionType, ExpressionType> s_negateMap = new Dictionary
 				<ExpressionType, ExpressionType>
 			{
-				{ExpressionType.Equal, ExpressionType.NotEqual},
-				{ExpressionType.NotEqual, ExpressionType.Equal},
-				{ExpressionType.LessThan, ExpressionType.GreaterThanOrEqual},
-				{ExpressionType.LessThanOrEqual, ExpressionType.GreaterThan},
-				{ExpressionType.GreaterThan, ExpressionType.LessThanOrEqual},
-				{ExpressionType.GreaterThanOrEqual, ExpressionType.LessThan}
+				[ExpressionType.Equal] = ExpressionType.NotEqual,
+				[ExpressionType.NotEqual] = ExpressionType.Equal,
+				[ExpressionType.LessThan] = ExpressionType.GreaterThanOrEqual,
+				[ExpressionType.LessThanOrEqual] = ExpressionType.GreaterThan,
+				[ExpressionType.GreaterThan] = ExpressionType.LessThanOrEqual,
+				[ExpressionType.GreaterThanOrEqual] = ExpressionType.LessThan
 			};
 
 			public bool CanNegate(Expression node)
 			{
-				return NegateMap.ContainsKey(node.NodeType);
+				return s_negateMap.ContainsKey(node.NodeType);
 			}
 
 			public Expression Negate(Expression node)
 			{
 				var binaryNode = (BinaryExpression)node;
 
-				return Expression.MakeBinary(NegateMap[node.NodeType], binaryNode.Left, binaryNode.Right,
+				return Expression.MakeBinary(s_negateMap[node.NodeType], binaryNode.Left, binaryNode.Right,
 					binaryNode.IsLiftedToNull, binaryNode.Method, binaryNode.Conversion);
 			}
 		}
 
 		private class LogicalJoinNegateRule : INegateRule
 		{
-			private static readonly IReadOnlyDictionary<ExpressionType, ExpressionType> NegateMap = new Dictionary
+			private static readonly IReadOnlyDictionary<ExpressionType, ExpressionType> s_negateMap = new Dictionary
 				<ExpressionType, ExpressionType>
 			{
-				{ExpressionType.And, ExpressionType.Or},
-				{ExpressionType.AndAlso, ExpressionType.OrElse},
-				{ExpressionType.Or, ExpressionType.And},
-				{ExpressionType.OrElse, ExpressionType.AndAlso}
+				[ExpressionType.And] = ExpressionType.Or,
+				[ExpressionType.AndAlso] = ExpressionType.OrElse,
+				[ExpressionType.Or] = ExpressionType.And,
+				[ExpressionType.OrElse] = ExpressionType.AndAlso
 			};
 
 			public bool CanNegate(Expression node)
 			{
-				return NegateMap.ContainsKey(node.NodeType);
+				return s_negateMap.ContainsKey(node.NodeType);
 			}
 
 			public Expression Negate(Expression node)
 			{
 				var binaryNode = (BinaryExpression)node;
 
-				return Expression.MakeBinary(NegateMap[node.NodeType],
+				return Expression.MakeBinary(s_negateMap[node.NodeType],
 					Expression.Not(binaryNode.Left), Expression.Not(binaryNode.Right),
 					binaryNode.IsLiftedToNull, binaryNode.Method, binaryNode.Conversion);
 			}
@@ -127,6 +126,5 @@ namespace Untech.SharePoint.Common.Data.Translators.Predicate
 		}
 
 		#endregion
-
 	}
 }

@@ -47,6 +47,5 @@ namespace Untech.SharePoint.Common.Mappings.Annotation
 		}
 
 		#endregion
-
 	}
 }

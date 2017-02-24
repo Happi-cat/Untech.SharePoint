@@ -23,6 +23,5 @@ namespace Untech.SharePoint.Common.Test.Tools.DataManagers
 		{
 			_items = _list.ToList();
 		}
-
 	}
 }

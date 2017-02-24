@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using System.Reflection;
+﻿using System.Reflection;
 using Untech.SharePoint.Common.Data;
 using Untech.SharePoint.Common.Mappings.Annotation;
 
@@ -14,7 +13,7 @@ namespace Untech.SharePoint.Common.Mappings
 				throw new InvalidAnnotationException(string.Format("Property {1}.{0} should be readable and writable",
 					property.DeclaringType, property.Name));
 			}
-			if (property.GetIndexParameters().Any())
+			if (property.GetIndexParameters().Length > 0)
 			{
 				throw new InvalidAnnotationException($"Indexer in {property.DeclaringType} cannot be annotated");
 			}
@@ -24,7 +23,7 @@ namespace Untech.SharePoint.Common.Mappings
 		{
 			if (field.IsInitOnly || field.IsLiteral)
 			{
-				throw new InvalidAnnotationException(string.Format("Field {1}.{0} cannot be readonly or const", field.Name,
+				throw new InvalidAnnotationException(string.Format("Field {1}.{0} cannot be read only or const", field.Name,
 					field.DeclaringType));
 			}
 		}
@@ -37,14 +36,14 @@ namespace Untech.SharePoint.Common.Mappings
 					$"Property {contextProperty.Name} from {contextProperty.DeclaringType} should be readable");
 			}
 
-			if (!contextProperty.PropertyType.IsGenericType ||
-				contextProperty.PropertyType.GetGenericTypeDefinition() != typeof(ISpList<>))
+			if (!contextProperty.PropertyType.IsGenericType
+				|| contextProperty.PropertyType.GetGenericTypeDefinition() != typeof(ISpList<>))
 			{
 				throw new InvalidAnnotationException(
 					$"Property {contextProperty.Name} from {contextProperty.DeclaringType} should have 'ISpList<T>' type");
 			}
 
-			if (contextProperty.GetIndexParameters().Any())
+			if (contextProperty.GetIndexParameters().Length > 0)
 			{
 				throw new InvalidAnnotationException($"Indexer in {contextProperty.DeclaringType} cannot be annotated");
 			}

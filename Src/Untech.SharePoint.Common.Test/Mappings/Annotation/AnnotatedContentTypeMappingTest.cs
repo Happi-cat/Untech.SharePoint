@@ -17,10 +17,9 @@ namespace Untech.SharePoint.Common.Test.Mappings.Annotation
 		public void CanOmitContentTypeAnnotation()
 		{
 			var ct = GetContentType<Entity>();
-			
+
 			Assert.IsTrue(string.IsNullOrEmpty(ct.Id));
 		}
-
 
 		[TestMethod]
 		public void CanDefineContentTypeAnnotation()
@@ -60,11 +59,11 @@ namespace Untech.SharePoint.Common.Test.Mappings.Annotation
 			[SpList("List")]
 			public ISpList<T> List { get; set; }
 
-			public Config Config { get; private set; }
+			public Config Config { get; }
 
-			public IMappingSource MappingSource { get; private set; }
+			public IMappingSource MappingSource { get; }
 
-			public MetaContext Model { get; private set; }
+			public MetaContext Model { get; }
 		}
 
 		[UsedImplicitly(ImplicitUseTargetFlags.WithMembers)]
@@ -80,18 +79,15 @@ namespace Untech.SharePoint.Common.Test.Mappings.Annotation
 		[SpContentType(Id = "0x01")]
 		public class Item : Entity
 		{
-
 		}
 
 		[SpContentType(Id = "0x0101")]
 		public class ChildItem1 : Item
 		{
-
 		}
 
 		public class ChildItem2 : Item
 		{
-
 		}
 
 		#endregion

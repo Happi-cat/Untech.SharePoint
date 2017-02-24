@@ -14,8 +14,8 @@ $buildDir = "$baseDir\Build"
 $sourceDir = "$baseDir\Src"
 $toolsDir = "$baseDir\Tools"
 
-$testDir = "$baseDir\Test"
-$releaseDir = "$baseDir\Release"
+$testDir = "$baseDir\Test\$infoVersion"
+$releaseDir = "$baseDir\Release\$infoVersion"
 
 $signKeyPath = "C:\Untech.SharePoint.pfx"
 
@@ -150,7 +150,7 @@ function Create-NugetPackages {
 }
 
 function Test-MSTest {
-    param($build, [switch]$perfomance)
+    param($build, [switch]$performance)
 
     $name = $build.Name
 
@@ -159,8 +159,8 @@ function Test-MSTest {
     if ($build.VSTestLogger) {
         $additionalArgs += "/Logger:$($build.VSTestLogger)"
     }
-    if (-not $perfomance) {
-        $additionalArgs += "/TestCaseFilter:TestCategory!=Perfomance"
+    if (-not $performance) {
+        $additionalArgs += "/TestCaseFilter:TestCategory!=Performance"
     }
 
     $failed = $false;

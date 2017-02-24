@@ -8,8 +8,7 @@ namespace Untech.SharePoint.Common.Mappings.Annotation
 	/// </summary>
 	[AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
 	[PublicAPI]
-	public sealed class SpFieldRemovedAttribute : Attribute 
+	public sealed class SpFieldRemovedAttribute : Attribute
 	{
-
 	}
 }

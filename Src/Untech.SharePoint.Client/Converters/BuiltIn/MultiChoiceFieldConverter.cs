@@ -17,10 +17,10 @@ namespace Untech.SharePoint.Client.Converters.BuiltIn
 
 		public void Initialize(MetaField field)
 		{
-			Guard.CheckNotNull("field", field);
+			Guard.CheckNotNull(nameof(field), field);
 
-			if (field.MemberType != typeof(string[]) &&
-				!field.MemberType.IsAssignableFrom(typeof(List<string>)))
+			if (field.MemberType != typeof(string[])
+				&& !field.MemberType.IsAssignableFrom(typeof(List<string>)))
 			{
 				throw new ArgumentException(
 					"Only string[] or any class assignable from List<string> can be used as a member type.");

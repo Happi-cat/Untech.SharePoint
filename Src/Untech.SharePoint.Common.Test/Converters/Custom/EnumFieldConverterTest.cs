@@ -50,7 +50,6 @@ namespace Untech.SharePoint.Common.Test.Converters.Custom
 			CustomAssert.Throw<ArgumentException>(() => Given<NoDefaultEnum>());
 		}
 
-
 		[TestMethod]
 		public void NotSupportInt()
 		{

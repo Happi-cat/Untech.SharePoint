@@ -38,6 +38,6 @@ namespace Untech.SharePoint.Common.Test.Data.Translators
 			public UserInfo User2 { get; set; }
 
 			public UserInfo[] Users { get; set; }
-		} 
+		}
 	}
 }

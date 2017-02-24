@@ -12,9 +12,9 @@ namespace Untech.SharePoint.Common.Test.Tools.QueryTests
 			Comparer = comparer ?? EqualityComparer<TResult>.Default;
 		}
 
-		public Func<IQueryable<T>, object> Query { get; private set; }
+		public Func<IQueryable<T>, object> Query { get; }
 
-		public IEqualityComparer<TResult> Comparer { get; private set; }
+		public IEqualityComparer<TResult> Comparer { get; }
 
 		public Type Exception { get; set; }
 

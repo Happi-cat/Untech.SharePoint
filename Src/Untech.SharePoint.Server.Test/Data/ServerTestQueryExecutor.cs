@@ -23,7 +23,7 @@ namespace Untech.SharePoint.Server.Test.Data
 				QueryThrottleMode = SPQueryThrottleOption.Override
 			};
 			CamlQueryFetchTimer.Start();
-			
+
 			// ReSharper disable once UnusedVariable
 			var spItems = SpList.GetItems(query)
 				.Cast<SPListItem>();

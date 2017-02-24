@@ -19,14 +19,14 @@ namespace Untech.SharePoint.Common.Test.Converters.Custom
 				.CanConvertFromSp(null, null)
 				.CanConvertFromSp("", null)
 				.CanConvertFromSp("<Test />", new TestObject(), new TestObjectComparer())
-				.CanConvertFromSp("<Test><Inner><Id>2</Id></Inner></Test>", new TestObject {Inner = new InnerObject {Id = 2}}, new TestObjectComparer())
-				.CanConvertFromSp("<Test Field='value'></Test>", new TestObject {Field = "value"}, new TestObjectComparer())
+				.CanConvertFromSp("<Test><Inner><Id>2</Id></Inner></Test>", new TestObject { Inner = new InnerObject { Id = 2 } }, new TestObjectComparer())
+				.CanConvertFromSp("<Test Field='value'></Test>", new TestObject { Field = "value" }, new TestObjectComparer())
 				.CanConvertToSp(null, null)
 				.CanConvertToSp(new TestObject(),
 					"<Test xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" />", new XmlComparer())
-				.CanConvertToSp(new TestObject {Field = "test"},
+				.CanConvertToSp(new TestObject { Field = "test" },
 					"<Test xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" Field=\"test\" />", new XmlComparer())
-				.CanConvertToSp(new TestObject { Field = "test", Inner = new InnerObject { Id=3 }},
+				.CanConvertToSp(new TestObject { Field = "test", Inner = new InnerObject { Id = 3 } },
 					"<Test xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" Field=\"test\"><Inner><Id>3</Id></Inner></Test>", new XmlComparer());
 		}
 
@@ -41,7 +41,7 @@ namespace Untech.SharePoint.Common.Test.Converters.Custom
 				.CanConvertToSp(null, null)
 				.CanConvertToSp(new NamespacedObject(),
 					"<Obj xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns=\"http://namespace.my\" />", new XmlComparer())
-				.CanConvertToSp(new NamespacedObject {Field1 = "test", Field2 = "value"},
+				.CanConvertToSp(new NamespacedObject { Field1 = "test", Field2 = "value" },
 					"<Obj xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" Field1=\"test\" Field2=\"value\" xmlns=\"http://namespace.my\" />", new XmlComparer());
 		}
 
@@ -61,7 +61,7 @@ namespace Untech.SharePoint.Common.Test.Converters.Custom
 		}
 
 		[XmlType(Namespace = "")]
-		public class InnerObject 
+		public class InnerObject
 		{
 			[XmlElement]
 			public int Id { get; set; }
@@ -91,7 +91,7 @@ namespace Untech.SharePoint.Common.Test.Converters.Custom
 
 			public bool Equals(XElement x, XElement y)
 			{
-				var xAttrs =x.Attributes()
+				var xAttrs = x.Attributes()
 					.OrderBy(n => n.Name.LocalName)
 					.ThenBy(n => n.Name.NamespaceName)
 					.ToList();
@@ -130,8 +130,8 @@ namespace Untech.SharePoint.Common.Test.Converters.Custom
 		{
 			public override bool Equals(TestObject x, TestObject y)
 			{
-				return x.Field == y.Field && 
-					((x.Inner != null && y.Inner != null && x.Inner.Id == y.Inner.Id) || (x.Inner == null && y.Inner == null));
+				return x.Field == y.Field
+					&& ((x.Inner != null && y.Inner != null && x.Inner.Id == y.Inner.Id) || (x.Inner == null && y.Inner == null));
 			}
 
 			public override int GetHashCode(TestObject obj)

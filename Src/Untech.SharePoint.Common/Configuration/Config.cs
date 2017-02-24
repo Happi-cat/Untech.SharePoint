@@ -14,7 +14,7 @@ namespace Untech.SharePoint.Common.Configuration
 	public sealed class Config
 	{
 		/// <summary>
-		/// Intializes a new instance of the <see cref="Config"/> with the specified instances of <see cref="IFieldConverterResolver"/> and <see cref="IMappingSourceResolver"/>.
+		/// Initializes a new instance of the <see cref="Config"/> with the specified instances of <see cref="IFieldConverterResolver"/> and <see cref="IMappingSourceResolver"/>.
 		/// </summary>
 		/// <param name="fieldConverters">Field converters resolver.</param>
 		/// <param name="mappings">Mappings source resolvers.</param>
@@ -28,17 +28,16 @@ namespace Untech.SharePoint.Common.Configuration
 			Mappings = mappings;
 		}
 
-
 		/// <summary>
 		/// Gets the <see cref="IFieldConverterResolver"/> resolver.
 		/// </summary>
 		[NotNull]
-		public IFieldConverterResolver FieldConverters { get; private set; }
+		public IFieldConverterResolver FieldConverters { get; }
 
 		/// <summary>
 		/// Gets the <see cref="IMappingSourceResolver"/> resolver.
 		/// </summary>
 		[NotNull]
-		public IMappingSourceResolver Mappings { get; private set; }
+		public IMappingSourceResolver Mappings { get; }
 	}
 }

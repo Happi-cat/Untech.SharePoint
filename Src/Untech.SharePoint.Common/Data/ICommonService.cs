@@ -11,6 +11,9 @@ namespace Untech.SharePoint.Common.Data
 	/// </summary>
 	public interface ICommonService
 	{
+		/// <summary>
+		/// Gets <see cref="Config"/> instance.
+		/// </summary>
 		[NotNull]
 		Config Config { get; }
 
@@ -20,7 +23,12 @@ namespace Untech.SharePoint.Common.Data
 		[NotNull]
 		IReadOnlyCollection<IMetaModelVisitor> MetaModelProcessors { get; }
 
-        [NotNull]
-        ISpListItemsProvider GetItemsProvider([NotNull]MetaList list);
-    }
+		/// <summary>
+		/// Returns <see cref="ISpListItemsProvider"/> for the specified <paramref name="list"/>.
+		/// </summary>
+		/// <param name="list"></param>
+		/// <returns></returns>
+		[NotNull]
+		ISpListItemsProvider GetItemsProvider([NotNull]MetaList list);
+	}
 }

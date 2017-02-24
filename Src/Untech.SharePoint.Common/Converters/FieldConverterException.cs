@@ -5,6 +5,7 @@ namespace Untech.SharePoint.Common.Converters
 	/// <summary>
 	/// Represents errors that occurs with <see cref="IFieldConverter"/>.
 	/// </summary>
+	[Serializable]
 	public class FieldConverterException : Exception
 	{
 		/// <summary>
@@ -14,7 +15,6 @@ namespace Untech.SharePoint.Common.Converters
 		public FieldConverterException(string message)
 			: base(message)
 		{
-
 		}
 
 		/// <summary>
@@ -25,7 +25,6 @@ namespace Untech.SharePoint.Common.Converters
 		public FieldConverterException(string message, Exception innerException)
 			: base(message, innerException)
 		{
-
 		}
 	}
 }

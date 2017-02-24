@@ -18,6 +18,5 @@ namespace Untech.SharePoint.Server.Data.Mapper
 		{
 			field.SetMapper(new FieldMapper<SPListItem>(field, new StoreAccessor(field)));
 		}
-		
 	}
 }

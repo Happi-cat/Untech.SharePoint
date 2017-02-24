@@ -10,7 +10,7 @@ namespace Untech.SharePoint.Common.Test.Tools.Generators.Basic
 			To = DateTime.Now.AddMonths(+1);
 		}
 
-		public DateTime From{ get; set; }
+		public DateTime From { get; set; }
 
 		public DateTime To { get; set; }
 
@@ -18,7 +18,7 @@ namespace Untech.SharePoint.Common.Test.Tools.Generators.Basic
 		{
 			var ticksBetween = (To - From).Ticks;
 
-			var ticks = (long) (Rand.NextDouble() * ticksBetween) + From.Ticks;
+			var ticks = (long)(Rand.NextDouble() * ticksBetween) + From.Ticks;
 
 			return new DateTime(ticks);
 		}

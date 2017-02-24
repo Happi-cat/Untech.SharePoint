@@ -20,7 +20,7 @@ namespace Untech.SharePoint.Common.Mappings.Annotation
 
 			_entityType = entityType;
 			_contentTypeAttrbiute = _entityType.GetCustomAttribute<SpContentTypeAttribute>() ?? new SpContentTypeAttribute();
-			
+
 			_fieldParts = CreateFieldParts().ToList();
 		}
 
@@ -55,6 +55,5 @@ namespace Untech.SharePoint.Common.Mappings.Annotation
 		}
 
 		#endregion
-
 	}
 }

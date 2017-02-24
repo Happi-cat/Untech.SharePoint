@@ -12,7 +12,7 @@ namespace Untech.SharePoint.Common.Data.Translators.Predicate
 			}
 
 			var left = Expression.AndAlso(node.Left, Expression.Not(node.Right));
-			var right = Expression.AndAlso(Expression.Not(node.Left),  node.Right);
+			var right = Expression.AndAlso(Expression.Not(node.Left), node.Right);
 
 			return Visit(Expression.OrElse(left, right));
 		}

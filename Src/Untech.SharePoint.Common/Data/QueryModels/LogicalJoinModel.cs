@@ -44,7 +44,6 @@ namespace Untech.SharePoint.Common.Data.QueryModels
 		[NotNull]
 		public WhereModel Second { get; }
 
-
 		/// <summary>
 		/// Returns inverted comparison.
 		/// </summary>

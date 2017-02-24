@@ -18,7 +18,7 @@ namespace Untech.SharePoint.Common.MetaModels
 		/// <summary>
 		/// Initializes new instance of <see cref="MetaContentType"/>.
 		/// </summary>
-		/// <param name="list">Metadata of parent SP List.</param>
+		/// <param name="list">Meta-data of parent SP List.</param>
 		/// <param name="entityType">Equivalent .NET type.</param>
 		/// <param name="fieldProviders">Providers of <see cref="MetaField"/> that associated with current content type.</param>
 		/// <exception cref="ArgumentNullException"><paramref name="list"/> or <paramref name="entityType"/> or <paramref name="fieldProviders"/> are null.</exception>

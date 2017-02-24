@@ -3,7 +3,6 @@ using Untech.SharePoint.Common.Configuration;
 
 namespace Untech.SharePoint.Common.Test.Mappings.ClassLike
 {
-
 	[TestClass]
 	public class ClassLikeMappingTest
 	{
@@ -14,7 +13,7 @@ namespace Untech.SharePoint.Common.Test.Mappings.ClassLike
 				.RegisterMappings(n => n.ClassLike(new SmallDataContextMap()))
 				.BuildConfig();
 
-			var ctxModel = config.Mappings.Resolve(typeof (SmallDataContext)).GetMetaContext();
+			var ctxModel = config.Mappings.Resolve(typeof(SmallDataContext)).GetMetaContext();
 		}
 	}
 }

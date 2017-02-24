@@ -29,7 +29,7 @@ namespace Untech.SharePoint.Client.Data
 		public override IEnumerable<string> GetAttachments(int id)
 		{
 			var spItemAttachments = _spList.GetItemById(id).AttachmentFiles;
-			
+
 			_clientContext.Load(spItemAttachments);
 			_clientContext.ExecuteQuery();
 			var urlPrefix = new Uri(_clientContext.Url)

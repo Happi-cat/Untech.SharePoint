@@ -21,7 +21,7 @@ namespace Untech.SharePoint.Server.Data
 		/// <param name="web">SPWeb to use for data access.</param>
 		/// <param name="config">Configuration.</param>
 		/// <exception cref="ArgumentNullException"><paramref name="web"/> or <paramref name="config"/> is null.</exception>
-		protected SpServerContext([NotNull] SPWeb web, [NotNull] Config config) 
+		protected SpServerContext([NotNull] SPWeb web, [NotNull] Config config)
 			: base(new SpServerCommonService(web, config))
 		{
 			Guard.CheckNotNull(nameof(web), web);

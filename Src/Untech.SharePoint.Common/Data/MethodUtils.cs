@@ -110,7 +110,7 @@ namespace Untech.SharePoint.Common.Data
 
 
 		public static readonly MethodInfo ObjIn = GetMethodInfo(() => default(object).In(null));
-		
+
 		public static bool IsOperator(MethodInfo x, MethodInfo y)
 		{
 			return GenericMethodDefinitionComparer.Default.Equals(x, y);
@@ -122,6 +122,5 @@ namespace Untech.SharePoint.Common.Data
 			var method = methodCall.Method;
 			return method.IsGenericMethod ? method.GetGenericMethodDefinition() : method;
 		}
-
 	}
 }

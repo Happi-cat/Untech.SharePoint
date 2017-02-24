@@ -8,7 +8,6 @@ namespace Untech.SharePoint.Common.Test.Spec.Models
 		public DataContext(ICommonService commonService)
 			: base(commonService)
 		{
-
 		}
 
 		[SpList("/Lists/News")]

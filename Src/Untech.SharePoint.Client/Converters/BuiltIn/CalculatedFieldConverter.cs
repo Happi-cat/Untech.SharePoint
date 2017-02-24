@@ -9,15 +9,16 @@ using Untech.SharePoint.Common.Utils;
 namespace Untech.SharePoint.Client.Converters.BuiltIn
 {
 	[SpFieldConverter("Calculated")]
-	public class CalculatedFieldConverter : MultiTypeFieldConverter
+	internal class CalculatedFieldConverter : MultiTypeFieldConverter
 	{
-		private static readonly IReadOnlyDictionary<string, Func<IFieldConverter>> ValueConverters = new Dictionary<string, Func<IFieldConverter>>
+		private static readonly IReadOnlyDictionary<string, Func<IFieldConverter>> s_valueConverters = new Dictionary
+			<string, Func<IFieldConverter>>
 		{
-			{"Text", () => new TextValueConverter()},
-			{"Number", () => new NumberValueConverter()},
-			{"Currency", () => new NumberValueConverter()},
-			{"DateTime", () => new DateTimeValueConverter()},
-			{"Boolean", () => new BoolValueConverter()}
+			["Text"] = () => new TextValueConverter(),
+			["Number"] = () => new NumberValueConverter(),
+			["Currency"] = () => new NumberValueConverter(),
+			["DateTime"] = () => new DateTimeValueConverter(),
+			["Boolean"] = () => new BoolValueConverter()
 		};
 
 		public override void Initialize(MetaField field)
@@ -29,12 +30,12 @@ namespace Untech.SharePoint.Client.Converters.BuiltIn
 				throw new ArgumentException("This fields is not a calculated.");
 			}
 
-			if (!ValueConverters.ContainsKey(field.OutputType))
+			if (!s_valueConverters.ContainsKey(field.OutputType))
 			{
 				throw new ArgumentException($"Output type '{field.OutputType}' is invalid.");
 			}
 
-			Internal = ValueConverters[field.OutputType]();
+			Internal = s_valueConverters[field.OutputType]();
 		}
 
 		private static T GetValue<T>(object value)

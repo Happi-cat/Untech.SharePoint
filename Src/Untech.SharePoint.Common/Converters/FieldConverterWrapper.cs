@@ -62,7 +62,5 @@ namespace Untech.SharePoint.Common.Converters
 				throw Error.CannotConvertToCamlValue(ConverterType, value, e);
 			}
 		}
-
-		
 	}
 }

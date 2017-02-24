@@ -11,7 +11,7 @@ namespace Untech.SharePoint.Common.Mappings
 	/// </summary>
 	/// <typeparam name="TContext">Type of the data context that is associated with this instance of the <see cref="MappingSource{TContext}"/></typeparam>
 	[PublicAPI]
-	public abstract class MappingSource<TContext> : IMappingSource 
+	public abstract class MappingSource<TContext> : IMappingSource
 		where TContext : ISpContext
 	{
 		/// <summary>

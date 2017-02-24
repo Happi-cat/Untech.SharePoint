@@ -51,24 +51,24 @@ namespace Untech.SharePoint.Common.Data.Translators.Predicate
 
 		private static bool IsValidObjectInCall([NotNull]MethodCallExpression node)
 		{
-			return MethodUtils.IsOperator(node.Method, MethodUtils.ObjIn) &&
-				   node.Arguments[0].NodeType == ExpressionType.MemberAccess &&
-				   node.Arguments[1].NodeType == ExpressionType.Constant;
+			return MethodUtils.IsOperator(node.Method, MethodUtils.ObjIn)
+				   && node.Arguments[0].NodeType == ExpressionType.MemberAccess
+				   && node.Arguments[1].NodeType == ExpressionType.Constant;
 		}
 
 		private static bool IsValidEnumerableContainsCall([NotNull]MethodCallExpression node)
 		{
-			return MethodUtils.IsOperator(node.Method, MethodUtils.EContains) &&
-				   node.Arguments[0].NodeType == ExpressionType.Constant &&
-				   node.Arguments[1].NodeType == ExpressionType.MemberAccess;
+			return MethodUtils.IsOperator(node.Method, MethodUtils.EContains)
+				   && node.Arguments[0].NodeType == ExpressionType.Constant
+				   && node.Arguments[1].NodeType == ExpressionType.MemberAccess;
 		}
 
 		private static bool IsValidListContainsCall([NotNull]MethodCallExpression node)
 		{
-			return MethodUtils.IsOperator(node.Method, MethodUtils.ListContains) &&
-				   node.Object != null &&
-				   node.Object.NodeType == ExpressionType.Constant &&
-				   node.Arguments[0].NodeType == ExpressionType.MemberAccess;
+			return MethodUtils.IsOperator(node.Method, MethodUtils.ListContains)
+				   && node.Object != null
+				   && node.Object.NodeType == ExpressionType.Constant
+				   && node.Arguments[0].NodeType == ExpressionType.MemberAccess;
 		}
 
 		private Expression RewriteIn(MemberExpression memberNode, ConstantExpression arrayNode)

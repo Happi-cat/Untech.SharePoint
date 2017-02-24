@@ -13,8 +13,10 @@ namespace Untech.SharePoint.Common.Data.QueryModels
 	[PublicAPI]
 	public sealed class QueryModel
 	{
-		[CanBeNull] private List<FieldRefModel> _selectableFields;
-		[CanBeNull] private List<OrderByModel> _orderBys;
+		[CanBeNull]
+		private List<FieldRefModel> _selectableFields;
+		[CanBeNull]
+		private List<OrderByModel> _orderBys;
 		private bool _isOrderReversed;
 
 		/// <summary>
@@ -35,6 +37,9 @@ namespace Untech.SharePoint.Common.Data.QueryModels
 		[CanBeNull]
 		public IEnumerable<FieldRefModel> SelectableFields => _selectableFields?.Distinct(FieldRefModelComparer.Default);
 
+		/// <summary>
+		/// Gets collection of specific selectable known fields.
+		/// </summary>
 		[CanBeNull]
 		public IEnumerable<MemberRefModel> SelectableKnownFields
 		{
@@ -48,7 +53,7 @@ namespace Untech.SharePoint.Common.Data.QueryModels
 		}
 
 		/// <summary>
-		/// Gets colelction of orderings for CAML OrderBy tag.
+		/// Gets collection of orderings for CAML OrderBy tag.
 		/// </summary>
 		[CanBeNull]
 		public IEnumerable<OrderByModel> OrderBys
@@ -58,7 +63,7 @@ namespace Untech.SharePoint.Common.Data.QueryModels
 				if (_isOrderReversed)
 				{
 					return _orderBys.IsNullOrEmpty()
-						? new[] {new OrderByModel(new KeyRefModel(), false)}
+						? new[] { new OrderByModel(new KeyRefModel(), false) }
 						: _orderBys.Select(n => n.Reverse());
 				}
 				return _orderBys;
@@ -75,17 +80,14 @@ namespace Untech.SharePoint.Common.Data.QueryModels
 		}
 
 		/// <summary>
-		/// Merge current CAML Orderby operations with new one.
+		/// Merge current CAML Order-by operations with new one.
 		/// </summary>
 		/// <param name="orderBy">New OrderBy operation to merge.</param>
 		public void MergeOrderBys([CanBeNull]OrderByModel orderBy)
 		{
 			if (orderBy == null) return;
 
-			if (_orderBys == null)
-			{
-				_orderBys = new List<OrderByModel>();
-			}
+			_orderBys = _orderBys ?? new List<OrderByModel>();
 			_orderBys.Add(_isOrderReversed ? orderBy.Reverse() : orderBy);
 		}
 
@@ -96,11 +98,8 @@ namespace Untech.SharePoint.Common.Data.QueryModels
 		public void MergeSelectableFields([CanBeNull]IEnumerable<FieldRefModel> selectableFields)
 		{
 			if (selectableFields == null) return;
-			
-			if (_selectableFields == null)
-			{
-				_selectableFields = new List<FieldRefModel>();
-			}
+
+			_selectableFields = _selectableFields ?? new List<FieldRefModel>();
 			_selectableFields.AddRange(selectableFields);
 		}
 
@@ -192,7 +191,7 @@ namespace Untech.SharePoint.Common.Data.QueryModels
 
 				var list = innerValues.ToList();
 
-				if (!list.Any()) return;
+				if (list.Count == 0) return;
 
 				sb.AppendFormat("<{0}>{1}</{0}>", tag, list.JoinToString(""));
 			}
@@ -204,6 +203,5 @@ namespace Untech.SharePoint.Common.Data.QueryModels
 		}
 
 		#endregion
-
 	}
 }

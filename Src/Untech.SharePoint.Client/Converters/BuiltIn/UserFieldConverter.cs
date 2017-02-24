@@ -21,12 +21,12 @@ namespace Untech.SharePoint.Client.Converters.BuiltIn
 
 		public void Initialize(MetaField field)
 		{
-			Guard.CheckNotNull("field", field);
+			Guard.CheckNotNull(nameof(field), field);
 
 			if (field.AllowMultipleValues)
 			{
-				if (field.MemberType != typeof(UserInfo[]) &&
-					!field.MemberType.IsAssignableFrom(typeof(List<UserInfo>)))
+				if (field.MemberType != typeof(UserInfo[])
+					&& !field.MemberType.IsAssignableFrom(typeof(List<UserInfo>)))
 				{
 					throw new ArgumentException(
 						"Only UserInfo[] or any class assignable from List<UserInfo> can be used as a member type.");

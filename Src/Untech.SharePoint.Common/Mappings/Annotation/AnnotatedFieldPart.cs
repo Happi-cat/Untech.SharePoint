@@ -45,8 +45,8 @@ namespace Untech.SharePoint.Common.Mappings.Annotation
 
 		public MetaField GetMetaField(MetaContentType parent)
 		{
-			var internalName = string.IsNullOrEmpty(_fieldAttribute.Name) 
-				? _member.Name 
+			var internalName = string.IsNullOrEmpty(_fieldAttribute.Name)
+				? _member.Name
 				: _fieldAttribute.Name;
 
 			return new MetaField(parent, _member, internalName)

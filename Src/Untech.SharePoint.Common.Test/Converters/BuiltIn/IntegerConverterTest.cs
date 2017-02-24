@@ -42,7 +42,6 @@ namespace Untech.SharePoint.Common.Test.Converters.BuiltIn
 			CustomAssert.Throw<ArgumentException>(() => Given<Int16>());
 		}
 
-
 		[TestMethod]
 		public void NotSupportFloat()
 		{
@@ -54,7 +53,6 @@ namespace Untech.SharePoint.Common.Test.Converters.BuiltIn
 		{
 			CustomAssert.Throw<ArgumentException>(() => Given<UInt32>());
 		}
-
 
 		protected override IFieldConverter GetConverter()
 		{

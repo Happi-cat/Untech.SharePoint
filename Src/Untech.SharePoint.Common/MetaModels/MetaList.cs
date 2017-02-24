@@ -20,8 +20,8 @@ namespace Untech.SharePoint.Common.MetaModels
 		/// <summary>
 		/// Initializes new instance of <see cref="MetaList"/>
 		/// </summary>
-		/// <param name="context">Metadata of parent <see cref="ISpContext"/></param>
-		/// <param name="listUrl">Current list url</param>
+		/// <param name="context">Meta-data of parent <see cref="ISpContext"/></param>
+		/// <param name="listUrl">Current list URL</param>
 		/// <param name="contentTypeProviders">Providers of <see cref="MetaContentType"/> that associated with current list.</param>
 		/// <exception cref="ArgumentNullException">any parameter is null.</exception>
 		public MetaList([NotNull]MetaContext context, [NotNull]string listUrl, [NotNull]IReadOnlyCollection<IMetaContentTypeProvider> contentTypeProviders)
@@ -40,7 +40,7 @@ namespace Untech.SharePoint.Common.MetaModels
 		/// Gets the site-relative URL at which the list was placed. 
 		/// </summary>
 		[NotNull]
-		public string Url { get; private set; }
+		public string Url { get; }
 
 		/// <summary>
 		/// Gets or sets current list title.

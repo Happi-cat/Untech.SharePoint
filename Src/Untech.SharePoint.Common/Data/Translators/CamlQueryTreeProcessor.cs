@@ -15,63 +15,63 @@ namespace Untech.SharePoint.Common.Data.Translators
 	internal sealed class CamlQueryTreeProcessor : IProcessor<Expression, Expression>
 	{
 		[NotNull]
-		private static readonly IReadOnlyDictionary<MethodInfo, ICombineRule> CombineRules;
+		private static readonly IReadOnlyDictionary<MethodInfo, ICombineRule> s_combineRules;
 
 		static CamlQueryTreeProcessor()
 		{
-			CombineRules = new Dictionary<MethodInfo, ICombineRule>(new GenericMethodDefinitionComparer())
+			s_combineRules = new Dictionary<MethodInfo, ICombineRule>(GenericMethodDefinitionComparer.Default)
 			{
-				{MethodUtils.SpqFakeFetch, new InitContextRule()},
+				[MethodUtils.SpqFakeFetch] = new InitContextRule(),
 
-				{MethodUtils.QSelect, new SelectCombineRule()},
+				[MethodUtils.QSelect] = new SelectCombineRule(),
 
-				{MethodUtils.QMin, new MinCombineRule()},
-				{MethodUtils.QMinP, new MinPCombineRule()},
-				{MethodUtils.QMax, new MaxCombineRule()},
-				{MethodUtils.QMaxP, new MaxPCombineRule()},
+				[MethodUtils.QMin] = new MinCombineRule(),
+				[MethodUtils.QMinP] = new MinPCombineRule(),
+				[MethodUtils.QMax] = new MaxCombineRule(),
+				[MethodUtils.QMaxP] = new MaxPCombineRule(),
 
-				{MethodUtils.QWhere, new WhereCombineRule()},
-				{MethodUtils.QAny, new AnyCombineRule()},
-				{MethodUtils.QAnyP, new AnyCombineRule()},
-				{MethodUtils.QAll, new AllCombineRule()},
+				[MethodUtils.QWhere] = new WhereCombineRule(),
+				[MethodUtils.QAny] = new AnyCombineRule(),
+				[MethodUtils.QAnyP] = new AnyCombineRule(),
+				[MethodUtils.QAll] = new AllCombineRule(),
 
-				{MethodUtils.QOrderBy, new OrderByCombineRule {ResetOrder = true, Ascending = true}},
-				{MethodUtils.QOrderByDescending, new OrderByCombineRule {ResetOrder = true}},
-				{MethodUtils.QThenBy, new OrderByCombineRule {Ascending = true}},
-				{MethodUtils.QThenrByDescending, new OrderByCombineRule()},
+				[MethodUtils.QOrderBy] = new OrderByCombineRule { ResetOrder = true, Ascending = true },
+				[MethodUtils.QOrderByDescending] = new OrderByCombineRule { ResetOrder = true },
+				[MethodUtils.QThenBy] = new OrderByCombineRule { Ascending = true },
+				[MethodUtils.QThenrByDescending] = new OrderByCombineRule(),
 
-				{MethodUtils.QTake, new TakeCombineRule()},
+				[MethodUtils.QTake] = new TakeCombineRule(),
 
-				{MethodUtils.QSingle, new FirstCombineRule {ThrowIfMultiple = true, ThrowIfNothing = true}},
-				{MethodUtils.QSingleP, new FirstCombineRule {ThrowIfMultiple = true, ThrowIfNothing = true}},
-				{MethodUtils.QSingleOrDefault, new FirstCombineRule {ThrowIfMultiple = true}},
-				{MethodUtils.QSingleOrDefaultP, new FirstCombineRule {ThrowIfMultiple = true}},
+				[MethodUtils.QSingle] = new FirstCombineRule { ThrowIfMultiple = true, ThrowIfNothing = true },
+				[MethodUtils.QSingleP] = new FirstCombineRule { ThrowIfMultiple = true, ThrowIfNothing = true },
+				[MethodUtils.QSingleOrDefault] = new FirstCombineRule { ThrowIfMultiple = true },
+				[MethodUtils.QSingleOrDefaultP] = new FirstCombineRule { ThrowIfMultiple = true },
 
-				{MethodUtils.QFirst, new FirstCombineRule {ThrowIfNothing = true}},
-				{MethodUtils.QFirstP, new FirstCombineRule {ThrowIfNothing = true}},
-				{MethodUtils.QFirstOrDefault, new FirstCombineRule()},
-				{MethodUtils.QFirstOrDefaultP, new FirstCombineRule()},
+				[MethodUtils.QFirst] = new FirstCombineRule { ThrowIfNothing = true },
+				[MethodUtils.QFirstP] = new FirstCombineRule { ThrowIfNothing = true },
+				[MethodUtils.QFirstOrDefault] = new FirstCombineRule(),
+				[MethodUtils.QFirstOrDefaultP] = new FirstCombineRule(),
 
-				{MethodUtils.QLast, new LastRewriteRule {ThrowIfNothing = true}},
-				{MethodUtils.QLastP, new LastRewriteRule {ThrowIfNothing = true}},
-				{MethodUtils.QLastOrDefault, new LastRewriteRule()},
-				{MethodUtils.QLastOrDefaultP, new LastRewriteRule()},
+				[MethodUtils.QLast] = new LastRewriteRule { ThrowIfNothing = true },
+				[MethodUtils.QLastP] = new LastRewriteRule { ThrowIfNothing = true },
+				[MethodUtils.QLastOrDefault] = new LastRewriteRule(),
+				[MethodUtils.QLastOrDefaultP] = new LastRewriteRule(),
 
-				{MethodUtils.QElementAt, new ElementAtRewriteRule {ThrowIfNothing = true}},
-				{MethodUtils.QElementAtOrDefault, new ElementAtRewriteRule()},
+				[MethodUtils.QElementAt] = new ElementAtRewriteRule { ThrowIfNothing = true },
+				[MethodUtils.QElementAtOrDefault] = new ElementAtRewriteRule(),
 
-				{MethodUtils.QReverse, new ReverseRewriteRule()},
+				[MethodUtils.QReverse] = new ReverseRewriteRule(),
 
-				{MethodUtils.QCount, new CountRewriteRule()},
-				{MethodUtils.QCountP, new CountRewriteRule()}
+				[MethodUtils.QCount] = new CountRewriteRule(),
+				[MethodUtils.QCountP] = new CountRewriteRule()
 			};
 		}
 
-		public Expression Process([NotNull]Expression node)
+		public Expression Process([NotNull]Expression input)
 		{
-			Logger.Debug(LogCategories.QueryTreeProcessor, "Original expressions tree:\n{0}", node);
+			Logger.Debug(LogCategories.QueryTreeProcessor, "Original expressions tree:\n{0}", input);
 
-			var result = new SubtreeCallsCombiner().Visit(node);
+			var result = new SubtreeCallsCombiner().Visit(input);
 
 			Logger.Debug(LogCategories.QueryTreeProcessor, "Rewritten expressions tree:\n{0}", result);
 
@@ -122,12 +122,12 @@ namespace Untech.SharePoint.Common.Data.Translators
 					GetRuleAndUpdateContext(node.Arguments[0]);
 				}
 
-				if (!CombineRules.ContainsKey(node.Method))
+				if (!s_combineRules.ContainsKey(node.Method))
 				{
 					throw Error.SubqueryNotSupported(node);
 				}
 
-				var currentRule = CombineRules[node.Method];
+				var currentRule = s_combineRules[node.Method];
 
 				ThrowIfCannotApplyAfterProjection(currentRule, node);
 				ThrowIfCannotApplyAfterRowLimit(currentRule, node);
@@ -309,7 +309,6 @@ namespace Untech.SharePoint.Common.Data.Translators
 
 			public void Apply(RuleContext context, MethodCallExpression node)
 			{
-
 			}
 
 			public Expression Get(RuleContext context, MethodCallExpression node)
@@ -349,7 +348,6 @@ namespace Untech.SharePoint.Common.Data.Translators
 			}
 		}
 
-
 		private class MaxCombineRule : ICombineRule
 		{
 			public bool CanApplyAfterProjection(MethodCallExpression node)
@@ -364,7 +362,6 @@ namespace Untech.SharePoint.Common.Data.Translators
 
 			public void Apply(RuleContext context, MethodCallExpression node)
 			{
-
 			}
 
 			public Expression Get(RuleContext context, MethodCallExpression node)
@@ -629,7 +626,6 @@ namespace Untech.SharePoint.Common.Data.Translators
 
 			public void Apply(RuleContext context, MethodCallExpression node)
 			{
-
 			}
 		}
 
@@ -687,5 +683,4 @@ namespace Untech.SharePoint.Common.Data.Translators
 
 		#endregion
 	}
-
 }

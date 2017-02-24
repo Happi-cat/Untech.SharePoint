@@ -50,13 +50,13 @@ namespace Untech.SharePoint.Common.Data.Translators
 			var viewFields = queryModel.SelectableFields.EmptyIfNull().ToList();
 			if (viewFields.Any())
 			{
-				xViewFields = new XElement(Tags.ViewFields, 
+				xViewFields = new XElement(Tags.ViewFields,
 					viewFields.Select(FieldRef).Distinct(new XNodeEqualityComparer()));
 			}
 
-			return new XElement(Tags.View, 
-				xRowLimit, 
-				Query(queryModel), 
+			return new XElement(Tags.View,
+				xRowLimit,
+				Query(queryModel),
 				xViewFields);
 		}
 
@@ -87,9 +87,9 @@ namespace Untech.SharePoint.Common.Data.Translators
 			switch (where.Type)
 			{
 				case WhereType.LogicalJoin:
-					return Where((LogicalJoinModel) where);
+					return Where((LogicalJoinModel)where);
 				case WhereType.Comparison:
-					return Where((ComparisonModel) where);
+					return Where((ComparisonModel)where);
 			}
 
 			throw new NotSupportedException($"'{where}' is not supported");
@@ -106,14 +106,14 @@ namespace Untech.SharePoint.Common.Data.Translators
 		[NotNull]
 		private XElement Where([NotNull] ComparisonModel comparison)
 		{
-			if (comparison.ComparisonOperator == ComparisonOperator.ContainsOrIncludes ||
-			    comparison.ComparisonOperator == ComparisonOperator.NotContainsOrIncludes)
+			if (comparison.ComparisonOperator == ComparisonOperator.ContainsOrIncludes
+				|| comparison.ComparisonOperator == ComparisonOperator.NotContainsOrIncludes)
 			{
 				return WhereContainsOrIncludes(comparison);
 			}
 
-			if (comparison.ComparisonOperator == ComparisonOperator.IsNull ||
-			    comparison.ComparisonOperator == ComparisonOperator.IsNotNull)
+			if (comparison.ComparisonOperator == ComparisonOperator.IsNull
+				|| comparison.ComparisonOperator == ComparisonOperator.IsNotNull)
 			{
 				return Where(comparison.ComparisonOperator,
 					FieldRef(comparison.Field),
@@ -181,7 +181,7 @@ namespace Untech.SharePoint.Common.Data.Translators
 				throw new NotSupportedException("Unsupported FieldRefType value");
 			}
 
-			var memberRef = (MemberRefModel) comparison.Field;
+			var memberRef = (MemberRefModel)comparison.Field;
 			var metaField = GetMetaField(memberRef);
 			var isLookup = metaField.TypeAsString.StartsWith("User") || metaField.TypeAsString.StartsWith("Lookup");
 
@@ -212,7 +212,7 @@ namespace Untech.SharePoint.Common.Data.Translators
 					Value(fieldRef, value, alreadyConverted));
 			}
 
-			return WhereComparison(comparisonOperator, GetMetaField((MemberRefModel) fieldRef), value, alreadyConverted);
+			return WhereComparison(comparisonOperator, GetMetaField((MemberRefModel)fieldRef), value, alreadyConverted);
 		}
 
 		[NotNull]
@@ -232,7 +232,7 @@ namespace Untech.SharePoint.Common.Data.Translators
 		{
 			if (fieldRef.Type == FieldRefType.KnownMember)
 			{
-				return Value(GetMetaField((MemberRefModel) fieldRef), value, alreadyConverted);
+				return Value(GetMetaField((MemberRefModel)fieldRef), value, alreadyConverted);
 			}
 
 			if (!alreadyConverted)
@@ -274,7 +274,7 @@ namespace Untech.SharePoint.Common.Data.Translators
 				case FieldRefType.ContentTypeId:
 					return Fields.ContentTypeId;
 				case FieldRefType.KnownMember:
-					return GetMetaField((MemberRefModel) fieldRef).InternalName;
+					return GetMetaField((MemberRefModel)fieldRef).InternalName;
 			}
 
 			throw new NotSupportedException("Unsupported FieldRefType value");
@@ -304,6 +304,5 @@ namespace Untech.SharePoint.Common.Data.Translators
 		}
 
 		#endregion
-
 	}
 }

@@ -55,7 +55,7 @@ namespace Untech.SharePoint.Common.Data.QueryModels
 				case FieldRefType.ContentTypeId:
 					return $"<FieldRef Name='ContentTypeId' Ascending='{Ascending.ToString().ToUpper()}' />";
 				case FieldRefType.KnownMember:
-					var memberRef = (MemberRefModel) FieldRef;
+					var memberRef = (MemberRefModel)FieldRef;
 					return $"<FieldRef Name='{memberRef.Member.Name}' Ascending='{Ascending.ToString().ToUpper()}' />";
 			}
 			return $"<InvalidFieldRef Name='' Ascending='{Ascending.ToString().ToUpper()}' />";

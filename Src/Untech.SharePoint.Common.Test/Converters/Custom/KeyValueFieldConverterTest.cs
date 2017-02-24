@@ -54,8 +54,6 @@ namespace Untech.SharePoint.Common.Test.Converters.Custom
 			CustomAssert.Throw<ArgumentException>(() => Given<List<KeyValuePair<string, string>>>());
 		}
 
-
-
 		protected override IFieldConverter GetConverter()
 		{
 			return new KeyValueFieldConverter();
@@ -88,7 +86,7 @@ namespace Untech.SharePoint.Common.Test.Converters.Custom
 				foreach (var pair in obj)
 				{
 					hash ^= pair.Key.GetHashCode();
-					hash ^= (pair.Value ?? "") .GetHashCode();
+					hash ^= (pair.Value ?? "").GetHashCode();
 				}
 				return hash;
 			}

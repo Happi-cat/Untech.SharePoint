@@ -89,7 +89,6 @@ namespace Untech.SharePoint.Common.Test.Converters
 				return this;
 			}
 
-
 			public TestScenario CanConvertToCaml(object original, string expected)
 			{
 				return CanConvertToCaml<object>(original, expected);
@@ -112,9 +111,9 @@ namespace Untech.SharePoint.Common.Test.Converters
 			[SpList("List")]
 			public ISpList<Entity<T>> List { get; set; }
 
-			public Config Config { get; private set; }
-			public IMappingSource MappingSource { get; private set; }
-			public MetaContext Model { get; private set; }
+			public Config Config { get; }
+			public IMappingSource MappingSource { get; }
+			public MetaContext Model { get; }
 		}
 
 		[UsedImplicitly(ImplicitUseTargetFlags.WithMembers)]
@@ -125,6 +124,5 @@ namespace Untech.SharePoint.Common.Test.Converters
 		}
 
 		#endregion
-
 	}
 }

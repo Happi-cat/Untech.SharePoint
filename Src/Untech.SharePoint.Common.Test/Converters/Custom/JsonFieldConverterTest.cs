@@ -16,11 +16,10 @@ namespace Untech.SharePoint.Common.Test.Converters.Custom
 				.CanConvertFromSp(null, null)
 				.CanConvertFromSp("", null)
 				.CanConvertFromSp("{}", new TestObject(), new TestObjectComparer())
-				.CanConvertFromSp("{ \"Field\": \"value\" }", new TestObject { Field = "value"}, new TestObjectComparer())
+				.CanConvertFromSp("{ \"Field\": \"value\" }", new TestObject { Field = "value" }, new TestObjectComparer())
 				.CanConvertToSp(null, null)
 				.CanConvertToSp(new TestObject(), "{\"Field\":null}")
 				.CanConvertToSp(new TestObject { Field = "test" }, "{\"Field\":\"test\"}");
-
 		}
 
 		protected override IFieldConverter GetConverter()

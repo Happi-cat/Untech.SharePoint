@@ -16,8 +16,8 @@ namespace Untech.SharePoint.Server.Test.Converters.BuiltIn
 		{
 			Given<string>()
 				.CanConvertFromSp(null, null)
-                .CanConvertFromSp("http://google.com, Google It!", "http://google.com")
-                .CanConvertFromSp(new SPFieldUrlValue {Url = "http://google.com", Description = "Google It!"}, "http://google.com")
+				.CanConvertFromSp("http://google.com, Google It!", "http://google.com")
+				.CanConvertFromSp(new SPFieldUrlValue { Url = "http://google.com", Description = "Google It!" }, "http://google.com")
 				.CanConvertToSp(null, null)
 				.CanConvertToSp("http://google.com", "http://google.com")
 				.CanConvertToCaml(null, "")
@@ -29,14 +29,14 @@ namespace Untech.SharePoint.Server.Test.Converters.BuiltIn
 		{
 			Given<UrlInfo>()
 				.CanConvertFromSp(null, null)
-                .CanConvertFromSp("http://google.com, Google It!", new UrlInfo { Url = "http://google.com", Description = "Google It!" }, new UrlInfoComparer())
-                .CanConvertFromSp(new SPFieldUrlValue { Url = "http://google.com", Description = "Google It!" }, new UrlInfo { Url = "http://google.com", Description = "Google It!" }, new UrlInfoComparer())
+				.CanConvertFromSp("http://google.com, Google It!", new UrlInfo { Url = "http://google.com", Description = "Google It!" }, new UrlInfoComparer())
+				.CanConvertFromSp(new SPFieldUrlValue { Url = "http://google.com", Description = "Google It!" }, new UrlInfo { Url = "http://google.com", Description = "Google It!" }, new UrlInfoComparer())
 				.CanConvertToSp(null, null)
-                .CanConvertToSp(new UrlInfo { Url = "http://google.com" }, "http://google.com")
-                .CanConvertToSp(new UrlInfo { Url = "http://google.com", Description = "Google It!" }, "http://google.com, Google It!")
+				.CanConvertToSp(new UrlInfo { Url = "http://google.com" }, "http://google.com")
+				.CanConvertToSp(new UrlInfo { Url = "http://google.com", Description = "Google It!" }, "http://google.com, Google It!")
 				.CanConvertToCaml(null, "")
-                .CanConvertToCaml(new UrlInfo { Url = "http://google.com" }, "http://google.com")
-                .CanConvertToCaml(new UrlInfo { Url = "http://google.com", Description = "Google It!" }, "http://google.com, Google It!");
+				.CanConvertToCaml(new UrlInfo { Url = "http://google.com" }, "http://google.com")
+				.CanConvertToCaml(new UrlInfo { Url = "http://google.com", Description = "Google It!" }, "http://google.com, Google It!");
 		}
 
 		protected override IFieldConverter GetConverter()
@@ -49,7 +49,6 @@ namespace Untech.SharePoint.Server.Test.Converters.BuiltIn
 			public override bool Equals(SPFieldUrlValue x, SPFieldUrlValue y)
 			{
 				return x.Url == y.Url && x.Description == y.Description;
-
 			}
 
 			public override int GetHashCode(SPFieldUrlValue obj)
@@ -66,7 +65,6 @@ namespace Untech.SharePoint.Server.Test.Converters.BuiltIn
 			public override bool Equals(UrlInfo x, UrlInfo y)
 			{
 				return x.Url == y.Url && x.Description == y.Description;
-
 			}
 
 			public override int GetHashCode(UrlInfo obj)

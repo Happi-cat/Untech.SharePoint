@@ -10,7 +10,7 @@ namespace Untech.SharePoint.Common.Test.Tools.QueryTests
 			Comparer = comparer;
 		}
 
-		public Type Comparer { get; private set; }
+		public Type Comparer { get; }
 	}
 
 	[AttributeUsage(AttributeTargets.Method)]
@@ -22,15 +22,14 @@ namespace Untech.SharePoint.Common.Test.Tools.QueryTests
 			ViewFields = viewFields.Split(',');
 		}
 
-		public string Caml { get; private set; }
+		public string Caml { get; }
 
-		public string[] ViewFields { get; private set; }
+		public string[] ViewFields { get; }
 	}
 
 	[AttributeUsage(AttributeTargets.Method)]
 	public class EmptyResultQueryAttribute : Attribute
 	{
-
 	}
 
 	[AttributeUsage(AttributeTargets.Method)]
@@ -41,7 +40,7 @@ namespace Untech.SharePoint.Common.Test.Tools.QueryTests
 			Exception = exception;
 		}
 
-		public Type Exception { get; private set; }
+		public Type Exception { get; }
 	}
 
 	public class NotSupportedQueryAttribute : QueryExceptionAttribute

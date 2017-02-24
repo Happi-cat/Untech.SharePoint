@@ -95,8 +95,8 @@ namespace Untech.SharePoint.Common.Utils.Reflection
 
 		private static Action<TObj, TProp> CreateSetter<TObj, TProp>(Type declaringType, string memberName, Type propertyType)
 		{
-			var objectParameter = Expression.Parameter(typeof (TObj), "object");
-			var valueParameter = Expression.Parameter(typeof (TProp), "value");
+			var objectParameter = Expression.Parameter(typeof(TObj), "object");
+			var valueParameter = Expression.Parameter(typeof(TProp), "value");
 
 			var propertyExpression = Expression.PropertyOrField(Expression.Convert(objectParameter, declaringType), memberName);
 
@@ -109,7 +109,7 @@ namespace Untech.SharePoint.Common.Utils.Reflection
 
 		private static Func<TObj, TProp> CreateGetter<TObj, TProp>(Type declaringType, string memberName)
 		{
-			var objectParameter = Expression.Parameter(typeof (TObj), "object");
+			var objectParameter = Expression.Parameter(typeof(TObj), "object");
 
 			var propertyExpression = Expression.PropertyOrField(Expression.Convert(objectParameter, declaringType), memberName);
 
@@ -118,6 +118,5 @@ namespace Untech.SharePoint.Common.Utils.Reflection
 		}
 
 		#endregion
-
 	}
 }

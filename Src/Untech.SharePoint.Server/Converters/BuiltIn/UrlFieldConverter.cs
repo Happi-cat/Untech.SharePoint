@@ -12,7 +12,7 @@ namespace Untech.SharePoint.Server.Converters.BuiltIn
 	[UsedImplicitly]
 	internal class UrlFieldConverter : MultiTypeFieldConverter
 	{
-		private static readonly IReadOnlyDictionary<Type, Func<IFieldConverter>> TypeConverters = new Dictionary<Type, Func<IFieldConverter>>
+		private static readonly IReadOnlyDictionary<Type, Func<IFieldConverter>> s_typeConverters = new Dictionary<Type, Func<IFieldConverter>>
 		{
 			{typeof(string), () => new StringTypeConverter()},
 			{typeof(UrlInfo), () => new UrlInfoTypeConverter()},
@@ -21,9 +21,9 @@ namespace Untech.SharePoint.Server.Converters.BuiltIn
 		public override void Initialize(MetaField field)
 		{
 			base.Initialize(field);
-			if (TypeConverters.ContainsKey(field.MemberType))
+			if (s_typeConverters.ContainsKey(field.MemberType))
 			{
-				Internal = TypeConverters[field.MemberType]();
+				Internal = s_typeConverters[field.MemberType]();
 			}
 			else
 			{
@@ -35,7 +35,6 @@ namespace Untech.SharePoint.Server.Converters.BuiltIn
 		{
 			public void Initialize(MetaField field)
 			{
-				
 			}
 
 			public object FromSpValue(object value)
@@ -50,7 +49,7 @@ namespace Untech.SharePoint.Server.Converters.BuiltIn
 
 			public string ToCamlValue(object value)
 			{
-				return (string) ToSpValue(value) ?? "";
+				return (string)ToSpValue(value) ?? "";
 			}
 		}
 
@@ -58,7 +57,6 @@ namespace Untech.SharePoint.Server.Converters.BuiltIn
 		{
 			public void Initialize(MetaField field)
 			{
-
 			}
 
 			public object FromSpValue(object value)
@@ -81,16 +79,16 @@ namespace Untech.SharePoint.Server.Converters.BuiltIn
 					return null;
 
 				var urlInfo = (UrlInfo)value;
-                if (string.IsNullOrEmpty(urlInfo.Description))
-                {
-                    return urlInfo.Url;
-                }
-                return string.Format("{0}, {1}", urlInfo.Url.Replace(",", ",,"), urlInfo.Description);
-            }
+				if (string.IsNullOrEmpty(urlInfo.Description))
+				{
+					return urlInfo.Url;
+				}
+				return string.Format("{0}, {1}", urlInfo.Url.Replace(",", ",,"), urlInfo.Description);
+			}
 
 			public string ToCamlValue(object value)
 			{
-				return (string) ToSpValue(value) ?? "";
+				return (string)ToSpValue(value) ?? "";
 			}
 		}
 	}

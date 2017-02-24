@@ -49,7 +49,6 @@ namespace Untech.SharePoint.Common.Test.Data.Translators
 				return PostVisit(new Evaluator());
 			}
 
-
 			public TestScenario PostVisit(ExpressionVisitor visitor)
 			{
 				_postVisitors.Add(visitor);

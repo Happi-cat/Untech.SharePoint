@@ -33,8 +33,10 @@ namespace Untech.SharePoint.Common.Data
 		/// </summary>
 		public MetaList List { get; }
 
+		/// <inheritdoc />
 		public bool FilterByContentType { get; set; }
 
+		/// <inheritdoc />
 		public IEnumerable<T> Fetch<T>(QueryModel query)
 		{
 			var contentType = List.ContentTypes[typeof(T)];
@@ -45,15 +47,17 @@ namespace Untech.SharePoint.Common.Data
 			return Materialize<T>(FetchInternal(caml), contentType, viewFields);
 		}
 
+		/// <inheritdoc />
 		public bool Any<T>(QueryModel query)
 		{
 			var contentType = List.ContentTypes[typeof(T)];
-			query.ReplaceSelectableFields(new [] { new KeyRefModel() });
+			query.ReplaceSelectableFields(new[] { new KeyRefModel() });
 			var caml = ConvertToCamlString(query, contentType);
 
 			return FetchInternal(caml).Any();
 		}
 
+		/// <inheritdoc />
 		public int Count<T>(QueryModel query)
 		{
 			var contentType = List.ContentTypes[typeof(T)];
@@ -63,6 +67,7 @@ namespace Untech.SharePoint.Common.Data
 			return FetchInternal(caml).Count();
 		}
 
+		/// <inheritdoc />
 		public T SingleOrDefault<T>(QueryModel query)
 		{
 			var contentType = List.ContentTypes[typeof(T)];
@@ -83,6 +88,7 @@ namespace Untech.SharePoint.Common.Data
 				: default(T);
 		}
 
+		/// <inheritdoc />
 		public T FirstOrDefault<T>(QueryModel query)
 		{
 			var contentType = List.ContentTypes[typeof(T)];
@@ -99,6 +105,7 @@ namespace Untech.SharePoint.Common.Data
 				: default(T);
 		}
 
+		/// <inheritdoc />
 		public T ElementAtOrDefault<T>(QueryModel query, int index)
 		{
 			var contentType = List.ContentTypes[typeof(T)];
@@ -115,6 +122,7 @@ namespace Untech.SharePoint.Common.Data
 				: default(T);
 		}
 
+		/// <inheritdoc />
 		public T Get<T>(int id)
 		{
 			if (List.IsExternal)
@@ -126,6 +134,7 @@ namespace Untech.SharePoint.Common.Data
 			return Materialize<T>(GetInternal(id, contentType), contentType);
 		}
 
+		/// <inheritdoc />
 		public T Add<T>(T item)
 		{
 			if (List.IsExternal)
@@ -141,9 +150,10 @@ namespace Untech.SharePoint.Common.Data
 				throw Error.OperationRequireIdField();
 			}
 
-			return (T) AddInternal(item, contentType.GetMapper<TSPListItem>());
+			return (T)AddInternal(item, contentType.GetMapper<TSPListItem>());
 		}
 
+		/// <inheritdoc />
 		public void Add<T>(IEnumerable<T> items)
 		{
 			if (List.IsExternal)
@@ -159,13 +169,13 @@ namespace Untech.SharePoint.Common.Data
 				throw Error.OperationRequireIdField();
 			}
 
-			var batches = items.ToPages(BatchSize);
-			foreach (var batch in batches)
+			foreach (var batch in items.ToPages(BatchSize))
 			{
 				AddInternal((IEnumerable<object>)batch, contentType.GetMapper<TSPListItem>());
 			}
 		}
 
+		/// <inheritdoc />
 		public T Update<T>(T item)
 		{
 			if (List.IsExternal)
@@ -186,9 +196,10 @@ namespace Untech.SharePoint.Common.Data
 				.MemberAccessor
 				.GetValue(item);
 
-			return (T) UpdateInternal(idValue, item, contentType.GetMapper<TSPListItem>());
+			return (T)UpdateInternal(idValue, item, contentType.GetMapper<TSPListItem>());
 		}
 
+		/// <inheritdoc />
 		public void Update<T>(IEnumerable<T> items)
 		{
 			if (List.IsExternal)
@@ -208,15 +219,15 @@ namespace Untech.SharePoint.Common.Data
 				.GetMapper<TSPListItem>()
 				.MemberAccessor;
 
-			var itemsToAdd = items.Select(n => new KeyValuePair<int, object>((int) idValueAccessor.GetValue(n), n));
+			var itemsToAdd = items.Select(n => new KeyValuePair<int, object>((int)idValueAccessor.GetValue(n), n));
 
-			var batches = itemsToAdd.ToPages(BatchSize);
-			foreach (var batch in batches)
+			foreach (var batch in itemsToAdd.ToPages(BatchSize))
 			{
 				UpdateInternal(batch, contentType.GetMapper<TSPListItem>());
 			}
 		}
 
+		/// <inheritdoc />
 		public void Delete<T>(T item)
 		{
 			if (List.IsExternal)
@@ -240,6 +251,7 @@ namespace Untech.SharePoint.Common.Data
 			DeleteInternal(idValue);
 		}
 
+		/// <inheritdoc />
 		public void Delete<T>(IEnumerable<T> items)
 		{
 			if (List.IsExternal)
@@ -259,16 +271,15 @@ namespace Untech.SharePoint.Common.Data
 				.GetMapper<TSPListItem>()
 				.MemberAccessor;
 
-			var batches = items
+			foreach (var batch in items
 				.Select(n => (int)idValueAccessor.GetValue(n))
-				.ToPages(BatchSize);
-
-			foreach (var batch in batches)
+				.ToPages(BatchSize))
 			{
 				DeleteInternal(batch);
 			}
 		}
 
+		/// <inheritdoc />
 		public abstract IEnumerable<string> GetAttachments(int id);
 
 		/// <summary>
@@ -291,7 +302,7 @@ namespace Untech.SharePoint.Common.Data
 		}
 
 		/// <summary>
-		/// Updates view fields in query if they were't specified.
+		/// Updates view fields in query if they weren't specified.
 		/// </summary>
 		/// <param name="query">Query to update view fields.</param>
 		/// <param name="contentType">Content type that provides list of fields to load.</param>
@@ -311,14 +322,14 @@ namespace Untech.SharePoint.Common.Data
 		}
 
 		/// <summary>
-		/// Fetches SP list items that match to specified caml string.
+		/// Fetches SP list items that match to specified CAML string.
 		/// </summary>
 		/// <param name="caml">CAML query string.</param>
 		/// <returns>Loaded SP list items.</returns>
 		protected abstract IEnumerable<TSPListItem> FetchInternal(string caml);
 
 		/// <summary>
-		/// Fetchs SP list item by specified ID.
+		/// Fetches SP list item by specified ID.
 		/// </summary>
 		/// <param name="id">Item ID to load.</param>
 		/// <param name="contentType">Expected item content type info.</param>

@@ -53,7 +53,7 @@ namespace Untech.SharePoint.Common.Test.Configuration
 				.RegisterConverters(n => n.Add<BuiltInFieldConverter>())
 				.BuildConfig();
 
-			Assert.IsNotNull(config.Mappings.Resolve(typeof (AnnotatedContextMappingTest.Ctx)));
+			Assert.IsNotNull(config.Mappings.Resolve(typeof(AnnotatedContextMappingTest.Ctx)));
 			Assert.IsNotNull(config.FieldConverters.Resolve("BUILT_IN_TEST_CONVERTER"));
 			Assert.IsNotNull(config.FieldConverters.Resolve(typeof(BuiltInFieldConverter)));
 		}

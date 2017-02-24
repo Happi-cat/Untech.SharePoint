@@ -20,7 +20,7 @@ namespace Untech.SharePoint.Common.Test.Tools.QueryTests
 		{
 			LinqQueryFetchTimer = new Stopwatch();
 			CamlQueryFetchTimer = new Stopwatch();
-			ContentType = metaList.ContentTypes[typeof (T)].Id;
+			ContentType = metaList.ContentTypes[typeof(T)].Id;
 		}
 
 		public ISpList<T> List { get; set; }
@@ -39,7 +39,7 @@ namespace Untech.SharePoint.Common.Test.Tools.QueryTests
 
 		public void Visit<TResult>(TestQuery<T, TResult> query)
 		{
-			if (typeof (TResult).IsIEnumerable())
+			if (typeof(TResult).IsIEnumerable())
 			{
 				ExecuteSequence(query.Query, query.Caml, query.ViewFields);
 			}
@@ -106,7 +106,7 @@ namespace Untech.SharePoint.Common.Test.Tools.QueryTests
 			var list = new List<object>();
 
 			LinqQueryFetchTimer.Start();
-			var enumerator = ((IEnumerable) query(List)).GetEnumerator();
+			var enumerator = ((IEnumerable)query(List)).GetEnumerator();
 			while (enumerator.MoveNext())
 			{
 				list.Add(enumerator.Current);

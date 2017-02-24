@@ -10,7 +10,6 @@ namespace Untech.SharePoint.Common.Converters
 	[AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
 	public sealed class SpFieldConverterAttribute : Attribute
 	{
-
 		/// <summary>
 		/// Initializes a new instance of the <see cref="SpFieldConverterAttribute"/>.
 		/// </summary>
@@ -23,6 +22,6 @@ namespace Untech.SharePoint.Common.Converters
 		/// <summary>
 		/// Gets SP field type.
 		/// </summary>
-		public string FieldTypeAsString { get; private set; }
+		public string FieldTypeAsString { get; }
 	}
 }

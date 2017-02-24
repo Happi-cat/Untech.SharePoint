@@ -77,7 +77,7 @@ namespace Untech.SharePoint.Common.Mappings.ClassLike
 			}
 			else if (member.MemberType == MemberTypes.Property)
 			{
-				Rules.CheckContentTypeField((PropertyInfo) member);
+				Rules.CheckContentTypeField((PropertyInfo)member);
 			}
 			else
 			{

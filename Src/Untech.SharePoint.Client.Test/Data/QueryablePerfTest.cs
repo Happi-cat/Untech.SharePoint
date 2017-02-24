@@ -12,7 +12,7 @@ namespace Untech.SharePoint.Client.Test.Data
 	public class QueryablePerfTest
 	{
 		[TestMethod]
-		[TestCategory("Perfomance")]
+		[TestCategory("Performance")]
 		public void Measure()
 		{
 			var context = new ClientContext(@"http://sp2013dev/sites/orm-test");

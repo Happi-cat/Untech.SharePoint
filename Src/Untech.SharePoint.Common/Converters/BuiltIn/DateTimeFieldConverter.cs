@@ -10,7 +10,7 @@ namespace Untech.SharePoint.Common.Converters.BuiltIn
 	[UsedImplicitly]
 	internal class DateTimeFieldConverter : MultiTypeFieldConverter
 	{
-		private static readonly IReadOnlyDictionary<Type, Func<IFieldConverter>> TypeConverters = new Dictionary<Type, Func<IFieldConverter>>
+		private static readonly IReadOnlyDictionary<Type, Func<IFieldConverter>> s_typeConverters = new Dictionary<Type, Func<IFieldConverter>>
 		{
 			{typeof(DateTime), () => new DateTimeTypeConverter()},
 			{typeof(DateTime?), () => new NullableDateTimeTypeConverter()}
@@ -19,9 +19,9 @@ namespace Untech.SharePoint.Common.Converters.BuiltIn
 		public override void Initialize(MetaField field)
 		{
 			base.Initialize(field);
-			if (TypeConverters.ContainsKey(field.MemberType))
+			if (s_typeConverters.ContainsKey(field.MemberType))
 			{
-				Internal = TypeConverters[field.MemberType]();
+				Internal = s_typeConverters[field.MemberType]();
 			}
 			else
 			{
@@ -67,33 +67,32 @@ namespace Untech.SharePoint.Common.Converters.BuiltIn
 				? dateTime.Value.Kind == DateTimeKind.Unspecified
 					? new DateTime(dateTime.Value.Ticks, DateTimeKind.Local)
 					: dateTime.Value.ToLocalTime()
-				: (DateTime?) null;
+				: (DateTime?)null;
 		}
 
 		private class DateTimeTypeConverter : IFieldConverter
 		{
-			private static readonly DateTime Min = new DateTime(1900, 1, 1, 0, 0, 0, DateTimeKind.Local);
+			private static readonly DateTime s_min = new DateTime(1900, 1, 1, 0, 0, 0, DateTimeKind.Local);
 
 			public void Initialize(MetaField field)
 			{
-				
 			}
 
 			public object FromSpValue(object value)
 			{
-				return ToLocalTime((DateTime?) value ?? Min);
+				return ToLocalTime((DateTime?)value ?? s_min);
 			}
 
 			public object ToSpValue(object value)
 			{
 				var dateValue = ToLocalTime((DateTime)value);
-				return dateValue > Min ? dateValue : (object) null;
+				return dateValue > s_min ? dateValue : (object)null;
 			}
 
 			public string ToCamlValue(object value)
 			{
 				var dateValue = (DateTime)value;
-				return dateValue > Min ? CreateIsoDate(ToLocalTime(dateValue)) : "";
+				return dateValue > s_min ? CreateIsoDate(ToLocalTime(dateValue)) : "";
 			}
 		}
 
@@ -101,7 +100,6 @@ namespace Untech.SharePoint.Common.Converters.BuiltIn
 		{
 			public void Initialize(MetaField field)
 			{
-
 			}
 
 			public object FromSpValue(object value)

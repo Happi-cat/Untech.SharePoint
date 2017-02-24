@@ -20,7 +20,6 @@ namespace Untech.SharePoint.Common.Test.Converters.BuiltIn
 			CustomAssert.Throw<ArgumentException>(() => Given<int?>());
 		}
 
-
 		[TestMethod]
 		public void NotSupportFloat()
 		{

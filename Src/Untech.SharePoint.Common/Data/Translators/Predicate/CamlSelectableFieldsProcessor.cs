@@ -24,7 +24,7 @@ namespace Untech.SharePoint.Common.Data.Translators.Predicate
 
 			Visit(node);
 
-			Logger.Trace(LogCategories.SelectableFieldsProcessor, "Selectable fields in predicate:\n{0}", 
+			Logger.Trace(LogCategories.SelectableFieldsProcessor, "Selectable fields in predicate:\n{0}",
 				SelectableFields.JoinToString("\n"));
 
 			return SelectableFields;
@@ -39,7 +39,7 @@ namespace Untech.SharePoint.Common.Data.Translators.Predicate
 			}
 			if (objectNode != null && objectNode.NodeType.In(new[] { ExpressionType.Convert, ExpressionType.ConvertChecked }))
 			{
-				var unaryNode = (UnaryExpression) objectNode;
+				var unaryNode = (UnaryExpression)objectNode;
 
 				if (unaryNode.Operand.NodeType == ExpressionType.Parameter)
 				{

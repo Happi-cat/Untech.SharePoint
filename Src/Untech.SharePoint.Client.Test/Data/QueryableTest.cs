@@ -9,49 +9,49 @@ namespace Untech.SharePoint.Client.Test.Data
 	[TestClass]
 	public class QueryableTest
 	{
-		private static QueryableSpec _spec;
+		private static QueryableSpec s_spec;
 
 		[ClassInitialize]
 		public static void Init(TestContext ctx)
 		{
-			_spec = new QueryableSpec(GetContext());
-			_spec.Init();
+			s_spec = new QueryableSpec(GetContext());
+			s_spec.Init();
 		}
 
 		[TestMethod]
 		public void Aggregate()
 		{
-			_spec.Aggregate();
+			s_spec.Aggregate();
 		}
 
 		[TestMethod]
 		public void Filtering()
 		{
-			_spec.Filtering();
+			s_spec.Filtering();
 		}
 
 		[TestMethod]
 		public void Ordering()
 		{
-			_spec.Ordering();
+			s_spec.Ordering();
 		}
 
 		[TestMethod]
 		public void Paging()
 		{
-			_spec.Paging();
+			s_spec.Paging();
 		}
 
 		[TestMethod]
 		public void Set()
 		{
-			_spec.Set();
+			s_spec.Set();
 		}
 
 		[TestMethod]
 		public void Projection()
 		{
-			_spec.Projection();
+			s_spec.Projection();
 		}
 
 		private static DataContext GetContext()

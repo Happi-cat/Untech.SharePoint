@@ -23,17 +23,17 @@ namespace Untech.SharePoint.Common.Converters.BuiltIn
 
 		public object FromSpValue(object value)
 		{
-			return (string) value;
+			return (string)value;
 		}
 
 		public object ToSpValue(object value)
 		{
-			return (string) value;
+			return (string)value;
 		}
 
 		public string ToCamlValue(object value)
 		{
-			return (string) ToSpValue(value);
+			return (string)ToSpValue(value);
 		}
 	}
 }

@@ -14,7 +14,9 @@ namespace Untech.SharePoint.Common.Mappings.Annotation
 		/// <summary>
 		/// Initializes new instance of the <see cref="SpFieldAttribute"/>
 		/// </summary>
-		public SpFieldAttribute() { }
+		public SpFieldAttribute()
+		{
+		}
 
 		/// <summary>
 		/// Initializes new instance of the <see cref="SpFieldAttribute"/>

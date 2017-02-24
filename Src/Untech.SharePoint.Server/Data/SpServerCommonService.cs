@@ -24,8 +24,10 @@ namespace Untech.SharePoint.Server.Data
 
 		private SPWeb Web { get; }
 
+		/// <inheritdoc />
 		public Config Config { get; }
 
+		/// <inheritdoc />
 		public IReadOnlyCollection<IMetaModelVisitor> MetaModelProcessors => new List<IMetaModelVisitor>
 		{
 			new RuntimeInfoLoader(Web),
@@ -34,6 +36,7 @@ namespace Untech.SharePoint.Server.Data
 			new MapperInitializer()
 		};
 
+		/// <inheritdoc />
 		public ISpListItemsProvider GetItemsProvider(MetaList list)
 		{
 			return new SpListItemsProvider(Web, list);
