@@ -1,6 +1,7 @@
 ﻿using System;
 using Untech.SharePoint.Common.MetaModels;
 using Untech.SharePoint.Common.Utils;
+using System.Runtime.Serialization;
 
 namespace Untech.SharePoint.Common.Data
 {
@@ -18,6 +19,11 @@ namespace Untech.SharePoint.Common.Data
 		/// <param name="innerException">The exception that is the cause of this exception.</param>
 		public DataMappingException(string message, Exception innerException)
 			: base(message, innerException)
+		{
+		}
+
+		/// <inheritdoc />
+		protected DataMappingException(SerializationInfo info, StreamingContext context) : base(info, context)
 		{
 		}
 	}
@@ -48,6 +54,11 @@ namespace Untech.SharePoint.Common.Data
 		{
 		}
 
+		/// <inheritdoc />
+		protected FieldNotFoundException(SerializationInfo info, StreamingContext context) : base(info, context)
+		{
+		}
+
 		private static string GetMessage(MetaField field)
 		{
 			Guard.CheckNotNull(nameof(field), field);
@@ -59,6 +70,7 @@ namespace Untech.SharePoint.Common.Data
 	/// <summary>
 	/// Represents errors when <see cref="MetaContentType"/> wasn't found or loaded.
 	/// </summary>
+	[Serializable]
 	public class ContentTypeNotFoundException : Exception
 	{
 		/// <summary>
@@ -78,6 +90,11 @@ namespace Untech.SharePoint.Common.Data
 		/// <param name="innerException">The exception that is the cause of this exception.</param>
 		public ContentTypeNotFoundException(MetaContentType contentType, Exception innerException)
 			: base(GetMessage(contentType), innerException)
+		{
+		}
+
+		/// <inheritdoc />
+		protected ContentTypeNotFoundException(SerializationInfo info, StreamingContext context) : base(info, context)
 		{
 		}
 
@@ -112,6 +129,11 @@ namespace Untech.SharePoint.Common.Data
 		/// <param name="innerException">The exception that is the cause of this exception.</param>
 		public ListNotFoundException(MetaList list, Exception innerException)
 			: base(GetMessage(list), innerException)
+		{
+		}
+
+		/// <inheritdoc />
+		protected ListNotFoundException(SerializationInfo info, StreamingContext context) : base(info, context)
 		{
 		}
 

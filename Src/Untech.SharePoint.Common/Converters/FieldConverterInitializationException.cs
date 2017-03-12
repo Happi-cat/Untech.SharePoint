@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.Serialization;
 using Untech.SharePoint.Common.MetaModels;
 
 namespace Untech.SharePoint.Common.Converters
@@ -6,6 +7,7 @@ namespace Untech.SharePoint.Common.Converters
 	/// <summary>
 	/// Represents errors that occurs during <see cref="IFieldConverter"/> initialization.
 	/// </summary>
+	[Serializable]
 	public class FieldConverterInitializationException : FieldConverterException
 	{
 		/// <summary>
@@ -17,6 +19,19 @@ namespace Untech.SharePoint.Common.Converters
 		/// <param name="innerException">The exception that is the cause of this exception.</param>
 		public FieldConverterInitializationException(Type converterType, MetaField field, Exception innerException)
 			: base(GetMessage(converterType, field), innerException)
+		{
+		}
+
+		/// <summary>
+		/// Initializes a new instance of the <see cref="FieldConverterInitializationException"/> class with the specified <paramref name="message"/>.
+		/// </summary>
+		/// <param name="message">Message that describes error.</param>
+		public FieldConverterInitializationException(string message) : base(message)
+		{
+		}
+
+		/// <inheritdoc/>
+		protected FieldConverterInitializationException(SerializationInfo info, StreamingContext context) : base(info, context)
 		{
 		}
 

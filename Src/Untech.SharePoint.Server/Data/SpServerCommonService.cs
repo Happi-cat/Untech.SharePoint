@@ -11,18 +11,26 @@ using Untech.SharePoint.Common.Utils;
 
 namespace Untech.SharePoint.Server.Data
 {
+	/// <summary>
+	/// Represents service that use SSOM (i.e. SharePoint Server Object Model) and can be used inside <see cref="SpContext{TContext}"/>.
+	/// </summary>
 	public class SpServerCommonService : ICommonService
 	{
+		private readonly SPWeb _web;
+
+		/// <summary>
+		/// Initializes a new instance of the <see cref="SpServerCommonService"/> with the specified instance of the <see cref="SPWeb"/> and defined <see cref="Config"/>.
+		/// </summary>
+		/// <param name="web">The instance of <see cref="SPWeb"/> that will be used to access SP lists.</param>
+		/// <param name="config">The instance of <see cref="Config"/>.</param>
 		public SpServerCommonService([NotNull] SPWeb web, [NotNull] Config config)
 		{
 			Guard.CheckNotNull(nameof(web), web);
 			Guard.CheckNotNull(nameof(config), config);
 
-			Web = web;
+			_web = web;
 			Config = config;
 		}
-
-		private SPWeb Web { get; }
 
 		/// <inheritdoc />
 		public Config Config { get; }
@@ -30,8 +38,8 @@ namespace Untech.SharePoint.Server.Data
 		/// <inheritdoc />
 		public IReadOnlyCollection<IMetaModelVisitor> MetaModelProcessors => new List<IMetaModelVisitor>
 		{
-			new RuntimeInfoLoader(Web),
-			new MetaFieldWebInitilizer(Web),
+			new RuntimeInfoLoader(_web),
+			new MetaFieldWebInitilizer(_web),
 			new FieldConverterCreator(Config.FieldConverters),
 			new MapperInitializer()
 		};
@@ -39,7 +47,7 @@ namespace Untech.SharePoint.Server.Data
 		/// <inheritdoc />
 		public ISpListItemsProvider GetItemsProvider(MetaList list)
 		{
-			return new SpListItemsProvider(Web, list);
+			return new SpListItemsProvider(_web, list);
 		}
 	}
 }

@@ -14,8 +14,8 @@ namespace Untech.SharePoint.Client.Converters.BuiltIn
 	{
 		private static readonly IReadOnlyDictionary<Type, Func<IFieldConverter>> s_typeConverters = new Dictionary<Type, Func<IFieldConverter>>
 		{
-			{typeof(string), () => new StringTypeConverter()},
-			{typeof(UrlInfo), () => new UrlInfoTypeConverter()},
+			[typeof(string)] = () => new StringTypeConverter(),
+			[typeof(UrlInfo)] = () => new UrlInfoTypeConverter(),
 		};
 
 		public override void Initialize(MetaField field)
