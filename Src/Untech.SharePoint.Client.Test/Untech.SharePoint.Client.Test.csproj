@@ -6,7 +6,7 @@
     <ProjectGuid>{23E4FE0B-D466-4704-8FFC-D5654221EE6C}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Untech.SharePoint.Client.Test</RootNamespace>
+    <RootNamespace>Untech.SharePoint.Client</RootNamespace>
     <AssemblyName>Untech.SharePoint.Client.Test</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>

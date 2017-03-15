@@ -6,12 +6,12 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Untech.SharePoint.Common.Data;
 using Untech.SharePoint.Common.Extensions;
 using Untech.SharePoint.Common.Models;
-using Untech.SharePoint.Common.Test.Spec.Models;
-using Untech.SharePoint.Common.Test.Tools.DataGenerators;
-using Untech.SharePoint.Common.Test.Tools.Generators;
-using Untech.SharePoint.Common.Test.Tools.Generators.Basic;
+using Untech.SharePoint.Common.Spec.Models;
+using Untech.SharePoint.Common.TestTools.DataGenerators;
+using Untech.SharePoint.Common.TestTools.Generators;
+using Untech.SharePoint.Common.TestTools.Generators.Basic;
 
-namespace Untech.SharePoint.Common.Test.Spec
+namespace Untech.SharePoint.Common.Spec
 {
 	public class BasicOperationsSpec
 	{

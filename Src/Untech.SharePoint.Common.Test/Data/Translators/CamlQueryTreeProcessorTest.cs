@@ -4,12 +4,10 @@ using System.Linq;
 using System.Linq.Expressions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Untech.SharePoint.Common.CodeAnnotations;
-using Untech.SharePoint.Common.Data;
 using Untech.SharePoint.Common.Data.QueryModels;
-using Untech.SharePoint.Common.Data.Translators;
 using Untech.SharePoint.Common.Extensions;
 
-namespace Untech.SharePoint.Common.Test.Data.Translators
+namespace Untech.SharePoint.Common.Data.Translators
 {
 	[TestClass]
 	[SuppressMessage("ReSharper", "ReplaceWithSingleCallToAny")]
@@ -160,7 +158,6 @@ namespace Untech.SharePoint.Common.Test.Data.Translators
 
 		#endregion
 
-
 		#region [Order By, Then By]
 
 		[TestMethod]
@@ -218,7 +215,6 @@ namespace Untech.SharePoint.Common.Test.Data.Translators
 
 		#endregion
 
-
 		#region [Any]
 
 		[TestMethod]
@@ -250,7 +246,6 @@ namespace Untech.SharePoint.Common.Test.Data.Translators
 
 		#endregion
 
-
 		#region [All]
 
 		[TestMethod]
@@ -269,7 +264,6 @@ namespace Untech.SharePoint.Common.Test.Data.Translators
 		}
 
 		#endregion
-
 
 		#region [Select]
 
@@ -320,44 +314,45 @@ namespace Untech.SharePoint.Common.Test.Data.Translators
 		}
 
 		[TestMethod]
+		[ExpectedException(typeof(NotSupportedException))]
 		public void NotSupportSelectSelect()
 		{
-			CustomAssert.Throw<NotSupportedException>(
-				() => Given(source => source
-					.Select(n => new { Value = n.Int1 })
-					.Select(n => n.Value)));
+			Given(source => source
+				   .Select(n => new { Value = n.Int1 })
+				   .Select(n => n.Value));
 		}
 
 		[TestMethod]
+		[ExpectedException(typeof(NotSupportedException))]
 		public void NotSupportSelectAnyP()
 		{
-			CustomAssert.Throw<NotSupportedException>(
-				() => Given(source => source
+			Given(source => source
 					.Select(n => n.Int1)
-					.Any(n => n > 10)));
+					.Any(n => n > 10));
 		}
 
 		[TestMethod]
+		[ExpectedException(typeof(NotSupportedException))]
 		public void NotSupportSelectMin()
 		{
-			CustomAssert.Throw<NotSupportedException>(() => Given(source => source.Select(n => n.Int1).Min(n => n)));
+			Given(source => source.Select(n => n.Int1).Min(n => n));
 		}
 
 		[TestMethod]
+		[ExpectedException(typeof(NotSupportedException))]
 		public void NotSupportSelectMax()
 		{
-			CustomAssert.Throw<NotSupportedException>(() => Given(source => source.Select(n => n.Int1).Min(n => n)));
+			Given(source => source.Select(n => n.Int1).Min(n => n));
 		}
 
 		[TestMethod]
+		[ExpectedException(typeof(NotSupportedException))]
 		public void NotSupportSelectAll()
 		{
-			CustomAssert.Throw<NotSupportedException>(
-				() => Given(source => source
-					.Select(n => n.String1)
-					.All(n => n == "TEST")));
+			Given(source => source
+			   .Select(n => n.String1)
+			   .All(n => n == "TEST"));
 		}
-
 
 		[TestMethod]
 		public void SupportSelectFirst()
@@ -376,12 +371,12 @@ namespace Untech.SharePoint.Common.Test.Data.Translators
 		}
 
 		[TestMethod]
+		[ExpectedException(typeof(NotSupportedException))]
 		public void NotSupportSelectFirstP()
 		{
-			CustomAssert.Throw<NotSupportedException>(() =>
-				Given(source => source
-					.Select(n => new { Result = n.Int1 })
-					.First(n => n.Result > 10)));
+			Given(source => source
+				.Select(n => new { Result = n.Int1 })
+				.First(n => n.Result > 10));
 		}
 
 		[TestMethod]
@@ -401,14 +396,13 @@ namespace Untech.SharePoint.Common.Test.Data.Translators
 		}
 
 		[TestMethod]
+		[ExpectedException(typeof(NotSupportedException))]
 		public void NotSupportSelectFirstOrDefaultP()
 		{
-			CustomAssert.Throw<NotSupportedException>(() =>
-				Given(source => source
-					.Select(n => new { Result = n.Int1 })
-					.FirstOrDefault(n => n.Result > 10)));
+			Given(source => source
+				.Select(n => new { Result = n.Int1 })
+				.FirstOrDefault(n => n.Result > 10));
 		}
-
 
 		[TestMethod]
 		public void SupportSelectLast()
@@ -428,22 +422,21 @@ namespace Untech.SharePoint.Common.Test.Data.Translators
 		}
 
 		[TestMethod]
+		[ExpectedException(typeof(NotSupportedException))]
 		public void NotSupportSelectLastP()
 		{
-			CustomAssert.Throw<NotSupportedException>(() =>
-				Given(source => source
-					.Select(n => new { Result = n.Int1 })
-					.Last(n => n.Result > 10)));
+			Given(source => source
+				.Select(n => new { Result = n.Int1 })
+				.Last(n => n.Result > 10));
 		}
 
-
 		[TestMethod]
+		[ExpectedException(typeof(NotSupportedException))]
 		public void NotSupportSelectWhere()
 		{
-			CustomAssert.Throw<NotSupportedException>(() =>
-				Given(source => source
-					.Select(n => new { Result = n.Int1 })
-					.Where(n => n.Result > 10)));
+			Given(source => source
+				.Select(n => new { Result = n.Int1 })
+				.Where(n => n.Result > 10));
 		}
 
 		[TestMethod]
@@ -464,16 +457,15 @@ namespace Untech.SharePoint.Common.Test.Data.Translators
 		}
 
 		[TestMethod]
+		[ExpectedException(typeof(NotSupportedException))]
 		public void NotSupportSelectLastOrDefaultP()
 		{
-			CustomAssert.Throw<NotSupportedException>(() =>
-				Given(source => source
-					.Select(n => new { Result = n.Int1 })
-					.LastOrDefault(n => n.Result > 10)));
+			Given(source => source
+				.Select(n => new { Result = n.Int1 })
+				.LastOrDefault(n => n.Result > 10));
 		}
 
 		#endregion
-
 
 		#region [Take]
 
@@ -525,31 +517,34 @@ namespace Untech.SharePoint.Common.Test.Data.Translators
 		}
 
 		[TestMethod]
+		[ExpectedException(typeof(NotSupportedException))]
 		public void NotSupportTakeLast()
 		{
-			CustomAssert.Throw<NotSupportedException>(() => Given(source => source.Take(10).Last()));
+			Given(source => source.Take(10).Last());
 		}
 
 		[TestMethod]
+		[ExpectedException(typeof(NotSupportedException))]
 		public void NotSupportTakeWhere()
 		{
-			CustomAssert.Throw<NotSupportedException>(() => Given(source => source.Take(10).Where(n => n.Bool1)));
+			Given(source => source.Take(10).Where(n => n.Bool1));
 		}
 
 		[TestMethod]
+		[ExpectedException(typeof(NotSupportedException))]
 		public void NotSupportTakeOrderBy()
 		{
-			CustomAssert.Throw<NotSupportedException>(() => Given(source => source.Take(10).OrderBy(n => n.Bool1)));
+			Given(source => source.Take(10).OrderBy(n => n.Bool1));
 		}
 
 		[TestMethod]
+		[ExpectedException(typeof(NotSupportedException))]
 		public void NotSupportTakeAll()
 		{
-			CustomAssert.Throw<NotSupportedException>(() => Given(source => source.Take(10).All(n => n.String1 == "TEST")));
+			Given(source => source.Take(10).All(n => n.String1 == "TEST"));
 		}
 
 		#endregion
-
 
 		#region [Reverse]
 
@@ -587,9 +582,7 @@ namespace Untech.SharePoint.Common.Test.Data.Translators
 
 		#endregion
 
-
 		#region [Other]
-
 
 		[TestMethod]
 		public void SupportMin()
@@ -611,7 +604,6 @@ namespace Untech.SharePoint.Common.Test.Data.Translators
 							  "<ViewFields><FieldRef Name='Int1' /></ViewFields>" +
 							  "</View>");
 		}
-
 
 		[TestMethod]
 		public void SupportSelectMin()
@@ -677,23 +669,21 @@ namespace Untech.SharePoint.Common.Test.Data.Translators
 		}
 
 		[TestMethod]
+		[ExpectedException(typeof(NotSupportedException))]
 		public void NotSupportSkip()
 		{
-			CustomAssert.Throw<NotSupportedException>(() => Given(source => source.Skip(10)));
+			Given(source => source.Skip(10));
 		}
 
 		[TestMethod]
+		[ExpectedException(typeof(NotSupportedException))]
 		public void NotSupportStrStartsWithNegate()
 		{
-			CustomAssert.Throw<NotSupportedException>(() =>
-			{
-				// NOTE: unable to process '!n.String1.StartsWith("TEST")'
-				Given(source => source.All(n => n.String1.StartsWith("TEST")));
-			});
+			// NOTE: unable to process '!n.String1.StartsWith("TEST")'
+			Given(source => source.All(n => n.String1.StartsWith("TEST")));
 		}
 
 		#endregion
-
 
 		#region [Private Methods]
 
@@ -727,7 +717,6 @@ namespace Untech.SharePoint.Common.Test.Data.Translators
 		}
 
 		#endregion
-
 
 		#region [Nested Classes]
 

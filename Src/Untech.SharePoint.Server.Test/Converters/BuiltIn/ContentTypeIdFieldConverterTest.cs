@@ -1,9 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Untech.SharePoint.Server.Converters.BuiltIn;
 using Untech.SharePoint.Common.Converters;
-using Untech.SharePoint.Common.Test.Converters;
 
-namespace Untech.SharePoint.Server.Test.Converters.BuiltIn
+namespace Untech.SharePoint.Server.Converters.BuiltIn
 {
 	[TestClass]
 	public class ContentTypeIdFieldConverterTest : BaseConverterTest

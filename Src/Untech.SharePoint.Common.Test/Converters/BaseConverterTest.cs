@@ -3,20 +3,19 @@ using System.Diagnostics.CodeAnalysis;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Untech.SharePoint.Common.CodeAnnotations;
 using Untech.SharePoint.Common.Configuration;
-using Untech.SharePoint.Common.Converters;
 using Untech.SharePoint.Common.Data;
 using Untech.SharePoint.Common.Mappings;
 using Untech.SharePoint.Common.Mappings.Annotation;
 using Untech.SharePoint.Common.MetaModels;
 
-namespace Untech.SharePoint.Common.Test.Converters
+namespace Untech.SharePoint.Common.Converters
 {
 	public abstract class BaseConverterTest
 	{
 		protected abstract IFieldConverter GetConverter();
 
 		[PublicAPI]
-		protected TestScenario Given<TField>()
+		protected TestScenario CreateConverterForFieldWithType<TField>()
 		{
 			var converter = GetConverter();
 

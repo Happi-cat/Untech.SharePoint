@@ -1,9 +1,7 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Untech.SharePoint.Common.Converters;
-using Untech.SharePoint.Common.Converters.BuiltIn;
 
-namespace Untech.SharePoint.Common.Test.Converters.BuiltIn
+namespace Untech.SharePoint.Common.Converters.BuiltIn
 {
 	[TestClass]
 	public class IntegerConverterTest : BaseConverterTest
@@ -11,7 +9,7 @@ namespace Untech.SharePoint.Common.Test.Converters.BuiltIn
 		[TestMethod]
 		public void CanConvertInt32()
 		{
-			Given<Int32>()
+			CreateConverterForFieldWithType<Int32>()
 				.CanConvertFromSp(1, 1)
 				.CanConvertFromSp(null, 0)
 				.CanConvertToSp(1, 1)
@@ -21,7 +19,7 @@ namespace Untech.SharePoint.Common.Test.Converters.BuiltIn
 		[TestMethod]
 		public void CanConvertNullableInt32()
 		{
-			Given<Int32?>()
+			CreateConverterForFieldWithType<Int32?>()
 				.CanConvertFromSp(1, 1)
 				.CanConvertFromSp(null, null)
 				.CanConvertToSp(1, 1)
@@ -31,27 +29,31 @@ namespace Untech.SharePoint.Common.Test.Converters.BuiltIn
 		}
 
 		[TestMethod]
+		[ExpectedException(typeof(ArgumentException))]
 		public void NotSupportDouble()
 		{
-			CustomAssert.Throw<ArgumentException>(() => Given<double>());
+			CreateConverterForFieldWithType<double>();
 		}
 
 		[TestMethod]
+		[ExpectedException(typeof(ArgumentException))]
 		public void NotSupportInt16()
 		{
-			CustomAssert.Throw<ArgumentException>(() => Given<Int16>());
+			CreateConverterForFieldWithType<Int16>();
 		}
 
 		[TestMethod]
+		[ExpectedException(typeof(ArgumentException))]
 		public void NotSupportFloat()
 		{
-			CustomAssert.Throw<ArgumentException>(() => Given<float>());
+			CreateConverterForFieldWithType<float>();
 		}
 
 		[TestMethod]
+		[ExpectedException(typeof(ArgumentException))]
 		public void NotSupportUInt32()
 		{
-			CustomAssert.Throw<ArgumentException>(() => Given<UInt32>());
+			CreateConverterForFieldWithType<UInt32>();
 		}
 
 		protected override IFieldConverter GetConverter()

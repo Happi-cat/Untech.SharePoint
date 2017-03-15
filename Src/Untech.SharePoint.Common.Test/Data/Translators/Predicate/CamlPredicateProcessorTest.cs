@@ -4,10 +4,9 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Linq.Expressions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Untech.SharePoint.Common.Data.Translators.Predicate;
 using Untech.SharePoint.Common.Extensions;
 
-namespace Untech.SharePoint.Common.Test.Data.Translators.Predicate
+namespace Untech.SharePoint.Common.Data.Translators.Predicate
 {
 	[TestClass]
 	public class CamlPredicateProcessorTest : BaseExpressionTest
@@ -56,11 +55,11 @@ namespace Untech.SharePoint.Common.Test.Data.Translators.Predicate
 		}
 
 		[TestMethod]
+		[ExpectedException(typeof(NotSupportedException))]
 		public void NotSupportXorForCalls()
 		{
-			CustomAssert.Throw<NotSupportedException>(() => Given(n => n.String1.StartsWith("START") ^ n.Bool2).Expected("UNDEFINED"));
+			Given(n => n.String1.StartsWith("START") ^ n.Bool2).Expected("UNDEFINED");
 		}
-
 
 		[TestMethod]
 		public void SupportInEnumerable()
@@ -151,10 +150,17 @@ namespace Untech.SharePoint.Common.Test.Data.Translators.Predicate
 		}
 
 		[TestMethod]
-		public void ThrowIfInvalid()
+		[ExpectedException(typeof(NotSupportedException))]
+		public void ThrowIfInvalid1()
 		{
-			CustomAssert.Throw<NotSupportedException>(() => Given(n => n.String1.Contains(n.String2)).Expected("SHOULD THROW"));
-			CustomAssert.Throw<NotSupportedException>(() => Given(n => n.Bool1 == n.Bool2).Expected("SHOULD THROW"));
+			Given(n => n.String1.Contains(n.String2)).Expected("SHOULD THROW");
+		}
+
+		[TestMethod]
+		[ExpectedException(typeof(NotSupportedException))]
+		public void ThrowIfInvalid2()
+		{
+			Given(n => n.Bool1 == n.Bool2).Expected("SHOULD THROW");
 		}
 
 		private TestScenario Given(Expression<Func<Entity, bool>> given)

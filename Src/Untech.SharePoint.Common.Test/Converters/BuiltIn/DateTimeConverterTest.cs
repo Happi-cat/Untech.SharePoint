@@ -1,9 +1,7 @@
 using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Untech.SharePoint.Common.Converters;
-using Untech.SharePoint.Common.Converters.BuiltIn;
 
-namespace Untech.SharePoint.Common.Test.Converters.BuiltIn
+namespace Untech.SharePoint.Common.Converters.BuiltIn
 {
 	[TestClass]
 	public class DateTimeConverterTest : BaseConverterTest
@@ -13,7 +11,7 @@ namespace Untech.SharePoint.Common.Test.Converters.BuiltIn
 		[TestMethod]
 		public void CanConvertDateTime()
 		{
-			Given<DateTime>()
+			CreateConverterForFieldWithType<DateTime>()
 				.CanConvertFromSp(_value, _value)
 				.CanConvertFromSp(null, new DateTime(1900, 1, 1))
 				.CanConvertToSp(_value, _value)
@@ -23,7 +21,7 @@ namespace Untech.SharePoint.Common.Test.Converters.BuiltIn
 		[TestMethod]
 		public void CanConvertNullableDateTime()
 		{
-			Given<DateTime?>()
+			CreateConverterForFieldWithType<DateTime?>()
 				.CanConvertFromSp(_value, _value)
 				.CanConvertFromSp(null, null)
 				.CanConvertToSp(_value, _value)
@@ -33,27 +31,31 @@ namespace Untech.SharePoint.Common.Test.Converters.BuiltIn
 		}
 
 		[TestMethod]
+		[ExpectedException(typeof(ArgumentException))]
 		public void NotSupportDouble()
 		{
-			CustomAssert.Throw<ArgumentException>(() => Given<double>());
+			CreateConverterForFieldWithType<double>();
 		}
 
 		[TestMethod]
+		[ExpectedException(typeof(ArgumentException))]
 		public void NotSupportInt16()
 		{
-			CustomAssert.Throw<ArgumentException>(() => Given<Int16>());
+			CreateConverterForFieldWithType<Int16>();
 		}
 
 		[TestMethod]
+		[ExpectedException(typeof(ArgumentException))]
 		public void NotSupportFloat()
 		{
-			CustomAssert.Throw<ArgumentException>(() => Given<float>());
+			CreateConverterForFieldWithType<float>();
 		}
 
 		[TestMethod]
+		[ExpectedException(typeof(ArgumentException))]
 		public void NotSupportUInt32()
 		{
-			CustomAssert.Throw<ArgumentException>(() => Given<UInt32>());
+			CreateConverterForFieldWithType<UInt32>();
 		}
 
 		protected override IFieldConverter GetConverter()

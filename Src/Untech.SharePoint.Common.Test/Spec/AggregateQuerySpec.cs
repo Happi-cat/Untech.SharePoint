@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Untech.SharePoint.Common.Models;
-using Untech.SharePoint.Common.Test.Spec.Models;
-using Untech.SharePoint.Common.Test.Tools.QueryTests;
+using Untech.SharePoint.Common.Spec.Models;
+using Untech.SharePoint.Common.TestTools.QueryTests;
 
-namespace Untech.SharePoint.Common.Test.Spec
+namespace Untech.SharePoint.Common.Spec
 {
 	/// <summary>
 	/// The aggregate methods are Aggregate, Average, Count, LongCount, Max, Min, and Sum.

@@ -2,9 +2,9 @@
 using System.Linq;
 using Microsoft.SharePoint.Client;
 using Untech.SharePoint.Common.MetaModels;
-using Untech.SharePoint.Common.Test.Tools.QueryTests;
+using Untech.SharePoint.Common.TestTools.QueryTests;
 
-namespace Untech.SharePoint.Client.Test.Data
+namespace Untech.SharePoint.Client.Data
 {
 	public class ClientTestQueryExecutor<T> : PerfTestQueryExecutor<T>
 	{

@@ -1,8 +1,7 @@
 ﻿using System.Linq.Expressions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Untech.SharePoint.Common.Data.Translators.Predicate;
 
-namespace Untech.SharePoint.Common.Test.Data.Translators.Predicate
+namespace Untech.SharePoint.Common.Data.Translators.Predicate
 {
 	[TestClass]
 	public class StringIsNullOrEmptyRewriterTest : BaseExpressionVisitorTest

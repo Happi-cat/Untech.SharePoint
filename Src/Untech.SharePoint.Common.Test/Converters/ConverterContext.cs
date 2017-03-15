@@ -6,7 +6,7 @@ using Untech.SharePoint.Common.Mappings;
 using Untech.SharePoint.Common.Mappings.Annotation;
 using Untech.SharePoint.Common.MetaModels;
 
-namespace Untech.SharePoint.Common.Test.Converters
+namespace Untech.SharePoint.Common.Converters
 {
 	[UsedImplicitly(ImplicitUseTargetFlags.WithMembers)]
 	public enum ExampleEnum

@@ -4,11 +4,9 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Untech.SharePoint.Common.CodeAnnotations;
 using Untech.SharePoint.Common.Configuration;
 using Untech.SharePoint.Common.Data;
-using Untech.SharePoint.Common.Mappings;
-using Untech.SharePoint.Common.Mappings.Annotation;
 using Untech.SharePoint.Common.MetaModels;
 
-namespace Untech.SharePoint.Common.Test.Mappings.Annotation
+namespace Untech.SharePoint.Common.Mappings.Annotation
 {
 	[TestClass]
 	[SuppressMessage("ReSharper", "UnusedAutoPropertyAccessor.Local")]
@@ -51,21 +49,24 @@ namespace Untech.SharePoint.Common.Test.Mappings.Annotation
 		}
 
 		[TestMethod]
+		[ExpectedException(typeof(InvalidAnnotationException))]
 		public void ThrowIfIndexer()
 		{
-			CustomAssert.Throw<InvalidAnnotationException>(() => GetCtx<IndexerPropertyCtx>());
+			GetCtx<IndexerPropertyCtx>();
 		}
 
 		[TestMethod]
+		[ExpectedException(typeof(InvalidAnnotationException))]
 		public void ThrowIfTypeIsInvalid()
 		{
-			CustomAssert.Throw<InvalidAnnotationException>(() => GetCtx<InvalidPropertyTypeCtx>());
+			GetCtx<InvalidPropertyTypeCtx>();
 		}
 
 		[TestMethod]
+		[ExpectedException(typeof(InvalidAnnotationException))]
 		public void ThrowIfPropertyIsWriteOnly()
 		{
-			CustomAssert.Throw<InvalidAnnotationException>(() => GetCtx<WriteOnlyPropertyCtx>());
+			GetCtx<WriteOnlyPropertyCtx>();
 		}
 
 		private MetaContext GetCtx<T>()

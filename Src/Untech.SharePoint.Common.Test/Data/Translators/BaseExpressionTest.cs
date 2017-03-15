@@ -2,7 +2,7 @@
 using Untech.SharePoint.Common.CodeAnnotations;
 using Untech.SharePoint.Common.Models;
 
-namespace Untech.SharePoint.Common.Test.Data.Translators
+namespace Untech.SharePoint.Common.Data.Translators
 {
 	public class BaseExpressionTest
 	{

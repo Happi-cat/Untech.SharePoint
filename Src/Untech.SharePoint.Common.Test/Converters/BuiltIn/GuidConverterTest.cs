@@ -1,9 +1,7 @@
 using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Untech.SharePoint.Common.Converters;
-using Untech.SharePoint.Common.Converters.BuiltIn;
 
-namespace Untech.SharePoint.Common.Test.Converters.BuiltIn
+namespace Untech.SharePoint.Common.Converters.BuiltIn
 {
 	[TestClass]
 	public class GuidConverterTest : BaseConverterTest
@@ -13,7 +11,7 @@ namespace Untech.SharePoint.Common.Test.Converters.BuiltIn
 		{
 			var guid = Guid.NewGuid();
 
-			Given<Guid>()
+			CreateConverterForFieldWithType<Guid>()
 				.CanConvertFromSp(guid, guid)
 				.CanConvertFromSp(guid.ToString("B"), guid)
 				.CanConvertFromSp(guid.ToString("D"), guid)
@@ -27,7 +25,7 @@ namespace Untech.SharePoint.Common.Test.Converters.BuiltIn
 		{
 			var guid = Guid.NewGuid();
 
-			Given<Guid?>()
+			CreateConverterForFieldWithType<Guid?>()
 				.CanConvertFromSp(guid, guid)
 				.CanConvertFromSp(guid.ToString("B"), guid)
 				.CanConvertFromSp(guid.ToString("D"), guid)

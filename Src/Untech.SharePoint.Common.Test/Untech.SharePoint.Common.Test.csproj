@@ -6,7 +6,7 @@
     <ProjectGuid>{672ADF77-0D40-4CB1-821E-54DED0E8AAA2}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Untech.SharePoint.Common.Test</RootNamespace>
+    <RootNamespace>Untech.SharePoint.Common</RootNamespace>
     <AssemblyName>Untech.SharePoint.Common.Test</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -98,49 +98,49 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Spec\BasicOperationsSpec.cs" />
     <Compile Include="Spec\QueryablePerfomance.cs" />
-    <Compile Include="Tools\Comparers\EntityComparer.cs" />
-    <Compile Include="Tools\Comparers\SequenceComparer.cs" />
-    <Compile Include="Tools\DataGenerators\ListTestDataGenerator.cs" />
-    <Compile Include="Tools\DataGenerators\TestDataGenerator.cs" />
-    <Compile Include="Tools\DataManagers\ListTestDataManager.cs" />
+    <Compile Include="TestTools\Comparers\EntityComparer.cs" />
+    <Compile Include="TestTools\Comparers\SequenceComparer.cs" />
+    <Compile Include="TestTools\DataGenerators\ListTestDataGenerator.cs" />
+    <Compile Include="TestTools\DataGenerators\TestDataGenerator.cs" />
+    <Compile Include="TestTools\DataManagers\ListTestDataManager.cs" />
     <Compile Include="Spec\PagingQuerySpec.cs" />
     <Compile Include="Spec\OrderingQuerySpec.cs" />
     <Compile Include="Spec\QueryableSpec.cs" />
     <Compile Include="Spec\SetQuerySpec.cs" />
     <Compile Include="Spec\ProjectionQuerySpec.cs" />
     <Compile Include="Spec\FilteringQuerySpec.cs" />
-    <Compile Include="Tools\DataManagers\TestDataManager.cs" />
-    <Compile Include="Tools\QueryTests\Attributes.cs" />
-    <Compile Include="Tools\QueryTests\ITestQueryAcceptor.cs" />
-    <Compile Include="Tools\QueryTests\ITestQueryExcecutor.cs" />
-    <Compile Include="Tools\QueryTests\ITestQueryProvider.cs" />
-    <Compile Include="Tools\Generators\Basic\ArrayGenerationOptions.cs" />
+    <Compile Include="TestTools\DataManagers\TestDataManager.cs" />
+    <Compile Include="TestTools\QueryTests\Attributes.cs" />
+    <Compile Include="TestTools\QueryTests\ITestQueryAcceptor.cs" />
+    <Compile Include="TestTools\QueryTests\ITestQueryExcecutor.cs" />
+    <Compile Include="TestTools\QueryTests\ITestQueryProvider.cs" />
+    <Compile Include="TestTools\Generators\Basic\ArrayGenerationOptions.cs" />
     <Compile Include="Spec\AggregateQuerySpec.cs" />
-    <Compile Include="Tools\DataGenerators\Generators.cs" />
+    <Compile Include="TestTools\DataGenerators\Generators.cs" />
     <Compile Include="Spec\Models\DataContext.cs" />
     <Compile Include="Spec\Models\ProjectModel.cs" />
     <Compile Include="Spec\Models\EventModel.cs" />
     <Compile Include="Spec\Models\NewsModel.cs" />
     <Compile Include="Spec\Models\TeamModel.cs" />
-    <Compile Include="Tools\Generators\Custom\UrlGenerator.cs" />
-    <Compile Include="Tools\Generators\Custom\UserInfoGenerator.cs" />
-    <Compile Include="Tools\Generators\GeneratorBehaviour.cs" />
-    <Compile Include="Tools\Generators\Basic\ArrayGenerator.cs" />
-    <Compile Include="Tools\Generators\Basic\BaseRandomGenerator.cs" />
-    <Compile Include="Tools\Generators\Basic\BoolRangeGenerator.cs" />
-    <Compile Include="Tools\Generators\Basic\DateTimeRangeGenerator.cs" />
-    <Compile Include="Tools\Generators\Basic\DoubleRangeGenerator.cs" />
-    <Compile Include="Tools\Generators\Basic\IntRangeGenerator.cs" />
-    <Compile Include="Tools\Generators\Basic\LoremGenerator.cs" />
-    <Compile Include="Tools\Generators\Basic\StaticGenerator.cs" />
-    <Compile Include="Tools\Generators\Basic\RangeGenerator.cs" />
-    <Compile Include="Tools\Generators\ObjectGenerator.cs" />
-    <Compile Include="Tools\Generators\ObjectGeneratorExtensions.cs" />
-    <Compile Include="Tools\Generators\IValueGenerator.cs" />
-    <Compile Include="Tools\QueryTests\PerfTestQueryExecutor.cs" />
-    <Compile Include="Tools\QueryTests\SimpleTestQueryExecutor.cs" />
-    <Compile Include="Tools\QueryTests\TestQuery.cs" />
-    <Compile Include="Tools\QueryTests\TestQueryBuilder.cs" />
+    <Compile Include="TestTools\Generators\Custom\UrlGenerator.cs" />
+    <Compile Include="TestTools\Generators\Custom\UserInfoGenerator.cs" />
+    <Compile Include="TestTools\Generators\GeneratorBehaviour.cs" />
+    <Compile Include="TestTools\Generators\Basic\ArrayGenerator.cs" />
+    <Compile Include="TestTools\Generators\Basic\BaseRandomGenerator.cs" />
+    <Compile Include="TestTools\Generators\Basic\BoolRangeGenerator.cs" />
+    <Compile Include="TestTools\Generators\Basic\DateTimeRangeGenerator.cs" />
+    <Compile Include="TestTools\Generators\Basic\DoubleRangeGenerator.cs" />
+    <Compile Include="TestTools\Generators\Basic\IntRangeGenerator.cs" />
+    <Compile Include="TestTools\Generators\Basic\LoremGenerator.cs" />
+    <Compile Include="TestTools\Generators\Basic\StaticGenerator.cs" />
+    <Compile Include="TestTools\Generators\Basic\RangeGenerator.cs" />
+    <Compile Include="TestTools\Generators\ObjectGenerator.cs" />
+    <Compile Include="TestTools\Generators\ObjectGeneratorExtensions.cs" />
+    <Compile Include="TestTools\Generators\IValueGenerator.cs" />
+    <Compile Include="TestTools\QueryTests\PerfTestQueryExecutor.cs" />
+    <Compile Include="TestTools\QueryTests\SimpleTestQueryExecutor.cs" />
+    <Compile Include="TestTools\QueryTests\TestQuery.cs" />
+    <Compile Include="TestTools\QueryTests\TestQueryBuilder.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Untech.SharePoint.Common\Untech.SharePoint.Common.csproj">

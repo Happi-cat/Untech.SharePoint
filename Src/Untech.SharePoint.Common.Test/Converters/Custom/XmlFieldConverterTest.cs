@@ -4,10 +4,8 @@ using System.Linq;
 using System.Xml.Linq;
 using System.Xml.Serialization;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Untech.SharePoint.Common.Converters;
-using Untech.SharePoint.Common.Converters.Custom;
 
-namespace Untech.SharePoint.Common.Test.Converters.Custom
+namespace Untech.SharePoint.Common.Converters.Custom
 {
 	[TestClass]
 	public class XmlFieldConverterTest : BaseConverterTest
@@ -15,7 +13,7 @@ namespace Untech.SharePoint.Common.Test.Converters.Custom
 		[TestMethod]
 		public void CanConvertTestObject()
 		{
-			Given<TestObject>()
+			CreateConverterForFieldWithType<TestObject>()
 				.CanConvertFromSp(null, null)
 				.CanConvertFromSp("", null)
 				.CanConvertFromSp("<Test />", new TestObject(), new TestObjectComparer())
@@ -33,7 +31,7 @@ namespace Untech.SharePoint.Common.Test.Converters.Custom
 		[TestMethod]
 		public void CanConvertNamespacedObject()
 		{
-			Given<NamespacedObject>()
+			CreateConverterForFieldWithType<NamespacedObject>()
 				.CanConvertFromSp(null, null)
 				.CanConvertFromSp("", null)
 				.CanConvertFromSp("<Obj xmlns=\"http://namespace.my\" />", new NamespacedObject(), new NamespacedObjectComparer())

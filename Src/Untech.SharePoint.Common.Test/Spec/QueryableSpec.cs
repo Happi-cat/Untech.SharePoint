@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Untech.SharePoint.Common.Data;
-using Untech.SharePoint.Common.Test.Spec.Models;
-using Untech.SharePoint.Common.Test.Tools.DataManagers;
-using Untech.SharePoint.Common.Test.Tools.QueryTests;
+using Untech.SharePoint.Common.Spec.Models;
+using Untech.SharePoint.Common.TestTools.DataManagers;
+using Untech.SharePoint.Common.TestTools.QueryTests;
 
-namespace Untech.SharePoint.Common.Test.Spec
+namespace Untech.SharePoint.Common.Spec
 {
 	public class QueryableSpec
 	{

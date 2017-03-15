@@ -1,12 +1,10 @@
 ﻿using System.Collections.Generic;
 using Microsoft.SharePoint.Client;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Untech.SharePoint.Client.Converters.BuiltIn;
 using Untech.SharePoint.Common.Converters;
 using Untech.SharePoint.Common.Models;
-using Untech.SharePoint.Common.Test.Converters;
 
-namespace Untech.SharePoint.Client.Test.Converters.BuiltIn
+namespace Untech.SharePoint.Client.Converters.BuiltIn
 {
 	[TestClass]
 	public class UrlFieldConverterTest : BaseConverterTest
@@ -14,7 +12,7 @@ namespace Untech.SharePoint.Client.Test.Converters.BuiltIn
 		[TestMethod]
 		public void CanConvertString()
 		{
-			Given<string>()
+			CreateConverterForFieldWithType<string>()
 				.CanConvertFromSp(null, null)
 				.CanConvertFromSp(new FieldUrlValue { Url = "http://google.com", Description = "Google It!" }, "http://google.com")
 				.CanConvertToSp(null, null)
@@ -26,7 +24,7 @@ namespace Untech.SharePoint.Client.Test.Converters.BuiltIn
 		[TestMethod]
 		public void CanConvertUrlInfo()
 		{
-			Given<UrlInfo>()
+			CreateConverterForFieldWithType<UrlInfo>()
 				.CanConvertFromSp(null, null)
 				.CanConvertFromSp(new FieldUrlValue { Url = "http://google.com", Description = "Google It!" }, new UrlInfo { Url = "http://google.com", Description = "Google It!" }, new UrlInfoComparer())
 				.CanConvertToSp(null, null)

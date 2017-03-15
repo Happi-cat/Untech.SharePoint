@@ -3,18 +3,16 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Untech.SharePoint.Common.CodeAnnotations;
 using Untech.SharePoint.Common.Configuration;
 using Untech.SharePoint.Common.Data;
-using Untech.SharePoint.Common.Mappings;
-using Untech.SharePoint.Common.Mappings.Annotation;
 using Untech.SharePoint.Common.MetaModels;
 
-namespace Untech.SharePoint.Common.Test.Mappings.Annotation
+namespace Untech.SharePoint.Common.Mappings.Annotation
 {
 	[TestClass]
 	[SuppressMessage("ReSharper", "UnusedAutoPropertyAccessor.Local")]
 	public class AnnotatedContentTypeMappingTest
 	{
 		[TestMethod]
-		public void CanOmitContentTypeAnnotation()
+		public void ContentType_CanOmitContentTypeAnnotation()
 		{
 			var ct = GetContentType<Entity>();
 

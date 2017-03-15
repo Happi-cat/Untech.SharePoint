@@ -1,6 +1,6 @@
 ﻿using Untech.SharePoint.Common.Converters;
 
-namespace Untech.SharePoint.Common.Test.Configuration
+namespace Untech.SharePoint.Common.Configuration
 {
 	[SpFieldConverter("BUILT_IN_TEST_CONVERTER")]
 	public class BuiltInFieldConverter : IFieldConverter

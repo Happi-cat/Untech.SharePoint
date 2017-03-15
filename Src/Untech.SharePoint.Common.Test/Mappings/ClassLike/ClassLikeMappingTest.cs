@@ -1,7 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Untech.SharePoint.Common.Configuration;
 
-namespace Untech.SharePoint.Common.Test.Mappings.ClassLike
+namespace Untech.SharePoint.Common.Mappings.ClassLike
 {
 	[TestClass]
 	public class ClassLikeMappingTest

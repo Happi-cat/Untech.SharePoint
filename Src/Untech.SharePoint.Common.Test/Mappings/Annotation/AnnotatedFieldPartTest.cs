@@ -4,11 +4,9 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Untech.SharePoint.Common.CodeAnnotations;
 using Untech.SharePoint.Common.Configuration;
 using Untech.SharePoint.Common.Data;
-using Untech.SharePoint.Common.Mappings;
-using Untech.SharePoint.Common.Mappings.Annotation;
 using Untech.SharePoint.Common.MetaModels;
 
-namespace Untech.SharePoint.Common.Test.Mappings.Annotation
+namespace Untech.SharePoint.Common.Mappings.Annotation
 {
 	[TestClass]
 	[SuppressMessage("ReSharper", "UnusedAutoPropertyAccessor.Local")]
@@ -84,21 +82,24 @@ namespace Untech.SharePoint.Common.Test.Mappings.Annotation
 		}
 
 		[TestMethod]
+		[ExpectedException(typeof(InvalidAnnotationException))]
 		public void ThrowIfFieldIsReadOnly()
 		{
-			CustomAssert.Throw<InvalidAnnotationException>(() => GetContentType<ReadOnlyField>());
+			GetContentType<ReadOnlyField>();
 		}
 
 		[TestMethod]
+		[ExpectedException(typeof(InvalidAnnotationException))]
 		public void ThrowIfPropertyIsReadOnly()
 		{
-			CustomAssert.Throw<InvalidAnnotationException>(() => GetContentType<ReadOnlyProperty>());
+			GetContentType<ReadOnlyProperty>();
 		}
 
 		[TestMethod]
+		[ExpectedException(typeof(InvalidAnnotationException))]
 		public void ThrowIfAutoPropertyIsReadOnly()
 		{
-			CustomAssert.Throw<InvalidAnnotationException>(() => GetContentType<ReadOnlyAutoProperty>());
+			GetContentType<ReadOnlyAutoProperty>();
 		}
 
 		[TestMethod]
@@ -113,15 +114,17 @@ namespace Untech.SharePoint.Common.Test.Mappings.Annotation
 		}
 
 		[TestMethod]
+		[ExpectedException(typeof(InvalidAnnotationException))]
 		public void ThrowIfPropertyIsWriteOnly()
 		{
-			CustomAssert.Throw<InvalidAnnotationException>(() => GetContentType<WriteOnlyProperty>());
+			GetContentType<WriteOnlyProperty>();
 		}
 
 		[TestMethod]
+		[ExpectedException(typeof(InvalidAnnotationException))]
 		public void ThrowIfIndexer()
 		{
-			CustomAssert.Throw<InvalidAnnotationException>(() => GetContentType<Indexer>());
+			GetContentType<Indexer>();
 		}
 
 		private MetaContentType GetContentType<T>()

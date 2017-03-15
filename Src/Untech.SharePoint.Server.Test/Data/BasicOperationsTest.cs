@@ -1,11 +1,10 @@
 ﻿using System.Linq;
 using Microsoft.SharePoint;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Untech.SharePoint.Common.Test.Spec;
-using Untech.SharePoint.Common.Test.Spec.Models;
-using Untech.SharePoint.Server.Data;
+using Untech.SharePoint.Common.Spec;
+using Untech.SharePoint.Common.Spec.Models;
 
-namespace Untech.SharePoint.Server.Test.Data
+namespace Untech.SharePoint.Server.Data
 {
 	[TestClass]
 	public class BasicOperationsTest

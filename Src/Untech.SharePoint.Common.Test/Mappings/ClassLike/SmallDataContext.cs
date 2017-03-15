@@ -1,7 +1,7 @@
 using Untech.SharePoint.Common.Data;
 using Untech.SharePoint.Common.Models;
 
-namespace Untech.SharePoint.Common.Test.Mappings.ClassLike
+namespace Untech.SharePoint.Common.Mappings.ClassLike
 {
 	public class SmallDataContext : SpContext<SmallDataContext>
 	{

@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using Untech.SharePoint.Common.Extensions;
 using Untech.SharePoint.Common.Models;
-using Untech.SharePoint.Common.Test.Spec.Models;
-using Untech.SharePoint.Common.Test.Tools.Comparers;
-using Untech.SharePoint.Common.Test.Tools.QueryTests;
+using Untech.SharePoint.Common.Spec.Models;
+using Untech.SharePoint.Common.TestTools.Comparers;
+using Untech.SharePoint.Common.TestTools.QueryTests;
 
-namespace Untech.SharePoint.Common.Test.Spec
+namespace Untech.SharePoint.Common.Spec
 {
 	public class FilteringQuerySpec : ITestQueryProvider<NewsModel>, ITestQueryProvider<ProjectModel>,
 		ITestQueryProvider<TeamModel>

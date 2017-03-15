@@ -5,7 +5,7 @@ using System.Linq.Expressions;
 using Untech.SharePoint.Common.CodeAnnotations;
 using Untech.SharePoint.Common.Data.Translators.Predicate;
 
-namespace Untech.SharePoint.Common.Test.Data.Translators
+namespace Untech.SharePoint.Common.Data.Translators
 {
 	public abstract class BaseExpressionVisitorTest : BaseExpressionTest
 	{

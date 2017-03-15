@@ -1,29 +1,29 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Untech.SharePoint.Common.Converters;
-using Untech.SharePoint.Common.Converters.BuiltIn;
 
-namespace Untech.SharePoint.Common.Test.Converters.BuiltIn
+namespace Untech.SharePoint.Common.Converters.BuiltIn
 {
 	[TestClass]
 	public class BoolConverterTest : BaseConverterTest
 	{
 		[TestMethod]
+		[ExpectedException(typeof(ArgumentException))]
 		public void NotSupportInteger()
 		{
-			CustomAssert.Throw<ArgumentException>(() => Given<int>());
+			CreateConverterForFieldWithType<int>();
 		}
 
 		[TestMethod]
+		[ExpectedException(typeof(ArgumentException))]
 		public void NotSupportNullableInteger()
 		{
-			CustomAssert.Throw<ArgumentException>(() => Given<int?>());
+			CreateConverterForFieldWithType<int?>();
 		}
 
 		[TestMethod]
 		public void CanConvertBool()
 		{
-			Given<bool>()
+			CreateConverterForFieldWithType<bool>()
 				.CanConvertFromSp(true, true)
 				.CanConvertFromSp(false, false)
 				.CanConvertFromSp(null, false)
@@ -36,7 +36,7 @@ namespace Untech.SharePoint.Common.Test.Converters.BuiltIn
 		[TestMethod]
 		public void CanConvertNullableBool()
 		{
-			Given<bool?>()
+			CreateConverterForFieldWithType<bool?>()
 				.CanConvertFromSp(true, true)
 				.CanConvertFromSp(false, false)
 				.CanConvertFromSp(null, null)

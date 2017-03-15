@@ -1,0 +1,28 @@
+﻿using System.Collections.Generic;
+using System.Linq;
+using Untech.SharePoint.Common.CodeAnnotations;
+using Untech.SharePoint.Common.Extensions;
+using Untech.SharePoint.Common.Models;
+using Untech.SharePoint.Common.TestTools.Generators.Basic;
+
+namespace Untech.SharePoint.Common.TestTools.Generators.Custom
+{
+	public class UserInfoGenerator : BaseRandomGenerator, IValueGenerator<UserInfo>
+	{
+		[NotNull]
+		private readonly IReadOnlyList<int> _userIds;
+
+		public UserInfoGenerator([CanBeNull]IEnumerable<int> userIds)
+		{
+			_userIds = userIds.EmptyIfNull().ToList();
+		}
+
+		public UserInfo Generate()
+		{
+			return new UserInfo
+			{
+				Id = _userIds[Rand.Next(_userIds.Count)]
+			};
+		}
+	}
+}

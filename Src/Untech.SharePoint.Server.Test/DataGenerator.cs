@@ -1,13 +1,12 @@
-﻿using Microsoft.SharePoint;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
+using Microsoft.SharePoint;
 using Untech.SharePoint.Common.Models;
-using Untech.SharePoint.Common.Test.Spec.Models;
-using Untech.SharePoint.Common.Test.Tools.DataGenerators;
+using Untech.SharePoint.Common.Spec.Models;
+using Untech.SharePoint.Common.TestTools.DataGenerators;
 using Untech.SharePoint.Server.Data;
-using Untech.SharePoint.Server.Test.Data;
 
-namespace Untech.SharePoint.Server.Test
+namespace Untech.SharePoint.Server
 {
 	public class DataGenerator
 	{
