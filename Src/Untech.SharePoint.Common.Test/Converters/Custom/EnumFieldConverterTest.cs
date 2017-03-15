@@ -44,14 +44,14 @@ namespace Untech.SharePoint.Common.Converters.Custom
 
 		[TestMethod]
 		[ExpectedException(typeof(ArgumentException))]
-		public void NotSupportEnumWithoutDefault()
+		public void Init_ThrowNotSupported_WhenEnumWithoutDefault()
 		{
 			CreateConverterForFieldWithType<NoDefaultEnum>();
 		}
 
 		[TestMethod]
 		[ExpectedException(typeof(ArgumentException))]
-		public void NotSupportInt()
+		public void Init_ThrowNotSupported_WhenInt()
 		{
 			CreateConverterForFieldWithType<int>();
 		}

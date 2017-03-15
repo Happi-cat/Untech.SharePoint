@@ -8,7 +8,7 @@ namespace Untech.SharePoint.Common.Data.Translators.Predicate
 	public class EvaluatorTest : BaseExpressionVisitorTest
 	{
 		[TestMethod]
-		public void CanEvaluateCall()
+		public void Visit_EvaluateCall()
 		{
 			Given(n => n.String1 == GetSomeExternalString())
 				.Expected(n => n.String1 == "TEST");
@@ -16,7 +16,7 @@ namespace Untech.SharePoint.Common.Data.Translators.Predicate
 
 		[TestMethod]
 		[SuppressMessage("ReSharper", "RedundantBoolCompare")]
-		public void CanEvaluateCondition()
+		public void Visit_EvaluateCondition()
 		{
 			var a = true;
 			var b = false;
@@ -30,9 +30,6 @@ namespace Untech.SharePoint.Common.Data.Translators.Predicate
 			return "TEST";
 		}
 
-		protected override ExpressionVisitor Visitor
-		{
-			get { return new Evaluator(); }
-		}
+		protected override ExpressionVisitor TestableVisitor => new Evaluator();
 	}
 }

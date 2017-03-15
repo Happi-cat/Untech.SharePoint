@@ -9,7 +9,7 @@ namespace Untech.SharePoint.Common.Data.Translators.Predicate
 	public class PushNotDownVisitorTest : BaseExpressionVisitorTest
 	{
 		[TestMethod]
-		public void CanRemainSame()
+		public void Visit_KeepsSame()
 		{
 			Given(obj => obj.Bool1).Expected(obj => obj.Bool1);
 
@@ -19,7 +19,7 @@ namespace Untech.SharePoint.Common.Data.Translators.Predicate
 		}
 
 		[TestMethod]
-		public void CanPushOneNot()
+		public void Visit_Pushes_WhenOneNot()
 		{
 			Given(obj => !obj.Bool1).Expected(obj => !obj.Bool1);
 
@@ -29,7 +29,7 @@ namespace Untech.SharePoint.Common.Data.Translators.Predicate
 		}
 
 		[TestMethod]
-		public void CanPushMultipleNot()
+		public void Visit_Pushes_WhenMultipleNot()
 		{
 			Given(obj => !(obj.Bool1 && !obj.Bool2)).Expected(obj => !obj.Bool1 || obj.Bool2);
 
@@ -37,22 +37,19 @@ namespace Untech.SharePoint.Common.Data.Translators.Predicate
 		}
 
 		[TestMethod]
-		public void CanPushNotWithCall()
+		public void Visit_Pushes_WhenNotWithCall()
 		{
 			Given(obj => !(obj.Bool1 && obj.String1.Contains("TEST")))
 				.Expected(obj => !obj.Bool1 || !obj.String1.Contains("TEST"));
 		}
 
 		[TestMethod]
-		public void CanPushNotWithBoolConst()
+		public void Visit_Pushes_WhenNotWithConstBool()
 		{
 			Given(obj => !(obj.Bool1 && true))
 				.Expected(obj => !obj.Bool1 || false);
 		}
 
-		protected override ExpressionVisitor Visitor
-		{
-			get { return new PushNotDownVisitor(); }
-		}
+		protected override ExpressionVisitor TestableVisitor => new PushNotDownVisitor();
 	}
 }

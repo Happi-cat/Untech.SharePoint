@@ -12,7 +12,7 @@ namespace Untech.SharePoint.Server.Data
 	{
 		[TestMethod]
 		[TestCategory("Performance")]
-		public void Measure()
+		public void Performance_Measure()
 		{
 			var site = new SPSite(@"http://sp2013dev/sites/orm-test", SPUserToken.SystemAccount);
 			var web = site.OpenWeb();

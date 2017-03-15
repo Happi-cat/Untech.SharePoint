@@ -12,7 +12,7 @@ namespace Untech.SharePoint.Client.Data
 	{
 		[TestMethod]
 		[TestCategory("Performance")]
-		public void Measure()
+		public void Performance_Measure()
 		{
 			var context = new ClientContext(@"http://sp2013dev/sites/orm-test");
 			var ctx = GetContext(context);

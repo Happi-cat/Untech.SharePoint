@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Untech.SharePoint.Common.CodeAnnotations;
 using Untech.SharePoint.Common.Data.Translators.Predicate;
 
@@ -9,7 +10,7 @@ namespace Untech.SharePoint.Common.Data.Translators
 {
 	public abstract class BaseExpressionVisitorTest : BaseExpressionTest
 	{
-		protected abstract ExpressionVisitor Visitor { get; }
+		protected abstract ExpressionVisitor TestableVisitor { get; }
 
 		protected TestScenario Given(Expression<Func<Entity, bool>> given)
 		{
@@ -59,10 +60,12 @@ namespace Untech.SharePoint.Common.Data.Translators
 			public void Expected(Expression<Func<Entity, bool>> expected)
 			{
 				var visitors = _preVisitors
-					.Concat(new[] { _parent.Visitor })
+					.Concat(new[] { _parent.TestableVisitor })
 					.Concat(_postVisitors);
 
-				CustomAssert.AreEqualAfterVisit(visitors, _given, expected);
+				var processed = visitors.Aggregate((Expression)_given, (expr, visitor) => visitor.Visit(expr));
+
+				Assert.AreEqual(expected.ToString(), processed.ToString());
 			}
 		}
 	}

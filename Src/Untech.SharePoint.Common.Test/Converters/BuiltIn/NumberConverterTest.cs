@@ -8,28 +8,28 @@ namespace Untech.SharePoint.Common.Converters.BuiltIn
 	{
 		[TestMethod]
 		[ExpectedException(typeof(ArgumentException))]
-		public void NotSupportInteger()
+		public void Init_ThrowNotSupported_WhenInteger()
 		{
 			CreateConverterForFieldWithType<int>();
 		}
 
 		[TestMethod]
 		[ExpectedException(typeof(ArgumentException))]
-		public void NotSupportNullableInteger()
+		public void Init_ThrowNotSupported_WhenNullableInteger()
 		{
 			CreateConverterForFieldWithType<int?>();
 		}
 
 		[TestMethod]
 		[ExpectedException(typeof(ArgumentException))]
-		public void NotSupportFloat()
+		public void Init_ThrowNotSupported_WhenFloat()
 		{
 			CreateConverterForFieldWithType<float>();
 		}
 
 		[TestMethod]
 		[ExpectedException(typeof(ArgumentException))]
-		public void NotSupportNullableFloat()
+		public void Init_ThrowNotSupported_WhenNullableFloat()
 		{
 			CreateConverterForFieldWithType<float?>();
 		}

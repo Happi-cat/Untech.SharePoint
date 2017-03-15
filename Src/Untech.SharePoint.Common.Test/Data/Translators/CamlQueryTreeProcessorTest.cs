@@ -14,7 +14,7 @@ namespace Untech.SharePoint.Common.Data.Translators
 	public class CamlQueryTreeProcessorTest : BaseExpressionTest
 	{
 		[TestMethod]
-		public void SupportDefault()
+		public void Process_GenerateCaml_WhenDefault()
 		{
 			Given(source => source).ExpectedCaml("<View><Query></Query></View>");
 		}
@@ -22,7 +22,7 @@ namespace Untech.SharePoint.Common.Data.Translators
 		#region [Where]
 
 		[TestMethod]
-		public void SupportWhere()
+		public void Process_GenerateCaml_WhenWhere()
 		{
 			Given(source => source.Where(n => n.Bool1 && n.Int1 > 10 || n.String1.StartsWith("TEST")))
 				.ExpectedCaml("<View>" +
@@ -34,7 +34,7 @@ namespace Untech.SharePoint.Common.Data.Translators
 		}
 
 		[TestMethod]
-		public void SupportWhereWhere()
+		public void Process_GenerateCaml_WhenWhereWhere()
 		{
 			Given(source => source
 				.Where(n => n.Bool1)
@@ -49,7 +49,7 @@ namespace Untech.SharePoint.Common.Data.Translators
 		}
 
 		[TestMethod]
-		public void SupportWhereTrue()
+		public void Process_GenerateCaml_WhenWhereTrue()
 		{
 			Given(source => source
 				.Where(n => true)
@@ -63,7 +63,7 @@ namespace Untech.SharePoint.Common.Data.Translators
 		}
 
 		[TestMethod]
-		public void SupportWhereFalse()
+		public void Process_GenerateCaml_WhenWhereFalse()
 		{
 			Given(source => source.Where(n => false).Where(n => n.String1.StartsWith("TEST")))
 				.ExpectedCaml("<View>" +
@@ -75,7 +75,7 @@ namespace Untech.SharePoint.Common.Data.Translators
 		}
 
 		[TestMethod]
-		public void SupportWhereXor()
+		public void Process_GenerateCaml_WhenWhereXor()
 		{
 			Given(source => source
 				.Where(n => n.Bool1 ^ n.Bool2)
@@ -96,7 +96,7 @@ namespace Untech.SharePoint.Common.Data.Translators
 		}
 
 		[TestMethod]
-		public void SupportWhereArrayContains()
+		public void Process_GenerateCaml_WhenWhereArrayContains()
 		{
 			Given(source => source
 				.Where(n => n.StringCollection1.Contains("TEST")))
@@ -107,7 +107,7 @@ namespace Untech.SharePoint.Common.Data.Translators
 		}
 
 		[TestMethod]
-		public void SupportWhereEnumerableContains()
+		public void Process_GenerateCaml_WhenWhereEnumerableContains()
 		{
 			Given(source => source
 				.Where(n => n.StringCollection2.Contains("TEST")))
@@ -118,7 +118,7 @@ namespace Untech.SharePoint.Common.Data.Translators
 		}
 
 		[TestMethod]
-		public void SupportWhereCollectionContains()
+		public void Process_GenerateCaml_WhenWhereCollectionContains()
 		{
 			Given(source => source
 				.Where(n => n.StringCollection3.Contains("TEST")))
@@ -129,7 +129,7 @@ namespace Untech.SharePoint.Common.Data.Translators
 		}
 
 		[TestMethod]
-		public void SupportWhereListContains()
+		public void Process_GenerateCaml_WhenWhereListContains()
 		{
 			Given(source => source
 				.Where(n => n.StringCollection4.Contains("TEST")))
@@ -140,7 +140,7 @@ namespace Untech.SharePoint.Common.Data.Translators
 		}
 
 		[TestMethod]
-		public void SupportWhereTake()
+		public void Process_GenerateCaml_WhenWhereTake()
 		{
 			Given(source => source
 				.Where(n => n.Bool1)
@@ -161,7 +161,7 @@ namespace Untech.SharePoint.Common.Data.Translators
 		#region [Order By, Then By]
 
 		[TestMethod]
-		public void SupportOrderByThenBy()
+		public void Process_GenerateCaml_WhenOrderByThenBy()
 		{
 			Given(source => source
 				.OrderBy(n => n.Bool1)
@@ -174,7 +174,7 @@ namespace Untech.SharePoint.Common.Data.Translators
 		}
 
 		[TestMethod]
-		public void SupportOrderByDescThenByDesc()
+		public void Process_GenerateCaml_WhenOrderByDescThenByDesc()
 		{
 			Given(source => source
 				.OrderByDescending(n => n.Bool1)
@@ -187,7 +187,7 @@ namespace Untech.SharePoint.Common.Data.Translators
 		}
 
 		[TestMethod]
-		public void SupportOrderByThenByReverse()
+		public void Process_GenerateCaml_WhenOrderByThenByReverse()
 		{
 			Given(source => source
 				.OrderBy(n => n.Bool1)
@@ -201,7 +201,7 @@ namespace Untech.SharePoint.Common.Data.Translators
 		}
 
 		[TestMethod]
-		public void SupportOrderByLast()
+		public void Process_GenerateCaml_WhenOrderByLast()
 		{
 			Given(source => source.OrderBy(n => n.String1).Last(n => n.String2 == "TEST"))
 				.ExpectedCaml("<View>" +
@@ -218,7 +218,7 @@ namespace Untech.SharePoint.Common.Data.Translators
 		#region [Any]
 
 		[TestMethod]
-		public void SupportAny()
+		public void Process_GenerateCaml_WhenAny()
 		{
 			Given(source => source
 				.Where(n => n.Bool1)
@@ -232,7 +232,7 @@ namespace Untech.SharePoint.Common.Data.Translators
 		}
 
 		[TestMethod]
-		public void SupportAnyP()
+		public void Process_GenerateCaml_WhenAnyP()
 		{
 			Given(source => source
 				.Where(n => n.Bool1)
@@ -249,7 +249,7 @@ namespace Untech.SharePoint.Common.Data.Translators
 		#region [All]
 
 		[TestMethod]
-		public void SupportAll()
+		public void Process_GenerateCaml_WhenAll()
 		{
 			Given(source => source
 				.Where(n => n.Bool1)
@@ -268,7 +268,7 @@ namespace Untech.SharePoint.Common.Data.Translators
 		#region [Select]
 
 		[TestMethod]
-		public void SupportSelect()
+		public void Process_GenerateCaml_WhenSelect()
 		{
 			Given(source => source
 				.Where(n => n.Bool1)
@@ -282,7 +282,7 @@ namespace Untech.SharePoint.Common.Data.Translators
 		}
 
 		[TestMethod]
-		public void SupportSelectAny()
+		public void Process_GenerateCaml_WhenSelectAny()
 		{
 			Given(source => source
 				.Where(n => n.Bool1)
@@ -298,7 +298,7 @@ namespace Untech.SharePoint.Common.Data.Translators
 		}
 
 		[TestMethod]
-		public void SupportSelectTake()
+		public void Process_GenerateCaml_WhenSelectTake()
 		{
 			Given(source => source
 				.Where(n => n.Bool1)
@@ -315,7 +315,7 @@ namespace Untech.SharePoint.Common.Data.Translators
 
 		[TestMethod]
 		[ExpectedException(typeof(NotSupportedException))]
-		public void NotSupportSelectSelect()
+		public void Process_ThrowNotSupported_WhenSelectSelect()
 		{
 			Given(source => source
 				   .Select(n => new { Value = n.Int1 })
@@ -324,7 +324,7 @@ namespace Untech.SharePoint.Common.Data.Translators
 
 		[TestMethod]
 		[ExpectedException(typeof(NotSupportedException))]
-		public void NotSupportSelectAnyP()
+		public void Process_ThrowNotSupported_WhenSelectAnyP()
 		{
 			Given(source => source
 					.Select(n => n.Int1)
@@ -333,21 +333,21 @@ namespace Untech.SharePoint.Common.Data.Translators
 
 		[TestMethod]
 		[ExpectedException(typeof(NotSupportedException))]
-		public void NotSupportSelectMin()
+		public void Process_ThrowNotSupported_WhenSelectMin()
 		{
 			Given(source => source.Select(n => n.Int1).Min(n => n));
 		}
 
 		[TestMethod]
 		[ExpectedException(typeof(NotSupportedException))]
-		public void NotSupportSelectMax()
+		public void Process_ThrowNotSupported_WhenSelectMax()
 		{
 			Given(source => source.Select(n => n.Int1).Min(n => n));
 		}
 
 		[TestMethod]
 		[ExpectedException(typeof(NotSupportedException))]
-		public void NotSupportSelectAll()
+		public void Process_ThrowNotSupported_WhenSelectAll()
 		{
 			Given(source => source
 			   .Select(n => n.String1)
@@ -355,7 +355,7 @@ namespace Untech.SharePoint.Common.Data.Translators
 		}
 
 		[TestMethod]
-		public void SupportSelectFirst()
+		public void Process_GenerateCaml_WhenSelectFirst()
 		{
 			Given(source => source
 				.Where(n => n.Bool1)
@@ -372,7 +372,7 @@ namespace Untech.SharePoint.Common.Data.Translators
 
 		[TestMethod]
 		[ExpectedException(typeof(NotSupportedException))]
-		public void NotSupportSelectFirstP()
+		public void Process_ThrowNotSupported_WhenSelectFirstP()
 		{
 			Given(source => source
 				.Select(n => new { Result = n.Int1 })
@@ -380,7 +380,7 @@ namespace Untech.SharePoint.Common.Data.Translators
 		}
 
 		[TestMethod]
-		public void SupportSelectFirstOrDefault()
+		public void Process_GenerateCaml_WhenSelectFirstOrDefault()
 		{
 			Given(source => source
 				.Where(n => n.Bool1)
@@ -397,7 +397,7 @@ namespace Untech.SharePoint.Common.Data.Translators
 
 		[TestMethod]
 		[ExpectedException(typeof(NotSupportedException))]
-		public void NotSupportSelectFirstOrDefaultP()
+		public void Process_ThrowNotSupported_WhenSelectFirstOrDefaultP()
 		{
 			Given(source => source
 				.Select(n => new { Result = n.Int1 })
@@ -405,7 +405,7 @@ namespace Untech.SharePoint.Common.Data.Translators
 		}
 
 		[TestMethod]
-		public void SupportSelectLast()
+		public void Process_GenerateCaml_WhenSelectLast()
 		{
 			Given(source => source
 				.Where(n => n.Bool1)
@@ -423,7 +423,7 @@ namespace Untech.SharePoint.Common.Data.Translators
 
 		[TestMethod]
 		[ExpectedException(typeof(NotSupportedException))]
-		public void NotSupportSelectLastP()
+		public void Process_ThrowNotSupported_WhenSelectLastP()
 		{
 			Given(source => source
 				.Select(n => new { Result = n.Int1 })
@@ -432,7 +432,7 @@ namespace Untech.SharePoint.Common.Data.Translators
 
 		[TestMethod]
 		[ExpectedException(typeof(NotSupportedException))]
-		public void NotSupportSelectWhere()
+		public void Process_ThrowNotSupported_WhenSelectWhere()
 		{
 			Given(source => source
 				.Select(n => new { Result = n.Int1 })
@@ -440,7 +440,7 @@ namespace Untech.SharePoint.Common.Data.Translators
 		}
 
 		[TestMethod]
-		public void SupportSelectLastOrDefault()
+		public void Process_GenerateCaml_WhenSelectLastOrDefault()
 		{
 			Given(source => source
 				.Where(n => n.Bool1)
@@ -458,7 +458,7 @@ namespace Untech.SharePoint.Common.Data.Translators
 
 		[TestMethod]
 		[ExpectedException(typeof(NotSupportedException))]
-		public void NotSupportSelectLastOrDefaultP()
+		public void Process_ThrowNotSupported_WhenSelectLastOrDefaultP()
 		{
 			Given(source => source
 				.Select(n => new { Result = n.Int1 })
@@ -470,7 +470,7 @@ namespace Untech.SharePoint.Common.Data.Translators
 		#region [Take]
 
 		[TestMethod]
-		public void SupportTake()
+		public void Process_GenerateCaml_WhenTake()
 		{
 			Given(source => source
 				.Where(n => n.Bool1)
@@ -485,7 +485,7 @@ namespace Untech.SharePoint.Common.Data.Translators
 		}
 
 		[TestMethod]
-		public void SupportTakeAny()
+		public void Process_GenerateCaml_WhenTakeAny()
 		{
 			Given(source => source
 				.Where(n => n.Bool1)
@@ -501,7 +501,7 @@ namespace Untech.SharePoint.Common.Data.Translators
 		}
 
 		[TestMethod]
-		public void SupportTakeFirst()
+		public void Process_GenerateCaml_WhenTakeFirst()
 		{
 			Given(source => source
 				.Where(n => n.Bool1)
@@ -518,28 +518,28 @@ namespace Untech.SharePoint.Common.Data.Translators
 
 		[TestMethod]
 		[ExpectedException(typeof(NotSupportedException))]
-		public void NotSupportTakeLast()
+		public void Process_ThrowNotSupported_WhenTakeLast()
 		{
 			Given(source => source.Take(10).Last());
 		}
 
 		[TestMethod]
 		[ExpectedException(typeof(NotSupportedException))]
-		public void NotSupportTakeWhere()
+		public void Process_ThrowNotSupported_WhenTakeWhere()
 		{
 			Given(source => source.Take(10).Where(n => n.Bool1));
 		}
 
 		[TestMethod]
 		[ExpectedException(typeof(NotSupportedException))]
-		public void NotSupportTakeOrderBy()
+		public void Process_ThrowNotSupported_WhenTakeOrderBy()
 		{
 			Given(source => source.Take(10).OrderBy(n => n.Bool1));
 		}
 
 		[TestMethod]
 		[ExpectedException(typeof(NotSupportedException))]
-		public void NotSupportTakeAll()
+		public void Process_ThrowNotSupported_WhenTakeAll()
 		{
 			Given(source => source.Take(10).All(n => n.String1 == "TEST"));
 		}
@@ -549,7 +549,7 @@ namespace Untech.SharePoint.Common.Data.Translators
 		#region [Reverse]
 
 		[TestMethod]
-		public void SupportReverseWhere()
+		public void Process_GenerateCaml_WhenReverseWhere()
 		{
 			Given(source => source
 				.OrderBy(n => n.String1)
@@ -565,7 +565,7 @@ namespace Untech.SharePoint.Common.Data.Translators
 		}
 
 		[TestMethod]
-		public void SupportReverseOrderByThenBy()
+		public void Process_GenerateCaml_WhenReverseOrderByThenBy()
 		{
 			Given(source => source
 				.Reverse()
@@ -585,7 +585,7 @@ namespace Untech.SharePoint.Common.Data.Translators
 		#region [Other]
 
 		[TestMethod]
-		public void SupportMin()
+		public void Process_GenerateCaml_WhenMin()
 		{
 			Given(source => source.Min(n => n.Int1))
 				.ExpectedCaml("<View>" +
@@ -595,7 +595,7 @@ namespace Untech.SharePoint.Common.Data.Translators
 		}
 
 		[TestMethod]
-		public void SupportTake10Min()
+		public void Process_GenerateCaml_WhenTake10Min()
 		{
 			Given(source => source.Take(10).Min(n => n.Int1))
 				.ExpectedCaml("<View>" +
@@ -606,7 +606,7 @@ namespace Untech.SharePoint.Common.Data.Translators
 		}
 
 		[TestMethod]
-		public void SupportSelectMin()
+		public void Process_GenerateCaml_WhenSelectMin()
 		{
 			Given(source => source.Select(n => n.Int1).Min())
 				.ExpectedCaml("<View>" +
@@ -616,7 +616,7 @@ namespace Untech.SharePoint.Common.Data.Translators
 		}
 
 		[TestMethod]
-		public void SupportSelectTake10Min()
+		public void Process_GenerateCaml_WhenSelectTake10Min()
 		{
 			Given(source => source.Select(n => n.Int1).Take(10).Min())
 				.ExpectedCaml("<View>" +
@@ -627,7 +627,7 @@ namespace Untech.SharePoint.Common.Data.Translators
 		}
 
 		[TestMethod]
-		public void SupportMax()
+		public void Process_GenerateCaml_WhenMax()
 		{
 			Given(source => source.Max(n => n.Int1))
 				.ExpectedCaml("<View>" +
@@ -637,7 +637,7 @@ namespace Untech.SharePoint.Common.Data.Translators
 		}
 
 		[TestMethod]
-		public void SupportTake10Max()
+		public void Process_GenerateCaml_WhenTake10Max()
 		{
 			Given(source => source.Take(10).Max(n => n.Int1))
 				.ExpectedCaml("<View>" +
@@ -648,7 +648,7 @@ namespace Untech.SharePoint.Common.Data.Translators
 		}
 
 		[TestMethod]
-		public void SupportSelectMax()
+		public void Process_GenerateCaml_WhenSelectMax()
 		{
 			Given(source => source.Select(n => n.Int1).Max())
 				.ExpectedCaml("<View>" +
@@ -658,7 +658,7 @@ namespace Untech.SharePoint.Common.Data.Translators
 		}
 
 		[TestMethod]
-		public void SupportSelectTake10Max()
+		public void Process_GenerateCaml_WhenSelectTake10Max()
 		{
 			Given(source => source.Select(n => n.Int1).Take(10).Max())
 				.ExpectedCaml("<View>" +
@@ -670,14 +670,14 @@ namespace Untech.SharePoint.Common.Data.Translators
 
 		[TestMethod]
 		[ExpectedException(typeof(NotSupportedException))]
-		public void NotSupportSkip()
+		public void Process_ThrowNotSupported_WhenSkip()
 		{
 			Given(source => source.Skip(10));
 		}
 
 		[TestMethod]
 		[ExpectedException(typeof(NotSupportedException))]
-		public void NotSupportStrStartsWithNegate()
+		public void Process_ThrowNotSupported_WhenStrStartsWithNegate()
 		{
 			// NOTE: unable to process '!n.String1.StartsWith("TEST")'
 			Given(source => source.All(n => n.String1.StartsWith("TEST")));

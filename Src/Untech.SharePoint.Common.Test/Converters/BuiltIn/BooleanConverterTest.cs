@@ -4,18 +4,18 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Untech.SharePoint.Common.Converters.BuiltIn
 {
 	[TestClass]
-	public class BoolConverterTest : BaseConverterTest
+	public class BooleanConverterTest : BaseConverterTest
 	{
 		[TestMethod]
 		[ExpectedException(typeof(ArgumentException))]
-		public void NotSupportInteger()
+		public void Init_ThrowNotSupport_WhenInteger()
 		{
 			CreateConverterForFieldWithType<int>();
 		}
 
 		[TestMethod]
 		[ExpectedException(typeof(ArgumentException))]
-		public void NotSupportNullableInteger()
+		public void Init_ThrowNotSupport_WhenNullableInteger()
 		{
 			CreateConverterForFieldWithType<int?>();
 		}

@@ -30,28 +30,28 @@ namespace Untech.SharePoint.Common.Converters.BuiltIn
 
 		[TestMethod]
 		[ExpectedException(typeof(ArgumentException))]
-		public void NotSupportDouble()
+		public void Init_ThrowNotSupported_WhenDouble()
 		{
 			CreateConverterForFieldWithType<double>();
 		}
 
 		[TestMethod]
 		[ExpectedException(typeof(ArgumentException))]
-		public void NotSupportInt16()
+		public void Init_ThrowNotSupported_WhenInt16()
 		{
 			CreateConverterForFieldWithType<Int16>();
 		}
 
 		[TestMethod]
 		[ExpectedException(typeof(ArgumentException))]
-		public void NotSupportFloat()
+		public void Init_ThrowNotSupported_WhenFloat()
 		{
 			CreateConverterForFieldWithType<float>();
 		}
 
 		[TestMethod]
 		[ExpectedException(typeof(ArgumentException))]
-		public void NotSupportUInt32()
+		public void Init_ThrowNotSupported_WhenUInt32()
 		{
 			CreateConverterForFieldWithType<UInt32>();
 		}

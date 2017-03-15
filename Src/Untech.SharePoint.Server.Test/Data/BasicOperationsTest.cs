@@ -20,19 +20,19 @@ namespace Untech.SharePoint.Server.Data
 		}
 
 		[TestMethod]
-		public void AddUpdateDelete()
+		public void Spec_AddUpdateDelete()
 		{
 			s_spec.AddUpdateDelete();
 		}
 
 		[TestMethod]
-		public void BatchAddUpdateDelete()
+		public void Spec_BatchAddUpdateDelete()
 		{
 			s_spec.BatchAddUpdateDelete();
 		}
 
 		[TestMethod]
-		public void GetAttachments()
+		public void Spec_GetAttachments()
 		{
 			var result = s_dataContext.News.GetAttachments(1).ToList();
 		}

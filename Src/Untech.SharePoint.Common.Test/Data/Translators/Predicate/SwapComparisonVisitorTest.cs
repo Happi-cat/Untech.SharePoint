@@ -7,16 +7,13 @@ namespace Untech.SharePoint.Common.Data.Translators.Predicate
 	public class SwapComparisonVisitorTest : BaseExpressionVisitorTest
 	{
 		[TestMethod]
-		public void CanSwap()
+		public void Visit_SwapsMemberToLeft_WhenMemberOnRight()
 		{
 			Given(n => 1 == n.Int1).Expected(n => n.Int1 == 1);
 			Given(n => 10 < n.Int1).Expected(n => n.Int1 > 10);
 			Given(n => n.Int1 < 100).Expected(n => n.Int1 < 100);
 		}
 
-		protected override ExpressionVisitor Visitor
-		{
-			get { return new SwapComparisonVisitor(); }
-		}
+		protected override ExpressionVisitor TestableVisitor => new SwapComparisonVisitor();
 	}
 }

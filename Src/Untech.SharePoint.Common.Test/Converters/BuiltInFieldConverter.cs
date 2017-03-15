@@ -1,9 +1,7 @@
-﻿using Untech.SharePoint.Common.Converters;
-
-namespace Untech.SharePoint.Common.Configuration
+﻿namespace Untech.SharePoint.Common.Converters
 {
 	[SpFieldConverter("BUILT_IN_TEST_CONVERTER")]
-	public class BuiltInFieldConverter : IFieldConverter
+	public class BuiltInTestFieldConverter : IFieldConverter
 	{
 		public void Initialize(MetaModels.MetaField field)
 		{

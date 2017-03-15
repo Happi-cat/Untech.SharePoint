@@ -12,7 +12,7 @@ namespace Untech.SharePoint.Common.Data.Translators.Predicate
 	public class CamlPredicateProcessorTest : BaseExpressionTest
 	{
 		[TestMethod]
-		public void CanConvert()
+		public void Process_GenerateCaml_WhenSimpleQuery()
 		{
 			Given(n => n.String1.Contains("1") && n.Int1 == 2)
 				.Expected("<And>" +
@@ -22,7 +22,7 @@ namespace Untech.SharePoint.Common.Data.Translators.Predicate
 		}
 
 		[TestMethod]
-		public void SupportIsNullOrEmpty()
+		public void Process_GenerateCaml_WhenStringIsNullOrEmpty()
 		{
 			Given(n => string.IsNullOrEmpty(n.String1))
 				.Expected("<Or>" +
@@ -32,14 +32,14 @@ namespace Untech.SharePoint.Common.Data.Translators.Predicate
 		}
 
 		[TestMethod]
-		public void SupportStartsWith()
+		public void Process_GenerateCaml_StringStartsWith()
 		{
 			Given(n => n.String1.StartsWith("START"))
 				.Expected("<BeginsWith><FieldRef Name='String1' /><Value>START</Value></BeginsWith>");
 		}
 
 		[TestMethod]
-		public void SupportXorForBooleans()
+		public void Process_GenerateCaml_WhenXorBetweenProps()
 		{
 			Given(n => n.Bool1 ^ n.Bool2)
 				.Expected("<Or>" +
@@ -56,13 +56,14 @@ namespace Untech.SharePoint.Common.Data.Translators.Predicate
 
 		[TestMethod]
 		[ExpectedException(typeof(NotSupportedException))]
-		public void NotSupportXorForCalls()
+		public void Process_ThrowNotSupport_WhenXorBetweenPropAndCall()
 		{
 			Given(n => n.String1.StartsWith("START") ^ n.Bool2).Expected("UNDEFINED");
 		}
 
+
 		[TestMethod]
-		public void SupportInEnumerable()
+		public void Process_GenerateCaml_WhenEnumerableIn()
 		{
 			var possibleValues = new[] { 1, 2, 3 };
 
@@ -80,7 +81,7 @@ namespace Untech.SharePoint.Common.Data.Translators.Predicate
 		}
 
 		[TestMethod]
-		public void SupportEnumerableAndListContains()
+		public void Process_GenerateCaml_WhenEnumerableAndListContains()
 		{
 			var possibleValues1 = new List<int> { 1, 2, 3 };
 			var possibleValues2 = (IEnumerable<int>)possibleValues1;
@@ -99,7 +100,7 @@ namespace Untech.SharePoint.Common.Data.Translators.Predicate
 		}
 
 		[TestMethod]
-		public void SupportIncludesAndNotIncludes()
+		public void Process_GenerateCaml_WhenCollectionContainsAndNotContains()
 		{
 			Given(n => n.StringCollection1.Contains("Value 1") && !n.StringCollection4.Contains("Value 4"))
 				.Expected("<And>" +
@@ -109,7 +110,7 @@ namespace Untech.SharePoint.Common.Data.Translators.Predicate
 		}
 
 		[TestMethod]
-		public void SupportBoolProperties()
+		public void Process_GenerateCaml_WhenBoolProps()
 		{
 			Given(n => n.Bool1 && !n.Bool2)
 				.Expected("<And>" +
@@ -119,7 +120,7 @@ namespace Untech.SharePoint.Common.Data.Translators.Predicate
 		}
 
 		[TestMethod]
-		public void SupportStringEquality()
+		public void Process_GenerateCaml_WhenStringEquality()
 		{
 			Given(n => n.String1 == "TEST").Expected("<Eq><FieldRef Name='String1' /><Value>TEST</Value></Eq>");
 
@@ -128,7 +129,7 @@ namespace Untech.SharePoint.Common.Data.Translators.Predicate
 
 		[TestMethod]
 		[SuppressMessage("ReSharper", "EqualExpressionComparison")]
-		public void CanSwapMemberToLeft()
+		public void Process_SwapMemberToLeft()
 		{
 			Given(n => n.Int1 == 1 && 2 == n.Int2)
 				.Expected("<And><Eq><FieldRef Name='Int1' /><Value>1</Value></Eq><Eq><FieldRef Name='Int2' /><Value>2</Value></Eq></And>");
@@ -137,7 +138,7 @@ namespace Untech.SharePoint.Common.Data.Translators.Predicate
 		[TestMethod]
 		[SuppressMessage("ReSharper", "RedundantLogicalConditionalExpressionOperand")]
 		[SuppressMessage("ReSharper", "EqualExpressionComparison")]
-		public void CanOptimizeConditions()
+		public void Process_OptimizeConditions()
 		{
 			Given(n => n.Int1 == 1 && 3 == 3 && true)
 				.Expected("<Eq><FieldRef Name='Int1' /><Value>1</Value></Eq>");
@@ -151,14 +152,14 @@ namespace Untech.SharePoint.Common.Data.Translators.Predicate
 
 		[TestMethod]
 		[ExpectedException(typeof(NotSupportedException))]
-		public void ThrowIfInvalid1()
+		public void Process_ThrowNotSupported_WhenPropStringContainsProp()
 		{
 			Given(n => n.String1.Contains(n.String2)).Expected("SHOULD THROW");
 		}
 
 		[TestMethod]
 		[ExpectedException(typeof(NotSupportedException))]
-		public void ThrowIfInvalid2()
+		public void Process_ThrowNotSupported_WhenPropComparedToProp()
 		{
 			Given(n => n.Bool1 == n.Bool2).Expected("SHOULD THROW");
 		}

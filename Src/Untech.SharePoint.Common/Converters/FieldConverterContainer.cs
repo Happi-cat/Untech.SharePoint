@@ -12,7 +12,7 @@ namespace Untech.SharePoint.Common.Converters
 	/// <summary>
 	/// Represents container of <see cref="IFieldConverter"/> types.
 	/// </summary>
-	public class FieldConverterContainer : IFieldConverterResolver
+	public sealed class FieldConverterContainer : IFieldConverterResolver
 	{
 		private readonly Container<string, Type> _fieldTypesMap;
 		private readonly KeyedFactory<Type, IFieldConverter> _fieldConvertersBuilders;

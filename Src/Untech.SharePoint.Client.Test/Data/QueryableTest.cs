@@ -18,37 +18,37 @@ namespace Untech.SharePoint.Client.Data
 		}
 
 		[TestMethod]
-		public void Aggregate()
+		public void Spec_Aggregate()
 		{
 			s_spec.Aggregate();
 		}
 
 		[TestMethod]
-		public void Filtering()
+		public void Spec_Filtering()
 		{
 			s_spec.Filtering();
 		}
 
 		[TestMethod]
-		public void Ordering()
+		public void Spec_Ordering()
 		{
 			s_spec.Ordering();
 		}
 
 		[TestMethod]
-		public void Paging()
+		public void Spec_Paging()
 		{
 			s_spec.Paging();
 		}
 
 		[TestMethod]
-		public void Set()
+		public void Spec_Set()
 		{
 			s_spec.Set();
 		}
 
 		[TestMethod]
-		public void Projection()
+		public void Spec_Projection()
 		{
 			s_spec.Projection();
 		}

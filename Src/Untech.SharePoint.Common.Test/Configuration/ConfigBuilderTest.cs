@@ -1,4 +1,6 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using System;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Untech.SharePoint.Common.Converters;
 using Untech.SharePoint.Common.Mappings.Annotation;
 
 namespace Untech.SharePoint.Common.Configuration
@@ -7,13 +9,13 @@ namespace Untech.SharePoint.Common.Configuration
 	public class ConfigBuilderTest
 	{
 		[TestMethod]
-		public void CanBuildConfig()
+		public void BuildConfig_ReturnsNotNull()
 		{
 			Assert.IsNotNull(new ConfigBuilder().BuildConfig());
 		}
 
 		[TestMethod]
-		public void CanRegisterMappings()
+		public void RegisterMappings_MappingCanBeResolved_WhenBuilt()
 		{
 			var config = new ConfigBuilder()
 				.RegisterMappings(n => n.Annotated<AnnotatedContextMappingTest.Ctx>())
@@ -23,38 +25,29 @@ namespace Untech.SharePoint.Common.Configuration
 		}
 
 		[TestMethod]
-		public void CanRegisterBuiltInConverters()
+		[ExpectedException(typeof(ArgumentNullException))]
+		public void RegisterMappings_ThrowArgumentNull_WhenActionIsNull()
 		{
 			var config = new ConfigBuilder()
-				.RegisterConverters(n => n.AddFromAssembly(typeof(ConfigBuilder).Assembly))
-				.RegisterConverters(n => n.AddFromAssembly(typeof(ConfigBuilderTest).Assembly))
-				.BuildConfig();
-
-			Assert.IsNotNull(config.FieldConverters.Resolve("BUILT_IN_TEST_CONVERTER"));
+				.RegisterMappings<AnnotatedContextMappingTest.Ctx>(null);
 		}
 
 		[TestMethod]
-		public void CanRegisterConverter()
+		public void RegisterConverters_ConverterCanBeResolved_WhenBuilt()
 		{
 			var config = new ConfigBuilder()
-				.RegisterConverters(n => n.Add<BuiltInFieldConverter>())
+				.RegisterConverters(n => n.Add<BuiltInTestFieldConverter>())
 				.BuildConfig();
 
-			Assert.IsNotNull(config.FieldConverters.Resolve(typeof(BuiltInFieldConverter)));
+			Assert.IsNotNull(config.FieldConverters.Resolve(typeof(BuiltInTestFieldConverter)));
 		}
 
 		[TestMethod]
-		public void CanChainCalls()
+		[ExpectedException(typeof(ArgumentNullException))]
+		public void RegisterConverters_ThrowArgumentNull_WhenActionIsNull()
 		{
 			var config = new ConfigBuilder()
-				.RegisterMappings(n => n.Annotated<AnnotatedContextMappingTest.Ctx>())
-				.RegisterConverters(n => n.AddFromAssembly(typeof(ConfigBuilderTest).Assembly))
-				.RegisterConverters(n => n.Add<BuiltInFieldConverter>())
-				.BuildConfig();
-
-			Assert.IsNotNull(config.Mappings.Resolve(typeof(AnnotatedContextMappingTest.Ctx)));
-			Assert.IsNotNull(config.FieldConverters.Resolve("BUILT_IN_TEST_CONVERTER"));
-			Assert.IsNotNull(config.FieldConverters.Resolve(typeof(BuiltInFieldConverter)));
+				.RegisterConverters(null);
 		}
 	}
 }
