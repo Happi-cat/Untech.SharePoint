@@ -1,6 +1,4 @@
-﻿using System.Reflection;
-using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
+﻿using System.Runtime.CompilerServices;
 
 #if !SIGNED
 [assembly: InternalsVisibleTo("Untech.SharePoint.Client.Test")]

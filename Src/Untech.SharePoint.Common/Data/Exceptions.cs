@@ -1,7 +1,7 @@
 ﻿using System;
+using System.Runtime.Serialization;
 using Untech.SharePoint.Common.MetaModels;
 using Untech.SharePoint.Common.Utils;
-using System.Runtime.Serialization;
 
 namespace Untech.SharePoint.Common.Data
 {
@@ -63,7 +63,7 @@ namespace Untech.SharePoint.Common.Data
 		{
 			Guard.CheckNotNull(nameof(field), field);
 
-			return $"Unable to find field by internal name ${field.InternalName} in list ${field.ContentType.List.Url} that located at SP site ${field.ContentType.List.Context.Url}";
+			return $"Unable to find field by internal name '{field.InternalName}' in list '{field.ContentType.List.Url}' that located at SP site '{field.ContentType.List.Context.Url}'";
 		}
 	}
 
@@ -102,7 +102,7 @@ namespace Untech.SharePoint.Common.Data
 		{
 			Guard.CheckNotNull(nameof(contentType), contentType);
 
-			return $"Unable to find or load content type ${contentType.Id} in list ${contentType.List.Url} that located at SP site ${contentType.List.Context.Url}.";
+			return $"Unable to find or load content type '{contentType.Id}' in list '{contentType.List.Url}' that located at SP site '{contentType.List.Context.Url}'.";
 		}
 	}
 
@@ -141,7 +141,7 @@ namespace Untech.SharePoint.Common.Data
 		{
 			Guard.CheckNotNull(nameof(list), list);
 
-			return $"Unable to find or load list by URL ${list.Url} that located in SP site ${list.Context.Url}";
+			return $"Unable to find or load list by URL '{list.Url}' that located in SP site '{list.Context.Url}'";
 		}
 	}
 }

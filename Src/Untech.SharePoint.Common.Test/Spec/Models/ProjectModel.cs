@@ -40,7 +40,7 @@ namespace Untech.SharePoint.Common.Spec.Models
 
 		[SpField]
 		[Description("Calculated")]
-		public string Definition { get; }
+		public string Definition { get; set; }
 
 		[SpField]
 		[Description("Calculated")]
