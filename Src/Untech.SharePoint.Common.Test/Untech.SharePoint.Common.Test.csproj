@@ -1,179 +1,32 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{672ADF77-0D40-4CB1-821E-54DED0E8AAA2}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Untech.SharePoint.Common</RootNamespace>
-    <AssemblyName>Untech.SharePoint.Common.Test</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
-    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
-    <ReferencePath>$(ProgramFiles)\Common Files\microsoft shared\VSTT\$(VisualStudioVersion)\UITestExtensionPackages</ReferencePath>
-    <IsCodedUITest>False</IsCodedUITest>
-    <TestProjectType>UnitTest</TestProjectType>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup>
-    <SignAssembly>false</SignAssembly>
-  </PropertyGroup>
-  <PropertyGroup>
-    <AssemblyOriginatorKeyFile>
-    </AssemblyOriginatorKeyFile>
-  </PropertyGroup>
-  <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.Runtime.Serialization" />
-    <Reference Include="System.Xml" />
-    <Reference Include="System.Xml.Linq" />
-  </ItemGroup>
-  <Choose>
-    <When Condition="('$(VisualStudioVersion)' == '10.0' or '$(VisualStudioVersion)' == '') and '$(TargetFrameworkVersion)' == 'v3.5'">
-      <ItemGroup>
-        <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
-      </ItemGroup>
-    </When>
-    <Otherwise>
-      <ItemGroup>
-        <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework" />
-      </ItemGroup>
-    </Otherwise>
-  </Choose>
-  <ItemGroup>
-    <Compile Include="Converters\BuiltInFieldConverter.cs" />
-    <Compile Include="Configuration\ConfigBuilderTest.cs" />
-    <Compile Include="Converters\BaseConverterTest.cs" />
-    <Compile Include="Converters\BuiltIn\BooleanConverterTest.cs" />
-    <Compile Include="Converters\BuiltIn\DateTimeConverterTest.cs" />
-    <Compile Include="Converters\BuiltIn\GuidConverterTest.cs" />
-    <Compile Include="Converters\BuiltIn\IntegerConverterTest.cs" />
-    <Compile Include="Converters\ConverterContext.cs" />
-    <Compile Include="Converters\Custom\EnumFieldConverterTest.cs" />
-    <Compile Include="Converters\Custom\JsonFieldConverterTest.cs" />
-    <Compile Include="Converters\Custom\KeyValueFieldConverterTest.cs" />
-    <Compile Include="Converters\Custom\XmlFieldConverterTest.cs" />
-    <Compile Include="Converters\BuiltIn\NumberConverterTest.cs" />
-    <Compile Include="Converters\FieldConverterCollectionTest.cs" />
-    <Compile Include="Data\Translators\BaseExpressionTest.cs" />
-    <Compile Include="Data\Translators\BaseExpressionVisitorTest.cs" />
-    <Compile Include="Data\Translators\Predicate\CamlPredicateProcessorTest.cs" />
-    <Compile Include="Data\Translators\Predicate\PushNotDownVisitorTest.cs" />
-    <Compile Include="Data\Translators\Predicate\StringIsNullOrEmptyRewriterTest.cs" />
-    <Compile Include="Data\Translators\Predicate\RedundantConditionRemoverTest.cs" />
-    <Compile Include="Data\Translators\Predicate\EvaluatorTest.cs" />
-    <Compile Include="Data\Translators\Predicate\InRewriterTest.cs" />
-    <Compile Include="Data\Translators\Predicate\SwapComparisonVisitorTest.cs" />
-    <Compile Include="Data\Translators\FakeQueryable.cs" />
-    <Compile Include="Data\Translators\CamlQueryTreeProcessorTest.cs" />
-    <Compile Include="Data\Translators\Predicate\XorRewriterTest.cs" />
-    <Compile Include="Mappings\Annotation\AnnotatedContentTypeMappingTest.cs" />
-    <Compile Include="Mappings\Annotation\AnnotatedFieldPartTest.cs" />
-    <Compile Include="Mappings\Annotation\AnnotatedContextMappingTest.cs" />
-    <Compile Include="Mappings\ClassLike\ClassLikeMappingTest.cs" />
-    <Compile Include="Mappings\ClassLike\EventItem.cs" />
-    <Compile Include="Mappings\ClassLike\SmallDataContextMap.cs" />
-    <Compile Include="Mappings\ClassLike\AnnouncmentItem.cs" />
-    <Compile Include="Mappings\ClassLike\SmallDataContext.cs" />
-    <Compile Include="Mappings\ClassLike\MenuItem.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Spec\BasicOperationsSpec.cs" />
-    <Compile Include="Spec\QueryablePerfomance.cs" />
-    <Compile Include="TestTools\Comparers\EntityComparer.cs" />
-    <Compile Include="TestTools\Comparers\SequenceComparer.cs" />
-    <Compile Include="TestTools\DataGenerators\ListTestDataGenerator.cs" />
-    <Compile Include="TestTools\DataGenerators\TestDataGenerator.cs" />
-    <Compile Include="TestTools\DataManagers\ListTestDataManager.cs" />
-    <Compile Include="Spec\PagingQuerySpec.cs" />
-    <Compile Include="Spec\OrderingQuerySpec.cs" />
-    <Compile Include="Spec\QueryableSpec.cs" />
-    <Compile Include="Spec\SetQuerySpec.cs" />
-    <Compile Include="Spec\ProjectionQuerySpec.cs" />
-    <Compile Include="Spec\FilteringQuerySpec.cs" />
-    <Compile Include="TestTools\DataManagers\TestDataManager.cs" />
-    <Compile Include="TestTools\QueryTests\Attributes.cs" />
-    <Compile Include="TestTools\QueryTests\ITestQueryAcceptor.cs" />
-    <Compile Include="TestTools\QueryTests\ITestQueryExcecutor.cs" />
-    <Compile Include="TestTools\QueryTests\ITestQueryProvider.cs" />
-    <Compile Include="TestTools\Generators\Basic\ArrayGenerationOptions.cs" />
-    <Compile Include="Spec\AggregateQuerySpec.cs" />
-    <Compile Include="TestTools\DataGenerators\Generators.cs" />
-    <Compile Include="Spec\Models\DataContext.cs" />
-    <Compile Include="Spec\Models\ProjectModel.cs" />
-    <Compile Include="Spec\Models\EventModel.cs" />
-    <Compile Include="Spec\Models\NewsModel.cs" />
-    <Compile Include="Spec\Models\TeamModel.cs" />
-    <Compile Include="TestTools\Generators\Custom\UrlGenerator.cs" />
-    <Compile Include="TestTools\Generators\Custom\UserInfoGenerator.cs" />
-    <Compile Include="TestTools\Generators\GeneratorBehaviour.cs" />
-    <Compile Include="TestTools\Generators\Basic\ArrayGenerator.cs" />
-    <Compile Include="TestTools\Generators\Basic\BaseRandomGenerator.cs" />
-    <Compile Include="TestTools\Generators\Basic\BoolRangeGenerator.cs" />
-    <Compile Include="TestTools\Generators\Basic\DateTimeRangeGenerator.cs" />
-    <Compile Include="TestTools\Generators\Basic\DoubleRangeGenerator.cs" />
-    <Compile Include="TestTools\Generators\Basic\IntRangeGenerator.cs" />
-    <Compile Include="TestTools\Generators\Basic\LoremGenerator.cs" />
-    <Compile Include="TestTools\Generators\Basic\StaticGenerator.cs" />
-    <Compile Include="TestTools\Generators\Basic\RangeGenerator.cs" />
-    <Compile Include="TestTools\Generators\ObjectGenerator.cs" />
-    <Compile Include="TestTools\Generators\ObjectGeneratorExtensions.cs" />
-    <Compile Include="TestTools\Generators\IValueGenerator.cs" />
-    <Compile Include="TestTools\QueryTests\PerfTestQueryExecutor.cs" />
-    <Compile Include="TestTools\QueryTests\SimpleTestQueryExecutor.cs" />
-    <Compile Include="TestTools\QueryTests\TestQuery.cs" />
-    <Compile Include="TestTools\QueryTests\TestQueryBuilder.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Untech.SharePoint.Common\Untech.SharePoint.Common.csproj">
-      <Project>{8836BB37-FECF-4503-933D-479A3D404900}</Project>
-      <Name>Untech.SharePoint.Common</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup />
-  <Choose>
-    <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
-      <ItemGroup>
-        <Reference Include="Microsoft.VisualStudio.QualityTools.CodedUITestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-          <Private>False</Private>
-        </Reference>
-        <Reference Include="Microsoft.VisualStudio.TestTools.UITest.Common, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-          <Private>False</Private>
-        </Reference>
-        <Reference Include="Microsoft.VisualStudio.TestTools.UITest.Extension, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-          <Private>False</Private>
-        </Reference>
-        <Reference Include="Microsoft.VisualStudio.TestTools.UITesting, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-          <Private>False</Private>
-        </Reference>
-      </ItemGroup>
-    </When>
-  </Choose>
-  <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
+<Project Sdk="Microsoft.NET.Sdk" ToolsVersion="15.0">
+	<PropertyGroup>
+		<TargetFrameworks>net45;net461</TargetFrameworks>
+		<AssemblyVersion>1.0.2.0</AssemblyVersion>
+		<Company>Sergey Svirsky</Company>
+		<Copyright>Copyright \u00A9 Sergey Svirsky 2015</Copyright>
+		<FileVersion>1.0.2.0</FileVersion>
+		<InformationalVersion>1.0.2</InformationalVersion>
+		<RootNamespace>Untech.SharePoint.Common</RootNamespace>
+	</PropertyGroup>
+	<ItemGroup>
+		<Reference Include="System" />
+		<Reference Include="System.Runtime.Serialization" />
+		<Reference Include="System.Xml" />
+		<Reference Include="System.Xml.Linq" />
+	</ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.0.0" />
+		<PackageReference Include="MSTest.TestAdapter" Version="1.1.14" />
+		<PackageReference Include="MSTest.TestFramework" Version="1.1.14" />
+	</ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\Untech.SharePoint.Common\Untech.SharePoint.Common.csproj" />
+	</ItemGroup>
+	<ItemGroup>
+		<Folder Include="Properties\" />
+	</ItemGroup>
+	<ItemGroup>
+		<Service Include="{82a7f48d-3b50-4b1e-b82e-3ada8210c358}" />
+	</ItemGroup>
 </Project>

@@ -86,12 +86,12 @@ namespace Untech.SharePoint.Common.Converters.Custom
 				var enumMemberAttribute = enumType.GetField(enumName).GetCustomAttribute<EnumMemberAttribute>();
 
 				if (enumMemberAttribute != null
-					&& string.Compare(enumMemberAttribute.Value, value, StringComparison.InvariantCultureIgnoreCase) == 0)
+					&& string.Compare(enumMemberAttribute.Value, value, StringComparison.OrdinalIgnoreCase) == 0)
 				{
 					return Enum.Parse(enumType, enumName);
 				}
 
-				if (string.Compare(enumName, value, StringComparison.InvariantCultureIgnoreCase) == 0)
+				if (string.Compare(enumName, value, StringComparison.OrdinalIgnoreCase) == 0)
 				{
 					return Enum.Parse(enumType, enumName);
 				}
