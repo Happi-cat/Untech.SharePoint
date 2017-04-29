@@ -4,8 +4,8 @@ $domain = "SP2013Dev"
 
 $lists = @( "Events", "News", "Teams", "Projects" );
 
-$msbuild = "C:\Program Files (x86)\MSBuild\14.0\bin\amd64\MSBuild.exe"
-$csproj = "..\Src\Untech.SharePoint.sln"
+$msbuild = "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\MSBuild\15.0\Bin\MSBuild.exe"
+$csproj = "..\Src\Untech.SharePoint.All.sln"
 
 
 function Drop-SiteCollection {
@@ -111,7 +111,7 @@ function Create-TestUsers {
 function Generate-Data {
     Write-Host "Rebuilding Solution:" -ForegroundColor:Cyan    
     $config = "Debug"
-    (& $msbuild /p:Configuration=$config $csproj) > .\Build.Log
+    (& $msbuild "/t:Restore;Rebuild" /p:Configuration=$config $csproj) > .\Build.Log
 
     if ($LastExitCode -ne 0) {
         Write-Host "Failed Rebuilding" -ForegroundColor:Red
@@ -121,9 +121,9 @@ function Generate-Data {
     try {
         Write-Host "Generating Test Data:" -ForegroundColor:Cyan    
 
-        $testLib = (gi "..\Src\Untech.SharePoint.Server.Test\bin\Debug\Untech.SharePoint.Server.Test.dll").FullName
+        $testLib = (gi "..\Src\Untech.SharePoint.Server.Test\bin\Debug\net461\Untech.SharePoint.Server.Test.dll").FullName
         [Reflection.Assembly]::LoadFrom($testLib) | ft
-        [Untech.SharePoint.Server.Test.DataGenerator]::Generate()
+        [Untech.SharePoint.Server.DataGenerator]::Generate()
 
         Write-Host "Done Generating Test Data" -ForegroundColor:Cyan    
     } catch {
