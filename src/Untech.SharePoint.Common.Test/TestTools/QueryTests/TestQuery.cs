@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Untech.SharePoint.Common.TestTools.QueryTests
+namespace Untech.SharePoint.TestTools.QueryTests
 {
 	public class TestQuery<T, TResult> : ITestQuery<T>
 	{

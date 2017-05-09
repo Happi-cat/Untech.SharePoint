@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Untech.SharePoint.Common.TestTools.Comparers
+namespace Untech.SharePoint.TestTools.Comparers
 {
 	public class SequenceComparer<T> : IEqualityComparer<IEnumerable<T>>
 	{

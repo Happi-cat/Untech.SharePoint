@@ -4,9 +4,9 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
-using Untech.SharePoint.Common.Extensions;
+using Untech.SharePoint.Extensions;
 
-namespace Untech.SharePoint.Common.Data
+namespace Untech.SharePoint.Data
 {
 	[SuppressMessage("ReSharper", "InvokeAsExtensionMethod")]
 	internal static class MethodUtils

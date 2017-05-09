@@ -1,4 +1,4 @@
-﻿namespace Untech.SharePoint.Common
+﻿namespace Untech.SharePoint
 {
 	internal static class Fields
 	{

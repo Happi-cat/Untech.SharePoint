@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.SharePoint;
-using Untech.SharePoint.Common.CodeAnnotations;
-using Untech.SharePoint.Common.Converters;
-using Untech.SharePoint.Common.Extensions;
-using Untech.SharePoint.Common.MetaModels;
-using Untech.SharePoint.Common.Models;
-using Untech.SharePoint.Common.Utils;
+using Untech.SharePoint.CodeAnnotations;
+using Untech.SharePoint.Converters;
+using Untech.SharePoint.Extensions;
+using Untech.SharePoint.MetaModels;
+using Untech.SharePoint.Models;
 using Untech.SharePoint.Server.Data;
+using Untech.SharePoint.Utils;
 
 namespace Untech.SharePoint.Server.Converters.BuiltIn
 {
@@ -61,7 +61,7 @@ namespace Untech.SharePoint.Server.Converters.BuiltIn
 			var fieldValues = new SPFieldUserValueCollection(_web, value.ToString());
 			var userValues = fieldValues.Select(ConvertToUserInfo).ToList();
 
-			if (!userValues.Any())
+			if (userValues.Count == 0)
 			{
 				return null;
 			}
@@ -81,7 +81,7 @@ namespace Untech.SharePoint.Server.Converters.BuiltIn
 			}
 
 			var userValues = ((IEnumerable<UserInfo>)value).Distinct().ToList();
-			if (!userValues.Any())
+			if (userValues.Count == 0)
 			{
 				return null;
 			}
@@ -96,8 +96,7 @@ namespace Untech.SharePoint.Server.Converters.BuiltIn
 		{
 			if (value == null) return null;
 
-			var singleValue = value as UserInfo;
-			if (singleValue != null)
+			if (value is UserInfo singleValue)
 			{
 				return singleValue.Id.ToString();
 			}

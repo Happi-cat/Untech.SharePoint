@@ -1,8 +1,8 @@
 ﻿using System.Reflection;
-using Untech.SharePoint.Common.Data;
-using Untech.SharePoint.Common.Mappings.Annotation;
+using Untech.SharePoint.Data;
+using Untech.SharePoint.Mappings.Annotation;
 
-namespace Untech.SharePoint.Common.Mappings
+namespace Untech.SharePoint.Mappings
 {
 	internal static class Rules
 	{

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.Serialization;
 
-namespace Untech.SharePoint.Common.Converters
+namespace Untech.SharePoint.Converters
 {
 	/// <summary>
 	/// Represents errors that occurs with <see cref="IFieldConverter"/>.

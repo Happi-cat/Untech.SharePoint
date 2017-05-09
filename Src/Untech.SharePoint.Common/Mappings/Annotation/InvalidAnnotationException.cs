@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Untech.SharePoint.Common.Mappings.Annotation
+namespace Untech.SharePoint.Mappings.Annotation
 {
 	/// <summary>
 	/// Represents errors that occurs due to invalid or incomplete annotation. 

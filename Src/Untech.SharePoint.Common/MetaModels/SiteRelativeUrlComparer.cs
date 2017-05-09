@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using Untech.SharePoint.Common.Utils;
+using Untech.SharePoint.Utils;
 
-namespace Untech.SharePoint.Common.MetaModels
+namespace Untech.SharePoint.MetaModels
 {
 	/// <summary>
 	/// Represents a string comparison operations that allows to compare site-relative URL ignoring case.

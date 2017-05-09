@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 
-namespace Untech.SharePoint.Common.Data.QueryModels
+namespace Untech.SharePoint.Data.QueryModels
 {
 	/// <summary>
 	/// Describes different types of <see cref="FieldRefModel"/>.

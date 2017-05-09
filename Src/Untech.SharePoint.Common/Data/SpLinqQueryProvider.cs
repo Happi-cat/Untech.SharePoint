@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Linq;
 using System.Linq.Expressions;
-using Untech.SharePoint.Common.Data.Translators;
-using Untech.SharePoint.Common.Extensions;
-using Untech.SharePoint.Common.Utils;
+using Untech.SharePoint.Data.Translators;
+using Untech.SharePoint.Extensions;
+using Untech.SharePoint.Utils;
 
-namespace Untech.SharePoint.Common.Data
+namespace Untech.SharePoint.Data
 {
 	internal class SpLinqQueryProvider : IQueryProvider
 	{

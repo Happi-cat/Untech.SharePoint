@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using Untech.SharePoint.Common.MetaModels;
-using Untech.SharePoint.Common.MetaModels.Providers;
+using Untech.SharePoint.MetaModels;
+using Untech.SharePoint.MetaModels.Providers;
 
-namespace Untech.SharePoint.Common.Mappings.Annotation
+namespace Untech.SharePoint.Mappings.Annotation
 {
 	internal class AnnotatedContextMapping<T> : IMetaContextProvider, IListUrlResolver
 	{

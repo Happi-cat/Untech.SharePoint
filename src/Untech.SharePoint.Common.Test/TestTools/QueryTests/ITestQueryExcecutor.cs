@@ -1,4 +1,4 @@
-namespace Untech.SharePoint.Common.TestTools.QueryTests
+namespace Untech.SharePoint.TestTools.QueryTests
 {
 	public interface ITestQueryExcecutor<T>
 	{

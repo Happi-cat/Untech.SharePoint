@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
-using Untech.SharePoint.Common.Converters;
-using Untech.SharePoint.Common.MetaModels;
+using Untech.SharePoint.Converters;
+using Untech.SharePoint.MetaModels;
 
 namespace Untech.SharePoint.Server.Converters.BuiltIn
 {

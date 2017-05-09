@@ -4,7 +4,7 @@
     <TargetFrameworks>net45;net461</TargetFrameworks>
     <Company>Sergey Svirsky</Company>
     <Copyright>Copyright \u00A9 Sergey Svirsky 2015</Copyright>
-    <RootNamespace>Untech.SharePoint.Common</RootNamespace>
+    <RootNamespace>Untech.SharePoint</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />

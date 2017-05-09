@@ -1,4 +1,4 @@
-﻿namespace Untech.SharePoint.Common.Diagnostics
+﻿namespace Untech.SharePoint.Diagnostics
 {
 	internal static class LogCategories
 	{

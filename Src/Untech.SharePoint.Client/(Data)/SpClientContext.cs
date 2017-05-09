@@ -2,12 +2,11 @@
 using System.Linq.Expressions;
 using Microsoft.SharePoint.Client;
 using Untech.SharePoint.Client.Extensions;
-using Untech.SharePoint.Common.CodeAnnotations;
-using Untech.SharePoint.Common.Configuration;
-using Untech.SharePoint.Common.Data;
-using Untech.SharePoint.Common.Utils;
+using Untech.SharePoint.CodeAnnotations;
+using Untech.SharePoint.Configuration;
+using Untech.SharePoint.Utils;
 
-namespace Untech.SharePoint.Client.Data
+namespace Untech.SharePoint.Data
 {
 	/// <summary>
 	/// Represents base data context class for CSOM.

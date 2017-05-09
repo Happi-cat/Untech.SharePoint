@@ -1,6 +1,6 @@
-﻿using Untech.SharePoint.Common.CodeAnnotations;
+﻿using Untech.SharePoint.CodeAnnotations;
 
-namespace Untech.SharePoint.Common.Diagnostics
+namespace Untech.SharePoint.Diagnostics
 {
 	/// <summary>
 	/// Describes different levels of logging message.

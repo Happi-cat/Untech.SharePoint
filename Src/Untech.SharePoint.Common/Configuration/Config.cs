@@ -1,11 +1,11 @@
 ﻿using System;
-using Untech.SharePoint.Common.CodeAnnotations;
-using Untech.SharePoint.Common.Converters;
-using Untech.SharePoint.Common.Data;
-using Untech.SharePoint.Common.Mappings;
-using Untech.SharePoint.Common.Utils;
+using Untech.SharePoint.CodeAnnotations;
+using Untech.SharePoint.Converters;
+using Untech.SharePoint.Data;
+using Untech.SharePoint.Mappings;
+using Untech.SharePoint.Utils;
 
-namespace Untech.SharePoint.Common.Configuration
+namespace Untech.SharePoint.Configuration
 {
 	/// <summary>
 	/// Represents configuration that is required by <see cref="SpContext{TContext}"/>.

@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
 using Microsoft.SharePoint.Client;
-using Untech.SharePoint.Common.CodeAnnotations;
-using Untech.SharePoint.Common.Converters;
-using Untech.SharePoint.Common.MetaModels;
-using Untech.SharePoint.Common.Models;
+using Untech.SharePoint.CodeAnnotations;
+using Untech.SharePoint.Converters;
+using Untech.SharePoint.MetaModels;
+using Untech.SharePoint.Models;
 
 namespace Untech.SharePoint.Client.Converters.BuiltIn
 {

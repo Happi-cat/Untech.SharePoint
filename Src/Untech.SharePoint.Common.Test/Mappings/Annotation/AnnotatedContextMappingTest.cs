@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Untech.SharePoint.Common.CodeAnnotations;
-using Untech.SharePoint.Common.Configuration;
-using Untech.SharePoint.Common.Data;
-using Untech.SharePoint.Common.MetaModels;
+using Untech.SharePoint.CodeAnnotations;
+using Untech.SharePoint.Configuration;
+using Untech.SharePoint.Data;
+using Untech.SharePoint.MetaModels;
 
-namespace Untech.SharePoint.Common.Mappings.Annotation
+namespace Untech.SharePoint.Mappings.Annotation
 {
 	[TestClass]
 	[SuppressMessage("ReSharper", "UnusedAutoPropertyAccessor.Local")]

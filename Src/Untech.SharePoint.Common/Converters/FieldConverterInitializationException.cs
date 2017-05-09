@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Runtime.Serialization;
-using Untech.SharePoint.Common.MetaModels;
+using Untech.SharePoint.MetaModels;
 
-namespace Untech.SharePoint.Common.Converters
+namespace Untech.SharePoint.Converters
 {
 	/// <summary>
 	/// Represents errors that occurs during <see cref="IFieldConverter"/> initialization.

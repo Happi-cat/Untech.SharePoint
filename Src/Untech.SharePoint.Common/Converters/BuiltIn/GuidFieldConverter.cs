@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
-using Untech.SharePoint.Common.CodeAnnotations;
-using Untech.SharePoint.Common.MetaModels;
+using Untech.SharePoint.CodeAnnotations;
+using Untech.SharePoint.MetaModels;
 
-namespace Untech.SharePoint.Common.Converters.BuiltIn
+namespace Untech.SharePoint.Converters.BuiltIn
 {
 	[SpFieldConverter("Guid")]
 	[UsedImplicitly]
@@ -11,8 +11,8 @@ namespace Untech.SharePoint.Common.Converters.BuiltIn
 	{
 		private static readonly IReadOnlyDictionary<Type, Func<IFieldConverter>> s_typeConverters = new Dictionary<Type, Func<IFieldConverter>>
 		{
-			{typeof (Guid), () => new GuidTypeConverter()},
-			{typeof (Guid?), () => new NullableGuidTypeConverter()}
+			[typeof (Guid)] = () => new GuidTypeConverter(),
+			[typeof (Guid?)] = () => new NullableGuidTypeConverter()
 		};
 
 		public override void Initialize(MetaField field)

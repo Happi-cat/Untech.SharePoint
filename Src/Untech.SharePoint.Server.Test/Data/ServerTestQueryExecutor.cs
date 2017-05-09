@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Microsoft.SharePoint;
-using Untech.SharePoint.Common.MetaModels;
-using Untech.SharePoint.Common.TestTools.QueryTests;
+using Untech.SharePoint.MetaModels;
+using Untech.SharePoint.TestTools.QueryTests;
 
 namespace Untech.SharePoint.Server.Data
 {

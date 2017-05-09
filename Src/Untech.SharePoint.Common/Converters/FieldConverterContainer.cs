@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Linq;
 using System.Reflection;
-using Untech.SharePoint.Common.CodeAnnotations;
-using Untech.SharePoint.Common.Collections;
-using Untech.SharePoint.Common.Extensions;
-using Untech.SharePoint.Common.Utils;
-using Untech.SharePoint.Common.Utils.Reflection;
+using Untech.SharePoint.CodeAnnotations;
+using Untech.SharePoint.Collections;
+using Untech.SharePoint.Extensions;
+using Untech.SharePoint.Utils;
+using Untech.SharePoint.Utils.Reflection;
 
-namespace Untech.SharePoint.Common.Converters
+namespace Untech.SharePoint.Converters
 {
 	/// <summary>
 	/// Represents container of <see cref="IFieldConverter"/> types.

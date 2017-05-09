@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Untech.SharePoint.Common.Converters.BuiltIn
+namespace Untech.SharePoint.Converters.BuiltIn
 {
 	[TestClass]
 	public class IntegerConverterTest : BaseConverterTest

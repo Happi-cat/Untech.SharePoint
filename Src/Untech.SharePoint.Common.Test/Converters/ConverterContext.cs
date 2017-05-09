@@ -1,12 +1,12 @@
 ﻿using System.Diagnostics.CodeAnalysis;
-using Untech.SharePoint.Common.CodeAnnotations;
-using Untech.SharePoint.Common.Configuration;
-using Untech.SharePoint.Common.Data;
-using Untech.SharePoint.Common.Mappings;
-using Untech.SharePoint.Common.Mappings.Annotation;
-using Untech.SharePoint.Common.MetaModels;
+using Untech.SharePoint.CodeAnnotations;
+using Untech.SharePoint.Configuration;
+using Untech.SharePoint.Data;
+using Untech.SharePoint.Mappings;
+using Untech.SharePoint.Mappings.Annotation;
+using Untech.SharePoint.MetaModels;
 
-namespace Untech.SharePoint.Common.Converters
+namespace Untech.SharePoint.Converters
 {
 	[UsedImplicitly(ImplicitUseTargetFlags.WithMembers)]
 	public enum ExampleEnum

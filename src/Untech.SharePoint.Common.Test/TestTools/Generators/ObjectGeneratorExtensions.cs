@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
-using Untech.SharePoint.Common.TestTools.Generators.Basic;
+using Untech.SharePoint.TestTools.Generators.Basic;
 
-namespace Untech.SharePoint.Common.TestTools.Generators
+namespace Untech.SharePoint.TestTools.Generators
 {
 	public static class ObjectGeneratorExtensions
 	{

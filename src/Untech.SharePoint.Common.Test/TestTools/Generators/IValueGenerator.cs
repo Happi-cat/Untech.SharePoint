@@ -1,4 +1,4 @@
-﻿namespace Untech.SharePoint.Common.TestTools.Generators
+﻿namespace Untech.SharePoint.TestTools.Generators
 {
 	public interface IValueGenerator<out T>
 	{

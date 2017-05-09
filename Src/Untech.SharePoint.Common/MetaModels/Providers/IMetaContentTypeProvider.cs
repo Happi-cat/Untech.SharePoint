@@ -1,4 +1,4 @@
-﻿namespace Untech.SharePoint.Common.MetaModels.Providers
+﻿namespace Untech.SharePoint.MetaModels.Providers
 {
 	/// <summary>
 	/// Represents interface of <see cref="MetaContentType"/> provider.

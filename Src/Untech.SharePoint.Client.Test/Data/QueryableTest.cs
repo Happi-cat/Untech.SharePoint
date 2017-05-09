@@ -1,7 +1,8 @@
 ﻿using Microsoft.SharePoint.Client;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Untech.SharePoint.Common.Spec;
-using Untech.SharePoint.Common.Spec.Models;
+using Untech.SharePoint.Data;
+using Untech.SharePoint.Spec;
+using Untech.SharePoint.Spec.Models;
 
 namespace Untech.SharePoint.Client.Data
 {

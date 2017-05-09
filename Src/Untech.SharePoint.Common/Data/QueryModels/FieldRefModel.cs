@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Untech.SharePoint.Common.Data.QueryModels
+namespace Untech.SharePoint.Data.QueryModels
 {
 	/// <summary>
 	/// Represents FieldRef tag in CAML query.

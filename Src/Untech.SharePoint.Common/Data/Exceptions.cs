@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Runtime.Serialization;
-using Untech.SharePoint.Common.MetaModels;
-using Untech.SharePoint.Common.Utils;
+using Untech.SharePoint.MetaModels;
+using Untech.SharePoint.Utils;
 
-namespace Untech.SharePoint.Common.Data
+namespace Untech.SharePoint.Data
 {
 	/// <summary>
 	/// Represents errors that occurs during <see cref="MetaField"/> mapping.

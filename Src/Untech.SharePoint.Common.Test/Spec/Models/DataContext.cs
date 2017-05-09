@@ -1,7 +1,7 @@
-﻿using Untech.SharePoint.Common.Data;
-using Untech.SharePoint.Common.Mappings.Annotation;
+﻿using Untech.SharePoint.Data;
+using Untech.SharePoint.Mappings.Annotation;
 
-namespace Untech.SharePoint.Common.Spec.Models
+namespace Untech.SharePoint.Spec.Models
 {
 	public class DataContext : SpContext<DataContext>
 	{

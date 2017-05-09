@@ -1,7 +1,7 @@
 ﻿using System;
-using Untech.SharePoint.Common.CodeAnnotations;
+using Untech.SharePoint.CodeAnnotations;
 
-namespace Untech.SharePoint.Common.Converters
+namespace Untech.SharePoint.Converters
 {
 	/// <summary>
 	/// Specifies SP field type that can be converted by marked <see cref="IFieldConverter"/> class.

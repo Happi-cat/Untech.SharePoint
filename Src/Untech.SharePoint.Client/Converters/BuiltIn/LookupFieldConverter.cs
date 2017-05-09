@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.SharePoint.Client;
-using Untech.SharePoint.Common.CodeAnnotations;
-using Untech.SharePoint.Common.Converters;
-using Untech.SharePoint.Common.Extensions;
-using Untech.SharePoint.Common.MetaModels;
-using Untech.SharePoint.Common.Models;
-using Untech.SharePoint.Common.Utils;
+using Untech.SharePoint.CodeAnnotations;
+using Untech.SharePoint.Converters;
+using Untech.SharePoint.Extensions;
+using Untech.SharePoint.MetaModels;
+using Untech.SharePoint.Models;
+using Untech.SharePoint.Utils;
 
 namespace Untech.SharePoint.Client.Converters.BuiltIn
 {
@@ -60,7 +60,7 @@ namespace Untech.SharePoint.Client.Converters.BuiltIn
 			var fieldValues = (IEnumerable<FieldLookupValue>)value;
 			var lookupValues = fieldValues.Select(ConvertToObjRef).ToList();
 
-			if (!lookupValues.Any())
+			if (lookupValues.Count == 0)
 			{
 				return null;
 			}
@@ -80,7 +80,7 @@ namespace Untech.SharePoint.Client.Converters.BuiltIn
 
 			var lookupValues = ((IEnumerable<ObjectReference>)value).Distinct().ToList();
 
-			if (!lookupValues.Any())
+			if (lookupValues.Count == 0)
 			{
 				return null;
 			}
@@ -93,8 +93,7 @@ namespace Untech.SharePoint.Client.Converters.BuiltIn
 		{
 			if (value == null) return null;
 
-			var singleValue = value as ObjectReference;
-			if (singleValue != null)
+			if (value is ObjectReference singleValue)
 			{
 				return singleValue.Id.ToString();
 			}

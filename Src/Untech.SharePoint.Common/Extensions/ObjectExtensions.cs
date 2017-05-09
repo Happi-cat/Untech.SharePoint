@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Untech.SharePoint.Common.CodeAnnotations;
+using Untech.SharePoint.CodeAnnotations;
 
-namespace Untech.SharePoint.Common.Extensions
+namespace Untech.SharePoint.Extensions
 {
 	/// <summary>
 	/// Provides a set of static methods for work with <see cref="object"/>.

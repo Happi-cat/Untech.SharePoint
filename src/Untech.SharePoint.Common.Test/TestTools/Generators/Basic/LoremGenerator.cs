@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Text;
 
-namespace Untech.SharePoint.Common.TestTools.Generators.Basic
+namespace Untech.SharePoint.TestTools.Generators.Basic
 {
 	public class LoremGenerator : BaseRandomGenerator, IValueGenerator<string>
 	{

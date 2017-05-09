@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using Untech.SharePoint.Common.Data.QueryModels;
+using Untech.SharePoint.Data.QueryModels;
 
-namespace Untech.SharePoint.Common.Data
+namespace Untech.SharePoint.Data
 {
 	internal class FieldRefModelComparer : IEqualityComparer<FieldRefModel>
 	{

@@ -1,15 +1,15 @@
 ﻿using System.Collections.Generic;
 using Microsoft.SharePoint.Client;
+using Untech.SharePoint.Client.Data;
 using Untech.SharePoint.Client.Data.Mapper;
-using Untech.SharePoint.Common.CodeAnnotations;
-using Untech.SharePoint.Common.Configuration;
-using Untech.SharePoint.Common.Converters;
-using Untech.SharePoint.Common.Data;
-using Untech.SharePoint.Common.MetaModels;
-using Untech.SharePoint.Common.MetaModels.Visitors;
-using Untech.SharePoint.Common.Utils;
+using Untech.SharePoint.CodeAnnotations;
+using Untech.SharePoint.Configuration;
+using Untech.SharePoint.Converters;
+using Untech.SharePoint.MetaModels;
+using Untech.SharePoint.MetaModels.Visitors;
+using Untech.SharePoint.Utils;
 
-namespace Untech.SharePoint.Client.Data
+namespace Untech.SharePoint.Data
 {
 	/// <summary>
 	/// Represents service that use CSOM (i.e. SharePoint Client Object Model) and can be used inside <see cref="SpContext{TContext}"/>.

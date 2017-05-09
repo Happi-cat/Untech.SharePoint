@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Untech.SharePoint.Common.CodeAnnotations;
-using Untech.SharePoint.Common.Utils;
+using Untech.SharePoint.CodeAnnotations;
+using Untech.SharePoint.Utils;
 
-namespace Untech.SharePoint.Common.Extensions
+namespace Untech.SharePoint.Extensions
 {
 	/// <summary>
 	/// Provide a set of static methods for work with <see cref="IEnumerable{T}"/>.

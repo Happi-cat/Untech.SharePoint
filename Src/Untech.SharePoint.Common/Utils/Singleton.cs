@@ -1,7 +1,7 @@
 ﻿using System;
-using Untech.SharePoint.Common.CodeAnnotations;
+using Untech.SharePoint.CodeAnnotations;
 
-namespace Untech.SharePoint.Common.Utils
+namespace Untech.SharePoint.Utils
 {
 	/// <summary>
 	/// Represents container for instance singleton

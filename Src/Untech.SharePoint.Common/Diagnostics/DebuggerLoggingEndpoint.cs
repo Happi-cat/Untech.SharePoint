@@ -1,8 +1,8 @@
 ﻿using System.Diagnostics;
 using System.Threading;
-using Untech.SharePoint.Common.CodeAnnotations;
+using Untech.SharePoint.CodeAnnotations;
 
-namespace Untech.SharePoint.Common.Diagnostics
+namespace Untech.SharePoint.Diagnostics
 {
 	/// <summary>
 	/// Represents class of logging endpoint that writes messages to <see cref="Debugger"/> instance.

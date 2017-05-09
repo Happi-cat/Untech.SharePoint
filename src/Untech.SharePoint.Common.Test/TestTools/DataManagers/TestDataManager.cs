@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using Untech.SharePoint.Common.Spec.Models;
+using Untech.SharePoint.Spec.Models;
 
-namespace Untech.SharePoint.Common.TestTools.DataManagers
+namespace Untech.SharePoint.TestTools.DataManagers
 {
 	public class TestDataManager
 	{

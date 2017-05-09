@@ -1,15 +1,15 @@
 ﻿using System;
 using System.Linq;
 using System.Xml.Linq;
-using Untech.SharePoint.Common.CodeAnnotations;
-using Untech.SharePoint.Common.Converters;
-using Untech.SharePoint.Common.Data.QueryModels;
-using Untech.SharePoint.Common.Diagnostics;
-using Untech.SharePoint.Common.Extensions;
-using Untech.SharePoint.Common.MetaModels;
-using Untech.SharePoint.Common.Utils;
+using Untech.SharePoint.CodeAnnotations;
+using Untech.SharePoint.Converters;
+using Untech.SharePoint.Data.QueryModels;
+using Untech.SharePoint.Diagnostics;
+using Untech.SharePoint.Extensions;
+using Untech.SharePoint.MetaModels;
+using Untech.SharePoint.Utils;
 
-namespace Untech.SharePoint.Common.Data.Translators
+namespace Untech.SharePoint.Data.Translators
 {
 	internal class CamlQueryTranslator : IProcessor<QueryModel, string>
 	{

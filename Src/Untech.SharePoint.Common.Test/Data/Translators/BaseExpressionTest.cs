@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
-using Untech.SharePoint.Common.CodeAnnotations;
-using Untech.SharePoint.Common.Models;
+using Untech.SharePoint.CodeAnnotations;
+using Untech.SharePoint.Models;
 
-namespace Untech.SharePoint.Common.Data.Translators
+namespace Untech.SharePoint.Data.Translators
 {
 	public class BaseExpressionTest
 	{

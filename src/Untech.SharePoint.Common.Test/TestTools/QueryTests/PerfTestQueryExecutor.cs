@@ -6,11 +6,11 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Untech.SharePoint.Common.Data;
-using Untech.SharePoint.Common.Extensions;
-using Untech.SharePoint.Common.MetaModels;
+using Untech.SharePoint.Data;
+using Untech.SharePoint.Extensions;
+using Untech.SharePoint.MetaModels;
 
-namespace Untech.SharePoint.Common.TestTools.QueryTests
+namespace Untech.SharePoint.TestTools.QueryTests
 {
 	public class PerfTestQueryExecutor<T> : ITestQueryExcecutor<T>
 	{

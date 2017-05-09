@@ -1,10 +1,10 @@
-﻿using Untech.SharePoint.Common.Models;
-using Untech.SharePoint.Common.Spec.Models;
-using Untech.SharePoint.Common.TestTools.Generators;
-using Untech.SharePoint.Common.TestTools.Generators.Basic;
-using Untech.SharePoint.Common.TestTools.Generators.Custom;
+﻿using Untech.SharePoint.Models;
+using Untech.SharePoint.Spec.Models;
+using Untech.SharePoint.TestTools.Generators;
+using Untech.SharePoint.TestTools.Generators.Basic;
+using Untech.SharePoint.TestTools.Generators.Custom;
 
-namespace Untech.SharePoint.Common.TestTools.DataGenerators
+namespace Untech.SharePoint.TestTools.DataGenerators
 {
 	public static class Generators
 	{

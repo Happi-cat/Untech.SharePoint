@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Untech.SharePoint.Common.TestTools.QueryTests
+namespace Untech.SharePoint.TestTools.QueryTests
 {
 	[AttributeUsage(AttributeTargets.Method)]
 	public class QueryComparerAttribute : Attribute

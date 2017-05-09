@@ -2,10 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using Untech.SharePoint.Common.CodeAnnotations;
-using Untech.SharePoint.Common.Utils;
+using Untech.SharePoint.CodeAnnotations;
+using Untech.SharePoint.Utils;
 
-namespace Untech.SharePoint.Common.MetaModels.Collections
+namespace Untech.SharePoint.MetaModels.Collections
 {
 	/// <summary>
 	/// Represents collection of <see cref="MetaContentType"/> with fast access by <see cref="MetaContentType.EntityType"/>.

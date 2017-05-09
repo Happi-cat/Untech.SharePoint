@@ -1,8 +1,8 @@
 using System;
 using System.Reflection;
-using Untech.SharePoint.Common.Utils.Reflection;
+using Untech.SharePoint.Utils.Reflection;
 
-namespace Untech.SharePoint.Common.Data.Mapper
+namespace Untech.SharePoint.Data.Mapper
 {
 	internal class MemberAccessor : IFieldAccessor<object>
 	{

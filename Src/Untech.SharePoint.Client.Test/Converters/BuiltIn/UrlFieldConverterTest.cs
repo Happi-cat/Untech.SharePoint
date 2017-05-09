@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using Microsoft.SharePoint.Client;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Untech.SharePoint.Common.Converters;
-using Untech.SharePoint.Common.Models;
+using Untech.SharePoint.Converters;
+using Untech.SharePoint.Models;
 
 namespace Untech.SharePoint.Client.Converters.BuiltIn
 {

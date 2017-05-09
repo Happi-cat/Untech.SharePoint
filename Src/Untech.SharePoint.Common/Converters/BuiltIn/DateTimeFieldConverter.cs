@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using Untech.SharePoint.Common.CodeAnnotations;
-using Untech.SharePoint.Common.MetaModels;
+using Untech.SharePoint.CodeAnnotations;
+using Untech.SharePoint.MetaModels;
 
-namespace Untech.SharePoint.Common.Converters.BuiltIn
+namespace Untech.SharePoint.Converters.BuiltIn
 {
 	[SpFieldConverter("DateTime")]
 	[UsedImplicitly]
@@ -12,8 +12,8 @@ namespace Untech.SharePoint.Common.Converters.BuiltIn
 	{
 		private static readonly IReadOnlyDictionary<Type, Func<IFieldConverter>> s_typeConverters = new Dictionary<Type, Func<IFieldConverter>>
 		{
-			{typeof(DateTime), () => new DateTimeTypeConverter()},
-			{typeof(DateTime?), () => new NullableDateTimeTypeConverter()}
+			[typeof(DateTime)] = () => new DateTimeTypeConverter(),
+			[typeof(DateTime?)] = () => new NullableDateTimeTypeConverter()
 		};
 
 		public override void Initialize(MetaField field)

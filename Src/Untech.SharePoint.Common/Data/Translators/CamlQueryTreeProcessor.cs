@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
-using Untech.SharePoint.Common.CodeAnnotations;
-using Untech.SharePoint.Common.Data.QueryModels;
-using Untech.SharePoint.Common.Data.Translators.Predicate;
-using Untech.SharePoint.Common.Diagnostics;
-using Untech.SharePoint.Common.Extensions;
-using Untech.SharePoint.Common.Utils;
+using Untech.SharePoint.CodeAnnotations;
+using Untech.SharePoint.Data.QueryModels;
+using Untech.SharePoint.Data.Translators.Predicate;
+using Untech.SharePoint.Diagnostics;
+using Untech.SharePoint.Extensions;
+using Untech.SharePoint.Utils;
 
-namespace Untech.SharePoint.Common.Data.Translators
+namespace Untech.SharePoint.Data.Translators
 {
 	internal sealed class CamlQueryTreeProcessor : IProcessor<Expression, Expression>
 	{
