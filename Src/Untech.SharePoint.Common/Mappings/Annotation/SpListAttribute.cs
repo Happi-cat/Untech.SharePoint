@@ -1,8 +1,8 @@
 ﻿using System;
-using Untech.SharePoint.Common.CodeAnnotations;
-using Untech.SharePoint.Common.Utils;
+using Untech.SharePoint.CodeAnnotations;
+using Untech.SharePoint.Utils;
 
-namespace Untech.SharePoint.Common.Mappings.Annotation
+namespace Untech.SharePoint.Mappings.Annotation
 {
 	/// <summary>
 	/// When applied to property, specifies member that should be mapped to SP list.

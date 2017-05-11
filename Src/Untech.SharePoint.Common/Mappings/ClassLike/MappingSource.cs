@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Reflection;
-using Untech.SharePoint.Common.Data;
-using Untech.SharePoint.Common.MetaModels;
-using Untech.SharePoint.Common.MetaModels.Providers;
+using Untech.SharePoint.Data;
+using Untech.SharePoint.MetaModels;
+using Untech.SharePoint.MetaModels.Providers;
 
-namespace Untech.SharePoint.Common.Mappings.ClassLike
+namespace Untech.SharePoint.Mappings.ClassLike
 {
 	internal class ClassLikeMappingSource<TContext> : MappingSource<TContext>
 		where TContext : ISpContext

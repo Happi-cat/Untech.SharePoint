@@ -1,14 +1,15 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Microsoft.SharePoint;
-using Untech.SharePoint.Common.Models;
-using Untech.SharePoint.Common.Spec.Models;
-using Untech.SharePoint.Common.TestTools.DataGenerators;
+using Untech.SharePoint.Data;
+using Untech.SharePoint.Models;
 using Untech.SharePoint.Server.Data;
+using Untech.SharePoint.Spec.Models;
+using Untech.SharePoint.TestTools.DataGenerators;
 
 namespace Untech.SharePoint.Server
 {
-	public class DataGenerator
+	public static class DataGenerator
 	{
 		public static void Generate()
 		{

@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Untech.SharePoint.Common.CodeAnnotations;
-using Untech.SharePoint.Common.Extensions;
-using Untech.SharePoint.Common.Models;
-using Untech.SharePoint.Common.TestTools.Generators.Basic;
+using Untech.SharePoint.CodeAnnotations;
+using Untech.SharePoint.Extensions;
+using Untech.SharePoint.Models;
+using Untech.SharePoint.TestTools.Generators.Basic;
 
-namespace Untech.SharePoint.Common.TestTools.Generators.Custom
+namespace Untech.SharePoint.TestTools.Generators.Custom
 {
 	public class UserInfoGenerator : BaseRandomGenerator, IValueGenerator<UserInfo>
 	{

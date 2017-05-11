@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 
-namespace Untech.SharePoint.Common.Data.Translators
+namespace Untech.SharePoint.Data.Translators
 {
 	public class FakeQueryable<T> : IOrderedQueryable<T>, IQueryProvider
 	{

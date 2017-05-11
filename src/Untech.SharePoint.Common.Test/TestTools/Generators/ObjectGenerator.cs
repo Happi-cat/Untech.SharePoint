@@ -2,10 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Reflection;
-using Untech.SharePoint.Common.CodeAnnotations;
-using Untech.SharePoint.Common.Utils.Reflection;
+using Untech.SharePoint.CodeAnnotations;
+using Untech.SharePoint.Utils.Reflection;
 
-namespace Untech.SharePoint.Common.TestTools.Generators
+namespace Untech.SharePoint.TestTools.Generators
 {
 	public class ObjectGenerator<T> : IValueGenerator<T>
 	{

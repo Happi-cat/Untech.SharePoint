@@ -2,9 +2,9 @@
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
-using Untech.SharePoint.Common.CodeAnnotations;
+using Untech.SharePoint.CodeAnnotations;
 
-namespace Untech.SharePoint.Common.Utils.Reflection
+namespace Untech.SharePoint.Utils.Reflection
 {
 	[UsedImplicitly(ImplicitUseTargetFlags.WithMembers)]
 	internal static class InstanceCreationUtility

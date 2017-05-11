@@ -1,10 +1,10 @@
 ﻿using System;
-using Untech.SharePoint.Common.CodeAnnotations;
-using Untech.SharePoint.Common.Extensions;
-using Untech.SharePoint.Common.MetaModels;
-using Untech.SharePoint.Common.Utils;
+using Untech.SharePoint.CodeAnnotations;
+using Untech.SharePoint.Extensions;
+using Untech.SharePoint.MetaModels;
+using Untech.SharePoint.Utils;
 
-namespace Untech.SharePoint.Common.Converters.BuiltIn
+namespace Untech.SharePoint.Converters.BuiltIn
 {
 	[SpFieldConverter("Number")]
 	[SpFieldConverter("Currency")]

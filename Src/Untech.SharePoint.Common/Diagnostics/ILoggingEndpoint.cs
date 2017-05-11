@@ -1,4 +1,4 @@
-﻿namespace Untech.SharePoint.Common.Diagnostics
+﻿namespace Untech.SharePoint.Diagnostics
 {
 	/// <summary>
 	/// Represents interface of logging endpoint.

@@ -3,11 +3,11 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Linq.Expressions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Untech.SharePoint.Common.CodeAnnotations;
-using Untech.SharePoint.Common.Data.QueryModels;
-using Untech.SharePoint.Common.Extensions;
+using Untech.SharePoint.CodeAnnotations;
+using Untech.SharePoint.Data.QueryModels;
+using Untech.SharePoint.Extensions;
 
-namespace Untech.SharePoint.Common.Data.Translators
+namespace Untech.SharePoint.Data.Translators
 {
 	[TestClass]
 	[SuppressMessage("ReSharper", "ReplaceWithSingleCallToAny")]

@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using Untech.SharePoint.Common.Converters;
-using Untech.SharePoint.Common.Data;
-using Untech.SharePoint.Common.Extensions;
-using Untech.SharePoint.Common.MetaModels;
+using Untech.SharePoint.Converters;
+using Untech.SharePoint.Data;
+using Untech.SharePoint.Extensions;
+using Untech.SharePoint.MetaModels;
 
-namespace Untech.SharePoint.Common.Utils
+namespace Untech.SharePoint.Utils
 {
 	internal static class Error
 	{

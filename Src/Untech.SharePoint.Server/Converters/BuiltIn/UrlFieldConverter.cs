@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
 using Microsoft.SharePoint;
-using Untech.SharePoint.Common.CodeAnnotations;
-using Untech.SharePoint.Common.Converters;
-using Untech.SharePoint.Common.MetaModels;
-using Untech.SharePoint.Common.Models;
+using Untech.SharePoint.CodeAnnotations;
+using Untech.SharePoint.Converters;
+using Untech.SharePoint.MetaModels;
+using Untech.SharePoint.Models;
 
 namespace Untech.SharePoint.Server.Converters.BuiltIn
 {
@@ -14,8 +14,8 @@ namespace Untech.SharePoint.Server.Converters.BuiltIn
 	{
 		private static readonly IReadOnlyDictionary<Type, Func<IFieldConverter>> s_typeConverters = new Dictionary<Type, Func<IFieldConverter>>
 		{
-			{typeof(string), () => new StringTypeConverter()},
-			{typeof(UrlInfo), () => new UrlInfoTypeConverter()},
+			[typeof(string)] = () => new StringTypeConverter(),
+			[typeof(UrlInfo)] = () => new UrlInfoTypeConverter(),
 		};
 
 		public override void Initialize(MetaField field)
@@ -44,7 +44,7 @@ namespace Untech.SharePoint.Server.Converters.BuiltIn
 
 			public object ToSpValue(object value)
 			{
-				return value != null ? value.ToString() : null;
+				return value?.ToString();
 			}
 
 			public string ToCamlValue(object value)

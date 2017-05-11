@@ -1,7 +1,7 @@
 ﻿using System;
-using Untech.SharePoint.Common.CodeAnnotations;
+using Untech.SharePoint.CodeAnnotations;
 
-namespace Untech.SharePoint.Common.Mappings.Annotation
+namespace Untech.SharePoint.Mappings.Annotation
 {
 	/// <summary>
 	/// Class attribute that used for describing SP ContentType.

@@ -1,7 +1,6 @@
-﻿using Untech.SharePoint.Client.Configuration;
-using Untech.SharePoint.Common.Configuration;
-using Untech.SharePoint.Common.Spec.Models;
-using Untech.SharePoint.Common.Utils;
+﻿using Untech.SharePoint.Configuration;
+using Untech.SharePoint.Spec.Models;
+using Untech.SharePoint.Utils;
 
 namespace Untech.SharePoint.Client.Data
 {

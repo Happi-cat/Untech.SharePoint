@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Linq.Expressions;
 using System.Reflection;
-using Untech.SharePoint.Common.CodeAnnotations;
-using Untech.SharePoint.Common.Extensions;
+using Untech.SharePoint.CodeAnnotations;
+using Untech.SharePoint.Extensions;
 using Getter = System.Func<object, object>;
 using Setter = System.Action<object, object>;
 
-namespace Untech.SharePoint.Common.Utils.Reflection
+namespace Untech.SharePoint.Utils.Reflection
 {
 	[UsedImplicitly(ImplicitUseTargetFlags.WithMembers)]
 	internal static class MemberAccessUtility

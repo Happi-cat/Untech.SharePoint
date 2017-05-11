@@ -1,14 +1,14 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Untech.SharePoint.Common.CodeAnnotations;
-using Untech.SharePoint.Common.Data.Mapper;
-using Untech.SharePoint.Common.Data.QueryModels;
-using Untech.SharePoint.Common.Data.Translators;
-using Untech.SharePoint.Common.Extensions;
-using Untech.SharePoint.Common.MetaModels;
-using Untech.SharePoint.Common.Utils;
+using Untech.SharePoint.CodeAnnotations;
+using Untech.SharePoint.Data.Mapper;
+using Untech.SharePoint.Data.QueryModels;
+using Untech.SharePoint.Data.Translators;
+using Untech.SharePoint.Extensions;
+using Untech.SharePoint.MetaModels;
+using Untech.SharePoint.Utils;
 
-namespace Untech.SharePoint.Common.Data
+namespace Untech.SharePoint.Data
 {
 	/// <summary>
 	/// Represents base class for SP list items provider.

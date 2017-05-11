@@ -2,12 +2,12 @@
 using System.ComponentModel;
 using System.Reflection;
 using System.Runtime.Serialization;
-using Untech.SharePoint.Common.CodeAnnotations;
-using Untech.SharePoint.Common.Extensions;
-using Untech.SharePoint.Common.MetaModels;
-using Untech.SharePoint.Common.Utils;
+using Untech.SharePoint.CodeAnnotations;
+using Untech.SharePoint.Extensions;
+using Untech.SharePoint.MetaModels;
+using Untech.SharePoint.Utils;
 
-namespace Untech.SharePoint.Common.Converters.Custom
+namespace Untech.SharePoint.Converters.Custom
 {
 	/// <summary>
 	/// Represents field converter that can convert string to <see cref="Enum"/> and vice versa.

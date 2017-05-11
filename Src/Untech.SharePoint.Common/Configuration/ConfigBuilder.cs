@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using Untech.SharePoint.Common.CodeAnnotations;
-using Untech.SharePoint.Common.Collections;
-using Untech.SharePoint.Common.Converters;
-using Untech.SharePoint.Common.Data;
-using Untech.SharePoint.Common.Extensions;
-using Untech.SharePoint.Common.Mappings;
-using Untech.SharePoint.Common.Utils;
+using Untech.SharePoint.CodeAnnotations;
+using Untech.SharePoint.Collections;
+using Untech.SharePoint.Converters;
+using Untech.SharePoint.Data;
+using Untech.SharePoint.Extensions;
+using Untech.SharePoint.Mappings;
+using Untech.SharePoint.Utils;
 
-namespace Untech.SharePoint.Common.Configuration
+namespace Untech.SharePoint.Configuration
 {
 	/// <summary>
 	/// Represents class that can build <see cref="Config"/>.

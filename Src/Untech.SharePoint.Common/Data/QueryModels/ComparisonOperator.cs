@@ -1,6 +1,6 @@
-﻿using Untech.SharePoint.Common.CodeAnnotations;
+﻿using Untech.SharePoint.CodeAnnotations;
 
-namespace Untech.SharePoint.Common.Data.QueryModels
+namespace Untech.SharePoint.Data.QueryModels
 {
 	/// <summary>
 	/// Describes different types of comparison operations allowed in CAML.

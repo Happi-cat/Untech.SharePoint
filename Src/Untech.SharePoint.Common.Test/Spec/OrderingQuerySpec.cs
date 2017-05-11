@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Untech.SharePoint.Common.Spec.Models;
-using Untech.SharePoint.Common.TestTools.Comparers;
-using Untech.SharePoint.Common.TestTools.QueryTests;
+using Untech.SharePoint.Spec.Models;
+using Untech.SharePoint.TestTools.Comparers;
+using Untech.SharePoint.TestTools.QueryTests;
 
-namespace Untech.SharePoint.Common.Spec
+namespace Untech.SharePoint.Spec
 {
 	/// <summary>
 	/// The ordering methods are OrderBy, OrderByDescending, ThenBy, ThenByDescending, and Reverse.

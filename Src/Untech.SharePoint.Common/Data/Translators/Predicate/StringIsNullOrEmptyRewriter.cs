@@ -1,6 +1,6 @@
 ﻿using System.Linq.Expressions;
 
-namespace Untech.SharePoint.Common.Data.Translators.Predicate
+namespace Untech.SharePoint.Data.Translators.Predicate
 {
 	internal class StringIsNullOrEmptyRewriter : ExpressionVisitor
 	{

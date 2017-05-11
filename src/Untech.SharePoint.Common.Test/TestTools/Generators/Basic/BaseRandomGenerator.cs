@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Untech.SharePoint.Common.TestTools.Generators.Basic
+namespace Untech.SharePoint.TestTools.Generators.Basic
 {
 	public class BaseRandomGenerator
 	{

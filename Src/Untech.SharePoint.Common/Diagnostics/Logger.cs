@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Untech.SharePoint.Common.CodeAnnotations;
-using Untech.SharePoint.Common.Utils;
+using Untech.SharePoint.CodeAnnotations;
+using Untech.SharePoint.Utils;
 
-namespace Untech.SharePoint.Common.Diagnostics
+namespace Untech.SharePoint.Diagnostics
 {
 	/// <summary>
 	/// Represents class that logs any message to specified endpoints.

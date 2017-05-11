@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Untech.SharePoint.Common.CodeAnnotations;
-using Untech.SharePoint.Common.Extensions;
+using Untech.SharePoint.CodeAnnotations;
+using Untech.SharePoint.Extensions;
 
-namespace Untech.SharePoint.Common.TestTools.Generators.Basic
+namespace Untech.SharePoint.TestTools.Generators.Basic
 {
 	public class RangeGenerator<T> : BaseRandomGenerator, IValueGenerator<T>
 	{

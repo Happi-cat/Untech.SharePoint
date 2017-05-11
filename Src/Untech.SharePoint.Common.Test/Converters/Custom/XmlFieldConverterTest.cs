@@ -5,7 +5,7 @@ using System.Xml.Linq;
 using System.Xml.Serialization;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Untech.SharePoint.Common.Converters.Custom
+namespace Untech.SharePoint.Converters.Custom
 {
 	[TestClass]
 	public class XmlFieldConverterTest : BaseConverterTest

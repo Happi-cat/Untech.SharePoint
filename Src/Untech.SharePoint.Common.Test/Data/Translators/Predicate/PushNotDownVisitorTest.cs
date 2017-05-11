@@ -2,7 +2,7 @@
 using System.Linq.Expressions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Untech.SharePoint.Common.Data.Translators.Predicate
+namespace Untech.SharePoint.Data.Translators.Predicate
 {
 	[TestClass]
 	[SuppressMessage("ReSharper", "RedundantLogicalConditionalExpressionOperand")]

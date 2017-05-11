@@ -1,8 +1,8 @@
-﻿using Untech.SharePoint.Common.CodeAnnotations;
-using Untech.SharePoint.Common.Mappings;
-using Untech.SharePoint.Common.MetaModels;
+﻿using Untech.SharePoint.CodeAnnotations;
+using Untech.SharePoint.Mappings;
+using Untech.SharePoint.MetaModels;
 
-namespace Untech.SharePoint.Common.Data
+namespace Untech.SharePoint.Data
 {
 	/// <summary>
 	/// Represents interface for SP data context types.

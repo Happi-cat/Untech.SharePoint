@@ -17,6 +17,7 @@
     <PackageTags>SharePoint Data ORM</PackageTags>
     <RepositoryUrl>https://github.com/Happi-cat/Untech.SharePoint.git</RepositoryUrl>
     <RepositoryType>Git</RepositoryType>
+    <RootNamespace>Untech.SharePoint</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="10.0.2" />

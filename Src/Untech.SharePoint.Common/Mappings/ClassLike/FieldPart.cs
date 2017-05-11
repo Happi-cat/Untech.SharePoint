@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Reflection;
-using Untech.SharePoint.Common.CodeAnnotations;
-using Untech.SharePoint.Common.Converters;
-using Untech.SharePoint.Common.MetaModels;
-using Untech.SharePoint.Common.MetaModels.Providers;
+using Untech.SharePoint.CodeAnnotations;
+using Untech.SharePoint.Converters;
+using Untech.SharePoint.MetaModels;
+using Untech.SharePoint.MetaModels.Providers;
 
-namespace Untech.SharePoint.Common.Mappings.ClassLike
+namespace Untech.SharePoint.Mappings.ClassLike
 {
 	/// <summary>
 	/// Represents provider of <see cref="MetaField"/> that allows to configure field mapping in fluent way.

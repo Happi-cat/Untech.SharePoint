@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Globalization;
-using Untech.SharePoint.Common.MetaModels;
+using Untech.SharePoint.MetaModels;
 
-namespace Untech.SharePoint.Common.Converters.Custom
+namespace Untech.SharePoint.Converters.Custom
 {
 	/// <summary>
 	/// Represents field converter that can convert string to <see cref="Tuple{Double,Double}"/> and vice versa.

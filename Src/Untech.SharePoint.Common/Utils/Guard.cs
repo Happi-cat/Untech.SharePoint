@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Untech.SharePoint.Common.CodeAnnotations;
-using Untech.SharePoint.Common.Extensions;
+using Untech.SharePoint.CodeAnnotations;
+using Untech.SharePoint.Extensions;
 
-namespace Untech.SharePoint.Common.Utils
+namespace Untech.SharePoint.Utils
 {
 	/// <summary>
 	/// Provides a set of static methods for arguments validation.

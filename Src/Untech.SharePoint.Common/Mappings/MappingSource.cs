@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Reflection;
-using Untech.SharePoint.Common.CodeAnnotations;
-using Untech.SharePoint.Common.Data;
-using Untech.SharePoint.Common.MetaModels;
+using Untech.SharePoint.CodeAnnotations;
+using Untech.SharePoint.Data;
+using Untech.SharePoint.MetaModels;
 
-namespace Untech.SharePoint.Common.Mappings
+namespace Untech.SharePoint.Mappings
 {
 	/// <summary>
 	/// Represents class that can create <see cref="MetaContext"/> and resolve list title for the specified member of this context.

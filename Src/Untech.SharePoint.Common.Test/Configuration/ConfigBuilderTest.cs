@@ -1,9 +1,9 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Untech.SharePoint.Common.Converters;
-using Untech.SharePoint.Common.Mappings.Annotation;
+using Untech.SharePoint.Converters;
+using Untech.SharePoint.Mappings.Annotation;
 
-namespace Untech.SharePoint.Common.Configuration
+namespace Untech.SharePoint.Configuration
 {
 	[TestClass]
 	public class ConfigBuilderTest

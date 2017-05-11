@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Reflection;
-using Untech.SharePoint.Common.Extensions;
+using Untech.SharePoint.Extensions;
 
-namespace Untech.SharePoint.Common.Utils.Reflection
+namespace Untech.SharePoint.Utils.Reflection
 {
 	internal static class ReflectionError
 	{

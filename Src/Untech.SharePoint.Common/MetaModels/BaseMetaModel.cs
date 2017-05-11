@@ -1,10 +1,10 @@
 ﻿using System;
-using Untech.SharePoint.Common.CodeAnnotations;
-using Untech.SharePoint.Common.Collections;
-using Untech.SharePoint.Common.MetaModels.Visitors;
-using Untech.SharePoint.Common.Utils;
+using Untech.SharePoint.CodeAnnotations;
+using Untech.SharePoint.Collections;
+using Untech.SharePoint.MetaModels.Visitors;
+using Untech.SharePoint.Utils;
 
-namespace Untech.SharePoint.Common.MetaModels
+namespace Untech.SharePoint.MetaModels
 {
 	/// <summary>
 	/// Represent base meta model class that implements <see cref="IMetaModel"/>

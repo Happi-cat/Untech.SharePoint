@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Linq;
-using Untech.SharePoint.Common.CodeAnnotations;
-using Untech.SharePoint.Common.Data.Mapper;
-using Untech.SharePoint.Common.Utils;
+using Untech.SharePoint.CodeAnnotations;
+using Untech.SharePoint.Data.Mapper;
+using Untech.SharePoint.Utils;
 
-namespace Untech.SharePoint.Common.MetaModels
+namespace Untech.SharePoint.MetaModels
 {
 	/// <summary>
 	/// Provides a set of static methods for easy work with <see cref="IMetaModel"/> additional properties.

@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Linq.Expressions;
-using Untech.SharePoint.Common.CodeAnnotations;
-using Untech.SharePoint.Common.Extensions;
-using Untech.SharePoint.Common.Mappings;
-using Untech.SharePoint.Common.MetaModels;
-using Untech.SharePoint.Common.Utils;
+using Untech.SharePoint.CodeAnnotations;
+using Untech.SharePoint.Extensions;
+using Untech.SharePoint.Mappings;
+using Untech.SharePoint.MetaModels;
+using Untech.SharePoint.Utils;
 
-namespace Untech.SharePoint.Common.Data
+namespace Untech.SharePoint.Data
 {
 	/// <summary>
 	/// Represents base data context.

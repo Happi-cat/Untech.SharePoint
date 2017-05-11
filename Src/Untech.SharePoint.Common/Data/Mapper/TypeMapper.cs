@@ -2,14 +2,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using Untech.SharePoint.Common.CodeAnnotations;
-using Untech.SharePoint.Common.Data.QueryModels;
-using Untech.SharePoint.Common.Extensions;
-using Untech.SharePoint.Common.MetaModels;
-using Untech.SharePoint.Common.Utils;
-using Untech.SharePoint.Common.Utils.Reflection;
+using Untech.SharePoint.CodeAnnotations;
+using Untech.SharePoint.Data.QueryModels;
+using Untech.SharePoint.Extensions;
+using Untech.SharePoint.MetaModels;
+using Untech.SharePoint.Utils;
+using Untech.SharePoint.Utils.Reflection;
 
-namespace Untech.SharePoint.Common.Data.Mapper
+namespace Untech.SharePoint.Data.Mapper
 {
 	/// <summary>
 	/// Represents class that can map SP List item to Entity.

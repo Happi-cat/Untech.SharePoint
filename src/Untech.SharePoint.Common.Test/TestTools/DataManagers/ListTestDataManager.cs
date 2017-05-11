@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Untech.SharePoint.Common.CodeAnnotations;
-using Untech.SharePoint.Common.Data;
+using Untech.SharePoint.CodeAnnotations;
+using Untech.SharePoint.Data;
 
-namespace Untech.SharePoint.Common.TestTools.DataManagers
+namespace Untech.SharePoint.TestTools.DataManagers
 {
 	public class ListTestDataManager<T>
 	{

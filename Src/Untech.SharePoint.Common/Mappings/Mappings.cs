@@ -1,8 +1,8 @@
-﻿using Untech.SharePoint.Common.Data;
-using Untech.SharePoint.Common.Mappings.Annotation;
-using Untech.SharePoint.Common.Mappings.ClassLike;
+﻿using Untech.SharePoint.Data;
+using Untech.SharePoint.Mappings.Annotation;
+using Untech.SharePoint.Mappings.ClassLike;
 
-namespace Untech.SharePoint.Common.Mappings
+namespace Untech.SharePoint.Mappings
 {
 	/// <summary>
 	/// Represents class that provides a set of methods that returns <see cref="MappingSource{TContext}"/>

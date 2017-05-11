@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using Untech.SharePoint.Common.CodeAnnotations;
-using Untech.SharePoint.Common.Data.QueryModels;
-using Untech.SharePoint.Common.Utils;
+using Untech.SharePoint.CodeAnnotations;
+using Untech.SharePoint.Data.QueryModels;
+using Untech.SharePoint.Utils;
 
-namespace Untech.SharePoint.Common.Data
+namespace Untech.SharePoint.Data
 {
 	[UsedImplicitly(ImplicitUseTargetFlags.WithMembers)]
 	internal static class SpQueryable

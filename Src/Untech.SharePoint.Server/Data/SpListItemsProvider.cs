@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.SharePoint;
-using Untech.SharePoint.Common.Data;
-using Untech.SharePoint.Common.Data.Mapper;
-using Untech.SharePoint.Common.MetaModels;
+using Untech.SharePoint.Data;
+using Untech.SharePoint.Data.Mapper;
+using Untech.SharePoint.MetaModels;
 using Untech.SharePoint.Server.Extensions;
 using Untech.SharePoint.Server.Utils;
 

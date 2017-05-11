@@ -1,7 +1,7 @@
 ﻿using System;
-using Untech.SharePoint.Common.CodeAnnotations;
+using Untech.SharePoint.CodeAnnotations;
 
-namespace Untech.SharePoint.Common.Mappings
+namespace Untech.SharePoint.Mappings
 {
 	/// <summary>
 	/// Exposes Resolve method that will return <see cref="IMappingSource"/> for the specified context type.

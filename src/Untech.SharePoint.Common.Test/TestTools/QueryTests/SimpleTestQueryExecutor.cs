@@ -2,9 +2,9 @@ using System;
 using System.Collections;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Untech.SharePoint.Common.Data;
+using Untech.SharePoint.Data;
 
-namespace Untech.SharePoint.Common.TestTools.QueryTests
+namespace Untech.SharePoint.TestTools.QueryTests
 {
 	public class SimpleTestQueryExecutor<T> : ITestQueryExcecutor<T>
 	{

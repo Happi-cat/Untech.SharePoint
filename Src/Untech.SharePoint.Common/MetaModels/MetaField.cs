@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Reflection;
-using Untech.SharePoint.Common.CodeAnnotations;
-using Untech.SharePoint.Common.Converters;
-using Untech.SharePoint.Common.Data;
-using Untech.SharePoint.Common.Extensions;
-using Untech.SharePoint.Common.MetaModels.Visitors;
-using Untech.SharePoint.Common.Utils;
+using Untech.SharePoint.CodeAnnotations;
+using Untech.SharePoint.Converters;
+using Untech.SharePoint.Data;
+using Untech.SharePoint.Extensions;
+using Untech.SharePoint.MetaModels.Visitors;
+using Untech.SharePoint.Utils;
 
-namespace Untech.SharePoint.Common.MetaModels
+namespace Untech.SharePoint.MetaModels
 {
 	/// <summary>
 	/// Represents MetaData for SP Field.

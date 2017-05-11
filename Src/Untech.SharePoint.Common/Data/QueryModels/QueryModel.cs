@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Untech.SharePoint.Common.CodeAnnotations;
-using Untech.SharePoint.Common.Extensions;
+using Untech.SharePoint.CodeAnnotations;
+using Untech.SharePoint.Extensions;
 
-namespace Untech.SharePoint.Common.Data.QueryModels
+namespace Untech.SharePoint.Data.QueryModels
 {
 	/// <summary>
 	/// Represents CAML Query tag.

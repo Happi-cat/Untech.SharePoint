@@ -1,8 +1,8 @@
 ﻿using System.Reflection;
-using Untech.SharePoint.Common.Data;
-using Untech.SharePoint.Common.MetaModels;
+using Untech.SharePoint.Data;
+using Untech.SharePoint.MetaModels;
 
-namespace Untech.SharePoint.Common.Mappings.Annotation
+namespace Untech.SharePoint.Mappings.Annotation
 {
 	internal sealed class AnnotatedMappingSource<TContext> : MappingSource<TContext>
 		where TContext : ISpContext

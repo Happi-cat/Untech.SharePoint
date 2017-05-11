@@ -4,10 +4,10 @@ using System.Linq;
 using Microsoft.SharePoint.Client;
 using Untech.SharePoint.Client.Extensions;
 using Untech.SharePoint.Client.Utils;
-using Untech.SharePoint.Common.CodeAnnotations;
-using Untech.SharePoint.Common.Data;
-using Untech.SharePoint.Common.Data.Mapper;
-using Untech.SharePoint.Common.MetaModels;
+using Untech.SharePoint.CodeAnnotations;
+using Untech.SharePoint.Data;
+using Untech.SharePoint.Data.Mapper;
+using Untech.SharePoint.MetaModels;
 
 namespace Untech.SharePoint.Client.Data
 {
@@ -24,7 +24,6 @@ namespace Untech.SharePoint.Client.Data
 
 			_spList = clientContext.GetListByUrl(list.Url);
 		}
-
 
 		public override IEnumerable<string> GetAttachments(int id)
 		{
@@ -156,7 +155,6 @@ namespace Untech.SharePoint.Client.Data
 			}
 			_clientContext.ExecuteQuery();
 		}
-
 
 		private class UpdateItemInfo
 		{

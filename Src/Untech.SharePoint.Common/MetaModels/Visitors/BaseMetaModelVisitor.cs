@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Untech.SharePoint.Common.MetaModels.Visitors
+namespace Untech.SharePoint.MetaModels.Visitors
 {
 	/// <summary>
 	/// Represents base meta models visitor.

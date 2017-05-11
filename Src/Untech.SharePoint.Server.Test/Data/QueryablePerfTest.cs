@@ -1,8 +1,9 @@
 ﻿using Microsoft.SharePoint;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Untech.SharePoint.Common.Spec;
-using Untech.SharePoint.Common.Spec.Models;
-using Untech.SharePoint.Common.TestTools.QueryTests;
+using Untech.SharePoint.Data;
+using Untech.SharePoint.Spec;
+using Untech.SharePoint.Spec.Models;
+using Untech.SharePoint.TestTools.QueryTests;
 
 namespace Untech.SharePoint.Server.Data
 {

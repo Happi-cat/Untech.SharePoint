@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Globalization;
 using Microsoft.SharePoint.Client;
-using Untech.SharePoint.Common.Converters;
-using Untech.SharePoint.Common.MetaModels;
-using Untech.SharePoint.Common.Utils;
+using Untech.SharePoint.Converters;
+using Untech.SharePoint.MetaModels;
+using Untech.SharePoint.Utils;
 
 namespace Untech.SharePoint.Client.Converters.BuiltIn
 {
@@ -42,8 +42,7 @@ namespace Untech.SharePoint.Client.Converters.BuiltIn
 		{
 			if (value == null) return default(T);
 
-			var errValue = value as FieldCalculatedErrorValue;
-			if (errValue != null)
+			if (value is FieldCalculatedErrorValue errValue)
 			{
 				throw new ArgumentException("Calculated field value is an error: " + errValue.ErrorMessage);
 			}

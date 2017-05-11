@@ -1,7 +1,7 @@
-﻿using Untech.SharePoint.Common.Mappings.Annotation;
-using Untech.SharePoint.Common.Models;
+﻿using Untech.SharePoint.Mappings.Annotation;
+using Untech.SharePoint.Models;
 
-namespace Untech.SharePoint.Common.Spec.Models
+namespace Untech.SharePoint.Spec.Models
 {
 	[SpContentType]
 	public class NewsModel : Entity

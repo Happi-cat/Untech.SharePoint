@@ -3,15 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
-using Untech.SharePoint.Common.CodeAnnotations;
-using Untech.SharePoint.Common.Data;
-using Untech.SharePoint.Common.Extensions;
-using Untech.SharePoint.Common.Mappings.Annotation;
-using Untech.SharePoint.Common.MetaModels;
-using Untech.SharePoint.Common.MetaModels.Providers;
-using Untech.SharePoint.Common.Utils;
+using Untech.SharePoint.CodeAnnotations;
+using Untech.SharePoint.Data;
+using Untech.SharePoint.Extensions;
+using Untech.SharePoint.Mappings.Annotation;
+using Untech.SharePoint.MetaModels;
+using Untech.SharePoint.MetaModels.Providers;
+using Untech.SharePoint.Utils;
 
-namespace Untech.SharePoint.Common.Mappings.ClassLike
+namespace Untech.SharePoint.Mappings.ClassLike
 {
 	/// <summary>
 	/// Represents provider of <see cref="MetaList"/> that allows to configure list mapping in fluent way.

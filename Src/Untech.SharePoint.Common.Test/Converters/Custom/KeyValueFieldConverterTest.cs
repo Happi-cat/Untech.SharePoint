@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Untech.SharePoint.Common.Converters.Custom
+namespace Untech.SharePoint.Converters.Custom
 {
 	[TestClass]
 	public class KeyValueFieldConverterTest : BaseConverterTest

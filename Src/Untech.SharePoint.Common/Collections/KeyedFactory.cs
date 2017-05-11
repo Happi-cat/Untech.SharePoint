@@ -1,7 +1,7 @@
 ﻿using System;
-using Untech.SharePoint.Common.CodeAnnotations;
+using Untech.SharePoint.CodeAnnotations;
 
-namespace Untech.SharePoint.Common.Collections
+namespace Untech.SharePoint.Collections
 {
 	/// <summary>
 	/// Represents a keyed objects factory.

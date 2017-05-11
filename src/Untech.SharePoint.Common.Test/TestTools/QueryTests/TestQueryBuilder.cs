@@ -1,10 +1,10 @@
 using System;
 using System.Linq;
 using System.Reflection;
-using Untech.SharePoint.Common.Extensions;
-using Untech.SharePoint.Common.TestTools.Comparers;
+using Untech.SharePoint.Extensions;
+using Untech.SharePoint.TestTools.Comparers;
 
-namespace Untech.SharePoint.Common.TestTools.QueryTests
+namespace Untech.SharePoint.TestTools.QueryTests
 {
 	public class TestQueryBuilder<T> : ITestQueryAcceptor<T>
 	{

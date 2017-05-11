@@ -1,4 +1,4 @@
-﻿namespace Untech.SharePoint.Common.Mappings.ClassLike
+﻿namespace Untech.SharePoint.Mappings.ClassLike
 {
 	public class AnnouncmentItem
 	{

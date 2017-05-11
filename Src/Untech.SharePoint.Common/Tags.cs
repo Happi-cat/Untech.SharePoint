@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 
-namespace Untech.SharePoint.Common
+namespace Untech.SharePoint
 {
 	[SuppressMessage("ReSharper", "UnusedMember.Global")]
 	internal static class Tags

@@ -1,6 +1,6 @@
 ﻿using System.Linq.Expressions;
 
-namespace Untech.SharePoint.Common.Extensions
+namespace Untech.SharePoint.Extensions
 {
 	internal static class ExpressionExtensions
 	{

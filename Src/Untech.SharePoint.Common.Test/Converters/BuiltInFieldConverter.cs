@@ -1,4 +1,4 @@
-﻿namespace Untech.SharePoint.Common.Converters
+﻿namespace Untech.SharePoint.Converters
 {
 	[SpFieldConverter("BUILT_IN_TEST_CONVERTER")]
 	public class BuiltInTestFieldConverter : IFieldConverter

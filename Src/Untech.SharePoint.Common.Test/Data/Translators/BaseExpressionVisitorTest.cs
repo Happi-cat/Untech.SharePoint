@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Untech.SharePoint.Common.CodeAnnotations;
-using Untech.SharePoint.Common.Data.Translators.Predicate;
+using Untech.SharePoint.CodeAnnotations;
+using Untech.SharePoint.Data.Translators.Predicate;
 
-namespace Untech.SharePoint.Common.Data.Translators
+namespace Untech.SharePoint.Data.Translators
 {
 	public abstract class BaseExpressionVisitorTest : BaseExpressionTest
 	{

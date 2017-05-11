@@ -3,9 +3,8 @@ using System.IO;
 using System.Linq;
 using System.Security;
 using System.Text;
-using System.Xml;
 using Microsoft.SharePoint;
-using Untech.SharePoint.Common.Extensions;
+using Untech.SharePoint.Extensions;
 
 namespace Untech.SharePoint.Server.Data
 {

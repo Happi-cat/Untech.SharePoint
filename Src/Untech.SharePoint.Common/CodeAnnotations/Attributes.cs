@@ -9,7 +9,7 @@
 // ReSharper disable InconsistentNaming
 // ReSharper disable CheckNamespace
 
-namespace Untech.SharePoint.Common.CodeAnnotations
+namespace Untech.SharePoint.CodeAnnotations
 {
 	/// <summary>
 	/// Indicates that the value of the marked element could be <c>null</c> sometimes,

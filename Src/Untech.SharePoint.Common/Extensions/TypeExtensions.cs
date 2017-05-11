@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using Untech.SharePoint.Common.CodeAnnotations;
-using Untech.SharePoint.Common.Utils;
+using Untech.SharePoint.CodeAnnotations;
+using Untech.SharePoint.Utils;
 
-namespace Untech.SharePoint.Common.Extensions
+namespace Untech.SharePoint.Extensions
 {
 	/// <summary>
 	/// Provides a set of static method that can be used with <see cref="Type"/> and <see cref="System.Reflection"/>

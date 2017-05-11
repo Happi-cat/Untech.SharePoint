@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Untech.SharePoint.Common.TestTools.Generators.Basic
+namespace Untech.SharePoint.TestTools.Generators.Basic
 {
 	public class ArrayGenerator<T> : BaseRandomGenerator, IValueGenerator<List<T>>, IValueGenerator<T[]>
 	{

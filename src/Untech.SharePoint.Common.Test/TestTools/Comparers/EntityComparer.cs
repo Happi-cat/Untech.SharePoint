@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Untech.SharePoint.Common.Models;
+using Untech.SharePoint.Models;
 
-namespace Untech.SharePoint.Common.TestTools.Comparers
+namespace Untech.SharePoint.TestTools.Comparers
 {
 	public class EntityComparer : IEqualityComparer<Entity>, IEqualityComparer<IEnumerable<Entity>>
 	{
