@@ -6,8 +6,8 @@ param(
     [switch]$PackagePhase
 )
 
-$version = "1.0.3.0"
-$infoVersion = "1.0.3"
+$version = "2.0.0.0"
+$infoVersion = "2.0.0"
 
 $baseDir  = resolve-path ..
 $sourceDir = "$baseDir\Src"

@@ -2,13 +2,13 @@
 <Project Sdk="Microsoft.NET.Sdk" ToolsVersion="15.0">
   <PropertyGroup>
     <TargetFrameworks>net45;net461</TargetFrameworks>
-    <AssemblyVersion>1.0.3.0</AssemblyVersion>
+    <AssemblyVersion>2.0.0.0</AssemblyVersion>
     <Description>This library exposes API for work with SP List using SSOM</Description>
     <Company>Sergey Svirsky</Company>
     <Copyright>Copyright \u00A9 Sergey Svirsky 2017</Copyright>
-    <FileVersion>1.0.3.0</FileVersion>
-    <InformationalVersion>1.0.3</InformationalVersion>
-    <Version>1.0.3.0</Version>
+    <FileVersion>2.0.0.0</FileVersion>
+    <InformationalVersion>2.0.0</InformationalVersion>
+    <Version>2.0.0.0</Version>
     <PackageLicenseUrl>https://github.com/Happi-cat/Untech.SharePoint/blob/master/LICENSE</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/Happi-cat/Untech.SharePoint/wiki</PackageProjectUrl>
     <PackageIconUrl>https://raw.githubusercontent.com/Happi-cat/Untech.SharePoint/master/linq-sharepoint-logo-64.png</PackageIconUrl>
