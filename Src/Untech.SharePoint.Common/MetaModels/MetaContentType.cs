@@ -2,13 +2,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Untech.SharePoint.Common.CodeAnnotations;
-using Untech.SharePoint.Common.MetaModels.Collections;
-using Untech.SharePoint.Common.MetaModels.Providers;
-using Untech.SharePoint.Common.MetaModels.Visitors;
-using Untech.SharePoint.Common.Utils;
+using Untech.SharePoint.CodeAnnotations;
+using Untech.SharePoint.MetaModels.Collections;
+using Untech.SharePoint.MetaModels.Providers;
+using Untech.SharePoint.MetaModels.Visitors;
+using Untech.SharePoint.Utils;
 
-namespace Untech.SharePoint.Common.MetaModels
+namespace Untech.SharePoint.MetaModels
 {
 	/// <summary>
 	/// Represents MetaData for SP ContentType
@@ -18,7 +18,7 @@ namespace Untech.SharePoint.Common.MetaModels
 		/// <summary>
 		/// Initializes new instance of <see cref="MetaContentType"/>.
 		/// </summary>
-		/// <param name="list">Metadata of parent SP List.</param>
+		/// <param name="list">Meta-data of parent SP List.</param>
 		/// <param name="entityType">Equivalent .NET type.</param>
 		/// <param name="fieldProviders">Providers of <see cref="MetaField"/> that associated with current content type.</param>
 		/// <exception cref="ArgumentNullException"><paramref name="list"/> or <paramref name="entityType"/> or <paramref name="fieldProviders"/> are null.</exception>

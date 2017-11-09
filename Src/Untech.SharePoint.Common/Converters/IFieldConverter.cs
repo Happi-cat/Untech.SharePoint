@@ -1,6 +1,6 @@
-﻿using Untech.SharePoint.Common.CodeAnnotations;
-using Untech.SharePoint.Common.MetaModels;
-namespace Untech.SharePoint.Common.Converters
+﻿using Untech.SharePoint.CodeAnnotations;
+using Untech.SharePoint.MetaModels;
+namespace Untech.SharePoint.Converters
 {
 	/// <summary>
 	/// Represents field converter interface.
@@ -9,7 +9,7 @@ namespace Untech.SharePoint.Common.Converters
 	public interface IFieldConverter
 	{
 		/// <summary>
-		/// Initialzes current instance with the specified <see cref="MetaField"/>
+		/// Initializes current instance with the specified <see cref="MetaField"/>
 		/// </summary>
 		/// <param name="field"></param>
 		void Initialize([NotNull] MetaField field);

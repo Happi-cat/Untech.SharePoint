@@ -1,7 +1,7 @@
-using Untech.SharePoint.Common.Data;
-using Untech.SharePoint.Common.Models;
+using Untech.SharePoint.Data;
+using Untech.SharePoint.Models;
 
-namespace Untech.SharePoint.Common.Test.Mappings.ClassLike
+namespace Untech.SharePoint.Mappings.ClassLike
 {
 	public class SmallDataContext : SpContext<SmallDataContext>
 	{
@@ -20,5 +20,4 @@ namespace Untech.SharePoint.Common.Test.Mappings.ClassLike
 
 		public ISpList<Entity> Entities { get; set; }
 	}
-
 }

@@ -1,13 +1,24 @@
 version: 1.0.{build}
+environment:
+  matrix:
+  - platform: x64
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+
 branches:
   only:
   - develop
   - master
+
+before_build:
+- cmd: set PATH=C:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise\MSBuild\15.0\Bin;C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\MSBuild\15.0\Bin;C:\Program Files (x86)\Microsoft Visual Studio\2017\Professional\MSBuild\15.0\Bin;%PATH%
+- cmd: set PATH=C:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise\Common7\IDE\CommonExtensions\Microsoft\TestWindow;C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\Common7\IDE\CommonExtensions\Microsoft\TestWindow;C:\Program Files (x86)\Microsoft Visual Studio\2017\Professional\Common7\IDE\CommonExtensions\Microsoft\TestWindow;%PATH%
+
 build_script:
 - ps: >-
     cd c:\projects\untech-sharepoint\build
 
     .\Build.ps1 -BuildNo 2 -BuildPhase
+
 test_script:
 - ps: >-
     cd c:\projects\untech-sharepoint\build

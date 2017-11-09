@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using Untech.SharePoint.Common.CodeAnnotations;
-using Untech.SharePoint.Common.Utils;
+using Untech.SharePoint.CodeAnnotations;
+using Untech.SharePoint.Utils;
 
-namespace Untech.SharePoint.Common.Extensions
+namespace Untech.SharePoint.Extensions
 {
 	/// <summary>
 	/// Provides a set of static method that can be used with <see cref="Type"/> and <see cref="System.Reflection"/>
@@ -17,7 +17,7 @@ namespace Untech.SharePoint.Common.Extensions
 		/// Determines whether this type is <see cref="Nullable{T}"/>.
 		/// </summary>
 		/// <param name="type">Type to check.</param>
-		/// <returns>trye if <paramref name="type"/> is <see cref="Nullable{T}"/></returns>
+		/// <returns>true if <paramref name="type"/> is <see cref="Nullable{T}"/></returns>
 		public static bool IsNullable([CanBeNull]this Type type)
 		{
 			return type != null && type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>);
@@ -96,6 +96,7 @@ namespace Untech.SharePoint.Common.Extensions
 		/// <see cref="EventInfo.EventHandlerType"/> for <see cref="EventInfo"/> member,
 		/// <see cref="MethodInfo.ReturnType"/> for <see cref="MethodInfo"/> member.
 		/// </returns>
+		/// <exception cref="ArgumentException">Invalid <paramref name="member"/>.</exception>
 		[NotNull]
 		public static Type GetMemberType([CanBeNull]this MemberInfo member)
 		{
@@ -111,7 +112,7 @@ namespace Untech.SharePoint.Common.Extensions
 			var methodInfo = member as MethodInfo;
 			if (methodInfo != null) return methodInfo.ReturnType;
 
-			throw new ArgumentException("Invalid memberinfo", nameof(member));
+			throw new ArgumentException("Invalid memberInfo", nameof(member));
 		}
 
 		#region [Private Methods]
@@ -133,7 +134,5 @@ namespace Untech.SharePoint.Common.Extensions
 		}
 
 		#endregion
-
-
 	}
 }

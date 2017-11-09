@@ -1,6 +1,6 @@
 ﻿using Microsoft.SharePoint;
-using Untech.SharePoint.Common.MetaModels;
-using Untech.SharePoint.Common.MetaModels.Visitors;
+using Untech.SharePoint.MetaModels;
+using Untech.SharePoint.MetaModels.Visitors;
 
 namespace Untech.SharePoint.Server.Data
 {

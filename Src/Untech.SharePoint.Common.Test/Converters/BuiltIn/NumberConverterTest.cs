@@ -1,42 +1,43 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Untech.SharePoint.Common.Converters;
-using Untech.SharePoint.Common.Converters.BuiltIn;
 
-namespace Untech.SharePoint.Common.Test.Converters.BuiltIn
+namespace Untech.SharePoint.Converters.BuiltIn
 {
 	[TestClass]
 	public class NumberConverterTest : BaseConverterTest
 	{
 		[TestMethod]
-		public void NotSupportInteger()
+		[ExpectedException(typeof(ArgumentException))]
+		public void Init_ThrowNotSupported_WhenInteger()
 		{
-			CustomAssert.Throw<ArgumentException>(() => Given<int>());
+			CreateConverterForFieldWithType<int>();
 		}
 
 		[TestMethod]
-		public void NotSupportNullableInteger()
+		[ExpectedException(typeof(ArgumentException))]
+		public void Init_ThrowNotSupported_WhenNullableInteger()
 		{
-			CustomAssert.Throw<ArgumentException>(() => Given<int?>());
-		}
-
-
-		[TestMethod]
-		public void NotSupportFloat()
-		{
-			CustomAssert.Throw<ArgumentException>(() => Given<float>());
+			CreateConverterForFieldWithType<int?>();
 		}
 
 		[TestMethod]
-		public void NotSupportNullableFloat()
+		[ExpectedException(typeof(ArgumentException))]
+		public void Init_ThrowNotSupported_WhenFloat()
 		{
-			CustomAssert.Throw<ArgumentException>(() => Given<float?>());
+			CreateConverterForFieldWithType<float>();
+		}
+
+		[TestMethod]
+		[ExpectedException(typeof(ArgumentException))]
+		public void Init_ThrowNotSupported_WhenNullableFloat()
+		{
+			CreateConverterForFieldWithType<float?>();
 		}
 
 		[TestMethod]
 		public void CanConvertDouble()
 		{
-			Given<double>()
+			CreateConverterForFieldWithType<double>()
 				.CanConvertFromSp(1.0, 1.0)
 				.CanConvertFromSp(null, 0.0)
 				.CanConvertToSp(1.0, 1.0)
@@ -46,7 +47,7 @@ namespace Untech.SharePoint.Common.Test.Converters.BuiltIn
 		[TestMethod]
 		public void CanConvertNullableDouble()
 		{
-			Given<double?>()
+			CreateConverterForFieldWithType<double?>()
 				.CanConvertFromSp(1.0, 1.0)
 				.CanConvertFromSp(null, null)
 				.CanConvertToSp(1.0, 1.0)

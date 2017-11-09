@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 
-namespace Untech.SharePoint.Common.Mappings
+namespace Untech.SharePoint.Mappings
 {
 	/// <summary>
 	/// Represents interface of object that can resolve list URL by context member.

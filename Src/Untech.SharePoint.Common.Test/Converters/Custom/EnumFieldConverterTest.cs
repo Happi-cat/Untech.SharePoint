@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Runtime.Serialization;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Untech.SharePoint.Common.CodeAnnotations;
-using Untech.SharePoint.Common.Converters;
-using Untech.SharePoint.Common.Converters.Custom;
+using Untech.SharePoint.CodeAnnotations;
 
-namespace Untech.SharePoint.Common.Test.Converters.Custom
+namespace Untech.SharePoint.Converters.Custom
 {
 	[TestClass]
 	public class EnumFieldConverterTest : BaseConverterTest
@@ -13,7 +11,7 @@ namespace Untech.SharePoint.Common.Test.Converters.Custom
 		[TestMethod]
 		public void CanConvertTestEnum()
 		{
-			Given<TestEnum>()
+			CreateConverterForFieldWithType<TestEnum>()
 				.CanConvertFromSp("Default", TestEnum.Default)
 				.CanConvertFromSp("Option1", TestEnum.Option1)
 				.CanConvertFromSp("Option2", TestEnum.Option2)
@@ -29,7 +27,7 @@ namespace Untech.SharePoint.Common.Test.Converters.Custom
 		[TestMethod]
 		public void CanConvertNullableTestEnum()
 		{
-			Given<TestEnum?>()
+			CreateConverterForFieldWithType<TestEnum?>()
 				.CanConvertFromSp("Default", TestEnum.Default)
 				.CanConvertFromSp("Option1", TestEnum.Option1)
 				.CanConvertFromSp("Option2", TestEnum.Option2)
@@ -45,16 +43,17 @@ namespace Untech.SharePoint.Common.Test.Converters.Custom
 		}
 
 		[TestMethod]
-		public void NotSupportEnumWithoutDefault()
+		[ExpectedException(typeof(ArgumentException))]
+		public void Init_ThrowNotSupported_WhenEnumWithoutDefault()
 		{
-			CustomAssert.Throw<ArgumentException>(() => Given<NoDefaultEnum>());
+			CreateConverterForFieldWithType<NoDefaultEnum>();
 		}
 
-
 		[TestMethod]
-		public void NotSupportInt()
+		[ExpectedException(typeof(ArgumentException))]
+		public void Init_ThrowNotSupported_WhenInt()
 		{
-			CustomAssert.Throw<ArgumentException>(() => Given<int>());
+			CreateConverterForFieldWithType<int>();
 		}
 
 		protected override IFieldConverter GetConverter()

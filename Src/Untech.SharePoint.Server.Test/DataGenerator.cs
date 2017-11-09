@@ -1,17 +1,16 @@
-﻿using Microsoft.SharePoint;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using Untech.SharePoint.Common.Models;
-using Untech.SharePoint.Common.Test.Spec.Models;
-using Untech.SharePoint.Common.Test.Tools.DataGenerators;
+using Microsoft.SharePoint;
+using Untech.SharePoint.Data;
+using Untech.SharePoint.Models;
 using Untech.SharePoint.Server.Data;
-using Untech.SharePoint.Server.Test.Data;
+using Untech.SharePoint.Spec.Models;
+using Untech.SharePoint.TestTools.DataGenerators;
 
-namespace Untech.SharePoint.Server.Test
+namespace Untech.SharePoint.Server
 {
-	public class DataGenerator
+	public static class DataGenerator
 	{
-
 		public static void Generate()
 		{
 			var site = new SPSite(@"http://sp2013dev/sites/orm-test", SPUserToken.SystemAccount);

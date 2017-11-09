@@ -1,11 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Untech.SharePoint.Common.CodeAnnotations;
-using Untech.SharePoint.Common.Converters;
-using Untech.SharePoint.Common.Extensions;
-using Untech.SharePoint.Common.MetaModels;
-using Untech.SharePoint.Common.Utils;
+using Untech.SharePoint.CodeAnnotations;
+using Untech.SharePoint.Converters;
+using Untech.SharePoint.Extensions;
+using Untech.SharePoint.MetaModels;
+using Untech.SharePoint.Utils;
 
 namespace Untech.SharePoint.Client.Converters.BuiltIn
 {
@@ -17,10 +17,10 @@ namespace Untech.SharePoint.Client.Converters.BuiltIn
 
 		public void Initialize(MetaField field)
 		{
-			Guard.CheckNotNull("field", field);
+			Guard.CheckNotNull(nameof(field), field);
 
-			if (field.MemberType != typeof(string[]) &&
-				!field.MemberType.IsAssignableFrom(typeof(List<string>)))
+			if (field.MemberType != typeof(string[])
+				&& !field.MemberType.IsAssignableFrom(typeof(List<string>)))
 			{
 				throw new ArgumentException(
 					"Only string[] or any class assignable from List<string> can be used as a member type.");
@@ -51,14 +51,13 @@ namespace Untech.SharePoint.Client.Converters.BuiltIn
 		{
 			if (value == null) return "";
 
-			var singleValue = value as string;
-			if (singleValue != null)
+			if (value is string singleValue)
 			{
 				return string.Format(";#{0};#", singleValue);
 			}
 
 			var multiValue = ((IEnumerable<string>)value).Distinct().ToList();
-			return multiValue.Any() ? string.Format(";#{0};#", multiValue.JoinToString(";#")) : "";
+			return multiValue.Count > 0 ? string.Format(";#{0};#", multiValue.JoinToString(";#")) : "";
 		}
 	}
 }

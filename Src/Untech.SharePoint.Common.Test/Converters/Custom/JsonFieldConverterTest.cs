@@ -1,10 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Runtime.Serialization;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Untech.SharePoint.Common.Converters;
-using Untech.SharePoint.Common.Converters.Custom;
 
-namespace Untech.SharePoint.Common.Test.Converters.Custom
+namespace Untech.SharePoint.Converters.Custom
 {
 	[TestClass]
 	public class JsonFieldConverterTest : BaseConverterTest
@@ -12,15 +10,14 @@ namespace Untech.SharePoint.Common.Test.Converters.Custom
 		[TestMethod]
 		public void CanConvertTestObject()
 		{
-			Given<TestObject>()
+			CreateConverterForFieldWithType<TestObject>()
 				.CanConvertFromSp(null, null)
 				.CanConvertFromSp("", null)
 				.CanConvertFromSp("{}", new TestObject(), new TestObjectComparer())
-				.CanConvertFromSp("{ \"Field\": \"value\" }", new TestObject { Field = "value"}, new TestObjectComparer())
+				.CanConvertFromSp("{ \"Field\": \"value\" }", new TestObject { Field = "value" }, new TestObjectComparer())
 				.CanConvertToSp(null, null)
 				.CanConvertToSp(new TestObject(), "{\"Field\":null}")
 				.CanConvertToSp(new TestObject { Field = "test" }, "{\"Field\":\"test\"}");
-
 		}
 
 		protected override IFieldConverter GetConverter()

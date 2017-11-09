@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Linq;
-using Untech.SharePoint.Common.CodeAnnotations;
-using Untech.SharePoint.Common.Data.Mapper;
-using Untech.SharePoint.Common.Utils;
+using Untech.SharePoint.CodeAnnotations;
+using Untech.SharePoint.Data.Mapper;
+using Untech.SharePoint.Utils;
 
-namespace Untech.SharePoint.Common.MetaModels
+namespace Untech.SharePoint.MetaModels
 {
 	/// <summary>
 	/// Provides a set of static methods for easy work with <see cref="IMetaModel"/> additional properties.
@@ -75,7 +75,7 @@ namespace Untech.SharePoint.Common.MetaModels
 		/// Finds key field of the content type.
 		/// </summary>
 		/// <param name="contentType">Content type to get key field.</param>
-		/// <returns>Metadata of the key field or null.</returns>
+		/// <returns>Meta-data of the key field or null.</returns>
 		[CanBeNull]
 		public static MetaField GetKeyField([NotNull]this MetaContentType contentType)
 		{

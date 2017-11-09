@@ -2,14 +2,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Untech.SharePoint.Common.CodeAnnotations;
-using Untech.SharePoint.Common.Data;
-using Untech.SharePoint.Common.MetaModels.Collections;
-using Untech.SharePoint.Common.MetaModels.Providers;
-using Untech.SharePoint.Common.MetaModels.Visitors;
-using Untech.SharePoint.Common.Utils;
+using Untech.SharePoint.CodeAnnotations;
+using Untech.SharePoint.Data;
+using Untech.SharePoint.MetaModels.Collections;
+using Untech.SharePoint.MetaModels.Providers;
+using Untech.SharePoint.MetaModels.Visitors;
+using Untech.SharePoint.Utils;
 
-namespace Untech.SharePoint.Common.MetaModels
+namespace Untech.SharePoint.MetaModels
 {
 	/// <summary>
 	/// Represents MetaData of <see cref="ISpContext"/>
@@ -35,7 +35,7 @@ namespace Untech.SharePoint.Common.MetaModels
 		public MetaListCollection Lists { get; }
 
 		/// <summary>
-		/// Gets or sets SP Web Url.
+		/// Gets or sets SP Web URL.
 		/// </summary>
 		[CanBeNull]
 		public string Url { get; set; }

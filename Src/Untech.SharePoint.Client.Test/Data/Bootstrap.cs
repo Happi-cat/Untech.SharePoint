@@ -1,9 +1,8 @@
-﻿using Untech.SharePoint.Client.Configuration;
-using Untech.SharePoint.Common.Configuration;
-using Untech.SharePoint.Common.Test.Spec.Models;
-using Untech.SharePoint.Common.Utils;
+﻿using Untech.SharePoint.Configuration;
+using Untech.SharePoint.Spec.Models;
+using Untech.SharePoint.Utils;
 
-namespace Untech.SharePoint.Client.Test.Data
+namespace Untech.SharePoint.Client.Data
 {
 	public class Bootstrap
 	{

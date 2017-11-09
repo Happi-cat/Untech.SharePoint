@@ -1,57 +1,57 @@
 ﻿using Microsoft.SharePoint.Client;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Untech.SharePoint.Client.Data;
-using Untech.SharePoint.Common.Test.Spec;
-using Untech.SharePoint.Common.Test.Spec.Models;
+using Untech.SharePoint.Data;
+using Untech.SharePoint.Spec;
+using Untech.SharePoint.Spec.Models;
 
-namespace Untech.SharePoint.Client.Test.Data
+namespace Untech.SharePoint.Client.Data
 {
 	[TestClass]
 	public class QueryableTest
 	{
-		private static QueryableSpec _spec;
+		private static QueryableSpec s_spec;
 
 		[ClassInitialize]
 		public static void Init(TestContext ctx)
 		{
-			_spec = new QueryableSpec(GetContext());
-			_spec.Init();
+			s_spec = new QueryableSpec(GetContext());
+			s_spec.Init();
 		}
 
 		[TestMethod]
-		public void Aggregate()
+		public void Spec_Aggregate()
 		{
-			_spec.Aggregate();
+			s_spec.Aggregate();
 		}
 
 		[TestMethod]
-		public void Filtering()
+		public void Spec_Filtering()
 		{
-			_spec.Filtering();
+			s_spec.Filtering();
 		}
 
 		[TestMethod]
-		public void Ordering()
+		public void Spec_Ordering()
 		{
-			_spec.Ordering();
+			s_spec.Ordering();
 		}
 
 		[TestMethod]
-		public void Paging()
+		public void Spec_Paging()
 		{
-			_spec.Paging();
+			s_spec.Paging();
 		}
 
 		[TestMethod]
-		public void Set()
+		public void Spec_Set()
 		{
-			_spec.Set();
+			s_spec.Set();
 		}
 
 		[TestMethod]
-		public void Projection()
+		public void Spec_Projection()
 		{
-			_spec.Projection();
+			s_spec.Projection();
 		}
 
 		private static DataContext GetContext()

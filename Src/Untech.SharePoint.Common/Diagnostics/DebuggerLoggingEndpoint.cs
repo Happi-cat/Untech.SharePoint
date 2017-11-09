@@ -1,8 +1,8 @@
 ﻿using System.Diagnostics;
 using System.Threading;
-using Untech.SharePoint.Common.CodeAnnotations;
+using Untech.SharePoint.CodeAnnotations;
 
-namespace Untech.SharePoint.Common.Diagnostics
+namespace Untech.SharePoint.Diagnostics
 {
 	/// <summary>
 	/// Represents class of logging endpoint that writes messages to <see cref="Debugger"/> instance.
@@ -23,9 +23,9 @@ namespace Untech.SharePoint.Common.Diagnostics
 				return;
 			}
 
-			var logMessage = string.Format("[Thread: {0}, Level: {1}, Category: {2}]\n{3}\n\n", 
+			var logMessage = string.Format("[Thread: {0}, Level: {1}, Category: {2}]\n{3}\n\n",
 				Thread.CurrentThread.ManagedThreadId, level, category, message);
-			
+
 			Debugger.Log(0, category, logMessage);
 		}
 	}

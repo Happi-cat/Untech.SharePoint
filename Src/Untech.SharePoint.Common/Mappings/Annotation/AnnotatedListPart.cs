@@ -2,13 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using Untech.SharePoint.Common.Data;
-using Untech.SharePoint.Common.Extensions;
-using Untech.SharePoint.Common.MetaModels;
-using Untech.SharePoint.Common.MetaModels.Providers;
-using Untech.SharePoint.Common.Utils;
+using Untech.SharePoint.Data;
+using Untech.SharePoint.Extensions;
+using Untech.SharePoint.MetaModels;
+using Untech.SharePoint.MetaModels.Providers;
+using Untech.SharePoint.Utils;
 
-namespace Untech.SharePoint.Common.Mappings.Annotation
+namespace Untech.SharePoint.Mappings.Annotation
 {
 	internal class AnnotatedListPart : IMetaListProvider
 	{
@@ -27,7 +27,7 @@ namespace Untech.SharePoint.Common.Mappings.Annotation
 
 		public static bool IsAnnotated(PropertyInfo property)
 		{
-			return property.IsDefined(typeof (SpListAttribute));
+			return property.IsDefined(typeof(SpListAttribute));
 		}
 
 		public static AnnotatedListPart Create(string listUrl, IEnumerable<PropertyInfo> contextProperties)
@@ -40,7 +40,6 @@ namespace Untech.SharePoint.Common.Mappings.Annotation
 		}
 
 		#endregion
-
 
 		public MetaList GetMetaList(MetaContext parent)
 		{
@@ -58,8 +57,6 @@ namespace Untech.SharePoint.Common.Mappings.Annotation
 			RegisterContentType(entityType);
 		}
 
-		
-
 		private void RegisterContentType(Type entityType)
 		{
 			if (!_contentTypeProviders.ContainsKey(entityType))
@@ -69,6 +66,5 @@ namespace Untech.SharePoint.Common.Mappings.Annotation
 		}
 
 		#endregion
-
 	}
 }

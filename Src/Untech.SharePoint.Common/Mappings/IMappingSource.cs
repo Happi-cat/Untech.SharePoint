@@ -1,9 +1,9 @@
 ﻿using System;
-using Untech.SharePoint.Common.CodeAnnotations;
-using Untech.SharePoint.Common.MetaModels;
-using Untech.SharePoint.Common.MetaModels.Providers;
+using Untech.SharePoint.CodeAnnotations;
+using Untech.SharePoint.MetaModels;
+using Untech.SharePoint.MetaModels.Providers;
 
-namespace Untech.SharePoint.Common.Mappings
+namespace Untech.SharePoint.Mappings
 {
 	/// <summary>
 	/// Represents interface that can create <see cref="MetaContext"/> and resolve list title for the specified member of this context.

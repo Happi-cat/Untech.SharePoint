@@ -3,9 +3,8 @@ using System.IO;
 using System.Linq;
 using System.Security;
 using System.Text;
-using System.Xml;
 using Microsoft.SharePoint;
-using Untech.SharePoint.Common.Extensions;
+using Untech.SharePoint.Extensions;
 
 namespace Untech.SharePoint.Server.Data
 {
@@ -36,8 +35,8 @@ namespace Untech.SharePoint.Server.Data
 			_sw.Write("<SetVar Name=\"ID\">{0}</SetVar>", "New");
 			_sw.Write("<GetVar Name=\"ID\"></GetVar>");
 			_sw.Write("<SetVar Name=\"Cmd\">Save</SetVar>");
-			
-			fields.Where(n=> n.Key != "ID")
+
+			fields.Where(n => n.Key != "ID")
 				.Each(WriteField);
 
 			_sw.Write("</Method>");

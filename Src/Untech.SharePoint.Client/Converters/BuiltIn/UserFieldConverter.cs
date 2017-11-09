@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.SharePoint.Client;
-using Untech.SharePoint.Common.CodeAnnotations;
-using Untech.SharePoint.Common.Converters;
-using Untech.SharePoint.Common.Extensions;
-using Untech.SharePoint.Common.MetaModels;
-using Untech.SharePoint.Common.Models;
-using Untech.SharePoint.Common.Utils;
+using Untech.SharePoint.CodeAnnotations;
+using Untech.SharePoint.Converters;
+using Untech.SharePoint.Extensions;
+using Untech.SharePoint.MetaModels;
+using Untech.SharePoint.Models;
+using Untech.SharePoint.Utils;
 
 namespace Untech.SharePoint.Client.Converters.BuiltIn
 {
@@ -21,12 +21,12 @@ namespace Untech.SharePoint.Client.Converters.BuiltIn
 
 		public void Initialize(MetaField field)
 		{
-			Guard.CheckNotNull("field", field);
+			Guard.CheckNotNull(nameof(field), field);
 
 			if (field.AllowMultipleValues)
 			{
-				if (field.MemberType != typeof(UserInfo[]) &&
-					!field.MemberType.IsAssignableFrom(typeof(List<UserInfo>)))
+				if (field.MemberType != typeof(UserInfo[])
+					&& !field.MemberType.IsAssignableFrom(typeof(List<UserInfo>)))
 				{
 					throw new ArgumentException(
 						"Only UserInfo[] or any class assignable from List<UserInfo> can be used as a member type.");
@@ -57,7 +57,7 @@ namespace Untech.SharePoint.Client.Converters.BuiltIn
 			var fieldValues = (IEnumerable<FieldUserValue>)value;
 			var userValues = fieldValues.Select(ConvertToUserInfo).ToList();
 
-			if (!userValues.Any())
+			if (userValues.Count == 0)
 			{
 				return null;
 			}
@@ -76,7 +76,7 @@ namespace Untech.SharePoint.Client.Converters.BuiltIn
 			}
 
 			var userValues = ((IEnumerable<UserInfo>)value).Distinct().ToList();
-			if (!userValues.Any())
+			if (userValues.Count == 0)
 			{
 				return null;
 			}
@@ -90,8 +90,7 @@ namespace Untech.SharePoint.Client.Converters.BuiltIn
 		{
 			if (value == null) return null;
 
-			var singleValue = value as UserInfo;
-			if (singleValue != null)
+			if (value is UserInfo singleValue)
 			{
 				return singleValue.Id.ToString();
 			}

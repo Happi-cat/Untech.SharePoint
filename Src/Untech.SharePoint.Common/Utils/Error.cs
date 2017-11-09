@@ -2,103 +2,98 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using Untech.SharePoint.Common.Converters;
-using Untech.SharePoint.Common.Data;
-using Untech.SharePoint.Common.Extensions;
-using Untech.SharePoint.Common.MetaModels;
+using Untech.SharePoint.Converters;
+using Untech.SharePoint.Data;
+using Untech.SharePoint.Extensions;
+using Untech.SharePoint.MetaModels;
 
-namespace Untech.SharePoint.Common.Utils
+namespace Untech.SharePoint.Utils
 {
 	internal static class Error
 	{
-		internal static Exception KeyNotFound(object key)
+		internal static KeyNotFoundException KeyNotFound(object key)
 		{
-			return new KeyNotFoundException(string.Format("Key not found '{0}'", key));
+			return new KeyNotFoundException($"Key not found '{key}'");
 		}
 
-		public static Exception MoreThanOneMatch()
+		public static InvalidOperationException MoreThanOneMatch()
 		{
 			return new InvalidOperationException("More than one match found");
 		}
 
-		public static Exception NoMatch()
+		public static InvalidOperationException NoMatch()
 		{
 			return new InvalidOperationException("No match found");
 		}
 
-		internal static Exception SubqueryNotSupported(Expression node)
+		internal static NotSupportedException SubqueryNotSupported(Expression node)
 		{
-			return new NotSupportedException(string.Format("Subquery '{0}' is not supported", node));
+			return new NotSupportedException($"Sub-query '{node}' is not supported");
 		}
 
-		internal static Exception CannotMapFieldToSP(MetaField field, Exception inner)
+		internal static DataMappingException CannotMapFieldToSP(MetaField field, Exception inner)
 		{
-			var msg = string.Format("Cannot map member '{0}' of type '{1}' to SP field {2}.",
-				field.MemberName, field.MemberType, field.InternalName);
-			return new DataMappingException(msg, inner);
-		}
-		
-		internal static Exception CannotMapFieldFromSP(MetaField field, Exception inner)
-		{
-			var msg = string.Format("Cannot map member '{0}' of type '{1}' from SP field {2}.",
-				field.MemberName, field.MemberType, field.InternalName);
+			var msg = $"Cannot map member '{field.MemberName}' of type '{field.MemberType}' to SP field {field.InternalName}.";
 			return new DataMappingException(msg, inner);
 		}
 
-		internal static Exception OperationNotAllowedForExternalList()
+		internal static DataMappingException CannotMapFieldFromSP(MetaField field, Exception inner)
+		{
+			var msg = $"Cannot map member '{field.MemberName}' of type '{field.MemberType}' from SP field {field.InternalName}.";
+			return new DataMappingException(msg, inner);
+		}
+
+		internal static InvalidOperationException OperationNotAllowedForExternalList()
 		{
 			return new InvalidOperationException("This operation cannot be used with external list");
 		}
 
-		internal static Exception OperationRequireIdField()
+		internal static InvalidOperationException OperationRequireIdField()
 		{
 			return new InvalidOperationException("This operation require ID field");
 		}
 
-		internal static Exception CannotConvertFromSpValue(Type converterType, object spValue, Exception inner)
+		internal static FieldConverterException CannotConvertFromSpValue(Type converterType, object spValue, Exception inner)
 		{
-			var msg = string.Format("SP value '{0}' cannot be converted by '{1}' field converter", spValue, converterType);
+			var msg = $"SP value '{spValue}' cannot be converted by '{converterType}' field converter";
 			return new FieldConverterException(msg, inner);
 		}
 
-		internal static Exception CannotConvertToSpValue(Type converterType, object value, Exception inner)
+		internal static FieldConverterException CannotConvertToSpValue(Type converterType, object value, Exception inner)
 		{
-			var msg = string.Format("Field converter '{0}' cannot convert value '{1}' to SP value", converterType, value);
+			var msg = $"Field converter '{converterType}' cannot convert value '{value}' to SP value";
 			return new FieldConverterException(msg, inner);
 		}
 
-		internal static Exception CannotConvertToCamlValue(Type converterType, object value, Exception inner)
+		internal static FieldConverterException CannotConvertToCamlValue(Type converterType, object value, Exception inner)
 		{
-			var msg = string.Format("Field converter '{0}' cannot convert value '{1}' to CAML value", converterType, value);
+			var msg = $"Field converter '{converterType}' cannot convert value '{value}' to CAML value";
 			return new FieldConverterException(msg, inner);
 		}
 
-		internal static Exception SubqueryNotSupportedAfterProjection(MethodCallExpression node)
+		internal static NotSupportedException SubqueryNotSupportedAfterProjection(MethodCallExpression node)
 		{
-			var msg = string.Format("Method '.{0}({1})' cannot be applied after any projection method like '.Select'", 
-				node.Method.Name,
-				GetArgs(node.Arguments));
+			var msg =
+				$"Method '.{node.Method.Name}({GetArgs(node.Arguments)})' cannot be applied after any projection method like '.Select'";
 
 			throw new NotSupportedException(msg);
 		}
 
-		internal static Exception SubqueryNotSupportedAfterRowLimit(MethodCallExpression node)
+		internal static NotSupportedException SubqueryNotSupportedAfterRowLimit(MethodCallExpression node)
 		{
-			var msg = string.Format("Method '.{0}({1})' cannot be applied after any row limit method like '.Take'",
-				node.Method.Name, 
-				GetArgs(node.Arguments));
+			var msg = $"Method '.{node.Method.Name}({GetArgs(node.Arguments)})' cannot be applied after any row limit method like '.Take'";
 
 			throw new NotSupportedException(msg);
 		}
 
-		internal static Exception ConverterNotFound(string typeAsString)
+		internal static FieldConverterException ConverterNotFound(string typeAsString)
 		{
-			return new FieldConverterException(string.Format("Cannot find converter '{0}' in Config",typeAsString));
+			return new FieldConverterException($"Cannot find converter '{typeAsString}' in Config");
 		}
 
-		internal static Exception ConverterNotFound(Type converterType)
+		internal static FieldConverterException ConverterNotFound(Type converterType)
 		{
-			return new FieldConverterException(string.Format("Cannot find converter '{0}' in Config", converterType));
+			return new FieldConverterException($"Cannot find converter '{converterType}' in Config");
 		}
 
 		private static string GetArgs(IEnumerable<Expression> arguments)

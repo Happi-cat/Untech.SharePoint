@@ -1,6 +1,6 @@
 ﻿using Microsoft.SharePoint.Client;
-using Untech.SharePoint.Common.Data.Mapper;
-using Untech.SharePoint.Common.MetaModels;
+using Untech.SharePoint.Data.Mapper;
+using Untech.SharePoint.MetaModels;
 
 namespace Untech.SharePoint.Client.Data.Mapper
 {

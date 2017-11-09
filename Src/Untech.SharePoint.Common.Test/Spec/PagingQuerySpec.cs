@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using Untech.SharePoint.Common.Test.Spec.Models;
-using Untech.SharePoint.Common.Test.Tools.Comparers;
-using Untech.SharePoint.Common.Test.Tools.QueryTests;
+using Untech.SharePoint.Spec.Models;
+using Untech.SharePoint.TestTools.Comparers;
+using Untech.SharePoint.TestTools.QueryTests;
 
-namespace Untech.SharePoint.Common.Test.Spec
+namespace Untech.SharePoint.Spec
 {
 	/// <summary>
 	/// Paging operations return a single, specific element from a sequence. The element methods are ElementAt, First, FirstOrDefault, Last, LastOrDefault, Single, Skip, Take, TakeWhile.

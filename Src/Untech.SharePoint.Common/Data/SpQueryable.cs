@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using Untech.SharePoint.Common.CodeAnnotations;
-using Untech.SharePoint.Common.Data.QueryModels;
-using Untech.SharePoint.Common.Utils;
+using Untech.SharePoint.CodeAnnotations;
+using Untech.SharePoint.Data.QueryModels;
+using Untech.SharePoint.Utils;
 
-namespace Untech.SharePoint.Common.Data
+namespace Untech.SharePoint.Data
 {
 	[UsedImplicitly(ImplicitUseTargetFlags.WithMembers)]
 	internal static class SpQueryable
@@ -22,7 +22,7 @@ namespace Untech.SharePoint.Common.Data
 		internal static MethodCallExpression MakeFakeFetch(Type entityType, ISpListItemsProvider listItemsProvider)
 		{
 			return Expression.Call(MethodUtils.SpqFakeFetch.MakeGenericMethod(entityType),
-				Expression.Constant(listItemsProvider, typeof (ISpListItemsProvider)));
+				Expression.Constant(listItemsProvider, typeof(ISpListItemsProvider)));
 		}
 
 		internal static IEnumerable<T> Fetch<T>(ISpListItemsProvider listItemsProvider, QueryModel queryModel)
@@ -35,7 +35,6 @@ namespace Untech.SharePoint.Common.Data
 			return Expression.Call(MethodUtils.SpqFetch.MakeGenericMethod(entityType),
 				Expression.Constant(listItemsProvider, typeof(ISpListItemsProvider)),
 				Expression.Constant(queryModel, typeof(QueryModel)));
-
 		}
 
 		#endregion
@@ -57,16 +56,16 @@ namespace Untech.SharePoint.Common.Data
 			QueryModel queryModel)
 		{
 			return Expression.Call(MethodUtils.SpqTake.MakeGenericMethod(entityType),
-				Expression.Constant(listItemsProvider, typeof (ISpListItemsProvider)),
-				Expression.Constant(queryModel, typeof (QueryModel)));
+				Expression.Constant(listItemsProvider, typeof(ISpListItemsProvider)),
+				Expression.Constant(queryModel, typeof(QueryModel)));
 		}
 
 		internal static MethodCallExpression MakeTake(Type entityType, Type resulType, ISpListItemsProvider listItemsProvider,
 			QueryModel queryModel, LambdaExpression selector)
 		{
 			return Expression.Call(MethodUtils.SpqTakeP.MakeGenericMethod(entityType, resulType),
-				Expression.Constant(listItemsProvider, typeof (ISpListItemsProvider)),
-				Expression.Constant(queryModel, typeof (QueryModel)),
+				Expression.Constant(listItemsProvider, typeof(ISpListItemsProvider)),
+				Expression.Constant(queryModel, typeof(QueryModel)),
 				Expression.Constant(selector.Compile()));
 		}
 
@@ -100,8 +99,8 @@ namespace Untech.SharePoint.Common.Data
 			QueryModel queryModel, bool throwIfNothing, bool throwIfMultiple)
 		{
 			return Expression.Call(MethodUtils.SpqFirst.MakeGenericMethod(entityType),
-				Expression.Constant(listItemsProvider, typeof (ISpListItemsProvider)),
-				Expression.Constant(queryModel, typeof (QueryModel)),
+				Expression.Constant(listItemsProvider, typeof(ISpListItemsProvider)),
+				Expression.Constant(queryModel, typeof(QueryModel)),
 				Expression.Constant(throwIfNothing),
 				Expression.Constant(throwIfMultiple));
 		}
@@ -111,8 +110,8 @@ namespace Untech.SharePoint.Common.Data
 			LambdaExpression selector)
 		{
 			return Expression.Call(MethodUtils.SpqFirstP.MakeGenericMethod(entityType, resultType),
-				Expression.Constant(listItemsProvider, typeof (ISpListItemsProvider)),
-				Expression.Constant(queryModel, typeof (QueryModel)),
+				Expression.Constant(listItemsProvider, typeof(ISpListItemsProvider)),
+				Expression.Constant(queryModel, typeof(QueryModel)),
 				Expression.Constant(throwIfNothing),
 				Expression.Constant(throwIfMultiple),
 				Expression.Constant(selector.Compile()));
@@ -153,8 +152,8 @@ namespace Untech.SharePoint.Common.Data
 			QueryModel queryModel, int index, bool throwIfNothing)
 		{
 			return Expression.Call(MethodUtils.SpqElementAt.MakeGenericMethod(entityType),
-				Expression.Constant(listItemsProvider, typeof (ISpListItemsProvider)),
-				Expression.Constant(queryModel, typeof (QueryModel)),
+				Expression.Constant(listItemsProvider, typeof(ISpListItemsProvider)),
+				Expression.Constant(queryModel, typeof(QueryModel)),
 				Expression.Constant(index),
 				Expression.Constant(throwIfNothing));
 		}
@@ -164,8 +163,8 @@ namespace Untech.SharePoint.Common.Data
 			LambdaExpression selector)
 		{
 			return Expression.Call(MethodUtils.SpqElementAtP.MakeGenericMethod(entityType, projectionType),
-				Expression.Constant(listItemsProvider, typeof (ISpListItemsProvider)),
-				Expression.Constant(queryModel, typeof (QueryModel)),
+				Expression.Constant(listItemsProvider, typeof(ISpListItemsProvider)),
+				Expression.Constant(queryModel, typeof(QueryModel)),
 				Expression.Constant(index),
 				Expression.Constant(throwIfNothing),
 				Expression.Constant(selector.Compile()));
@@ -186,8 +185,8 @@ namespace Untech.SharePoint.Common.Data
 			ISpListItemsProvider listItemsProvider, QueryModel queryModel, LambdaExpression selector)
 		{
 			return Expression.Call(MethodUtils.SpqSelect.MakeGenericMethod(contentType, resulType),
-				Expression.Constant(listItemsProvider, typeof (ISpListItemsProvider)),
-				Expression.Constant(queryModel, typeof (QueryModel)),
+				Expression.Constant(listItemsProvider, typeof(ISpListItemsProvider)),
+				Expression.Constant(queryModel, typeof(QueryModel)),
 				Expression.Constant(selector.Compile()));
 		}
 
@@ -206,9 +205,8 @@ namespace Untech.SharePoint.Common.Data
 			QueryModel queryModel)
 		{
 			return Expression.Call(MethodUtils.SpqAny.MakeGenericMethod(entityType),
-				Expression.Constant(listItemsProvider, typeof (ISpListItemsProvider)),
-				Expression.Constant(queryModel, typeof (QueryModel)));
-
+				Expression.Constant(listItemsProvider, typeof(ISpListItemsProvider)),
+				Expression.Constant(queryModel, typeof(QueryModel)));
 		}
 
 		internal static bool NotAny<T>(ISpListItemsProvider listItemsProvider, QueryModel queryModel)
@@ -224,7 +222,6 @@ namespace Untech.SharePoint.Common.Data
 			return Expression.Call(MethodUtils.SpqAll.MakeGenericMethod(entityType),
 				Expression.Constant(listItemsProvider, typeof(ISpListItemsProvider)),
 				Expression.Constant(queryModel, typeof(QueryModel)));
-
 		}
 
 
@@ -237,8 +234,8 @@ namespace Untech.SharePoint.Common.Data
 			QueryModel queryModel)
 		{
 			return Expression.Call(MethodUtils.SpqCount.MakeGenericMethod(entityType),
-				Expression.Constant(listItemsProvider, typeof (ISpListItemsProvider)),
-				Expression.Constant(queryModel, typeof (QueryModel)));
+				Expression.Constant(listItemsProvider, typeof(ISpListItemsProvider)),
+				Expression.Constant(queryModel, typeof(QueryModel)));
 		}
 
 		internal static TResult Min<TSource, TResult>(ISpListItemsProvider listItemsProvider,
@@ -252,8 +249,8 @@ namespace Untech.SharePoint.Common.Data
 			QueryModel queryModel, LambdaExpression selector)
 		{
 			return Expression.Call(MethodUtils.SpqMinP.MakeGenericMethod(contentType, resulType),
-				Expression.Constant(listItemsProvider, typeof (ISpListItemsProvider)),
-				Expression.Constant(queryModel, typeof (QueryModel)),
+				Expression.Constant(listItemsProvider, typeof(ISpListItemsProvider)),
+				Expression.Constant(queryModel, typeof(QueryModel)),
 				Expression.Constant(selector.Compile()));
 		}
 
@@ -282,8 +279,8 @@ namespace Untech.SharePoint.Common.Data
 			QueryModel queryModel, LambdaExpression selector)
 		{
 			return Expression.Call(MethodUtils.SpqMaxP.MakeGenericMethod(contentType, resulType),
-				Expression.Constant(listItemsProvider, typeof (ISpListItemsProvider)),
-				Expression.Constant(queryModel, typeof (QueryModel)),
+				Expression.Constant(listItemsProvider, typeof(ISpListItemsProvider)),
+				Expression.Constant(queryModel, typeof(QueryModel)),
 				Expression.Constant(selector.Compile()));
 		}
 
@@ -301,6 +298,5 @@ namespace Untech.SharePoint.Common.Data
 		}
 
 		#endregion
-
 	}
 }

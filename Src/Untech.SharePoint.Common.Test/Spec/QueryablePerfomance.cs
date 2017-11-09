@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Untech.SharePoint.Common.Test.Spec.Models;
-using Untech.SharePoint.Common.Test.Tools.QueryTests;
+using Untech.SharePoint.Spec.Models;
+using Untech.SharePoint.TestTools.QueryTests;
 
-namespace Untech.SharePoint.Common.Test.Spec
+namespace Untech.SharePoint.Spec
 {
 	public class QueryablePerfomance : ITestQueryProvider<NewsModel>
 	{

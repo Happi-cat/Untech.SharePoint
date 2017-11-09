@@ -1,0 +1,7 @@
+[*.cs]
+indent_style                                               = tab
+dotnet_sort_system_directives_first                        = true
+dotnet_style_collection_initializer                        = true : suggestion
+dotnet_style_object_initializer                            = true : suggestion
+dotnet_style_predefined_type_for_locals_parameters_members = true : suggestion
+

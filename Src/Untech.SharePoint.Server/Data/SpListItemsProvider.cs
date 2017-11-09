@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.SharePoint;
-using Untech.SharePoint.Common.Data;
-using Untech.SharePoint.Common.Data.Mapper;
-using Untech.SharePoint.Common.MetaModels;
+using Untech.SharePoint.Data;
+using Untech.SharePoint.Data.Mapper;
+using Untech.SharePoint.MetaModels;
 using Untech.SharePoint.Server.Extensions;
 using Untech.SharePoint.Server.Utils;
 
@@ -69,7 +69,7 @@ namespace Untech.SharePoint.Server.Data
 
 			foreach (var item in items)
 			{
-				batchBuilder.NewItem(_spList,  mapper.MapToCaml(item));
+				batchBuilder.NewItem(_spList, mapper.MapToCaml(item));
 			}
 
 			batchBuilder.End();

@@ -1,11 +1,11 @@
 ﻿using System;
-using Untech.SharePoint.Common.CodeAnnotations;
-using Untech.SharePoint.Common.Converters;
-using Untech.SharePoint.Common.Data;
-using Untech.SharePoint.Common.Mappings;
-using Untech.SharePoint.Common.Utils;
+using Untech.SharePoint.CodeAnnotations;
+using Untech.SharePoint.Converters;
+using Untech.SharePoint.Data;
+using Untech.SharePoint.Mappings;
+using Untech.SharePoint.Utils;
 
-namespace Untech.SharePoint.Common.Configuration
+namespace Untech.SharePoint.Configuration
 {
 	/// <summary>
 	/// Represents configuration that is required by <see cref="SpContext{TContext}"/>.
@@ -14,7 +14,7 @@ namespace Untech.SharePoint.Common.Configuration
 	public sealed class Config
 	{
 		/// <summary>
-		/// Intializes a new instance of the <see cref="Config"/> with the specified instances of <see cref="IFieldConverterResolver"/> and <see cref="IMappingSourceResolver"/>.
+		/// Initializes a new instance of the <see cref="Config"/> with the specified instances of <see cref="IFieldConverterResolver"/> and <see cref="IMappingSourceResolver"/>.
 		/// </summary>
 		/// <param name="fieldConverters">Field converters resolver.</param>
 		/// <param name="mappings">Mappings source resolvers.</param>
@@ -28,17 +28,16 @@ namespace Untech.SharePoint.Common.Configuration
 			Mappings = mappings;
 		}
 
-
 		/// <summary>
 		/// Gets the <see cref="IFieldConverterResolver"/> resolver.
 		/// </summary>
 		[NotNull]
-		public IFieldConverterResolver FieldConverters { get; private set; }
+		public IFieldConverterResolver FieldConverters { get; }
 
 		/// <summary>
 		/// Gets the <see cref="IMappingSourceResolver"/> resolver.
 		/// </summary>
 		[NotNull]
-		public IMappingSourceResolver Mappings { get; private set; }
+		public IMappingSourceResolver Mappings { get; }
 	}
 }

@@ -1,10 +1,11 @@
 ﻿using System;
 
-namespace Untech.SharePoint.Common.Mappings.Annotation
+namespace Untech.SharePoint.Mappings.Annotation
 {
 	/// <summary>
 	/// Represents errors that occurs due to invalid or incomplete annotation. 
 	/// </summary>
+	[Serializable]
 	public class InvalidAnnotationException : Exception
 	{
 		/// <summary>
@@ -14,7 +15,6 @@ namespace Untech.SharePoint.Common.Mappings.Annotation
 		public InvalidAnnotationException(string message)
 			: base(message)
 		{
-
 		}
 	}
 }

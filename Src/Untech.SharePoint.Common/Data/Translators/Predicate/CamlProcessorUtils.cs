@@ -1,10 +1,10 @@
 ﻿using System.Linq.Expressions;
-using Untech.SharePoint.Common.CodeAnnotations;
-using Untech.SharePoint.Common.Data.QueryModels;
-using Untech.SharePoint.Common.Extensions;
-using Untech.SharePoint.Common.Utils;
+using Untech.SharePoint.CodeAnnotations;
+using Untech.SharePoint.Data.QueryModels;
+using Untech.SharePoint.Extensions;
+using Untech.SharePoint.Utils;
 
-namespace Untech.SharePoint.Common.Data.Translators.Predicate
+namespace Untech.SharePoint.Data.Translators.Predicate
 {
 	internal static class CamlProcessorUtils
 	{
@@ -13,15 +13,15 @@ namespace Untech.SharePoint.Common.Data.Translators.Predicate
 		{
 			if (node.NodeType.In(new[] { ExpressionType.Convert, ExpressionType.ConvertChecked }))
 			{
-				node = ((UnaryExpression) node).Operand;
+				node = ((UnaryExpression)node).Operand;
 			}
 			if (node.NodeType == ExpressionType.MemberAccess)
 			{
 				var memberNode = (MemberExpression)node;
 				var objectNode = memberNode.Expression;
-				if (objectNode != null && objectNode.NodeType.In(new [] { ExpressionType.Convert, ExpressionType.ConvertChecked}))
+				if (objectNode != null && objectNode.NodeType.In(new[] { ExpressionType.Convert, ExpressionType.ConvertChecked }))
 				{
-					var convertNode = (UnaryExpression) objectNode;
+					var convertNode = (UnaryExpression)objectNode;
 					objectNode = convertNode.Operand;
 				}
 				if (objectNode != null && objectNode.NodeType == ExpressionType.Parameter)

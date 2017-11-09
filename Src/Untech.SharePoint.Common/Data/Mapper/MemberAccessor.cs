@@ -1,8 +1,8 @@
 using System;
 using System.Reflection;
-using Untech.SharePoint.Common.Utils.Reflection;
+using Untech.SharePoint.Utils.Reflection;
 
-namespace Untech.SharePoint.Common.Data.Mapper
+namespace Untech.SharePoint.Data.Mapper
 {
 	internal class MemberAccessor : IFieldAccessor<object>
 	{
@@ -15,7 +15,6 @@ namespace Untech.SharePoint.Common.Data.Mapper
 		private Func<object, object> MemberGetter { get; }
 
 		private Action<object, object> MemberSetter { get; }
-
 
 		public bool CanGetValue => MemberGetter != null;
 

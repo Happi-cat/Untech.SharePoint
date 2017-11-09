@@ -1,9 +1,9 @@
 using System;
 using System.Reflection;
-using Untech.SharePoint.Common.CodeAnnotations;
-using Untech.SharePoint.Common.Utils;
+using Untech.SharePoint.CodeAnnotations;
+using Untech.SharePoint.Utils;
 
-namespace Untech.SharePoint.Common.Data.QueryModels
+namespace Untech.SharePoint.Data.QueryModels
 {
 	/// <summary>
 	/// Represents FieldRef tag in CAML query that associated with the specified <see cref="MemberInfo"/>.
@@ -15,7 +15,7 @@ namespace Untech.SharePoint.Common.Data.QueryModels
 		/// </summary>
 		/// <param name="member">Entity member</param>
 		/// <exception cref="ArgumentNullException"><paramref name="member"/> is null.</exception>
-		public MemberRefModel([NotNull] MemberInfo member) 
+		public MemberRefModel([NotNull] MemberInfo member)
 			: base(FieldRefType.KnownMember)
 		{
 			Guard.CheckNotNull(nameof(member), member);

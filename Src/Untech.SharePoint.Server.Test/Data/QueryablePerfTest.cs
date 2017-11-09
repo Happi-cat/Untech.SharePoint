@@ -1,20 +1,19 @@
 ﻿using Microsoft.SharePoint;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Untech.SharePoint.Common.Test.Spec;
-using Untech.SharePoint.Common.Test.Spec.Models;
-using Untech.SharePoint.Common.Test.Tools.QueryTests;
-using Untech.SharePoint.Server.Data;
+using Untech.SharePoint.Data;
+using Untech.SharePoint.Spec;
+using Untech.SharePoint.Spec.Models;
+using Untech.SharePoint.TestTools.QueryTests;
 
-namespace Untech.SharePoint.Server.Test.Data
+namespace Untech.SharePoint.Server.Data
 {
-
 	[TestClass]
 
 	public class QueryablePerfTest
 	{
 		[TestMethod]
-		[TestCategory("Perfomance")]
-		public void Measure()
+		[TestCategory("Performance")]
+		public void Performance_Measure()
 		{
 			var site = new SPSite(@"http://sp2013dev/sites/orm-test", SPUserToken.SystemAccount);
 			var web = site.OpenWeb();

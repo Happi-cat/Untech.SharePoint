@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Linq.Expressions;
-using Untech.SharePoint.Common.CodeAnnotations;
-using Untech.SharePoint.Common.Extensions;
-using Untech.SharePoint.Common.Mappings;
-using Untech.SharePoint.Common.MetaModels;
-using Untech.SharePoint.Common.Utils;
+using Untech.SharePoint.CodeAnnotations;
+using Untech.SharePoint.Extensions;
+using Untech.SharePoint.Mappings;
+using Untech.SharePoint.MetaModels;
+using Untech.SharePoint.Utils;
 
-namespace Untech.SharePoint.Common.Data
+namespace Untech.SharePoint.Data
 {
 	/// <summary>
 	/// Represents base data context.
@@ -19,7 +19,7 @@ namespace Untech.SharePoint.Common.Data
 		/// <summary>
 		/// Initializes a new instance of the <see cref="SpContext{TContext}"/> with the specified config and services.
 		/// </summary>
-		/// <param name="commonService">Instance of the commen services.</param>
+		/// <param name="commonService">Instance of the common services.</param>
 		/// <exception cref="ArgumentNullException"><paramref name="commonService"/> is null.</exception>
 		/// <exception cref="InvalidOperationException">Cannot find mapping source for current context type in the config,</exception>
 		protected SpContext([NotNull]ICommonService commonService)
@@ -76,15 +76,16 @@ namespace Untech.SharePoint.Common.Data
 		/// </summary>
 		/// <typeparam name="TEntity">Type of element.</typeparam>
 		/// <param name="listSelector">List property accessor.</param>
+		/// <exception cref="InvalidOperationException">Can't find meta-list with URL.</exception>
 		/// <returns>The site-relative URL at which the list was placed.</returns>
 		protected string GetListUrl<TEntity>(Expression<Func<TContext, ISpList<TEntity>>> listSelector)
 		{
-			var memberExp = (MemberExpression) listSelector.Body;
+			var memberExp = (MemberExpression)listSelector.Body;
 			var listUrl = MappingSource.GetListUrlFromContextMember(memberExp.Member);
 
 			if (!Model.Lists.ContainsKey(listUrl))
 			{
-				throw new InvalidOperationException($"Can't find meta-list with url '{listUrl}'");
+				throw new InvalidOperationException($"Can't find meta-list with URL '{listUrl}'");
 			}
 			return listUrl;
 		}
@@ -93,13 +94,13 @@ namespace Untech.SharePoint.Common.Data
 		/// Gets <see cref="ISpList{T}"/> instance for the specified <see cref="MetaList"/>.
 		/// </summary>
 		/// <typeparam name="TEntity">Type of element.</typeparam>
-		/// <param name="list">SP list metadata.</param>
+		/// <param name="list">SP list meta-data.</param>
 		/// <param name="options">List options.</param>
 		/// <returns>Instance of the <see cref="ISpList{T}"/>.</returns>
 		protected ISpList<TEntity> GetList<TEntity>(MetaList list, SpListOptions options = SpListOptions.Default)
 		{
 			var itemsProvider = CommonService.GetItemsProvider(list);
-			
+
 			itemsProvider.FilterByContentType = (options & SpListOptions.NoFilteringByContentType) == 0;
 
 			return new SpList<TEntity>(itemsProvider);

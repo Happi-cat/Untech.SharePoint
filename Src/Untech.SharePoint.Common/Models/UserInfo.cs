@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Runtime.Serialization;
 using Newtonsoft.Json;
-using Untech.SharePoint.Common.CodeAnnotations;
+using Untech.SharePoint.CodeAnnotations;
 
-namespace Untech.SharePoint.Common.Models
+namespace Untech.SharePoint.Models
 {
 	/// <summary>
 	/// Represents user info
@@ -33,11 +33,27 @@ namespace Untech.SharePoint.Common.Models
 		[JsonProperty("email")]
 		public string Email { get; set; }
 
+		/// <inheritdoc />
 		public bool Equals(UserInfo other)
 		{
-			return Id == other.Id;
+			return other != null && Id == other.Id;
 		}
 
+		/// <inheritdoc />
+		public override bool Equals(object obj)
+		{
+			if (ReferenceEquals(null, obj)) return false;
+			if (ReferenceEquals(this, obj)) return true;
+			return obj.GetType() == GetType() && Equals((UserInfo) obj);
+		}
+
+		/// <inheritdoc />
+		public override int GetHashCode()
+		{
+			return Id;
+		}
+
+		/// <inheritdoc />
 		public static bool operator ==(UserInfo left, UserInfo right)
 		{
 			if (ReferenceEquals(left, right)) return true;
@@ -46,6 +62,7 @@ namespace Untech.SharePoint.Common.Models
 			return left.Equals(right);
 		}
 
+		/// <inheritdoc />
 		public static bool operator !=(UserInfo left, UserInfo right)
 		{
 			return !(left == right);

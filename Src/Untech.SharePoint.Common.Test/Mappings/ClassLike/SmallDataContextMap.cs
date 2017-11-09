@@ -1,6 +1,4 @@
-using Untech.SharePoint.Common.Mappings.ClassLike;
-
-namespace Untech.SharePoint.Common.Test.Mappings.ClassLike
+namespace Untech.SharePoint.Mappings.ClassLike
 {
 	public class SmallDataContextMap : ContextMap<SmallDataContext>
 	{

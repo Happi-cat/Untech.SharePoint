@@ -1,8 +1,8 @@
 ﻿using Microsoft.SharePoint;
-using Untech.SharePoint.Common.CodeAnnotations;
-using Untech.SharePoint.Common.Converters;
-using Untech.SharePoint.Common.MetaModels;
-using Untech.SharePoint.Common.Utils;
+using Untech.SharePoint.CodeAnnotations;
+using Untech.SharePoint.Converters;
+using Untech.SharePoint.MetaModels;
+using Untech.SharePoint.Utils;
 
 namespace Untech.SharePoint.Server.Converters.BuiltIn
 {
@@ -12,7 +12,7 @@ namespace Untech.SharePoint.Server.Converters.BuiltIn
 	{
 		public void Initialize(MetaField field)
 		{
-			Guard.CheckNotNull("field", field);
+			Guard.CheckNotNull(nameof(field), field);
 		}
 
 		public object FromSpValue(object value)
@@ -22,7 +22,7 @@ namespace Untech.SharePoint.Server.Converters.BuiltIn
 
 		public object ToSpValue(object value)
 		{
-			return new SPContentTypeId((string) value);
+			return new SPContentTypeId((string)value);
 		}
 
 		public string ToCamlValue(object value)

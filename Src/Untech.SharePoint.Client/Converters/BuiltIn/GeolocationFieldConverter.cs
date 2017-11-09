@@ -1,10 +1,10 @@
 using System.Globalization;
 using Microsoft.SharePoint.Client;
-using Untech.SharePoint.Common.CodeAnnotations;
-using Untech.SharePoint.Common.Converters;
-using Untech.SharePoint.Common.MetaModels;
-using Untech.SharePoint.Common.Models;
-using Untech.SharePoint.Common.Utils;
+using Untech.SharePoint.CodeAnnotations;
+using Untech.SharePoint.Converters;
+using Untech.SharePoint.MetaModels;
+using Untech.SharePoint.Models;
+using Untech.SharePoint.Utils;
 
 namespace Untech.SharePoint.Client.Converters.BuiltIn
 {
@@ -13,12 +13,12 @@ namespace Untech.SharePoint.Client.Converters.BuiltIn
 	internal class GeolocationFieldConverter : IFieldConverter
 	{
 		/// <summary>
-		/// Initialzes current instance with the specified <see cref="MetaField"/>
+		/// Initializes current instance with the specified <see cref="MetaField"/>
 		/// </summary>
 		/// <param name="field"></param>
 		public void Initialize(MetaField field)
 		{
-			Guard.CheckNotNull("field", field);
+			Guard.CheckNotNull(nameof(field), field);
 		}
 
 		/// <summary>
@@ -33,7 +33,7 @@ namespace Untech.SharePoint.Client.Converters.BuiltIn
 				return null;
 			}
 
-			var spValue = (FieldGeolocationValue) value;
+			var spValue = (FieldGeolocationValue)value;
 
 			return new GeoInfo
 			{
@@ -56,7 +56,7 @@ namespace Untech.SharePoint.Client.Converters.BuiltIn
 				return null;
 			}
 
-			var geoInfo = (GeoInfo) value;
+			var geoInfo = (GeoInfo)value;
 
 			return new FieldGeolocationValue
 			{

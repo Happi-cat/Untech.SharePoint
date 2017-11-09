@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
-using Untech.SharePoint.Common.CodeAnnotations;
-using Untech.SharePoint.Common.Data.QueryModels;
-using Untech.SharePoint.Common.MetaModels;
+using Untech.SharePoint.CodeAnnotations;
+using Untech.SharePoint.Data.QueryModels;
+using Untech.SharePoint.MetaModels;
 
-namespace Untech.SharePoint.Common.Data
+namespace Untech.SharePoint.Data
 {
 	/// <summary>
 	/// Represents interface of SP list data accessor and items provider.
@@ -23,51 +23,53 @@ namespace Untech.SharePoint.Common.Data
 		bool FilterByContentType { get; set; }
 
 		/// <summary>
-		/// Fetchs items by the specified CAML query string.
+		/// Fetches items by the specified CAML query string.
 		/// </summary>
 		/// <typeparam name="T">Type of element to fetch.</typeparam>
-		/// <param name="caml">CAML query.</param>
+		/// <param name="query">CAML query.</param>
 		/// <returns>Collection of loaded items.</returns>
-		IEnumerable<T> Fetch<T>(QueryModel caml);
+		IEnumerable<T> Fetch<T>(QueryModel query);
 
 		/// <summary>
 		/// Determines whether a sequence returned by CAML query contains any elements.
 		/// </summary>
-		/// <param name="caml">CAML query.</param>
+		/// <typeparam name="T">Type of element to fetch.</typeparam>
+		/// <param name="query">CAML query.</param>
 		/// <returns>true if the returned sequence contains any elements; otherwise, false.</returns>
-		bool Any<T>(QueryModel caml);
+		bool Any<T>(QueryModel query);
 
 		/// <summary>
 		/// Returns the number of elements in a sequence return by CAML query.
 		/// </summary>
-		/// <param name="caml">CAML query.</param>
+		/// <typeparam name="T">Type of element to fetch.</typeparam>
+		/// <param name="query">CAML query.</param>
 		/// <returns>The number of element in the returned sequence.</returns>
-		int Count<T>(QueryModel caml);
+		int Count<T>(QueryModel query);
 
 		/// <summary>
 		/// Returns the only element of a sequence returned by CAML query, or a default value if the sequence is empty;
 		/// </summary>
 		/// <typeparam name="T">Type of element to fetch.</typeparam>
-		/// <param name="caml">CAML query.</param>
-		/// <returns>The single element of the retuned sequence, or default(<typeparamref name="T"/>) if the sequense conatins no elements.</returns>
-		T SingleOrDefault<T>(QueryModel caml);
+		/// <param name="query">CAML query.</param>
+		/// <returns>The single element of the returned sequence, or default(<typeparamref name="T"/>) if the sequence contains no elements.</returns>
+		T SingleOrDefault<T>(QueryModel query);
 
 		/// <summary>
 		/// Returns the first element in a sequence returned by CAML query or a default value if the sequence is empty.
 		/// </summary>
 		/// <typeparam name="T">Type of element to fetch.</typeparam>
-		/// <param name="caml">CAML query.</param>
-		/// <returns>The first element of the retuned sequence, or default(<typeparamref name="T"/>) if the sequense conatins no elements.</returns>
-		T FirstOrDefault<T>(QueryModel caml);
+		/// <param name="query">CAML query.</param>
+		/// <returns>The first element of the returned sequence, or default(<typeparamref name="T"/>) if the sequence contains no elements.</returns>
+		T FirstOrDefault<T>(QueryModel query);
 
 		/// <summary>
 		/// Returns the element at a specified index in a sequence returned by CAML query or a default value if the index is out of range.
 		/// </summary>
 		/// <typeparam name="T">Type of element to fetch.</typeparam>
-		/// <param name="caml">CAML query.</param>
+		/// <param name="query">CAML query.</param>
 		/// <param name="index"></param>
-		/// <returns>The element at specified index in the retuned sequence, or default(<typeparamref name="T"/>) if the sequense conatins no elements.</returns>
-		T ElementAtOrDefault<T>(QueryModel caml, int index);
+		/// <returns>The element at specified index in the returned sequence, or default(<typeparamref name="T"/>) if the sequence contains no elements.</returns>
+		T ElementAtOrDefault<T>(QueryModel query, int index);
 
 		/// <summary>
 		/// Gets item by id.

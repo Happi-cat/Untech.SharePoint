@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq.Expressions;
-using Untech.SharePoint.Common.CodeAnnotations;
+using Untech.SharePoint.CodeAnnotations;
 
-namespace Untech.SharePoint.Common.Data.Translators.Predicate
+namespace Untech.SharePoint.Data.Translators.Predicate
 {
 	internal class Evaluator : ExpressionVisitor
 	{
@@ -31,14 +31,14 @@ namespace Untech.SharePoint.Common.Data.Translators.Predicate
 				_candidates = candidates;
 			}
 
-			public override Expression Visit(Expression exp)
+			public override Expression Visit(Expression node)
 			{
-				if (exp == null)
+				if (node == null)
 				{
 					return null;
 				}
 
-				return _candidates.Contains(exp) ? Evaluate(exp) : base.Visit(exp);
+				return _candidates.Contains(node) ? Evaluate(node) : base.Visit(node);
 			}
 
 			private static Expression Evaluate(Expression e)

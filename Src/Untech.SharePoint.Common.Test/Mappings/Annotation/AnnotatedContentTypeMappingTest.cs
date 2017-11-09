@@ -1,26 +1,23 @@
 using System.Diagnostics.CodeAnalysis;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Untech.SharePoint.Common.CodeAnnotations;
-using Untech.SharePoint.Common.Configuration;
-using Untech.SharePoint.Common.Data;
-using Untech.SharePoint.Common.Mappings;
-using Untech.SharePoint.Common.Mappings.Annotation;
-using Untech.SharePoint.Common.MetaModels;
+using Untech.SharePoint.CodeAnnotations;
+using Untech.SharePoint.Configuration;
+using Untech.SharePoint.Data;
+using Untech.SharePoint.MetaModels;
 
-namespace Untech.SharePoint.Common.Test.Mappings.Annotation
+namespace Untech.SharePoint.Mappings.Annotation
 {
 	[TestClass]
 	[SuppressMessage("ReSharper", "UnusedAutoPropertyAccessor.Local")]
 	public class AnnotatedContentTypeMappingTest
 	{
 		[TestMethod]
-		public void CanOmitContentTypeAnnotation()
+		public void ContentType_CanOmitContentTypeAnnotation()
 		{
 			var ct = GetContentType<Entity>();
-			
+
 			Assert.IsTrue(string.IsNullOrEmpty(ct.Id));
 		}
-
 
 		[TestMethod]
 		public void CanDefineContentTypeAnnotation()
@@ -60,11 +57,11 @@ namespace Untech.SharePoint.Common.Test.Mappings.Annotation
 			[SpList("List")]
 			public ISpList<T> List { get; set; }
 
-			public Config Config { get; private set; }
+			public Config Config { get; }
 
-			public IMappingSource MappingSource { get; private set; }
+			public IMappingSource MappingSource { get; }
 
-			public MetaContext Model { get; private set; }
+			public MetaContext Model { get; }
 		}
 
 		[UsedImplicitly(ImplicitUseTargetFlags.WithMembers)]
@@ -80,18 +77,15 @@ namespace Untech.SharePoint.Common.Test.Mappings.Annotation
 		[SpContentType(Id = "0x01")]
 		public class Item : Entity
 		{
-
 		}
 
 		[SpContentType(Id = "0x0101")]
 		public class ChildItem1 : Item
 		{
-
 		}
 
 		public class ChildItem2 : Item
 		{
-
 		}
 
 		#endregion

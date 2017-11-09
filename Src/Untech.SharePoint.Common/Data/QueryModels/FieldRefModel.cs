@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Untech.SharePoint.Common.Data.QueryModels
+namespace Untech.SharePoint.Data.QueryModels
 {
 	/// <summary>
 	/// Represents FieldRef tag in CAML query.
@@ -19,7 +19,7 @@ namespace Untech.SharePoint.Common.Data.QueryModels
 		/// <summary>
 		/// Gets current field ref type.
 		/// </summary>
-		public FieldRefType Type { get; private set; }
+		public FieldRefType Type { get; }
 
 		/// <summary>
 		/// Returns a <see cref="String"/> which represents the object instance.

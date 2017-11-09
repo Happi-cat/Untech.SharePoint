@@ -1,7 +1,7 @@
 using Microsoft.SharePoint;
-using Untech.SharePoint.Common.Data.Mapper;
-using Untech.SharePoint.Common.MetaModels;
-using Untech.SharePoint.Common.MetaModels.Visitors;
+using Untech.SharePoint.Data.Mapper;
+using Untech.SharePoint.MetaModels;
+using Untech.SharePoint.MetaModels.Visitors;
 
 namespace Untech.SharePoint.Server.Data.Mapper
 {
@@ -18,6 +18,5 @@ namespace Untech.SharePoint.Server.Data.Mapper
 		{
 			field.SetMapper(new FieldMapper<SPListItem>(field, new StoreAccessor(field)));
 		}
-		
 	}
 }

@@ -1,6 +1,6 @@
 using System;
 
-namespace Untech.SharePoint.Common.Data
+namespace Untech.SharePoint.Data
 {
 	/// <summary>
 	/// Describes different options for <see cref="ISpList{T}"/> configuration.

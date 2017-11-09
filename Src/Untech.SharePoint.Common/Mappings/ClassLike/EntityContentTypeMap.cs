@@ -1,6 +1,6 @@
-using Untech.SharePoint.Common.Models;
+using Untech.SharePoint.Models;
 
-namespace Untech.SharePoint.Common.Mappings.ClassLike
+namespace Untech.SharePoint.Mappings.ClassLike
 {
 	/// <summary>
 	/// Represents base <see cref="ContentTypeMap{TEntity}"/> for types derived from <see cref="Entity"/>.

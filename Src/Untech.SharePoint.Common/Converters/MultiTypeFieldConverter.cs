@@ -1,9 +1,9 @@
 ﻿using System;
-using Untech.SharePoint.Common.CodeAnnotations;
-using Untech.SharePoint.Common.MetaModels;
-using Untech.SharePoint.Common.Utils;
+using Untech.SharePoint.CodeAnnotations;
+using Untech.SharePoint.MetaModels;
+using Untech.SharePoint.Utils;
 
-namespace Untech.SharePoint.Common.Converters
+namespace Untech.SharePoint.Converters
 {
 	/// <summary>
 	/// Represents base field converter that supports multiple member types.
@@ -21,6 +21,7 @@ namespace Untech.SharePoint.Common.Converters
 		/// </summary>
 		protected IFieldConverter Internal { get; set; }
 
+		/// <inheritdoc />
 		public virtual void Initialize(MetaField field)
 		{
 			Guard.CheckNotNull(nameof(field), field);
@@ -28,6 +29,7 @@ namespace Untech.SharePoint.Common.Converters
 			Field = field;
 		}
 
+		/// <inheritdoc />
 		public object FromSpValue(object value)
 		{
 			if (Internal == null)
@@ -37,6 +39,7 @@ namespace Untech.SharePoint.Common.Converters
 			return Internal.FromSpValue(value);
 		}
 
+		/// <inheritdoc />
 		public object ToSpValue(object value)
 		{
 			if (Internal == null)
@@ -46,6 +49,7 @@ namespace Untech.SharePoint.Common.Converters
 			return Internal.ToSpValue(value);
 		}
 
+		/// <inheritdoc />
 		public string ToCamlValue(object value)
 		{
 			if (Internal == null)

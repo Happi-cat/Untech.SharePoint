@@ -1,9 +1,7 @@
 using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Untech.SharePoint.Common.Converters;
-using Untech.SharePoint.Common.Converters.BuiltIn;
 
-namespace Untech.SharePoint.Common.Test.Converters.BuiltIn
+namespace Untech.SharePoint.Converters.BuiltIn
 {
 	[TestClass]
 	public class DateTimeConverterTest : BaseConverterTest
@@ -13,7 +11,7 @@ namespace Untech.SharePoint.Common.Test.Converters.BuiltIn
 		[TestMethod]
 		public void CanConvertDateTime()
 		{
-			Given<DateTime>()
+			CreateConverterForFieldWithType<DateTime>()
 				.CanConvertFromSp(_value, _value)
 				.CanConvertFromSp(null, new DateTime(1900, 1, 1))
 				.CanConvertToSp(_value, _value)
@@ -23,7 +21,7 @@ namespace Untech.SharePoint.Common.Test.Converters.BuiltIn
 		[TestMethod]
 		public void CanConvertNullableDateTime()
 		{
-			Given<DateTime?>()
+			CreateConverterForFieldWithType<DateTime?>()
 				.CanConvertFromSp(_value, _value)
 				.CanConvertFromSp(null, null)
 				.CanConvertToSp(_value, _value)
@@ -33,30 +31,32 @@ namespace Untech.SharePoint.Common.Test.Converters.BuiltIn
 		}
 
 		[TestMethod]
-		public void NotSupportDouble()
+		[ExpectedException(typeof(ArgumentException))]
+		public void Init_ThrowNotSupported_WhenDouble()
 		{
-			CustomAssert.Throw<ArgumentException>(() => Given<double>());
+			CreateConverterForFieldWithType<double>();
 		}
 
 		[TestMethod]
-		public void NotSupportInt16()
+		[ExpectedException(typeof(ArgumentException))]
+		public void Init_ThrowNotSupported_WhenInt16()
 		{
-			CustomAssert.Throw<ArgumentException>(() => Given<Int16>());
-		}
-
-
-		[TestMethod]
-		public void NotSupportFloat()
-		{
-			CustomAssert.Throw<ArgumentException>(() => Given<float>());
+			CreateConverterForFieldWithType<Int16>();
 		}
 
 		[TestMethod]
-		public void NotSupportUInt32()
+		[ExpectedException(typeof(ArgumentException))]
+		public void Init_ThrowNotSupported_WhenFloat()
 		{
-			CustomAssert.Throw<ArgumentException>(() => Given<UInt32>());
+			CreateConverterForFieldWithType<float>();
 		}
 
+		[TestMethod]
+		[ExpectedException(typeof(ArgumentException))]
+		public void Init_ThrowNotSupported_WhenUInt32()
+		{
+			CreateConverterForFieldWithType<UInt32>();
+		}
 
 		protected override IFieldConverter GetConverter()
 		{

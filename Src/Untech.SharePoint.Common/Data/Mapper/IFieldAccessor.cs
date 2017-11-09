@@ -1,4 +1,4 @@
-﻿namespace Untech.SharePoint.Common.Data.Mapper
+﻿namespace Untech.SharePoint.Data.Mapper
 {
 	/// <summary>
 	/// Defines methods to access field values.

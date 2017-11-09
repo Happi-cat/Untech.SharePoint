@@ -1,8 +1,8 @@
 ﻿using System;
-using Untech.SharePoint.Common.MetaModels;
-using Untech.SharePoint.Common.Utils;
+using Untech.SharePoint.MetaModels;
+using Untech.SharePoint.Utils;
 
-namespace Untech.SharePoint.Common.Converters
+namespace Untech.SharePoint.Converters
 {
 	internal class FieldConverterWrapper : IFieldConverter
 	{
@@ -62,7 +62,5 @@ namespace Untech.SharePoint.Common.Converters
 				throw Error.CannotConvertToCamlValue(ConverterType, value, e);
 			}
 		}
-
-		
 	}
 }

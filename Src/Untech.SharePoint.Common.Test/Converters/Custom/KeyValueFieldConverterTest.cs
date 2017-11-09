@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Untech.SharePoint.Common.Converters;
-using Untech.SharePoint.Common.Converters.Custom;
 
-namespace Untech.SharePoint.Common.Test.Converters.Custom
+namespace Untech.SharePoint.Converters.Custom
 {
 	[TestClass]
 	public class KeyValueFieldConverterTest : BaseConverterTest
@@ -12,7 +10,7 @@ namespace Untech.SharePoint.Common.Test.Converters.Custom
 		[TestMethod]
 		public void CanConvertDictionary()
 		{
-			Given<Dictionary<string, string>>()
+			CreateConverterForFieldWithType<Dictionary<string, string>>()
 				.CanConvertFromSp(null, null)
 				.CanConvertFromSp("SomeVar:value1; AnotherVar:value2 ;ThirdVar:3", new Dictionary<string, string>
 				{
@@ -45,16 +43,15 @@ namespace Untech.SharePoint.Common.Test.Converters.Custom
 		[TestMethod]
 		public void CanConvertEnumerable()
 		{
-			Given<IEnumerable<KeyValuePair<string, string>>>();
+			CreateConverterForFieldWithType<IEnumerable<KeyValuePair<string, string>>>();
 		}
 
 		[TestMethod]
+		[ExpectedException(typeof(ArgumentException))]
 		public void CannotConvertList()
 		{
-			CustomAssert.Throw<ArgumentException>(() => Given<List<KeyValuePair<string, string>>>());
+			CreateConverterForFieldWithType<List<KeyValuePair<string, string>>>();
 		}
-
-
 
 		protected override IFieldConverter GetConverter()
 		{
@@ -88,7 +85,7 @@ namespace Untech.SharePoint.Common.Test.Converters.Custom
 				foreach (var pair in obj)
 				{
 					hash ^= pair.Key.GetHashCode();
-					hash ^= (pair.Value ?? "") .GetHashCode();
+					hash ^= (pair.Value ?? "").GetHashCode();
 				}
 				return hash;
 			}

@@ -1,25 +1,25 @@
 ﻿using System.Runtime.Serialization;
 using Newtonsoft.Json;
-using Untech.SharePoint.Common.CodeAnnotations;
+using Untech.SharePoint.CodeAnnotations;
 
-namespace Untech.SharePoint.Common.Models
+namespace Untech.SharePoint.Models
 {
 	/// <summary>
-	/// Represents url info.
+	/// Represents URL info.
 	/// </summary>
 	[PublicAPI]
 	[DataContract]
 	public class UrlInfo
 	{
 		/// <summary>
-		/// Gets or sets url.
+		/// Gets or sets URL.
 		/// </summary>
 		[DataMember]
-		[JsonProperty("url")]
+		[JsonProperty("URL")]
 		public string Url { get; set; }
 
 		/// <summary>
-		/// Gets or sets url description.
+		/// Gets or sets URL description.
 		/// </summary>
 		[DataMember]
 		[JsonProperty("description")]

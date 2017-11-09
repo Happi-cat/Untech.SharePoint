@@ -1,4 +1,4 @@
-﻿namespace Untech.SharePoint.Common.Data.QueryModels
+﻿namespace Untech.SharePoint.Data.QueryModels
 {
 	/// <summary>
 	/// Represents FieldRef tag in CAML query that associated with key field, i.e. ID or BdcIdentity for external list.
@@ -8,7 +8,7 @@
 		/// <summary>
 		/// Initializes a new instance of the <see cref="KeyRefModel"/>.
 		/// </summary>
-		public KeyRefModel() : 
+		public KeyRefModel() :
 			base(FieldRefType.Key)
 		{
 		}

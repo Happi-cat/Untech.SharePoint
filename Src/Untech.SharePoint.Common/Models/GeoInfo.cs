@@ -1,11 +1,11 @@
 ﻿using System.Runtime.Serialization;
 using Newtonsoft.Json;
-using Untech.SharePoint.Common.CodeAnnotations;
+using Untech.SharePoint.CodeAnnotations;
 
-namespace Untech.SharePoint.Common.Models
+namespace Untech.SharePoint.Models
 {
 	/// <summary>
-	/// Represents geo info data.
+	/// Represents Geo info data.
 	/// </summary>
 	[PublicAPI]
 	[DataContract]

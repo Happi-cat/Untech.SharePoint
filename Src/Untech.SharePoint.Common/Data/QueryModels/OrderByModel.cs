@@ -1,7 +1,7 @@
-﻿using Untech.SharePoint.Common.CodeAnnotations;
-using Untech.SharePoint.Common.Utils;
+﻿using Untech.SharePoint.CodeAnnotations;
+using Untech.SharePoint.Utils;
 
-namespace Untech.SharePoint.Common.Data.QueryModels
+namespace Untech.SharePoint.Data.QueryModels
 {
 	/// <summary>
 	/// Represents CAML OrderBy tag.
@@ -55,7 +55,7 @@ namespace Untech.SharePoint.Common.Data.QueryModels
 				case FieldRefType.ContentTypeId:
 					return $"<FieldRef Name='ContentTypeId' Ascending='{Ascending.ToString().ToUpper()}' />";
 				case FieldRefType.KnownMember:
-					var memberRef = (MemberRefModel) FieldRef;
+					var memberRef = (MemberRefModel)FieldRef;
 					return $"<FieldRef Name='{memberRef.Member.Name}' Ascending='{Ascending.ToString().ToUpper()}' />";
 			}
 			return $"<InvalidFieldRef Name='' Ascending='{Ascending.ToString().ToUpper()}' />";

@@ -1,10 +1,10 @@
 using System;
 using Microsoft.SharePoint;
-using Untech.SharePoint.Common.CodeAnnotations;
-using Untech.SharePoint.Common.Converters;
-using Untech.SharePoint.Common.MetaModels;
-using Untech.SharePoint.Common.Models;
-using Untech.SharePoint.Common.Utils;
+using Untech.SharePoint.CodeAnnotations;
+using Untech.SharePoint.Converters;
+using Untech.SharePoint.MetaModels;
+using Untech.SharePoint.Models;
+using Untech.SharePoint.Utils;
 
 namespace Untech.SharePoint.Server.Converters.BuiltIn
 {
@@ -13,14 +13,15 @@ namespace Untech.SharePoint.Server.Converters.BuiltIn
 	internal class GeolocationFieldConverter : IFieldConverter
 	{
 		/// <summary>
-		/// Initialzes current instance with the specified <see cref="MetaField"/>
+		/// Initializes current instance with the specified <see cref="MetaField"/>
 		/// </summary>
 		/// <param name="field"></param>
+		/// <exception cref="ArgumentException">The expression that is being thrown when <see cref="MetaField.MemberType"/> has incorrect format.</exception>
 		public void Initialize(MetaField field)
 		{
-			Guard.CheckNotNull("field", field);
+			Guard.CheckNotNull(nameof(field), field);
 
-			if (field.MemberType != typeof (GeoInfo))
+			if (field.MemberType != typeof(GeoInfo))
 			{
 				throw new ArgumentException("Only GeoInfo member type is allowed.");
 			}
@@ -38,7 +39,7 @@ namespace Untech.SharePoint.Server.Converters.BuiltIn
 				return null;
 			}
 
-			var spValue = (SPFieldGeolocationValue) value;
+			var spValue = (SPFieldGeolocationValue)value;
 
 			return new GeoInfo
 			{
@@ -61,7 +62,7 @@ namespace Untech.SharePoint.Server.Converters.BuiltIn
 				return null;
 			}
 
-			var geoInfo = (GeoInfo) value;
+			var geoInfo = (GeoInfo)value;
 
 			return new SPFieldGeolocationValue(geoInfo.Latitude, geoInfo.Longitude, geoInfo.Altitude, geoInfo.Measure);
 		}

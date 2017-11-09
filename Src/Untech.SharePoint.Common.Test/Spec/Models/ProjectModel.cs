@@ -1,17 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using Untech.SharePoint.Common.Mappings.Annotation;
-using Untech.SharePoint.Common.Models;
+using Untech.SharePoint.Mappings.Annotation;
+using Untech.SharePoint.Models;
 
-namespace Untech.SharePoint.Common.Test.Spec.Models
+namespace Untech.SharePoint.Spec.Models
 {
 	[SpContentType]
 	public class ProjectModel : Entity
 	{
 		[SpField]
 		public ObjectReference Team { get; set; }
-
 
 		[SpField]
 		public DateTime? ProjectStart { get; set; }
@@ -41,11 +40,10 @@ namespace Untech.SharePoint.Common.Test.Spec.Models
 
 		[SpField]
 		[Description("Calculated")]
-		public string Definition{ get; private set; }
+		public string Definition { get; set; }
 
 		[SpField]
 		[Description("Calculated")]
 		public DateTime ProjectLaunch { get; set; }
-
 	}
 }

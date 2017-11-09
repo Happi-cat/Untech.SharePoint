@@ -1,33 +1,36 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using Untech.SharePoint.Common.CodeAnnotations;
-using Untech.SharePoint.Common.Data.QueryModels;
-using Untech.SharePoint.Common.Diagnostics;
-using Untech.SharePoint.Common.Extensions;
-using Untech.SharePoint.Common.Utils;
+using Untech.SharePoint.CodeAnnotations;
+using Untech.SharePoint.Data.QueryModels;
+using Untech.SharePoint.Diagnostics;
+using Untech.SharePoint.Extensions;
+using Untech.SharePoint.Utils;
 
-namespace Untech.SharePoint.Common.Data.Translators.Predicate
+namespace Untech.SharePoint.Data.Translators.Predicate
 {
 	internal class CamlPredicateProcessor : IProcessor<Expression, WhereModel>
 	{
-		private static readonly IReadOnlyDictionary<ExpressionType, ComparisonOperator> ComparisonMap = new Dictionary<ExpressionType, ComparisonOperator>
+		private static readonly IReadOnlyDictionary<ExpressionType, ComparisonOperator> s_comparisonMap = new Dictionary
+			<ExpressionType, ComparisonOperator>
 		{
-			{ExpressionType.Equal, ComparisonOperator.Eq},
-			{ExpressionType.NotEqual, ComparisonOperator.Neq},
-			{ExpressionType.LessThanOrEqual, ComparisonOperator.Leq},
-			{ExpressionType.LessThan, ComparisonOperator.Lt},
-			{ExpressionType.GreaterThan, ComparisonOperator.Gt},
-			{ExpressionType.GreaterThanOrEqual, ComparisonOperator.Geq}
+			[ExpressionType.Equal] = ComparisonOperator.Eq,
+			[ExpressionType.NotEqual] = ComparisonOperator.Neq,
+			[ExpressionType.LessThanOrEqual] = ComparisonOperator.Leq,
+			[ExpressionType.LessThan] = ComparisonOperator.Lt,
+			[ExpressionType.GreaterThan] = ComparisonOperator.Gt,
+			[ExpressionType.GreaterThanOrEqual] = ComparisonOperator.Geq
 		};
 
-		private static readonly IReadOnlyDictionary<ExpressionType, ComparisonOperator> NullComparisonMap = new Dictionary<ExpressionType, ComparisonOperator>
+		private static readonly IReadOnlyDictionary<ExpressionType, ComparisonOperator> s_nullComparisonMap = new Dictionary
+			<ExpressionType, ComparisonOperator>
 		{
-			{ExpressionType.Equal, ComparisonOperator.IsNull},
-			{ExpressionType.NotEqual, ComparisonOperator.IsNotNull},
+			[ExpressionType.Equal] = ComparisonOperator.IsNull,
+			[ExpressionType.NotEqual] = ComparisonOperator.IsNotNull,
 		};
 
-		[NotNull] private readonly IEnumerable<ExpressionVisitor> _preProcessors;
+		[NotNull]
+		private readonly IEnumerable<ExpressionVisitor> _preProcessors;
 
 		public CamlPredicateProcessor()
 		{
@@ -47,14 +50,14 @@ namespace Untech.SharePoint.Common.Data.Translators.Predicate
 		{
 			Guard.CheckNotNull(nameof(predicate), predicate);
 
-			Logger.Trace(LogCategories.PredicateProcessor, "Orignal predicate:\n{0}", predicate);
+			Logger.Trace(LogCategories.PredicateProcessor, "Original predicate:\n{0}", predicate);
 
 			predicate = predicate.StripQuotes();
 			if (predicate.NodeType == ExpressionType.Lambda)
 			{
-				predicate = ((LambdaExpression) predicate).Body;
+				predicate = ((LambdaExpression)predicate).Body;
 			}
-			
+
 			predicate = _preProcessors.Aggregate(predicate, (n, v) => v.Visit(n));
 
 			Logger.Trace(LogCategories.PredicateProcessor, "Pre-processed predicate:\n{0}", predicate);
@@ -75,27 +78,27 @@ namespace Untech.SharePoint.Common.Data.Translators.Predicate
 			{
 				case ExpressionType.And:
 				case ExpressionType.AndAlso:
-					return TranslateAnd((BinaryExpression) node);
+					return TranslateAnd((BinaryExpression)node);
 				case ExpressionType.Equal:
 				case ExpressionType.GreaterThan:
 				case ExpressionType.GreaterThanOrEqual:
 				case ExpressionType.LessThan:
 				case ExpressionType.LessThanOrEqual:
 				case ExpressionType.NotEqual:
-					return TranslateComparison((BinaryExpression) node);
+					return TranslateComparison((BinaryExpression)node);
 				case ExpressionType.Or:
 				case ExpressionType.OrElse:
-					return TranslateOr((BinaryExpression) node);
+					return TranslateOr((BinaryExpression)node);
 				case ExpressionType.Call:
-					return TranslateCall((MethodCallExpression) node);
+					return TranslateCall((MethodCallExpression)node);
 				case ExpressionType.Quote:
-					return Translate(((UnaryExpression) node).Operand);
+					return Translate(((UnaryExpression)node).Operand);
 				case ExpressionType.MemberAccess:
-					return TranslateTrueProperty((MemberExpression) node);
+					return TranslateTrueProperty((MemberExpression)node);
 				case ExpressionType.Not:
-					return Translate(((UnaryExpression) node).Operand).Negate();
+					return Translate(((UnaryExpression)node).Operand).Negate();
 				case ExpressionType.Constant:
-					return TranslateConstBoolean((ConstantExpression) node);
+					return TranslateConstBoolean((ConstantExpression)node);
 			}
 			throw Error.SubqueryNotSupported(node);
 		}
@@ -103,12 +106,12 @@ namespace Untech.SharePoint.Common.Data.Translators.Predicate
 		[NotNull]
 		private WhereModel TranslateConstBoolean([NotNull]ConstantExpression constNode)
 		{
-			if (constNode.Type != typeof (bool))
+			if (constNode.Type != typeof(bool))
 			{
 				throw Error.SubqueryNotSupported(constNode);
 			}
 
-			var value = (bool) constNode.Value;
+			var value = (bool)constNode.Value;
 			var tag = value ? ComparisonOperator.IsNotNull : ComparisonOperator.IsNull;
 
 			return new ComparisonModel(tag, new KeyRefModel(), null);
@@ -121,7 +124,7 @@ namespace Untech.SharePoint.Common.Data.Translators.Predicate
 			return new ComparisonModel(ComparisonOperator.Eq, fieldRef, true);
 		}
 
-	    [NotNull]
+		[NotNull]
 		private WhereModel TranslateAnd([NotNull]BinaryExpression binaryNode)
 		{
 			return WhereModel.And(Translate(binaryNode.Left), Translate(binaryNode.Right));
@@ -136,14 +139,14 @@ namespace Untech.SharePoint.Common.Data.Translators.Predicate
 		[NotNull]
 		private WhereModel TranslateComparison([NotNull]BinaryExpression binaryNode)
 		{
-			if (ComparisonMap.ContainsKey(binaryNode.NodeType))
+			if (s_comparisonMap.ContainsKey(binaryNode.NodeType))
 			{
 				if (binaryNode.Right.IsConstant(null))
 				{
 					return TranslateComparisonWithNull(binaryNode);
 				}
 				var fieldRef = CamlProcessorUtils.GetFieldRef(binaryNode.Left);
-				return new ComparisonModel(ComparisonMap[binaryNode.NodeType], fieldRef, GetValue(binaryNode.Right));
+				return new ComparisonModel(s_comparisonMap[binaryNode.NodeType], fieldRef, GetValue(binaryNode.Right));
 			}
 			throw Error.SubqueryNotSupported(binaryNode);
 		}
@@ -152,9 +155,9 @@ namespace Untech.SharePoint.Common.Data.Translators.Predicate
 		private WhereModel TranslateComparisonWithNull([NotNull]BinaryExpression binaryNode)
 		{
 			var fieldRef = CamlProcessorUtils.GetFieldRef(binaryNode.Left);
-			if (NullComparisonMap.ContainsKey(binaryNode.NodeType))
+			if (s_nullComparisonMap.ContainsKey(binaryNode.NodeType))
 			{
-				return new ComparisonModel(NullComparisonMap[binaryNode.NodeType], fieldRef, null);
+				return new ComparisonModel(s_nullComparisonMap[binaryNode.NodeType], fieldRef, null);
 			}
 			throw Error.SubqueryNotSupported(binaryNode);
 		}
@@ -182,10 +185,10 @@ namespace Untech.SharePoint.Common.Data.Translators.Predicate
 			{
 				return TranslateStrStartsWith(callNode);
 			}
-			if (callNode.Method.Name == "Contains" && 
-				callNode.Object != null && 
-				(callNode.Object.Type.IsArray || callNode.Object.Type.IsIEnumerable()) && 
-				callNode.Arguments.Count == 1)
+			if (callNode.Method.Name == "Contains"
+				&& callNode.Object != null
+				&& (callNode.Object.Type.IsArray || callNode.Object.Type.IsIEnumerable())
+				&& callNode.Arguments.Count == 1)
 			{
 				return new ComparisonModel(ComparisonOperator.ContainsOrIncludes,
 					CamlProcessorUtils.GetFieldRef(callNode.Object),
@@ -197,16 +200,16 @@ namespace Untech.SharePoint.Common.Data.Translators.Predicate
 		[NotNull]
 		private WhereModel TranslateStrContains([NotNull]MethodCallExpression callNode)
 		{
-			return new ComparisonModel(ComparisonOperator.Contains, 
-				CamlProcessorUtils.GetFieldRef(callNode.Object), 
+			return new ComparisonModel(ComparisonOperator.Contains,
+				CamlProcessorUtils.GetFieldRef(callNode.Object),
 				GetValue(callNode.Arguments[0]));
 		}
 
 		[NotNull]
 		private WhereModel TranslateStrStartsWith([NotNull]MethodCallExpression callNode)
 		{
-			return new ComparisonModel(ComparisonOperator.BeginsWith, 
-				CamlProcessorUtils.GetFieldRef(callNode.Object), 
+			return new ComparisonModel(ComparisonOperator.BeginsWith,
+				CamlProcessorUtils.GetFieldRef(callNode.Object),
 				GetValue(callNode.Arguments[0]));
 		}
 
@@ -215,12 +218,11 @@ namespace Untech.SharePoint.Common.Data.Translators.Predicate
 		{
 			if (node.NodeType == ExpressionType.Constant)
 			{
-				return ((ConstantExpression) node).Value;
+				return ((ConstantExpression)node).Value;
 			}
 			throw Error.SubqueryNotSupported(node);
 		}
 
 		#endregion
-
 	}
 }

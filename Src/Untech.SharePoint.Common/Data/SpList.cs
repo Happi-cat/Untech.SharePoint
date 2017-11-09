@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
-using Untech.SharePoint.Common.Utils;
+using Untech.SharePoint.Utils;
 
-namespace Untech.SharePoint.Common.Data
+namespace Untech.SharePoint.Data
 {
 	internal class SpList<T> : SpLinqQuery<T>, ISpList<T>
 	{
@@ -31,7 +31,9 @@ namespace Untech.SharePoint.Common.Data
 		{
 			ThrowIfFilterByContentTypeDisabled();
 
-			return item == null ? default(T) : ListItemsProvider.Add(item);
+			return EqualsDefault(item)
+				? default(T)
+				: ListItemsProvider.Add(item);
 		}
 
 		public void Add(IEnumerable<T> items)
@@ -46,7 +48,9 @@ namespace Untech.SharePoint.Common.Data
 		{
 			ThrowIfFilterByContentTypeDisabled();
 
-			return item == null ? default(T) : ListItemsProvider.Update(item);
+			return EqualsDefault(item)
+				? default(T)
+				: ListItemsProvider.Update(item);
 		}
 
 		public void Update(IEnumerable<T> items)
@@ -59,7 +63,7 @@ namespace Untech.SharePoint.Common.Data
 
 		public void Delete(T item)
 		{
-			if (item == null) return;
+			if (EqualsDefault(item)) return;
 			ListItemsProvider.Delete(item);
 		}
 
@@ -80,7 +84,12 @@ namespace Untech.SharePoint.Common.Data
 		{
 			if (ListItemsProvider.FilterByContentType) return;
 
-			throw new InvalidOperationException("This operation cannot be perfomed when SpListOptions.NoFilteringByContentType was specified");
+			throw new InvalidOperationException("This operation cannot be performed when SpListOptions.NoFilteringByContentType was specified");
+		}
+
+		private static bool EqualsDefault(T item)
+		{
+			return EqualityComparer<T>.Default.Equals(item, default(T));
 		}
 	}
 }

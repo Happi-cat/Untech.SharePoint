@@ -1,22 +1,21 @@
 ﻿using System.Collections;
 using System.Diagnostics.CodeAnalysis;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Untech.SharePoint.Common.CodeAnnotations;
-using Untech.SharePoint.Common.Configuration;
-using Untech.SharePoint.Common.Converters;
-using Untech.SharePoint.Common.Data;
-using Untech.SharePoint.Common.Mappings;
-using Untech.SharePoint.Common.Mappings.Annotation;
-using Untech.SharePoint.Common.MetaModels;
+using Untech.SharePoint.CodeAnnotations;
+using Untech.SharePoint.Configuration;
+using Untech.SharePoint.Data;
+using Untech.SharePoint.Mappings;
+using Untech.SharePoint.Mappings.Annotation;
+using Untech.SharePoint.MetaModels;
 
-namespace Untech.SharePoint.Common.Test.Converters
+namespace Untech.SharePoint.Converters
 {
 	public abstract class BaseConverterTest
 	{
 		protected abstract IFieldConverter GetConverter();
 
 		[PublicAPI]
-		protected TestScenario Given<TField>()
+		protected TestScenario CreateConverterForFieldWithType<TField>()
 		{
 			var converter = GetConverter();
 
@@ -89,7 +88,6 @@ namespace Untech.SharePoint.Common.Test.Converters
 				return this;
 			}
 
-
 			public TestScenario CanConvertToCaml(object original, string expected)
 			{
 				return CanConvertToCaml<object>(original, expected);
@@ -112,9 +110,9 @@ namespace Untech.SharePoint.Common.Test.Converters
 			[SpList("List")]
 			public ISpList<Entity<T>> List { get; set; }
 
-			public Config Config { get; private set; }
-			public IMappingSource MappingSource { get; private set; }
-			public MetaContext Model { get; private set; }
+			public Config Config { get; }
+			public IMappingSource MappingSource { get; }
+			public MetaContext Model { get; }
 		}
 
 		[UsedImplicitly(ImplicitUseTargetFlags.WithMembers)]
@@ -125,6 +123,5 @@ namespace Untech.SharePoint.Common.Test.Converters
 		}
 
 		#endregion
-
 	}
 }

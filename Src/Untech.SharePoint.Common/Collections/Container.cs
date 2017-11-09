@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using Untech.SharePoint.Common.CodeAnnotations;
-using Untech.SharePoint.Common.Utils;
+using Untech.SharePoint.CodeAnnotations;
+using Untech.SharePoint.Utils;
 
-namespace Untech.SharePoint.Common.Collections
+namespace Untech.SharePoint.Collections
 {
 	/// <summary>
 	/// Represents a collection of keys and values.

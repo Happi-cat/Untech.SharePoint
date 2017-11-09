@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Untech.SharePoint.Common.CodeAnnotations;
-using Untech.SharePoint.Common.Extensions;
+using Untech.SharePoint.CodeAnnotations;
+using Untech.SharePoint.Extensions;
 
-namespace Untech.SharePoint.Common.Utils
+namespace Untech.SharePoint.Utils
 {
 	/// <summary>
 	/// Provides a set of static methods for arguments validation.
@@ -58,7 +58,7 @@ namespace Untech.SharePoint.Common.Utils
 		/// <param name="actualType">Actual <see cref="Type"/>.</param>
 		/// <param name="expectedType">Expected type.</param>
 		/// <exception cref="ArgumentNullException"><paramref name="actualType"/> or <paramref name="expectedType"/> is null.</exception>
-		/// <exception cref="ArgumentException"><paramref name="actualType"/> cannot be assinged to <paramref name="expectedType"/>.</exception>
+		/// <exception cref="ArgumentException"><paramref name="actualType"/> cannot be assigned to <paramref name="expectedType"/>.</exception>
 		public static void CheckIsTypeAssignableTo([InvokerParameterName][CanBeNull]string paramName, [NotNull]Type actualType, [NotNull]Type expectedType)
 		{
 			CheckNotNull(nameof(actualType), actualType);
@@ -77,16 +77,15 @@ namespace Untech.SharePoint.Common.Utils
 		/// <summary>
 		/// Checks whether <paramref name="actualType"/> can be assigned to <typeparamref name="TExpected"/>.
 		/// </summary>
-		/// <typeparam name="TExpected">Exected type.</typeparam>
+		/// <typeparam name="TExpected">Expected type.</typeparam>
 		/// <param name="paramName">Parameter name.</param>
 		/// <param name="actualType">Actual <see cref="Type"/>.</param>
 		/// <exception cref="ArgumentNullException"><paramref name="actualType"/> is null.</exception>
-		/// <exception cref="ArgumentException"><paramref name="actualType"/> cannot be assinged to <typeparamref name="TExpected"/>.</exception>
+		/// <exception cref="ArgumentException"><paramref name="actualType"/> cannot be assigned to <typeparamref name="TExpected"/>.</exception>
 		public static void CheckIsTypeAssignableTo<TExpected>([InvokerParameterName][CanBeNull]string paramName, [NotNull]Type actualType)
 		{
 			CheckIsTypeAssignableTo(paramName, actualType, typeof(TExpected));
 		}
-
 
 		/// <summary>
 		/// Checks whether <paramref name="actualValue"/> can be assigned to <paramref name="expectedType"/>.
@@ -95,14 +94,14 @@ namespace Untech.SharePoint.Common.Utils
 		/// <param name="actualValue">Object to check.</param>
 		/// <param name="expectedType">Expected type.</param>
 		/// <exception cref="ArgumentNullException"><paramref name="expectedType"/> is null.</exception>
-		/// <exception cref="ArgumentException"><paramref name="actualValue"/> cannot be assinged to <paramref name="expectedType"/>.</exception>
+		/// <exception cref="ArgumentException"><paramref name="actualValue"/> cannot be assigned to <paramref name="expectedType"/>.</exception>
 		public static void CheckIsObjectAssignableTo([InvokerParameterName][CanBeNull]string paramName, [CanBeNull]object actualValue, [NotNull]Type expectedType)
 		{
 			CheckNotNull(nameof(expectedType), expectedType);
 
 			if (actualValue == null)
 			{
-				if (expectedType.IsNullAssignable()) 
+				if (expectedType.IsNullAssignable())
 				{
 					return;
 				}
@@ -122,14 +121,13 @@ namespace Untech.SharePoint.Common.Utils
 		/// <summary>
 		/// Checks whether <paramref name="actualValue"/> can be assigned to <typeparamref name="TExpected"/>.
 		/// </summary>
-		/// <typeparam name="TExpected">Exected type.</typeparam>
+		/// <typeparam name="TExpected">Expected type.</typeparam>
 		/// <param name="paramName">Parameter name.</param>
 		/// <param name="actualValue">Object to check.</param>
-		/// <exception cref="ArgumentException"><paramref name="actualValue"/> cannot be assinged to <typeparamref name="TExpected"/>.</exception>
+		/// <exception cref="ArgumentException"><paramref name="actualValue"/> cannot be assigned to <typeparamref name="TExpected"/>.</exception>
 		public static void CheckIsObjectAssignableTo<TExpected>([InvokerParameterName][CanBeNull]string paramName, [CanBeNull]object actualValue)
 		{
 			CheckIsObjectAssignableTo(paramName, actualValue, typeof(TExpected));
 		}
-
 	}
 }

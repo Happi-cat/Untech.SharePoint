@@ -4,9 +4,9 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
-using Untech.SharePoint.Common.Extensions;
+using Untech.SharePoint.Extensions;
 
-namespace Untech.SharePoint.Common.Data
+namespace Untech.SharePoint.Data
 {
 	[SuppressMessage("ReSharper", "InvokeAsExtensionMethod")]
 	internal static class MethodUtils
@@ -110,7 +110,7 @@ namespace Untech.SharePoint.Common.Data
 
 
 		public static readonly MethodInfo ObjIn = GetMethodInfo(() => default(object).In(null));
-		
+
 		public static bool IsOperator(MethodInfo x, MethodInfo y)
 		{
 			return GenericMethodDefinitionComparer.Default.Equals(x, y);
@@ -122,6 +122,5 @@ namespace Untech.SharePoint.Common.Data
 			var method = methodCall.Method;
 			return method.IsGenericMethod ? method.GetGenericMethodDefinition() : method;
 		}
-
 	}
 }

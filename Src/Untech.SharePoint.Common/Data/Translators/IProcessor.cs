@@ -1,6 +1,6 @@
-using Untech.SharePoint.Common.CodeAnnotations;
+using Untech.SharePoint.CodeAnnotations;
 
-namespace Untech.SharePoint.Common.Data.Translators
+namespace Untech.SharePoint.Data.Translators
 {
 	[PublicAPI]
 	internal interface IProcessor<in TIn, out TOut>

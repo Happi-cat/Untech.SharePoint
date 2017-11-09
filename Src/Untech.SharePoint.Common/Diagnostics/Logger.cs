@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Untech.SharePoint.Common.CodeAnnotations;
-using Untech.SharePoint.Common.Utils;
+using Untech.SharePoint.CodeAnnotations;
+using Untech.SharePoint.Utils;
 
-namespace Untech.SharePoint.Common.Diagnostics
+namespace Untech.SharePoint.Diagnostics
 {
 	/// <summary>
 	/// Represents class that logs any message to specified endpoints.
@@ -29,11 +29,10 @@ namespace Untech.SharePoint.Common.Diagnostics
 		public static Logger Instance => Singleton<Logger>.GetInstance();
 
 		/// <summary>
-		/// Gets dicitonary with currently registered logging enpoints.
+		/// Gets dictionary with currently registered logging endpoints.
 		/// </summary>
 		[NotNull]
 		public Dictionary<Type, ILoggingEndpoint> Endpoints { get; }
-
 
 		/// <summary>
 		/// Logs message with specified level and category.
@@ -43,9 +42,9 @@ namespace Untech.SharePoint.Common.Diagnostics
 		/// <param name="message">Message to print.</param>
 		public static void Log(LogLevel level, string category, string message)
 		{
-			foreach (var endpoint in Instance.Endpoints.Values.Where(n => n!= null))
+			foreach (var endpoint in Instance.Endpoints.Values.Where(n => n != null))
 			{
-				 endpoint.Log(level, category, message);
+				endpoint.Log(level, category, message);
 			}
 		}
 
@@ -95,7 +94,7 @@ namespace Untech.SharePoint.Common.Diagnostics
 		/// <param name="level">Logging level of the message.</param>
 		/// <param name="category">Category of the message.</param>
 		/// <param name="format">A composite format string.</param>
-		/// <param name="args">An object array that contains zero or more object to foramt.</param>
+		/// <param name="args">An object array that contains zero or more object to format.</param>
 		[StringFormatMethod("format")]
 		public static void Log(LogLevel level, string category, string format, params object[] args)
 		{

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Untech.SharePoint.Common.MetaModels.Visitors
+namespace Untech.SharePoint.MetaModels.Visitors
 {
 	/// <summary>
 	/// Represents base meta models visitor.
@@ -24,7 +24,7 @@ namespace Untech.SharePoint.Common.MetaModels.Visitors
 		{
 			if (context == null) return;
 
-			foreach (var model in (IEnumerable<MetaList>) context.Lists)
+			foreach (var model in (IEnumerable<MetaList>)context.Lists)
 			{
 				VisitList(model);
 			}
@@ -64,7 +64,6 @@ namespace Untech.SharePoint.Common.MetaModels.Visitors
 		/// <param name="field">Field to visit.</param>
 		public virtual void VisitField(MetaField field)
 		{
-			
 		}
 	}
 }

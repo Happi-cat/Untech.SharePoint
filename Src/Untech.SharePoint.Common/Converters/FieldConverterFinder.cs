@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using Untech.SharePoint.Common.CodeAnnotations;
-using Untech.SharePoint.Common.MetaModels;
-using Untech.SharePoint.Common.MetaModels.Visitors;
+using Untech.SharePoint.CodeAnnotations;
+using Untech.SharePoint.MetaModels;
+using Untech.SharePoint.MetaModels.Visitors;
 
-namespace Untech.SharePoint.Common.Converters
+namespace Untech.SharePoint.Converters
 {
 	internal sealed class FieldConverterFinder : BaseMetaModelVisitor
 	{
@@ -19,7 +19,7 @@ namespace Untech.SharePoint.Common.Converters
 		public static IEnumerable<Type> Find([CanBeNull]IMetaModel model)
 		{
 			var finder = new FieldConverterFinder();
-			
+
 			finder.Visit(model);
 
 			return finder.Converters;

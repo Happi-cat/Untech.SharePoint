@@ -1,6 +1,6 @@
 ﻿using System;
 
-#pragma warning disable 1591
+#pragma warning disable
 // ReSharper disable UnusedMember.Global
 // ReSharper disable MemberCanBePrivate.Global
 // ReSharper disable UnusedAutoPropertyAccessor.Global
@@ -9,7 +9,7 @@
 // ReSharper disable InconsistentNaming
 // ReSharper disable CheckNamespace
 
-namespace Untech.SharePoint.Common.CodeAnnotations
+namespace Untech.SharePoint.CodeAnnotations
 {
 	/// <summary>
 	/// Indicates that the value of the marked element could be <c>null</c> sometimes,
@@ -25,7 +25,9 @@ namespace Untech.SharePoint.Common.CodeAnnotations
 	[AttributeUsage(
 	  AttributeTargets.Method | AttributeTargets.Parameter | AttributeTargets.Property |
 	  AttributeTargets.Delegate | AttributeTargets.Field | AttributeTargets.Event)]
-	public sealed class CanBeNullAttribute : Attribute { }
+	public sealed class CanBeNullAttribute : Attribute
+	{
+	}
 
 	/// <summary>
 	/// Indicates that the value of the marked element could never be <c>null</c>.
@@ -38,27 +40,33 @@ namespace Untech.SharePoint.Common.CodeAnnotations
 	[AttributeUsage(
 	  AttributeTargets.Method | AttributeTargets.Parameter | AttributeTargets.Property |
 	  AttributeTargets.Delegate | AttributeTargets.Field | AttributeTargets.Event)]
-	public sealed class NotNullAttribute : Attribute { }
+	public sealed class NotNullAttribute : Attribute
+	{
+	}
 
 	/// <summary>
-	/// Can be appplied to symbols of types derived from IEnumerable as well as to symbols of Task
+	/// Can be applied to symbols of types derived from IEnumerable as well as to symbols of Task
 	/// and Lazy classes to indicate that the value of a collection item, of the Task.Result property
 	/// or of the Lazy.Value property can never be null.
 	/// </summary>
 	[AttributeUsage(
 	  AttributeTargets.Method | AttributeTargets.Parameter | AttributeTargets.Property |
 	  AttributeTargets.Delegate | AttributeTargets.Field)]
-	public sealed class ItemNotNullAttribute : Attribute { }
+	public sealed class ItemNotNullAttribute : Attribute
+	{
+	}
 
 	/// <summary>
-	/// Can be appplied to symbols of types derived from IEnumerable as well as to symbols of Task
+	/// Can be applied to symbols of types derived from IEnumerable as well as to symbols of Task
 	/// and Lazy classes to indicate that the value of a collection item, of the Task.Result property
 	/// or of the Lazy.Value property can be null.
 	/// </summary>
 	[AttributeUsage(
 	  AttributeTargets.Method | AttributeTargets.Parameter | AttributeTargets.Property |
 	  AttributeTargets.Delegate | AttributeTargets.Field)]
-	public sealed class ItemCanBeNullAttribute : Attribute { }
+	public sealed class ItemCanBeNullAttribute : Attribute
+	{
+	}
 
 	/// <summary>
 	/// Indicates that the marked method builds string by format pattern and (optional) arguments.
@@ -85,7 +93,7 @@ namespace Untech.SharePoint.Common.CodeAnnotations
 			FormatParameterName = formatParameterName;
 		}
 
-		public string FormatParameterName { get; private set; }
+		public string FormatParameterName { get; }
 	}
 
 	/// <summary>
@@ -101,7 +109,7 @@ namespace Untech.SharePoint.Common.CodeAnnotations
 		}
 
 		[NotNull]
-		public string Name { get; private set; }
+		public string Name { get; }
 	}
 
 	/// <summary>
@@ -116,7 +124,9 @@ namespace Untech.SharePoint.Common.CodeAnnotations
 	/// }
 	/// </code></example>
 	[AttributeUsage(AttributeTargets.Parameter)]
-	public sealed class InvokerParameterNameAttribute : Attribute { }
+	public sealed class InvokerParameterNameAttribute : Attribute
+	{
+	}
 
 	/// <summary>
 	/// Indicates that the method is contained in a type that implements
@@ -157,13 +167,16 @@ namespace Untech.SharePoint.Common.CodeAnnotations
 	[AttributeUsage(AttributeTargets.Method)]
 	public sealed class NotifyPropertyChangedInvocatorAttribute : Attribute
 	{
-		public NotifyPropertyChangedInvocatorAttribute() { }
+		public NotifyPropertyChangedInvocatorAttribute()
+		{
+		}
+
 		public NotifyPropertyChangedInvocatorAttribute(string parameterName)
 		{
 			ParameterName = parameterName;
 		}
 
-		public string ParameterName { get; private set; }
+		public string ParameterName { get; }
 	}
 
 	/// <summary>
@@ -180,7 +193,7 @@ namespace Untech.SharePoint.Common.CodeAnnotations
 	/// </list>
 	/// If method has single input parameter, it's name could be omitted.<br/>
 	/// Using <c>halt</c> (or <c>void</c>/<c>nothing</c>, which is the same)
-	/// for method output means that the methos doesn't return normally.<br/>
+	/// for method output means that the method doesn't return normally.<br/>
 	/// <c>canbenull</c> annotation is only applicable for output parameters.<br/>
 	/// You can use multiple <c>[ContractAnnotation]</c> for each FDT row,
 	/// or use single attribute with rows separated by semicolon.<br/>
@@ -213,7 +226,9 @@ namespace Untech.SharePoint.Common.CodeAnnotations
 	public sealed class ContractAnnotationAttribute : Attribute
 	{
 		public ContractAnnotationAttribute([NotNull] string contract)
-			: this(contract, false) { }
+			: this(contract, false)
+		{
+		}
 
 		public ContractAnnotationAttribute([NotNull] string contract, bool forceFullStates)
 		{
@@ -221,8 +236,8 @@ namespace Untech.SharePoint.Common.CodeAnnotations
 			ForceFullStates = forceFullStates;
 		}
 
-		public string Contract { get; private set; }
-		public bool ForceFullStates { get; private set; }
+		public string Contract { get; }
+		public bool ForceFullStates { get; }
 	}
 
 	/// <summary>
@@ -237,13 +252,16 @@ namespace Untech.SharePoint.Common.CodeAnnotations
 	[AttributeUsage(AttributeTargets.All)]
 	public sealed class LocalizationRequiredAttribute : Attribute
 	{
-		public LocalizationRequiredAttribute() : this(true) { }
+		public LocalizationRequiredAttribute() : this(true)
+		{
+		}
+
 		public LocalizationRequiredAttribute(bool required)
 		{
 			Required = required;
 		}
 
-		public bool Required { get; private set; }
+		public bool Required { get; }
 	}
 
 	/// <summary>
@@ -266,7 +284,9 @@ namespace Untech.SharePoint.Common.CodeAnnotations
 	/// }
 	/// </code></example>
 	[AttributeUsage(AttributeTargets.Interface | AttributeTargets.Class | AttributeTargets.Struct)]
-	public sealed class CannotApplyEqualityOperatorAttribute : Attribute { }
+	public sealed class CannotApplyEqualityOperatorAttribute : Attribute
+	{
+	}
 
 	/// <summary>
 	/// When applied to a target attribute, specifies a requirement for any type marked
@@ -288,7 +308,7 @@ namespace Untech.SharePoint.Common.CodeAnnotations
 		}
 
 		[NotNull]
-		public Type BaseType { get; private set; }
+		public Type BaseType { get; }
 	}
 
 	/// <summary>
@@ -299,13 +319,19 @@ namespace Untech.SharePoint.Common.CodeAnnotations
 	public sealed class UsedImplicitlyAttribute : Attribute
 	{
 		public UsedImplicitlyAttribute()
-			: this(ImplicitUseKindFlags.Default, ImplicitUseTargetFlags.Default) { }
+			: this(ImplicitUseKindFlags.Default, ImplicitUseTargetFlags.Default)
+		{
+		}
 
 		public UsedImplicitlyAttribute(ImplicitUseKindFlags useKindFlags)
-			: this(useKindFlags, ImplicitUseTargetFlags.Default) { }
+			: this(useKindFlags, ImplicitUseTargetFlags.Default)
+		{
+		}
 
 		public UsedImplicitlyAttribute(ImplicitUseTargetFlags targetFlags)
-			: this(ImplicitUseKindFlags.Default, targetFlags) { }
+			: this(ImplicitUseKindFlags.Default, targetFlags)
+		{
+		}
 
 		public UsedImplicitlyAttribute(ImplicitUseKindFlags useKindFlags, ImplicitUseTargetFlags targetFlags)
 		{
@@ -313,8 +339,8 @@ namespace Untech.SharePoint.Common.CodeAnnotations
 			TargetFlags = targetFlags;
 		}
 
-		public ImplicitUseKindFlags UseKindFlags { get; private set; }
-		public ImplicitUseTargetFlags TargetFlags { get; private set; }
+		public ImplicitUseKindFlags UseKindFlags { get; }
+		public ImplicitUseTargetFlags TargetFlags { get; }
 	}
 
 	/// <summary>
@@ -325,13 +351,19 @@ namespace Untech.SharePoint.Common.CodeAnnotations
 	public sealed class MeansImplicitUseAttribute : Attribute
 	{
 		public MeansImplicitUseAttribute()
-			: this(ImplicitUseKindFlags.Default, ImplicitUseTargetFlags.Default) { }
+			: this(ImplicitUseKindFlags.Default, ImplicitUseTargetFlags.Default)
+		{
+		}
 
 		public MeansImplicitUseAttribute(ImplicitUseKindFlags useKindFlags)
-			: this(useKindFlags, ImplicitUseTargetFlags.Default) { }
+			: this(useKindFlags, ImplicitUseTargetFlags.Default)
+		{
+		}
 
 		public MeansImplicitUseAttribute(ImplicitUseTargetFlags targetFlags)
-			: this(ImplicitUseKindFlags.Default, targetFlags) { }
+			: this(ImplicitUseKindFlags.Default, targetFlags)
+		{
+		}
 
 		public MeansImplicitUseAttribute(ImplicitUseKindFlags useKindFlags, ImplicitUseTargetFlags targetFlags)
 		{
@@ -340,9 +372,9 @@ namespace Untech.SharePoint.Common.CodeAnnotations
 		}
 
 		[UsedImplicitly]
-		public ImplicitUseKindFlags UseKindFlags { get; private set; }
+		public ImplicitUseKindFlags UseKindFlags { get; }
 		[UsedImplicitly]
-		public ImplicitUseTargetFlags TargetFlags { get; private set; }
+		public ImplicitUseTargetFlags TargetFlags { get; }
 	}
 
 	[Flags]
@@ -384,13 +416,16 @@ namespace Untech.SharePoint.Common.CodeAnnotations
 	[MeansImplicitUse(ImplicitUseTargetFlags.WithMembers)]
 	public sealed class PublicAPIAttribute : Attribute
 	{
-		public PublicAPIAttribute() { }
+		public PublicAPIAttribute()
+		{
+		}
+
 		public PublicAPIAttribute([NotNull] string comment)
 		{
 			Comment = comment;
 		}
 
-		public string Comment { get; private set; }
+		public string Comment { get; }
 	}
 
 	/// <summary>
@@ -399,7 +434,9 @@ namespace Untech.SharePoint.Common.CodeAnnotations
 	/// If the parameter is an enumerable, indicates that it is enumerated while the method is executed.
 	/// </summary>
 	[AttributeUsage(AttributeTargets.Parameter)]
-	public sealed class InstantHandleAttribute : Attribute { }
+	public sealed class InstantHandleAttribute : Attribute
+	{
+	}
 
 	/// <summary>
 	/// Indicates that a method does not make any observable state changes.
@@ -413,7 +450,9 @@ namespace Untech.SharePoint.Common.CodeAnnotations
 	/// }
 	/// </code></example>
 	[AttributeUsage(AttributeTargets.Method)]
-	public sealed class PureAttribute : Attribute { }
+	public sealed class PureAttribute : Attribute
+	{
+	}
 
 	/// <summary>
 	/// Indicates that a parameter is a path to a file or a folder within a web project.
@@ -422,13 +461,16 @@ namespace Untech.SharePoint.Common.CodeAnnotations
 	[AttributeUsage(AttributeTargets.Parameter)]
 	public sealed class PathReferenceAttribute : Attribute
 	{
-		public PathReferenceAttribute() { }
+		public PathReferenceAttribute()
+		{
+		}
+
 		public PathReferenceAttribute([PathReference] string basePath)
 		{
 			BasePath = basePath;
 		}
 
-		public string BasePath { get; private set; }
+		public string BasePath { get; }
 	}
 
 	/// <summary>
@@ -455,7 +497,9 @@ namespace Untech.SharePoint.Common.CodeAnnotations
 	/// </code>
 	/// </example>
 	[AttributeUsage(AttributeTargets.Method)]
-	public sealed class SourceTemplateAttribute : Attribute { }
+	public sealed class SourceTemplateAttribute : Attribute
+	{
+	}
 
 	/// <summary>
 	/// Allows specifying a macro for a parameter of a <see cref="SourceTemplateAttribute">source template</see>.
@@ -523,7 +567,7 @@ namespace Untech.SharePoint.Common.CodeAnnotations
 			CollectionAccessType = collectionAccessType;
 		}
 
-		public CollectionAccessType CollectionAccessType { get; private set; }
+		public CollectionAccessType CollectionAccessType { get; }
 	}
 
 	[Flags]
@@ -545,7 +589,9 @@ namespace Untech.SharePoint.Common.CodeAnnotations
 	/// <see cref="AssertionConditionAttribute"/> attribute.
 	/// </summary>
 	[AttributeUsage(AttributeTargets.Method)]
-	public sealed class AssertionMethodAttribute : Attribute { }
+	public sealed class AssertionMethodAttribute : Attribute
+	{
+	}
 
 	/// <summary>
 	/// Indicates the condition parameter of the assertion method. The method itself should be
@@ -560,7 +606,7 @@ namespace Untech.SharePoint.Common.CodeAnnotations
 			ConditionType = conditionType;
 		}
 
-		public AssertionConditionType ConditionType { get; private set; }
+		public AssertionConditionType ConditionType { get; }
 	}
 
 	/// <summary>
@@ -585,19 +631,25 @@ namespace Untech.SharePoint.Common.CodeAnnotations
 	/// of delegate type by analyzing LINQ method chains.
 	/// </summary>
 	[AttributeUsage(AttributeTargets.Method)]
-	public sealed class LinqTunnelAttribute : Attribute { }
+	public sealed class LinqTunnelAttribute : Attribute
+	{
+	}
 
 	/// <summary>
 	/// Indicates that IEnumerable, passed as parameter, is not enumerated.
 	/// </summary>
 	[AttributeUsage(AttributeTargets.Parameter)]
-	public sealed class NoEnumerationAttribute : Attribute { }
+	public sealed class NoEnumerationAttribute : Attribute
+	{
+	}
 
 	/// <summary>
 	/// Indicates that parameter is regular expression pattern.
 	/// </summary>
 	[AttributeUsage(AttributeTargets.Parameter)]
-	public sealed class RegexPatternAttribute : Attribute { }
+	public sealed class RegexPatternAttribute : Attribute
+	{
+	}
 
 	/// <summary>
 	/// Prevents the Member Reordering feature from tossing members of the marked class.
@@ -606,5 +658,7 @@ namespace Untech.SharePoint.Common.CodeAnnotations
 	/// The attribute must be mentioned in your member reordering patterns
 	/// </remarks>
 	[AttributeUsage(AttributeTargets.All)]
-	public sealed class NoReorder : Attribute { }
+	public sealed class NoReorder : Attribute
+	{
+	}
 }

@@ -2,18 +2,17 @@
 using System.Linq;
 using System.Linq.Expressions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Untech.SharePoint.Common.Data.Translators.Predicate;
-using Untech.SharePoint.Common.Extensions;
+using Untech.SharePoint.Extensions;
 
-namespace Untech.SharePoint.Common.Test.Data.Translators.Predicate
+namespace Untech.SharePoint.Data.Translators.Predicate
 {
 	[TestClass]
 	public class InRewriterTest : BaseExpressionVisitorTest
 	{
 		[TestMethod]
-		public void CanRewriteInArray()
+		public void Visit_Rewrites_WhenInArray()
 		{
-			var possibleValues = new[] {"#1", "#2", "#3"};
+			var possibleValues = new[] { "#1", "#2", "#3" };
 
 			Given(n => n.String1.In(possibleValues))
 				.PreEvaluate()
@@ -21,9 +20,9 @@ namespace Untech.SharePoint.Common.Test.Data.Translators.Predicate
 		}
 
 		[TestMethod]
-		public void CanRewriteInList()
+		public void Visit_Rewrites_WhenInList()
 		{
-			var possibleValues = new List<string> {"#1", "#2", "#3"};
+			var possibleValues = new List<string> { "#1", "#2", "#3" };
 
 			Given(n => n.String1.In(possibleValues))
 				.PreEvaluate()
@@ -31,9 +30,9 @@ namespace Untech.SharePoint.Common.Test.Data.Translators.Predicate
 		}
 
 		[TestMethod]
-		public void CanRewriteNotInArray()
+		public void Visit_Rewrites_WhenNotInArray()
 		{
-			var possibleValues = new[] {"#1", "#2", "#3"};
+			var possibleValues = new[] { "#1", "#2", "#3" };
 
 			Given(n => !n.String1.In(possibleValues))
 				.PreEvaluate()
@@ -41,9 +40,9 @@ namespace Untech.SharePoint.Common.Test.Data.Translators.Predicate
 		}
 
 		[TestMethod]
-		public void CanRewriteNotInList()
+		public void Visit_Rewrites_WhenNotInList()
 		{
-			var possibleValues = new List<string> {"#1", "#2", "#3"};
+			var possibleValues = new List<string> { "#1", "#2", "#3" };
 
 			Given(n => !n.String1.In(possibleValues))
 				.PreEvaluate()
@@ -51,9 +50,9 @@ namespace Untech.SharePoint.Common.Test.Data.Translators.Predicate
 		}
 
 		[TestMethod]
-		public void CanRewriteArrayContains()
+		public void Visit_Rewrites_WhenArrayContains()
 		{
-			var possibleValues = new[] {"#1", "#2", "#3"};
+			var possibleValues = new[] { "#1", "#2", "#3" };
 
 			Given(n => possibleValues.Contains(n.String1))
 				.PreEvaluate()
@@ -61,9 +60,9 @@ namespace Untech.SharePoint.Common.Test.Data.Translators.Predicate
 		}
 
 		[TestMethod]
-		public void CanRewriteListContains()
+		public void Visit_Rewrites_WhenListContains()
 		{
-			var possibleValues = new List<string> {"#1", "#2", "#3"};
+			var possibleValues = new List<string> { "#1", "#2", "#3" };
 
 			Given(n => possibleValues.Contains(n.String1))
 				.PreEvaluate()
@@ -71,9 +70,9 @@ namespace Untech.SharePoint.Common.Test.Data.Translators.Predicate
 		}
 
 		[TestMethod]
-		public void CanRewriteEnumerableContains()
+		public void Visit_Rewrites_WhenEnumerableContains()
 		{
-			IEnumerable<string> possibleValues = new List<string> {"#1", "#2", "#3"};
+			IEnumerable<string> possibleValues = new List<string> { "#1", "#2", "#3" };
 
 			Given(n => possibleValues.Contains(n.String1))
 				.PreEvaluate()
@@ -81,9 +80,9 @@ namespace Untech.SharePoint.Common.Test.Data.Translators.Predicate
 		}
 
 		[TestMethod]
-		public void CanRewriteArrayNotContains()
+		public void Visit_Rewrites_WhenArrayNotContains()
 		{
-			var possibleValues = new[] {"#1", "#2", "#3"};
+			var possibleValues = new[] { "#1", "#2", "#3" };
 
 			Given(n => !possibleValues.Contains(n.String1))
 				.PreEvaluate()
@@ -91,9 +90,9 @@ namespace Untech.SharePoint.Common.Test.Data.Translators.Predicate
 		}
 
 		[TestMethod]
-		public void CanRewriteListNotContains()
+		public void Visit_Rewrites_WhenListNotContains()
 		{
-			var possibleValues = new List<string> {"#1", "#2", "#3"};
+			var possibleValues = new List<string> { "#1", "#2", "#3" };
 
 			Given(n => !possibleValues.Contains(n.String1))
 				.PreEvaluate()
@@ -101,9 +100,9 @@ namespace Untech.SharePoint.Common.Test.Data.Translators.Predicate
 		}
 
 		[TestMethod]
-		public void CanRewriteEnumerableNotContains()
+		public void Visit_Rewrites_WhenEnumerableNotContains()
 		{
-			IEnumerable<string> possibleValues = new List<string> {"#1", "#2", "#3"};
+			IEnumerable<string> possibleValues = new List<string> { "#1", "#2", "#3" };
 
 			Given(n => !possibleValues.Contains(n.String1))
 				.PreEvaluate()
@@ -111,7 +110,7 @@ namespace Untech.SharePoint.Common.Test.Data.Translators.Predicate
 		}
 
 		[TestMethod]
-		public void CannotRewriteStringContains()
+		public void Visit_Rewrites_WhenStringContains()
 		{
 			Given(n => n.String1.Contains("TEST"))
 				.PreEvaluate()
@@ -120,7 +119,7 @@ namespace Untech.SharePoint.Common.Test.Data.Translators.Predicate
 
 
 		[TestMethod]
-		public void CannotRewriteArrayPropertyContains()
+		public void Visit_NotRewrites_WhenArrayPropertyContains()
 		{
 			Given(n => n.StringCollection1.Contains("TEST"))
 				.PreEvaluate()
@@ -128,7 +127,7 @@ namespace Untech.SharePoint.Common.Test.Data.Translators.Predicate
 		}
 
 		[TestMethod]
-		public void CannotRewriteEnumerablePropertyContains()
+		public void Visit_NotRewrites_WhenEnumerablePropertyContains()
 		{
 			Given(n => n.StringCollection2.Contains("TEST"))
 				.PreEvaluate()
@@ -136,7 +135,7 @@ namespace Untech.SharePoint.Common.Test.Data.Translators.Predicate
 		}
 
 		[TestMethod]
-		public void CannotRewriteCollectionPropertyContains()
+		public void Visit_NotRewrites_WhenCollectionPropertyContains()
 		{
 			Given(n => n.StringCollection3.Contains("TEST"))
 				.PreEvaluate()
@@ -144,16 +143,13 @@ namespace Untech.SharePoint.Common.Test.Data.Translators.Predicate
 		}
 
 		[TestMethod]
-		public void CannotRewriteListPropertyContains()
+		public void Visit_NotRewrites_WhenListPropertyContains()
 		{
 			Given(n => n.StringCollection4.Contains("TEST"))
 				.PreEvaluate()
 				.Expected(n => n.StringCollection4.Contains("TEST"));
 		}
 
-		protected override ExpressionVisitor Visitor
-		{
-			get { return new InRewriter(); }
-		}
+		protected override ExpressionVisitor TestableVisitor => new InRewriter();
 	}
 }

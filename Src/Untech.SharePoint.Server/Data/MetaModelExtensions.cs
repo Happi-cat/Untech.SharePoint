@@ -1,7 +1,7 @@
 ﻿using Microsoft.SharePoint;
-using Untech.SharePoint.Common.CodeAnnotations;
-using Untech.SharePoint.Common.MetaModels;
-using Untech.SharePoint.Common.Utils;
+using Untech.SharePoint.CodeAnnotations;
+using Untech.SharePoint.MetaModels;
+using Untech.SharePoint.Utils;
 
 namespace Untech.SharePoint.Server.Data
 {
@@ -11,15 +11,15 @@ namespace Untech.SharePoint.Server.Data
 
 		public static SPWeb GetSpWeb([NotNull]this MetaField contentType)
 		{
-			Guard.CheckNotNull("contentType", contentType);
+			Guard.CheckNotNull(nameof(contentType), contentType);
 
 			return contentType.GetAdditionalProperty<SPWeb>(SPWeb);
 		}
 
 		public static void SetSpWeb([NotNull]this MetaField field, [NotNull]SPWeb web)
 		{
-			Guard.CheckNotNull("field", field);
-			Guard.CheckNotNull("web", web);
+			Guard.CheckNotNull(nameof(field), field);
+			Guard.CheckNotNull(nameof(web), web);
 
 			field.SetAdditionalProperty(SPWeb, web);
 		}

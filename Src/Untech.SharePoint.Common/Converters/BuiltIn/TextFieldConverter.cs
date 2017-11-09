@@ -1,9 +1,9 @@
 ﻿using System;
-using Untech.SharePoint.Common.CodeAnnotations;
-using Untech.SharePoint.Common.MetaModels;
-using Untech.SharePoint.Common.Utils;
+using Untech.SharePoint.CodeAnnotations;
+using Untech.SharePoint.MetaModels;
+using Untech.SharePoint.Utils;
 
-namespace Untech.SharePoint.Common.Converters.BuiltIn
+namespace Untech.SharePoint.Converters.BuiltIn
 {
 	[SpFieldConverter("Text")]
 	[SpFieldConverter("Note")]
@@ -23,17 +23,17 @@ namespace Untech.SharePoint.Common.Converters.BuiltIn
 
 		public object FromSpValue(object value)
 		{
-			return (string) value;
+			return (string)value;
 		}
 
 		public object ToSpValue(object value)
 		{
-			return (string) value;
+			return (string)value;
 		}
 
 		public string ToCamlValue(object value)
 		{
-			return (string) ToSpValue(value);
+			return (string)ToSpValue(value);
 		}
 	}
 }

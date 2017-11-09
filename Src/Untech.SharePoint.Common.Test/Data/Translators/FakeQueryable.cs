@@ -3,9 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using Untech.SharePoint.Common.Data;
 
-namespace Untech.SharePoint.Common.Test.Data.Translators
+namespace Untech.SharePoint.Data.Translators
 {
 	public class FakeQueryable<T> : IOrderedQueryable<T>, IQueryProvider
 	{
@@ -33,7 +32,7 @@ namespace Untech.SharePoint.Common.Test.Data.Translators
 
 		public Type ElementType => typeof(T);
 
-		public Action<Expression>  ExpressionExecutor { private get; set; }
+		public Action<Expression> ExpressionExecutor { private get; set; }
 
 		public IQueryProvider Provider
 		{

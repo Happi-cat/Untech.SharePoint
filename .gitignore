@@ -32,3 +32,4 @@ src/packages/**
 NuGet/**/*.nupkg
 *.pfx
 [Tt]est*/
+.vs/

@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using Untech.SharePoint.Common.Test.Spec.Models;
-using Untech.SharePoint.Common.Test.Tools.QueryTests;
+using Untech.SharePoint.Spec.Models;
+using Untech.SharePoint.TestTools.QueryTests;
 
-namespace Untech.SharePoint.Common.Test.Spec
+namespace Untech.SharePoint.Spec
 {
 	/// <summary>
 	/// The set methods are All, Any, Concat, Contains, DefaultIfEmpty, Distinct, EqualAll, Except, Intersect, and Union.
@@ -44,7 +44,6 @@ namespace Untech.SharePoint.Common.Test.Spec
 		}
 
 		#endregion
-
 
 		#region [Any]
 
@@ -103,7 +102,6 @@ namespace Untech.SharePoint.Common.Test.Spec
 		}
 
 		#endregion
-
 
 		public IEnumerable<Func<IQueryable<NewsModel>, object>> GetQueries()
 		{

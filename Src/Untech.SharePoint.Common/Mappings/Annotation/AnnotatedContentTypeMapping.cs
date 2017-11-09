@@ -2,11 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using Untech.SharePoint.Common.MetaModels;
-using Untech.SharePoint.Common.MetaModels.Providers;
-using Untech.SharePoint.Common.Utils;
+using Untech.SharePoint.MetaModels;
+using Untech.SharePoint.MetaModels.Providers;
+using Untech.SharePoint.Utils;
 
-namespace Untech.SharePoint.Common.Mappings.Annotation
+namespace Untech.SharePoint.Mappings.Annotation
 {
 	internal class AnnotatedContentTypeMapping : IMetaContentTypeProvider
 	{
@@ -20,7 +20,7 @@ namespace Untech.SharePoint.Common.Mappings.Annotation
 
 			_entityType = entityType;
 			_contentTypeAttrbiute = _entityType.GetCustomAttribute<SpContentTypeAttribute>() ?? new SpContentTypeAttribute();
-			
+
 			_fieldParts = CreateFieldParts().ToList();
 		}
 
@@ -55,6 +55,5 @@ namespace Untech.SharePoint.Common.Mappings.Annotation
 		}
 
 		#endregion
-
 	}
 }

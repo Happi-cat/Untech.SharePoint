@@ -2,10 +2,10 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.Serialization;
 using Newtonsoft.Json;
-using Untech.SharePoint.Common.CodeAnnotations;
-using Untech.SharePoint.Common.Mappings.Annotation;
+using Untech.SharePoint.CodeAnnotations;
+using Untech.SharePoint.Mappings.Annotation;
 
-namespace Untech.SharePoint.Common.Models
+namespace Untech.SharePoint.Models
 {
 	/// <summary>
 	/// Represents base SP content type entity.

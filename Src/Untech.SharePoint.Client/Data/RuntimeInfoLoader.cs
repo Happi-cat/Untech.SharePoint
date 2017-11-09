@@ -1,11 +1,11 @@
 ﻿using System;
-using System.IO;
 using System.Linq;
 using Microsoft.SharePoint.Client;
 using Untech.SharePoint.Client.Extensions;
-using Untech.SharePoint.Common.Data;
-using Untech.SharePoint.Common.MetaModels;
-using Untech.SharePoint.Common.MetaModels.Visitors;
+using Untech.SharePoint.Data;
+using Untech.SharePoint.MetaModels;
+using Untech.SharePoint.MetaModels.Visitors;
+using Untech.SharePoint.Utils;
 
 namespace Untech.SharePoint.Client.Data
 {
@@ -50,7 +50,7 @@ namespace Untech.SharePoint.Client.Data
 		{
 			public ListInfoLoader(List spList)
 			{
-				Common.Utils.Guard.CheckNotNull(nameof(spList), spList);
+				Guard.CheckNotNull(nameof(spList), spList);
 
 				SpList = spList;
 			}

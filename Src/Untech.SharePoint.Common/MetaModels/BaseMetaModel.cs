@@ -1,10 +1,10 @@
 ﻿using System;
-using Untech.SharePoint.Common.CodeAnnotations;
-using Untech.SharePoint.Common.Collections;
-using Untech.SharePoint.Common.MetaModels.Visitors;
-using Untech.SharePoint.Common.Utils;
+using Untech.SharePoint.CodeAnnotations;
+using Untech.SharePoint.Collections;
+using Untech.SharePoint.MetaModels.Visitors;
+using Untech.SharePoint.Utils;
 
-namespace Untech.SharePoint.Common.MetaModels
+namespace Untech.SharePoint.MetaModels
 {
 	/// <summary>
 	/// Represent base meta model class that implements <see cref="IMetaModel"/>
@@ -19,7 +19,7 @@ namespace Untech.SharePoint.Common.MetaModels
 		/// </summary>
 		protected BaseMetaModel()
 		{
-			_additionalProperties  = new Container<string, object>();
+			_additionalProperties = new Container<string, object>();
 		}
 
 		/// <summary>
@@ -40,7 +40,7 @@ namespace Untech.SharePoint.Common.MetaModels
 		{
 			Guard.CheckNotNull(nameof(key), key);
 
-			return (T) _additionalProperties.Resolve(key);
+			return (T)_additionalProperties.Resolve(key);
 		}
 
 		/// <summary>

@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Reflection;
-using Untech.SharePoint.Common.CodeAnnotations;
-using Untech.SharePoint.Common.Converters;
-using Untech.SharePoint.Common.Data;
-using Untech.SharePoint.Common.Extensions;
-using Untech.SharePoint.Common.MetaModels.Visitors;
-using Untech.SharePoint.Common.Utils;
+using Untech.SharePoint.CodeAnnotations;
+using Untech.SharePoint.Converters;
+using Untech.SharePoint.Data;
+using Untech.SharePoint.Extensions;
+using Untech.SharePoint.MetaModels.Visitors;
+using Untech.SharePoint.Utils;
 
-namespace Untech.SharePoint.Common.MetaModels
+namespace Untech.SharePoint.MetaModels
 {
 	/// <summary>
 	/// Represents MetaData for SP Field.
@@ -116,19 +116,19 @@ namespace Untech.SharePoint.Common.MetaModels
 		/// Gets associated member name.
 		/// </summary>
 		[NotNull]
-		public string MemberName { get; private set; }
-		
+		public string MemberName { get; }
+
 		/// <summary>
 		/// Gets associated member type.
 		/// </summary>
 		[NotNull]
-		public Type MemberType { get; private set; }
+		public Type MemberType { get; }
 
 		/// <summary>
 		/// Gets parent <see cref="MetaContentType"/>.
 		/// </summary>
 		[NotNull]
-		public MetaContentType ContentType { get; private set; }
+		public MetaContentType ContentType { get; }
 
 		/// <summary>
 		/// Accepts <see cref="IMetaModelVisitor"/> instance.
@@ -139,13 +139,14 @@ namespace Untech.SharePoint.Common.MetaModels
 			visitor.VisitField(this);
 		}
 
+		/// <inheritdoc />
 		public override int GetHashCode()
 		{
 			unchecked
 			{
 				var hash = 17;
-				hash = hash*37 + InternalName.GetHashCode();
-				hash = hash*37 + MemberInfoComparer.Default.GetHashCode(Member);
+				hash = hash * 37 + InternalName.GetHashCode();
+				hash = hash * 37 + MemberInfoComparer.Default.GetHashCode(Member);
 				return hash;
 			}
 		}

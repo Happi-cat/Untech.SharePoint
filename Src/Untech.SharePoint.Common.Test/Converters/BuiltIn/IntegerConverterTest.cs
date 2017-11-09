@@ -1,9 +1,7 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Untech.SharePoint.Common.Converters;
-using Untech.SharePoint.Common.Converters.BuiltIn;
 
-namespace Untech.SharePoint.Common.Test.Converters.BuiltIn
+namespace Untech.SharePoint.Converters.BuiltIn
 {
 	[TestClass]
 	public class IntegerConverterTest : BaseConverterTest
@@ -11,7 +9,7 @@ namespace Untech.SharePoint.Common.Test.Converters.BuiltIn
 		[TestMethod]
 		public void CanConvertInt32()
 		{
-			Given<Int32>()
+			CreateConverterForFieldWithType<Int32>()
 				.CanConvertFromSp(1, 1)
 				.CanConvertFromSp(null, 0)
 				.CanConvertToSp(1, 1)
@@ -21,7 +19,7 @@ namespace Untech.SharePoint.Common.Test.Converters.BuiltIn
 		[TestMethod]
 		public void CanConvertNullableInt32()
 		{
-			Given<Int32?>()
+			CreateConverterForFieldWithType<Int32?>()
 				.CanConvertFromSp(1, 1)
 				.CanConvertFromSp(null, null)
 				.CanConvertToSp(1, 1)
@@ -31,30 +29,32 @@ namespace Untech.SharePoint.Common.Test.Converters.BuiltIn
 		}
 
 		[TestMethod]
-		public void NotSupportDouble()
+		[ExpectedException(typeof(ArgumentException))]
+		public void Init_ThrowNotSupported_WhenDouble()
 		{
-			CustomAssert.Throw<ArgumentException>(() => Given<double>());
+			CreateConverterForFieldWithType<double>();
 		}
 
 		[TestMethod]
-		public void NotSupportInt16()
+		[ExpectedException(typeof(ArgumentException))]
+		public void Init_ThrowNotSupported_WhenInt16()
 		{
-			CustomAssert.Throw<ArgumentException>(() => Given<Int16>());
-		}
-
-
-		[TestMethod]
-		public void NotSupportFloat()
-		{
-			CustomAssert.Throw<ArgumentException>(() => Given<float>());
+			CreateConverterForFieldWithType<Int16>();
 		}
 
 		[TestMethod]
-		public void NotSupportUInt32()
+		[ExpectedException(typeof(ArgumentException))]
+		public void Init_ThrowNotSupported_WhenFloat()
 		{
-			CustomAssert.Throw<ArgumentException>(() => Given<UInt32>());
+			CreateConverterForFieldWithType<float>();
 		}
 
+		[TestMethod]
+		[ExpectedException(typeof(ArgumentException))]
+		public void Init_ThrowNotSupported_WhenUInt32()
+		{
+			CreateConverterForFieldWithType<UInt32>();
+		}
 
 		protected override IFieldConverter GetConverter()
 		{

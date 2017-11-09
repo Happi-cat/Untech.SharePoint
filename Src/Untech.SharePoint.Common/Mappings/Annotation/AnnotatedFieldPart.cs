@@ -1,11 +1,11 @@
 using System;
 using System.Linq;
 using System.Reflection;
-using Untech.SharePoint.Common.MetaModels;
-using Untech.SharePoint.Common.MetaModels.Providers;
-using Untech.SharePoint.Common.Utils;
+using Untech.SharePoint.MetaModels;
+using Untech.SharePoint.MetaModels.Providers;
+using Untech.SharePoint.Utils;
 
-namespace Untech.SharePoint.Common.Mappings.Annotation
+namespace Untech.SharePoint.Mappings.Annotation
 {
 	internal class AnnotatedFieldPart : IMetaFieldProvider
 	{
@@ -45,8 +45,8 @@ namespace Untech.SharePoint.Common.Mappings.Annotation
 
 		public MetaField GetMetaField(MetaContentType parent)
 		{
-			var internalName = string.IsNullOrEmpty(_fieldAttribute.Name) 
-				? _member.Name 
+			var internalName = string.IsNullOrEmpty(_fieldAttribute.Name)
+				? _member.Name
 				: _fieldAttribute.Name;
 
 			return new MetaField(parent, _member, internalName)

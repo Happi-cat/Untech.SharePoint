@@ -1,14 +1,14 @@
 ﻿using System.Linq.Expressions;
-using Untech.SharePoint.Common.Extensions;
+using Untech.SharePoint.Extensions;
 
-namespace Untech.SharePoint.Common.Data.Translators.Predicate
+namespace Untech.SharePoint.Data.Translators.Predicate
 {
 	internal class RedundantConditionRemover : ExpressionVisitor
 	{
 		protected override Expression VisitBinary(BinaryExpression node)
 		{
 			var resultNode = base.VisitBinary(node);
-			
+
 			if (resultNode.NodeType == ExpressionType.Or || resultNode.NodeType == ExpressionType.OrElse)
 			{
 				return RemoveReduntantOrCondition((BinaryExpression)resultNode);

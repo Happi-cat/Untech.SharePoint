@@ -1,9 +1,9 @@
 ﻿using System;
-using Untech.SharePoint.Common.CodeAnnotations;
-using Untech.SharePoint.Common.MetaModels;
-using Untech.SharePoint.Common.Utils;
+using Untech.SharePoint.CodeAnnotations;
+using Untech.SharePoint.MetaModels;
+using Untech.SharePoint.Utils;
 
-namespace Untech.SharePoint.Common.Data.Mapper
+namespace Untech.SharePoint.Data.Mapper
 {
 	/// <summary>
 	/// Represents SP field accessor.
@@ -14,7 +14,7 @@ namespace Untech.SharePoint.Common.Data.Mapper
 		/// <summary>
 		/// Initializes a new instance of the <see cref="StoreAccessor{TSPItem}"/>
 		/// </summary>
-		/// <param name="field">Metadata of the field that should be associated with that accessor.</param>
+		/// <param name="field">Meta-data of the field that should be associated with that accessor.</param>
 		/// <exception cref="ArgumentNullException"><paramref name="field"/> is null.</exception>
 		protected StoreAccessor([NotNull]MetaField field)
 		{

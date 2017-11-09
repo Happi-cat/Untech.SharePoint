@@ -1,18 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Untech.SharePoint.Common.Extensions;
-using Untech.SharePoint.Common.Models;
-using Untech.SharePoint.Common.Test.Spec.Models;
-using Untech.SharePoint.Common.Test.Tools.Comparers;
-using Untech.SharePoint.Common.Test.Tools.QueryTests;
+using Untech.SharePoint.Extensions;
+using Untech.SharePoint.Models;
+using Untech.SharePoint.Spec.Models;
+using Untech.SharePoint.TestTools.Comparers;
+using Untech.SharePoint.TestTools.QueryTests;
 
-namespace Untech.SharePoint.Common.Test.Spec
+namespace Untech.SharePoint.Spec
 {
 	public class FilteringQuerySpec : ITestQueryProvider<NewsModel>, ITestQueryProvider<ProjectModel>,
 		ITestQueryProvider<TeamModel>
 	{
-		[QueryComparer(typeof (EntityComparer))]
+		[QueryComparer(typeof(EntityComparer))]
 		public IEnumerable<NewsModel> WhereQuery(IQueryable<NewsModel> source)
 		{
 			return source
@@ -24,21 +24,21 @@ namespace Untech.SharePoint.Common.Test.Spec
 		{
 			var minDate = source.Min(n => n.Modified).ToLocalTime();
 			var maxDate = source.Max(n => n.Modified).ToLocalTime();
-			var middleDate = new DateTime(minDate.Ticks + ((maxDate.Ticks - minDate.Ticks)/2), DateTimeKind.Local);
+			var middleDate = new DateTime(minDate.Ticks + ((maxDate.Ticks - minDate.Ticks) / 2), DateTimeKind.Local);
 
 			return source
 				.Where(n => n.Modified > middleDate);
 		}
 
-		[QueryComparer(typeof (EntityComparer))]
+		[QueryComparer(typeof(EntityComparer))]
 		public IEnumerable<ProjectModel> WhereQuery(IQueryable<ProjectModel> source)
 		{
 			return source
-				.Where(n => n.Status.In(new[] {"Approved", "Cancelled"}) && n.Technology == "Java")
+				.Where(n => n.Status.In(new[] { "Approved", "Cancelled" }) && n.Technology == "Java")
 				.Where(n => n.OSes != null && n.OSes.Contains("Linux"));
 		}
 
-		[QueryComparer(typeof (EntityComparer))]
+		[QueryComparer(typeof(EntityComparer))]
 		public IEnumerable<NewsModel> WhereTake10Query(IQueryable<NewsModel> source)
 		{
 			return source
@@ -47,7 +47,7 @@ namespace Untech.SharePoint.Common.Test.Spec
 		}
 
 		[NotSupportedQuery]
-		[QueryComparer(typeof (EntityComparer))]
+		[QueryComparer(typeof(EntityComparer))]
 		public IEnumerable<NewsModel> Take10WhereQuery(IQueryable<NewsModel> source)
 		{
 			return source
@@ -55,7 +55,7 @@ namespace Untech.SharePoint.Common.Test.Spec
 				.Where(n => n.Description.StartsWith("DESCRIPTION"));
 		}
 
-		[QueryComparer(typeof (EntityComparer))]
+		[QueryComparer(typeof(EntityComparer))]
 		public IEnumerable<NewsModel> WhereWhereQuery(IQueryable<NewsModel> source)
 		{
 			return source
@@ -63,7 +63,7 @@ namespace Untech.SharePoint.Common.Test.Spec
 				.Where(n => n.Created > DateTime.Now.AddMonths(-1) && n.Title.Contains("lorem"));
 		}
 
-		[QueryComparer(typeof (EntityComparer))]
+		[QueryComparer(typeof(EntityComparer))]
 		public IEnumerable<NewsModel> WhereWhereTrueQuery(IQueryable<NewsModel> source)
 		{
 			var flag = true;
@@ -72,7 +72,7 @@ namespace Untech.SharePoint.Common.Test.Spec
 				.Where(n => flag);
 		}
 
-		[QueryComparer(typeof (EntityComparer))]
+		[QueryComparer(typeof(EntityComparer))]
 		[EmptyResultQuery]
 		public IEnumerable<NewsModel> WhereWhereFalseQuery(IQueryable<NewsModel> source)
 		{
@@ -82,35 +82,35 @@ namespace Untech.SharePoint.Common.Test.Spec
 				.Where(n => flag);
 		}
 
-		[QueryComparer(typeof (EntityComparer))]
+		[QueryComparer(typeof(EntityComparer))]
 		public IEnumerable<ProjectModel> WhereCalculatedQuery1(IQueryable<ProjectModel> source)
 		{
 			return source
 				.Where(n => n.Over10Days);
 		}
 
-		[QueryComparer(typeof (EntityComparer))]
+		[QueryComparer(typeof(EntityComparer))]
 		public IEnumerable<ProjectModel> WhereCalculatedQuery2(IQueryable<ProjectModel> source)
 		{
 			return source
 				.Where(n => n.ProjectLaunch > DateTime.Now.AddMonths(-12));
 		}
 
-		[QueryComparer(typeof (EntityComparer))]
+		[QueryComparer(typeof(EntityComparer))]
 		public IEnumerable<ProjectModel> WhereLookupNotNull(IQueryable<ProjectModel> source)
 		{
 			return source
 				.Where(n => n.Team != null);
 		}
 
-		[QueryComparer(typeof (EntityComparer))]
+		[QueryComparer(typeof(EntityComparer))]
 		public IEnumerable<ProjectModel> WhereLookupNotEqual(IQueryable<ProjectModel> source)
 		{
 			return source
-				.Where(n => n.Team != new ObjectReference {Id = 1});
+				.Where(n => n.Team != new ObjectReference { Id = 1 });
 		}
 
-		[QueryComparer(typeof (EntityComparer))]
+		[QueryComparer(typeof(EntityComparer))]
 		public IEnumerable<ProjectModel> WhereLookupEqual(IQueryable<ProjectModel> source)
 		{
 			var firstTeamRef = source.Where(n => n.Team != null).Select(n => n.Team).First();
@@ -119,21 +119,21 @@ namespace Untech.SharePoint.Common.Test.Spec
 				.Where(n => n.Team == firstTeamRef);
 		}
 
-		[QueryComparer(typeof (EntityComparer))]
+		[QueryComparer(typeof(EntityComparer))]
 		public IEnumerable<ProjectModel> WhereLookupMultiNotNull(IQueryable<ProjectModel> source)
 		{
 			return source
 				.Where(n => n.SubProjects != null);
 		}
 
-		[QueryComparer(typeof (EntityComparer))]
+		[QueryComparer(typeof(EntityComparer))]
 		public IEnumerable<ProjectModel> WhereLookupMultiNotContains(IQueryable<ProjectModel> source)
 		{
 			return source
-				.Where(n => n.SubProjects != null && !n.SubProjects.Contains(new ObjectReference {Id = 1}));
+				.Where(n => n.SubProjects != null && !n.SubProjects.Contains(new ObjectReference { Id = 1 }));
 		}
 
-		[QueryComparer(typeof (EntityComparer))]
+		[QueryComparer(typeof(EntityComparer))]
 		[NotSupportedQuery]
 		public IEnumerable<ProjectModel> WhereLookupMultiContains(IQueryable<ProjectModel> source)
 		{
@@ -143,47 +143,47 @@ namespace Untech.SharePoint.Common.Test.Spec
 				.Where(n => n.SubProjects != null && n.SubProjects.Contains(firstSubprojectRefs.First()));
 		}
 
-		[QueryComparer(typeof (EntityComparer))]
+		[QueryComparer(typeof(EntityComparer))]
 		public IEnumerable<TeamModel> WhereUserNotNull(IQueryable<TeamModel> source)
 		{
 			return source
 				.Where(n => n.ProjectManager != null);
 		}
 
-		[QueryComparer(typeof (EntityComparer))]
+		[QueryComparer(typeof(EntityComparer))]
 		public IEnumerable<TeamModel> WhereUserNotEqual(IQueryable<TeamModel> source)
 		{
 			return source
-				.Where(n => n.ProjectManager != new UserInfo {Id = 1});
+				.Where(n => n.ProjectManager != new UserInfo { Id = 1 });
 		}
 
-		[QueryComparer(typeof (EntityComparer))]
+		[QueryComparer(typeof(EntityComparer))]
 		public IEnumerable<TeamModel> WhereUserEqual(IQueryable<TeamModel> source)
 		{
 			return source
-				.Where(n => n.ProjectManager == new UserInfo {Id = 1});
+				.Where(n => n.ProjectManager == new UserInfo { Id = 1 });
 		}
 
-		[QueryComparer(typeof (EntityComparer))]
+		[QueryComparer(typeof(EntityComparer))]
 		public IEnumerable<TeamModel> WhereUserMultiNotNull(IQueryable<TeamModel> source)
 		{
 			return source
 				.Where(n => n.BackendDevelopers != null);
 		}
 
-		[QueryComparer(typeof (EntityComparer))]
+		[QueryComparer(typeof(EntityComparer))]
 		public IEnumerable<TeamModel> WhereUserMultiNotContains(IQueryable<TeamModel> source)
 		{
 			return source
-				.Where(n => n.BackendDevelopers != null && !n.BackendDevelopers.Contains(new UserInfo {Id = 1}));
+				.Where(n => n.BackendDevelopers != null && !n.BackendDevelopers.Contains(new UserInfo { Id = 1 }));
 		}
 
-		[QueryComparer(typeof (EntityComparer))]
+		[QueryComparer(typeof(EntityComparer))]
 		[NotSupportedQuery]
 		public IEnumerable<TeamModel> WhereUserMultiContains(IQueryable<TeamModel> source)
 		{
 			return source
-				.Where(n => n.BackendDevelopers != null && n.BackendDevelopers.Contains(new UserInfo {Id = 1}));
+				.Where(n => n.BackendDevelopers != null && n.BackendDevelopers.Contains(new UserInfo { Id = 1 }));
 		}
 
 		public IEnumerable<Func<IQueryable<NewsModel>, object>> GetQueries()

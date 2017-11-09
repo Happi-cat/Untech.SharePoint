@@ -1,26 +1,26 @@
 using System;
 using System.Collections.Generic;
-using Untech.SharePoint.Common.CodeAnnotations;
-using Untech.SharePoint.Common.MetaModels;
+using Untech.SharePoint.CodeAnnotations;
+using Untech.SharePoint.MetaModels;
 
-namespace Untech.SharePoint.Common.Converters.BuiltIn
+namespace Untech.SharePoint.Converters.BuiltIn
 {
 	[SpFieldConverter("Guid")]
 	[UsedImplicitly]
 	internal class GuidFieldConverter : MultiTypeFieldConverter
 	{
-		private static readonly IReadOnlyDictionary<Type, Func<IFieldConverter>> TypeConverters = new Dictionary<Type, Func<IFieldConverter>>
+		private static readonly IReadOnlyDictionary<Type, Func<IFieldConverter>> s_typeConverters = new Dictionary<Type, Func<IFieldConverter>>
 		{
-			{typeof (Guid), () => new GuidTypeConverter()},
-			{typeof (Guid?), () => new NullableGuidTypeConverter()}
+			[typeof (Guid)] = () => new GuidTypeConverter(),
+			[typeof (Guid?)] = () => new NullableGuidTypeConverter()
 		};
 
 		public override void Initialize(MetaField field)
 		{
 			base.Initialize(field);
-			if (TypeConverters.ContainsKey(field.MemberType))
+			if (s_typeConverters.ContainsKey(field.MemberType))
 			{
-				Internal = TypeConverters[field.MemberType]();
+				Internal = s_typeConverters[field.MemberType]();
 			}
 			else
 			{
@@ -32,7 +32,6 @@ namespace Untech.SharePoint.Common.Converters.BuiltIn
 		{
 			public void Initialize(MetaField field)
 			{
-
 			}
 
 			public object FromSpValue(object value)
@@ -47,7 +46,7 @@ namespace Untech.SharePoint.Common.Converters.BuiltIn
 
 			public string ToCamlValue(object value)
 			{
-				var guidValue = (Guid) value;
+				var guidValue = (Guid)value;
 				return guidValue.ToString("D");
 			}
 		}
@@ -56,7 +55,6 @@ namespace Untech.SharePoint.Common.Converters.BuiltIn
 		{
 			public void Initialize(MetaField field)
 			{
-
 			}
 
 			public object FromSpValue(object value)
@@ -66,7 +64,7 @@ namespace Untech.SharePoint.Common.Converters.BuiltIn
 
 			public object ToSpValue(object value)
 			{
-				return (Guid?) value;
+				return (Guid?)value;
 			}
 
 			public string ToCamlValue(object value)

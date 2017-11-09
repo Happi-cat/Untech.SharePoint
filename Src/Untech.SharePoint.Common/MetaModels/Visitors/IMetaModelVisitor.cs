@@ -1,4 +1,4 @@
-﻿namespace Untech.SharePoint.Common.MetaModels.Visitors
+﻿namespace Untech.SharePoint.MetaModels.Visitors
 {
 	/// <summary>
 	/// Represents meta model visitor interface.

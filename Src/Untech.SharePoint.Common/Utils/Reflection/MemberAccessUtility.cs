@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Linq.Expressions;
 using System.Reflection;
-using Untech.SharePoint.Common.CodeAnnotations;
-using Untech.SharePoint.Common.Extensions;
+using Untech.SharePoint.CodeAnnotations;
+using Untech.SharePoint.Extensions;
 using Getter = System.Func<object, object>;
 using Setter = System.Action<object, object>;
 
-namespace Untech.SharePoint.Common.Utils.Reflection
+namespace Untech.SharePoint.Utils.Reflection
 {
 	[UsedImplicitly(ImplicitUseTargetFlags.WithMembers)]
 	internal static class MemberAccessUtility
@@ -95,8 +95,8 @@ namespace Untech.SharePoint.Common.Utils.Reflection
 
 		private static Action<TObj, TProp> CreateSetter<TObj, TProp>(Type declaringType, string memberName, Type propertyType)
 		{
-			var objectParameter = Expression.Parameter(typeof (TObj), "object");
-			var valueParameter = Expression.Parameter(typeof (TProp), "value");
+			var objectParameter = Expression.Parameter(typeof(TObj), "object");
+			var valueParameter = Expression.Parameter(typeof(TProp), "value");
 
 			var propertyExpression = Expression.PropertyOrField(Expression.Convert(objectParameter, declaringType), memberName);
 
@@ -109,7 +109,7 @@ namespace Untech.SharePoint.Common.Utils.Reflection
 
 		private static Func<TObj, TProp> CreateGetter<TObj, TProp>(Type declaringType, string memberName)
 		{
-			var objectParameter = Expression.Parameter(typeof (TObj), "object");
+			var objectParameter = Expression.Parameter(typeof(TObj), "object");
 
 			var propertyExpression = Expression.PropertyOrField(Expression.Convert(objectParameter, declaringType), memberName);
 
@@ -118,6 +118,5 @@ namespace Untech.SharePoint.Common.Utils.Reflection
 		}
 
 		#endregion
-
 	}
 }

@@ -1,12 +1,11 @@
 ﻿using System;
-using System.IO;
 using System.Linq;
 using Microsoft.SharePoint;
-using Untech.SharePoint.Common.Data;
-using Untech.SharePoint.Common.MetaModels;
-using Untech.SharePoint.Common.MetaModels.Visitors;
-using Untech.SharePoint.Common.Utils;
+using Untech.SharePoint.Data;
+using Untech.SharePoint.MetaModels;
+using Untech.SharePoint.MetaModels.Visitors;
 using Untech.SharePoint.Server.Extensions;
+using Untech.SharePoint.Utils;
 
 namespace Untech.SharePoint.Server.Data
 {
@@ -114,7 +113,7 @@ namespace Untech.SharePoint.Server.Data
 				}
 				if (spField.Type == SPFieldType.Calculated)
 				{
-					var spCalculatedField = (SPFieldCalculated) spField;
+					var spCalculatedField = (SPFieldCalculated)spField;
 					field.OutputType = spCalculatedField.OutputType.ToString();
 				}
 			}

@@ -3,15 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Untech.SharePoint.Common.Data;
-using Untech.SharePoint.Common.Extensions;
-using Untech.SharePoint.Common.Models;
-using Untech.SharePoint.Common.Test.Spec.Models;
-using Untech.SharePoint.Common.Test.Tools.DataGenerators;
-using Untech.SharePoint.Common.Test.Tools.Generators;
-using Untech.SharePoint.Common.Test.Tools.Generators.Basic;
+using Untech.SharePoint.Data;
+using Untech.SharePoint.Extensions;
+using Untech.SharePoint.Models;
+using Untech.SharePoint.Spec.Models;
+using Untech.SharePoint.TestTools.DataGenerators;
+using Untech.SharePoint.TestTools.Generators;
+using Untech.SharePoint.TestTools.Generators.Basic;
 
-namespace Untech.SharePoint.Common.Test.Spec
+namespace Untech.SharePoint.Spec
 {
 	public class BasicOperationsSpec
 	{
@@ -52,7 +52,7 @@ namespace Untech.SharePoint.Common.Test.Spec
 		}
 
 		public T Add<T>(ISpList<T> list, IValueGenerator<T> generator)
-			where T: Entity
+			where T : Entity
 		{
 			var now = TrimMilliseconds(DateTime.Now);
 
@@ -197,7 +197,7 @@ namespace Untech.SharePoint.Common.Test.Spec
 		private IValueGenerator<ProjectModel> GetProjectGenerator()
 		{
 			return Generators.GetProjectGenerator()
-				.WithStatic( n=> n.Team, new ObjectReference { Id = 1 });
+				.WithStatic(n => n.Team, new ObjectReference { Id = 1 });
 		}
 
 		private IValueGenerator<NewsModel> GetNewsGenerator()

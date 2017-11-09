@@ -1,6 +1,6 @@
 using System;
 
-namespace Untech.SharePoint.Common.Test.Mappings.ClassLike
+namespace Untech.SharePoint.Mappings.ClassLike
 {
 	public class EventItem
 	{

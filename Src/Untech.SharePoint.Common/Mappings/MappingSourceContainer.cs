@@ -1,7 +1,7 @@
 ﻿using System;
-using Untech.SharePoint.Common.Collections;
+using Untech.SharePoint.Collections;
 
-namespace Untech.SharePoint.Common.Mappings
+namespace Untech.SharePoint.Mappings
 {
 	/// <summary>
 	/// Represents a collection of the context types and associated <see cref="IMappingSource"/>.

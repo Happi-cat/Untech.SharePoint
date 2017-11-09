@@ -1,20 +1,16 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Untech.SharePoint.Common.Configuration;
 
-namespace Untech.SharePoint.Common.Test.Mappings.ClassLike
+namespace Untech.SharePoint.Mappings.ClassLike
 {
-
 	[TestClass]
 	public class ClassLikeMappingTest
 	{
 		[TestMethod]
-		public void CanRun()
+		public void GetMetaContext_ReturnsMetaContext()
 		{
-			var config = new ConfigBuilder()
-				.RegisterMappings(n => n.ClassLike(new SmallDataContextMap()))
-				.BuildConfig();
+			var mapping = new Mappings().ClassLike(new SmallDataContextMap());
 
-			var ctxModel = config.Mappings.Resolve(typeof (SmallDataContext)).GetMetaContext();
+			Assert.IsNotNull(mapping.GetMetaContext());
 		}
 	}
 }

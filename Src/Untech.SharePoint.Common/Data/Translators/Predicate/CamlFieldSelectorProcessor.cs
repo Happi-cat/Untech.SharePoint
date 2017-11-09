@@ -1,11 +1,11 @@
 ﻿using System.Linq.Expressions;
-using Untech.SharePoint.Common.CodeAnnotations;
-using Untech.SharePoint.Common.Data.QueryModels;
-using Untech.SharePoint.Common.Diagnostics;
-using Untech.SharePoint.Common.Extensions;
-using Untech.SharePoint.Common.Utils;
+using Untech.SharePoint.CodeAnnotations;
+using Untech.SharePoint.Data.QueryModels;
+using Untech.SharePoint.Diagnostics;
+using Untech.SharePoint.Extensions;
+using Untech.SharePoint.Utils;
 
-namespace Untech.SharePoint.Common.Data.Translators.Predicate
+namespace Untech.SharePoint.Data.Translators.Predicate
 {
 	internal class CamlFieldSelectorProcessor : IProcessor<Expression, MemberRefModel>
 	{

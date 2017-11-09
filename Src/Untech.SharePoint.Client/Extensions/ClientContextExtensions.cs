@@ -1,6 +1,4 @@
-﻿using System;
-using System.IO;
-using Microsoft.SharePoint.Client;
+﻿using Microsoft.SharePoint.Client;
 
 namespace Untech.SharePoint.Client.Extensions
 {

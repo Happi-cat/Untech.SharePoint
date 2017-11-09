@@ -1,7 +1,7 @@
 ﻿using System;
-using Untech.SharePoint.Common.CodeAnnotations;
+using Untech.SharePoint.CodeAnnotations;
 
-namespace Untech.SharePoint.Common.Mappings.Annotation
+namespace Untech.SharePoint.Mappings.Annotation
 {
 	/// <summary>
 	/// Class attribute that used for describing SP ContentType.
@@ -13,11 +13,14 @@ namespace Untech.SharePoint.Common.Mappings.Annotation
 		/// <summary>
 		/// Initializes new instance of the <see cref="SpContentTypeAttribute"/>
 		/// </summary>
-		public SpContentTypeAttribute() { }
+		public SpContentTypeAttribute()
+		{
+		}
 
 		/// <summary>
 		/// Initializes new instance of the <see cref="SpContentTypeAttribute"/>
 		/// </summary>
+		/// <param name="id">Content type id.</param>
 		public SpContentTypeAttribute(string id)
 		{
 			Id = id;

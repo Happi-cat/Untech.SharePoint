@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Untech.SharePoint.Common.Extensions;
-using Untech.SharePoint.Common.MetaModels;
-using Untech.SharePoint.Common.Utils;
+using Untech.SharePoint.Extensions;
+using Untech.SharePoint.MetaModels;
+using Untech.SharePoint.Utils;
 
-namespace Untech.SharePoint.Common.Converters.Custom
+namespace Untech.SharePoint.Converters.Custom
 {
 	/// <summary>
-	/// Represetns field converter that can convert string to <see cref="Dictionary{String,String}"/> and vice versa.
+	/// Represents field converter that can convert string to <see cref="Dictionary{String,String}"/> and vice versa.
 	/// This converter use next notation for string: Key1 : Value1 ;  Key2 : Value2
 	/// </summary>
 	[SpFieldConverter("_KeyValue_")]
@@ -18,7 +18,7 @@ namespace Untech.SharePoint.Common.Converters.Custom
 		private const string KeyValueDelimiter = ":";
 
 		/// <summary>
-		/// Initialzes current instance with the specified <see cref="MetaField"/>
+		/// Initializes current instance with the specified <see cref="MetaField"/>
 		/// </summary>
 		/// <param name="field"></param>
 		public void Initialize(MetaField field)
@@ -41,8 +41,8 @@ namespace Untech.SharePoint.Common.Converters.Custom
 			if (value == null) return null;
 			var collection = new Dictionary<string, string>();
 
-			((string) value)
-				.Split(new[] {PairDelimiter}, StringSplitOptions.RemoveEmptyEntries)
+			((string)value)
+				.Split(new[] { PairDelimiter }, StringSplitOptions.RemoveEmptyEntries)
 				.Select(SplitKeyValue)
 				.Where(n => n.Length > 0)
 				.Each(n => collection.Add(n[0], n.ElementAtOrDefault(1)));
@@ -52,7 +52,7 @@ namespace Untech.SharePoint.Common.Converters.Custom
 
 		private static string[] SplitKeyValue(string str)
 		{
-			return str.Split(new[] {KeyValueDelimiter}, StringSplitOptions.RemoveEmptyEntries)
+			return str.Split(new[] { KeyValueDelimiter }, StringSplitOptions.RemoveEmptyEntries)
 				.Select(n => n.Trim())
 				.ToArray();
 		}
@@ -65,7 +65,7 @@ namespace Untech.SharePoint.Common.Converters.Custom
 		public object ToSpValue(object value)
 		{
 			if (value == null) return null;
-			var collection = (IEnumerable<KeyValuePair<string, string>>) value;
+			var collection = (IEnumerable<KeyValuePair<string, string>>)value;
 
 			return collection
 				.Select(n => string.Format("{0}{1}{2}", n.Key, KeyValueDelimiter, n.Value))
@@ -79,9 +79,7 @@ namespace Untech.SharePoint.Common.Converters.Custom
 		/// <returns>Caml value.</returns>
 		public string ToCamlValue(object value)
 		{
-			return (string) ToSpValue(value) ?? "";
+			return (string)ToSpValue(value) ?? "";
 		}
-
-		
 	}
 }

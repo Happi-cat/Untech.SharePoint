@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Microsoft.SharePoint;
-using Untech.SharePoint.Common.MetaModels;
-using Untech.SharePoint.Common.Test.Tools.QueryTests;
+using Untech.SharePoint.MetaModels;
+using Untech.SharePoint.TestTools.QueryTests;
 
-namespace Untech.SharePoint.Server.Test.Data
+namespace Untech.SharePoint.Server.Data
 {
 	public class ServerTestQueryExecutor<T> : PerfTestQueryExecutor<T>
 	{
@@ -23,7 +23,7 @@ namespace Untech.SharePoint.Server.Test.Data
 				QueryThrottleMode = SPQueryThrottleOption.Override
 			};
 			CamlQueryFetchTimer.Start();
-			
+
 			// ReSharper disable once UnusedVariable
 			var spItems = SpList.GetItems(query)
 				.Cast<SPListItem>();

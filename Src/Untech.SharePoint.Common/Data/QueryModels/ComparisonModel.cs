@@ -1,30 +1,30 @@
 using System;
 using System.Collections.Generic;
-using Untech.SharePoint.Common.CodeAnnotations;
-using Untech.SharePoint.Common.Utils;
+using Untech.SharePoint.CodeAnnotations;
+using Untech.SharePoint.Utils;
 
-namespace Untech.SharePoint.Common.Data.QueryModels
+namespace Untech.SharePoint.Data.QueryModels
 {
 	/// <summary>
 	/// Represents CAML comparison tags, like Eq, Neq and etc.
 	/// </summary>
 	public sealed class ComparisonModel : WhereModel
 	{
-		private static readonly Dictionary<ComparisonOperator, ComparisonOperator> NegateMap = new Dictionary
+		private static readonly Dictionary<ComparisonOperator, ComparisonOperator> s_negateMap = new Dictionary
 			<ComparisonOperator, ComparisonOperator>
 		{
-			{ComparisonOperator.Eq, ComparisonOperator.Neq},
-			{ComparisonOperator.Geq, ComparisonOperator.Lt},
-			{ComparisonOperator.Gt, ComparisonOperator.Leq},
-			{ComparisonOperator.Leq, ComparisonOperator.Gt},
-			{ComparisonOperator.Lt, ComparisonOperator.Geq},
-			{ComparisonOperator.Neq, ComparisonOperator.Eq},
-			{ComparisonOperator.IsNotNull, ComparisonOperator.IsNull},
-			{ComparisonOperator.IsNull, ComparisonOperator.IsNotNull},
-			{ComparisonOperator.Includes, ComparisonOperator.NotIncludes},
-			{ComparisonOperator.NotIncludes, ComparisonOperator.Includes},
-			{ComparisonOperator.ContainsOrIncludes, ComparisonOperator.NotContainsOrIncludes},
-			{ComparisonOperator.NotContainsOrIncludes, ComparisonOperator.ContainsOrIncludes}
+			[ComparisonOperator.Eq] = ComparisonOperator.Neq,
+			[ComparisonOperator.Geq] = ComparisonOperator.Lt,
+			[ComparisonOperator.Gt] = ComparisonOperator.Leq,
+			[ComparisonOperator.Leq] = ComparisonOperator.Gt,
+			[ComparisonOperator.Lt] = ComparisonOperator.Geq,
+			[ComparisonOperator.Neq] = ComparisonOperator.Eq,
+			[ComparisonOperator.IsNotNull] = ComparisonOperator.IsNull,
+			[ComparisonOperator.IsNull] = ComparisonOperator.IsNotNull,
+			[ComparisonOperator.Includes] = ComparisonOperator.NotIncludes,
+			[ComparisonOperator.NotIncludes] = ComparisonOperator.Includes,
+			[ComparisonOperator.ContainsOrIncludes] = ComparisonOperator.NotContainsOrIncludes,
+			[ComparisonOperator.NotContainsOrIncludes] = ComparisonOperator.ContainsOrIncludes
 		};
 
 		/// <summary>
@@ -35,10 +35,10 @@ namespace Untech.SharePoint.Common.Data.QueryModels
 		/// <param name="value">Value that is expected. Can be null.</param>
 		/// <exception cref="ArgumentNullException"><paramref name="field"/> is null.</exception>
 		public ComparisonModel(ComparisonOperator comparisonOperator, [NotNull]FieldRefModel field, [CanBeNull]object value)
-			: base (WhereType.Comparison)
+			: base(WhereType.Comparison)
 		{
 			Guard.CheckNotNull(nameof(field), field);
-			
+
 			ComparisonOperator = comparisonOperator;
 			Field = field;
 			Value = value;
@@ -74,9 +74,9 @@ namespace Untech.SharePoint.Common.Data.QueryModels
 		[NotNull]
 		public override WhereModel Negate()
 		{
-			if (NegateMap.ContainsKey(ComparisonOperator))
+			if (s_negateMap.ContainsKey(ComparisonOperator))
 			{
-				return new ComparisonModel(NegateMap[ComparisonOperator], Field, Value);
+				return new ComparisonModel(s_negateMap[ComparisonOperator], Field, Value);
 			}
 			throw new NotSupportedException($"Unable to negate: {ComparisonOperator}");
 		}

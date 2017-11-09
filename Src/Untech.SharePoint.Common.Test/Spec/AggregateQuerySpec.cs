@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using Untech.SharePoint.Common.Models;
-using Untech.SharePoint.Common.Test.Spec.Models;
-using Untech.SharePoint.Common.Test.Tools.QueryTests;
+using Untech.SharePoint.Models;
+using Untech.SharePoint.Spec.Models;
+using Untech.SharePoint.TestTools.QueryTests;
 
-namespace Untech.SharePoint.Common.Test.Spec
+namespace Untech.SharePoint.Spec
 {
 	/// <summary>
 	/// The aggregate methods are Aggregate, Average, Count, LongCount, Max, Min, and Sum.
@@ -56,7 +56,6 @@ namespace Untech.SharePoint.Common.Test.Spec
 
 		#endregion
 
-
 		#region [Min]
 
 		public object MinPQuery(IQueryable<Entity> source)
@@ -94,7 +93,6 @@ namespace Untech.SharePoint.Common.Test.Spec
 		}
 
 		#endregion
-
 
 		#region [Max]
 
@@ -134,7 +132,6 @@ namespace Untech.SharePoint.Common.Test.Spec
 
 		#endregion
 
-
 		public IEnumerable<Func<IQueryable<NewsModel>, object>> GetQueries()
 		{
 			return new Func<IQueryable<NewsModel>, object>[]
@@ -159,7 +156,5 @@ namespace Untech.SharePoint.Common.Test.Spec
 				Take10MaxPQuery
 			};
 		}
-
-
 	}
 }
